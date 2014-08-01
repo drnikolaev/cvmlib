@@ -15,3 +15,5 @@ The library is distributed under the Boost Software License, Version 1.0. Curren
     g++ 4.7.1 and higher
     clang 3.4 and higher
     MinGW environments (4.7.1 and higher): CygWin and TDM-GCC (under Minimal System)
+
+See http://cvmlib.com for binaries and more details.
