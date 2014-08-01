@@ -1,0 +1,664 @@
+rvector copy
+1.00000e+000
+rvector copy
+3.00000e+000
+rvector copy
+5.00000e+000
+rvector move
+2.00000e+000
+rvector move
+5.00000e+000
+rvector move
+2.00000e+000
+rvector move
+2.00000e+000
+rvector move
+3.00000e+000
+rvector move
+5.00000e+000
+rvector move
+2.00000e+000
+rvector move
+8.00000e+000
+rvector move
+3.00000e+000
+rvector move
+5.00000e+000
+rvector move
+4.00000e+000
+rvector move
+3.00000e+000
+rvector move
+5.00000e+000
+iarray move
+4
+iarray move
+0
+iarray move
+0
+iarray move
+0
+rvector move
+9.00000e+000
+rvector move
+9.00000e+000
+rvector move
+9.00000e+000
+rvector move
+9.00000e+000
+rvector move
+9.00000e+000
+rvector move
+9.00000e+000
+rvector move
+9.00000e+000
+cvector copy
+(1.00000e+000,2.00000e+000)
+cvector copy
+(5.00000e+000,1.00000e+000)
+cvector copy
+(4.00000e+000,5.00000e+000)
+cvector move
+(2.00000e+000,0.00000e+000)
+cvector move
+(5.00000e+000,6.00000e+000)
+cvector move
+(2.00000e+000,0.00000e+000)
+cvector move
+(2.00000e+000,0.00000e+000)
+cvector move
+(5.00000e+000,1.00000e+000)
+cvector move
+(4.00000e+000,5.00000e+000)
+cvector move
+(2.00000e+000,0.00000e+000)
+cvector move
+(4.00000e+000,5.00000e+000)
+cvector move
+(5.00000e+000,1.00000e+000)
+cvector move
+(4.00000e+000,5.00000e+000)
+cvector move
+(2.00000e+000,3.00000e+000)
+cvector move
+(2.00000e+000,3.00000e+000)
+cvector move
+(2.00000e+000,3.00000e+000)
+cvector move
+(2.00000e+000,3.00000e+000)
+cvector move
+(2.00000e+000,3.00000e+000)
+cvector move
+(2.00000e+000,3.00000e+000)
+cvector move
+(2.00000e+000,3.00000e+000)
+rmatrix move assignment
+5.00000e+000
+rmatrix move assignment
+5.00000e+000
+rmatrix move assignment
+5.00000e+000
+rmatrix move assignment
+5.00000e+000
+rmatrix move assignment
+5.00000e+000
+rmatrix move
+5.00000e+000
+rmatrix move
+5.00000e+000
+rmatrix move
+5.00000e+000
+rmatrix move
+5.00000e+000
+rmatrix move
+5.00000e+000
+rmatrix submatrix move
+7.00000e+000
+rmatrix submatrix move
+7.00000e+000
+rmatrix submatrix move
+7.00000e+000
+rmatrix submatrix move
+7.00000e+000
+rmatrix submatrix move
+7.00000e+000
+rmatrix submatrix move
+7.00000e+000
+rmatrix submatrix move
+7.00000e+000
+rmatrix submatrix move
+7.00000e+000
+rmatrix submatrix move
+7.00000e+000
+rmatrix submatrix move
+7.00000e+000
+rmatrix submatrix move assignment
+5.00000e+000
+rmatrix submatrix move assignment
+5.00000e+000
+rmatrix submatrix move assignment
+5.00000e+000
+rmatrix submatrix move assignment
+5.00000e+000
+rmatrix submatrix move assignment
+5.00000e+000
+rmatrix submatrix move assignment
+7.00000e+000
+rmatrix submatrix move assignment
+5.00000e+000
+rmatrix submatrix move assignment
+5.00000e+000
+rmatrix submatrix move assignment
+7.00000e+000
+cmatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix move
+(5.00000e+000,5.00000e+000)
+cmatrix move
+(5.00000e+000,5.00000e+000)
+cmatrix move
+(5.00000e+000,5.00000e+000)
+cmatrix move
+(5.00000e+000,5.00000e+000)
+cmatrix move
+(5.00000e+000,5.00000e+000)
+cmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+cmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+cmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+cmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+cmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+cmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+cmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+cmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+cmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+cmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+cmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix submatrix move assignment
+(7.00000e+000,7.00000e+000)
+cmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+cmatrix submatrix move assignment
+(7.00000e+000,7.00000e+000)
+srmatrix move assignment
+5.00000e+000
+srmatrix move assignment
+5.00000e+000
+srmatrix move assignment
+5.00000e+000
+srmatrix move assignment
+5.00000e+000
+srmatrix move assignment
+5.00000e+000
+srmatrix move
+5.00000e+000
+srmatrix move
+5.00000e+000
+srmatrix move
+5.00000e+000
+srmatrix move
+5.00000e+000
+srmatrix move
+5.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+7.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+7.00000e+000
+scmatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix move
+(5.00000e+000,5.00000e+000)
+scmatrix move
+(5.00000e+000,5.00000e+000)
+scmatrix move
+(5.00000e+000,5.00000e+000)
+scmatrix move
+(5.00000e+000,5.00000e+000)
+scmatrix move
+(5.00000e+000,5.00000e+000)
+scmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+scmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+scmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+scmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+scmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+scmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+scmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+scmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+scmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+scmatrix submatrix move
+(7.00000e+000,7.00000e+000)
+scmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix submatrix move assignment
+(7.00000e+000,7.00000e+000)
+scmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix submatrix move assignment
+(5.00000e+000,5.00000e+000)
+scmatrix submatrix move assignment
+(7.00000e+000,7.00000e+000)
+srbmatrix move assignment
+5.00000e+000
+srbmatrix move assignment
+5.00000e+000
+srbmatrix move assignment
+5.00000e+000
+srbmatrix move assignment
+5.00000e+000
+srbmatrix move assignment
+5.00000e+000
+srbmatrix move
+5.00000e+000
+srbmatrix move
+5.00000e+000
+srbmatrix move
+5.00000e+000
+srbmatrix move
+5.00000e+000
+srbmatrix move
+5.00000e+000
+srbmatrix move
+1
+srbmatrix move
+2
+srbmatrix move
+5.00000e+000
+srbmatrix move
+0.00000e+000
+srbmatrix move
+5.00000e+000
+srbmatrix move
+0.00000e+000
+srmatrix from srbmatrix
+5.00000e+000
+srmatrix from srbmatrix
+5.00000e+000
+srmatrix from srbmatrix
+5.00000e+000
+srmatrix from srbmatrix
+5.00000e+000
+srmatrix from srbmatrix
+5.00000e+000
+srmatrix from srbmatrix
+0.00000e+000
+scbmatrix move assignment
+(5.00000e+000,5.00000e+000)
+scbmatrix move assignment
+(5.00000e+000,5.00000e+000)
+scbmatrix move assignment
+(5.00000e+000,5.00000e+000)
+scbmatrix move assignment
+(5.00000e+000,5.00000e+000)
+scbmatrix move assignment
+(5.00000e+000,5.00000e+000)
+scbmatrix move
+(5.00000e+000,5.00000e+000)
+scbmatrix move
+(5.00000e+000,5.00000e+000)
+scbmatrix move
+(5.00000e+000,5.00000e+000)
+scbmatrix move
+(5.00000e+000,5.00000e+000)
+scbmatrix move
+(5.00000e+000,5.00000e+000)
+scbmatrix move
+1
+scbmatrix move
+2
+scbmatrix move
+(5.00000e+000,-5.00000e+000)
+scbmatrix move
+(0.00000e+000,0.00000e+000)
+scbmatrix move
+(5.00000e+000,-5.00000e+000)
+scbmatrix move
+(0.00000e+000,0.00000e+000)
+scmatrix from scbmatrix
+(5.00000e+000,5.00000e+000)
+scmatrix from scbmatrix
+(5.00000e+000,5.00000e+000)
+scmatrix from scbmatrix
+(5.00000e+000,5.00000e+000)
+scmatrix from scbmatrix
+(5.00000e+000,5.00000e+000)
+scmatrix from scbmatrix
+(5.00000e+000,5.00000e+000)
+scmatrix from scbmatrix
+(0.00000e+000,0.00000e+000)
+srsmatrix move assignment
+5.00000e+000
+srsmatrix move assignment
+5.00000e+000
+srsmatrix move assignment
+5.00000e+000
+srsmatrix move assignment
+5.00000e+000
+srsmatrix move assignment
+5.00000e+000
+srmatrix move
+5.00000e+000
+srmatrix move
+5.00000e+000
+srmatrix move
+5.00000e+000
+srmatrix move
+5.00000e+000
+srmatrix move
+5.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move
+7.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+7.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+5.00000e+000
+srmatrix submatrix move assignment
+7.00000e+000
+schmatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix move
+(5.00000e+000,0.00000e+000)
+schmatrix move
+(5.00000e+000,0.00000e+000)
+schmatrix move
+(5.00000e+000,0.00000e+000)
+schmatrix move
+(5.00000e+000,0.00000e+000)
+schmatrix move
+(5.00000e+000,0.00000e+000)
+schmatrix submatrix move
+(7.00000e+000,0.00000e+000)
+schmatrix submatrix move
+(7.00000e+000,0.00000e+000)
+schmatrix submatrix move
+(7.00000e+000,0.00000e+000)
+schmatrix submatrix move
+(7.00000e+000,0.00000e+000)
+schmatrix submatrix move
+(7.00000e+000,0.00000e+000)
+schmatrix submatrix move
+(7.00000e+000,0.00000e+000)
+schmatrix submatrix move
+(7.00000e+000,0.00000e+000)
+schmatrix submatrix move
+(7.00000e+000,0.00000e+000)
+schmatrix submatrix move
+(7.00000e+000,0.00000e+000)
+schmatrix submatrix move
+(7.00000e+000,0.00000e+000)
+schmatrix submatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix submatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix submatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix submatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix submatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix submatrix move assignment
+(7.00000e+000,0.00000e+000)
+schmatrix submatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix submatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix submatrix move assignment
+(5.00000e+000,0.00000e+000)
+schmatrix submatrix move assignment
+(7.00000e+000,0.00000e+000)
+proxy in/out
+1
+zero resize sanity check
+0
+ILP64 sanity check
+7.77000e+000
+srsmatrix::syrk with incr=2
+0.00000e+000
+srsmatrix::syr2k with incr=2
+0.00000e+000
+schmatrix::herk with incr=2
+0.00000e+000
+schmatrix::her2k with incr=2
+0.00000e+000
+*** 1 srmatrix svd
+2.84633e-009
+srmatrix svd
+3.96139e-009
+schmatrix cholesky
+1.77636e-015
+schmatrix det (positive_defiite)
+(1.45000e+002,0.00000e+000)
+schmatrix det (not positive_defiite)
+(-5.00000e+000,-0.00000e+000)
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix left geneig
+1.43833e-014
+srmatrix left geneig
+1.43833e-014
+srmatrix left geneig
+7.17448e-015
+srmatrix left geneig
+6.42414e-015
+srmatrix left geneig
+4.53428e-015
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix right geneig
+1.66252e-014
+srmatrix right geneig
+1.66252e-014
+srmatrix right geneig
+5.47510e-015
+srmatrix right geneig
+1.59348e-014
+srmatrix right geneig
+4.62312e-015
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix geneig
+1
+srmatrix left geneig
+1.43833e-014
+srmatrix right geneig
+1.66252e-014
+srmatrix left geneig
+1.43833e-014
+srmatrix right geneig
+1.66252e-014
+srmatrix left geneig
+7.17448e-015
+srmatrix right geneig
+5.47510e-015
+srmatrix left geneig
+6.42414e-015
+srmatrix right geneig
+1.59348e-014
+srmatrix left geneig
+4.53428e-015
+srmatrix right geneig
+4.62312e-015
+***END***
+rfvector - value
+-2.00000000000000000e+000
+rfvector - value
+2.36000000000000014e+001
+rfvector - value
+-2.00000000000000000e+000
+rfvector - value
+2.36000000000000014e+001
+a + b - format()
+sign(x+2)*3
+a + b - format()
+(z+3)*3
+rfmatrix - value
+-2.00000000000000000e+000
+rfmatrix - value
+2.36000000000000014e+001
+a - b - format()
+sign(x+2)
+a - b - format()
+z-3
+***END***

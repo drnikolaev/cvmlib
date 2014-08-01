@@ -1,0 +1,3854 @@
+\bigskip
+\noindent
+\verb"template <typename TR, typename TC>"\\
+\verb"class cmatrix : public Matrix <TR,TC> {"\\
+\verb"public:"\\
+\verb"    "\GOT{cmatrix}{cmatrix.cmatrix ()}\verb" ();"\\
+\verb"    "\GOT{cmatrix}{cmatrix.cmatrix (int,int)}\verb" (int nM, int nN);"\\
+\verb"    "\GOT{cmatrix}{cmatrix.cmatrix (TC*,int,int)}\verb" (TC* pD, int nM, int nN);"\\
+\verb"    "\GOT{cmatrix}{cmatrix.cmatrix (const TC*,int,int)}\verb" (const TC* pD, int nM, int nN);"\\
+\verb"    "\GOT{cmatrix}{cmatrix.cmatrix (const cmatrix&)}\verb" (const cmatrix& m);"\\
+\verb"    explicit "\GOT{cmatrix}{cmatrix.cmatrix (const cvector&,bool)}\verb" (const cvector& v, bool bBeColumn = true);"\\
+\verb"    explicit "\GOT{cmatrix}{cmatrix.cmatrix (const rmatrix&,const bool)}\verb" (const rmatrix& m, bool bRealPart = true);"\\
+\verb"    "\GOT{cmatrix}{cmatrix.cmatrix (TR*,TR*,int,int)}\verb" (const TR* pRe, const TR* pIm, int nM, int nN);"\\
+\verb"    "\GOT{cmatrix}{cmatrix.cmatrix (const rmatrix&, const rmatrix&)}\verb" (const rmatrix& mRe, const rmatrix& mIm);"\\
+\verb"    "\GOT{cmatrix}{cmatrix.submatrixctr}\verb" (cmatrix& m, int nRow, int nCol, int nHeight, int nWidth);"\\
+\verb"    TC& "\GOT{operator ()}{cmatrix.operator (,)}\verb" (int im, int in) throw (cvmexception);"\\
+\verb"    TC "\GOT{operator ()}{cmatrix.operator (,)}\verb" (int im, int in) const throw (cvmexception);"\\
+\verb"    cvector "\GOT{operator ()}{cmatrix.operator ()}\verb" (int i) throw (cvmexception);"\\
+\verb"    const cvector "\GOT{operator ()}{cmatrix.operator ()}\verb" (int i) const throw (cvmexception);"\\
+\verb"    cvector "\GOT{operator []}{cmatrix.operator []}\verb" (int i) throw (cvmexception);"\\
+\verb"    const cvector "\GOT{operator []}{cmatrix.operator []}\verb" (int i) const throw (cvmexception);"\\
+\verb"    cvector "\GOT{diag}{cmatrix.diag}\verb" (int i) throw (cvmexception);"\\
+\verb"    const cvector "\GOT{diag}{cmatrix.diag}\verb" (int i) const throw (cvmexception);"\\
+\verb"    const rmatrix "\GOT{real}{cmatrix.real}\verb" () const;"\\
+\verb"    const rmatrix "\GOT{imag}{cmatrix.imag}\verb" () const;"\\
+\verb"    cmatrix& "\GOT{operator =}{cmatrix.operator = (const cmatrix&)}\verb" (const cmatrix& m) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{assign}{cmatrix.assign}\verb" (const cvector& v) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{assign}{cmatrix.assign}\verb" (const TC* pD);"\\
+\verb"    rmatrix& "\GOT{assign}{cmatrix.assign (int, int, const cmatrix&)}\verb" (int nRow, int nCol, const cmatrix& m)"\\
+\verb"                     throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{set}{cmatrix.set}\verb" (TC z);"\\
+\verb"    cmatrix& "\GOT{assign\_real}{cmatrix.assignreal}\verb" (const rmatrix& mRe) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{assign\_imag}{cmatrix.assignimag}\verb" (const rmatrix& mIm) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{set\_real}{cmatrix.setreal}\verb" (TR d);"\\
+\verb"    cmatrix& "\GOT{set\_imag}{cmatrix.setimag}\verb" (TR d);"\\
+\verb"    cmatrix& "\GOT{resize}{cmatrix.resize}\verb" (int nNewM, int nNewN) throw (cvmexception);"\\
+\verb"    bool "\GOT{operator ==}{cmatrix.operator ==}\verb" (const cmatrix& v) const;"\\
+\verb"    bool "\GOT{operator !=}{cmatrix.operator !=}\verb" (const cmatrix& v) const;"\\
+\verb"    cmatrix& "\GOT{operator <{}<}{cmatrix.operator <<}\verb" (const cmatrix& m) throw (cvmexception);"\\
+\verb"    cmatrix "\GOT{operator +}{cmatrix.operator +}\verb" (const cmatrix& m) const throw (cvmexception);"\\
+\verb"    cmatrix "\GOT{operator -}{cmatrix.operator -}\verb" (const cmatrix& m) const throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{sum}{cmatrix.sum}\verb" (const cmatrix& m1,"\\
+\verb"                  const cmatrix& m2) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{diff}{cmatrix.diff}\verb" (const cmatrix& m1,"\\
+\verb"                   const cmatrix& m2) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{operator +=}{cmatrix.operator +=}\verb" (const cmatrix& m) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{operator -=}{cmatrix.operator -=}\verb" (const cmatrix& m) throw (cvmexception);"\\
+\verb"    cmatrix "\GOT{operator -}{cmatrix.operator - ()}\verb" () const;"\\
+\verb"    cmatrix "\GOT{operator *}{cmatrix.operator * (TR)}\verb" (TR d) const;"\\
+\verb"    cmatrix "\GOT{operator /}{cmatrix.operator / (TR)}\verb" (TR d) const throw (cvmexception);"\\
+\verb"    cmatrix "\GOT{operator *}{cmatrix.operator * (TC)}\verb" (TC z) const;"\\
+\verb"    cmatrix "\GOT{operator /}{cmatrix.operator / (TC)}\verb" (TC z) const throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{operator *=}{cmatrix.operator *= (TR)}\verb" (TR d);"\\
+\verb"    cmatrix& "\GOT{operator /=}{cmatrix.operator /= (TR)}\verb" (TR d) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{operator *=}{cmatrix.operator *= (TC)}\verb" (TC z);"\\
+\verb"    cmatrix& "\GOT{operator /=}{cmatrix.operator /= (TC)}\verb" (TC z) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{normalize}{cmatrix.normalize}\verb" ();"\\
+\verb"    cmatrix "\GOT{operator \TildaT}{cmatrix.conj}\verb"() const throw (cvmexception);"\\
+\verb"    cmatrix "\GOT{operator !}{cmatrix.transpose}\verb"() const throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{conj}{cmatrix.conj}\verb" (const cmatrix& m) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{conj}{cmatrix.conj}\verb" () throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{transpose}{cmatrix.transpose}\verb" (const cmatrix& m) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{transpose}{cmatrix.transpose}\verb" () throw (cvmexception);"\\
+\verb"    cvector "\GOT{operator *}{cmatrix.operator * (const cvector&)}\verb" (const cvector& v) const"\\
+\verb"                        throw (cvmexception);"\\
+\verb"    cmatrix "\GOT{operator *}{cmatrix.operator * (const cmatrix&)}\verb" (const cmatrix& m) const"\\
+\verb"                        throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{mult}{cmatrix.mult}\verb" (const cmatrix& m1, const cmatrix& m2)"\\
+\verb"                   throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{rank1update\_u}{cmatrix.rank1update_u}\verb" (const rvector& vCol,"\\
+\verb"                            const rvector& vRow) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{rank1update\_c}{cmatrix.rank1update_c}\verb" (const rvector& vCol,"\\
+\verb"                            const rvector& vRow) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{swap\_rows}{cmatrix.swap_rows}\verb" (int n1, int n2) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{swap\_cols}{cmatrix.swap_cols}\verb" (int n1, int n2) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{solve}{cmatrix.solve}\verb" (const scmatrix& mA,"\\
+\verb"                    const cmatrix& mB, TR& dErr)"\\
+\verb"                    throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{solve}{cmatrix.solve}\verb" (const scmatrix& mA,"\\
+\verb"                    const cmatrix& mB) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{solve\_tran}{cmatrix.solvetran}\verb" (const scmatrix& mA,"\\
+\verb"                         const cmatrix& mB, TR& dErr)"\\
+\verb"                         throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{solve\_tran}{cmatrix.solvetran}\verb" (const scmatrix& mA,"\\
+\verb"                         const cmatrix& mB) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{solve\_conj}{cmatrix.solveconj}\verb" (const scmatrix& mA,"\\
+\verb"                         const cmatrix& mB, TR& dErr)"\\
+\verb"                         throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{solve\_conj}{cmatrix.solveconj}\verb" (const scmatrix& mA,"\\
+\verb"                         const cmatrix& mB) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{solve\_lu}{cmatrix.solvelu}\verb" (const scmatrix& mA, const scmatrix& mLU,"\\
+\verb"                       const int* pPivots, const cmatrix& mB, TR& dErr)"\\
+\verb"                       throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{solve\_lu}{cmatrix.solvelu}\verb" (const scmatrix& mA, const scmatrix& mLU,"\\
+\verb"                       const int* pPivots, const cmatrix& mB)"\\
+\verb"                       throw (cvmexception);"\\
+\verb"    rvector "\GOT{svd}{cmatrix.svd}\verb" () throw (cvmexception);"\\
+\verb"    rvector "\GOT{svd}{cmatrix.svd}\verb" (cmatrix& mLSingVect, cmatrix& mRSingVect)"\\
+\verb"                 throw (cvmexception);"\\
+\verb"    cmatrix "\GOT{pinv}{cmatrix.pinv}\verb" (TR threshold = cvmMachSp()) const"\\
+\verb"                  throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{pinv}{cmatrix.pinv}\verb" (const cmatrix& mA,"\\
+\verb"                   TR threshold = cvmMachSp())"\\
+\verb"                   throw (cvmexception);"\\
+\verb"    int "\GOT{rank}{cmatrix.rank}\verb" (TR eps = cvmMachSp()) const throw (cvmexception);"\\
+\verb"    cmatrix "\GOT{gels}{cmatrix.gels}\verb" (bool conjugate, const cmatrix& mB,"\\
+\verb"                  cvector& vErr) const throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{gels}{cmatrix.gels}\verb" (bool conjugate, const cmatrix& mA, const cmatrix& mB,"\\
+\verb"                   cvector& vErr) throw (cvmexception);"\\
+\verb"    cvector "\GOT{gels}{cmatrix.gels}\verb" (bool conjugate, const cvector& mB,"\\
+\verb"                   TC& dErr) const throw (cvmexception);"\\
+\verb"    cmatrix "\GOT{gelsy}{cmatrix.gelsy}\verb" (const cmatrix& mB, int& rank,"\\
+\verb"                   TR tol = cvmMachSp()) const throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{gelsy}{cmatrix.gelsy}\verb" (const cmatrix& mA, const cmatrix& mB, int& rank,"\\
+\verb"                   TR tol = cvmMachSp()) throw (cvmexception);"\\
+\verb"    cvector "\GOT{gelsy}{cmatrix.gelsy}\verb" (const cvector& mB, int& rank,"\\
+\verb"                   TR tol = cvmMachSp()) const throw (cvmexception);"\\
+\verb"    rmatrix "\GOT{gelss}{cmatrix.gelss}\verb" (const cmatrix& mB, rvector& sv,"\\
+\verb"                   int& rank, TR tol = cvmMachSp()) const"\\
+\verb"                   throw (cvmexception);"\\
+\verb"    rmatrix& "\GOT{gelss}{cmatrix.gelss}\verb" (const cmatrix& mA, const cmatrix& mB, rvector& sv,"\\
+\verb"                   int& rank, TR tol = cvmMachSp())"\\
+\verb"                   throw (cvmexception);"\\
+\verb"    rvector "\GOT{gelss}{cmatrix.gelss}\verb" (const cvector& mB, rvector& sv,"\\
+\verb"                   int& rank, TR tol = cvmMachSp()) const"\\
+\verb"                   throw (cvmexception);"\\
+\verb"    rmatrix "\GOT{gelsd}{cmatrix.gelsd}\verb" (const cmatrix& mB, rvector& sv,"\\
+\verb"                   int& rank, TR tol = cvmMachSp()) const"\\
+\verb"                   throw (cvmexception);"\\
+\verb"    rmatrix& "\GOT{gelsd}{cmatrix.gelsd}\verb" (const cmatrix& mA, const cmatrix& mB, rvector& sv,"\\
+\verb"                   int& rank, TR tol = cvmMachSp())"\\
+\verb"                   throw (cvmexception);"\\
+\verb"    rvector "\GOT{gelsd}{cmatrix.gelsd}\verb" (const cvector& mB, rvector& sv,"\\
+\verb"                   int& rank, TR tol = cvmMachSp()) const"\\
+\verb"                   throw (cvmexception);"\\
+\verb"    void "\GOT{qr}{cmatrix.qr}\verb"(cmatrix& mQ, scmatrix& mR) const throw (cvmexception);"\\
+\verb"    void "\GOT{qr}{cmatrix.qr}\verb"(scmatrix& mQ, cmatrix& mR) const throw (cvmexception);"\\
+\verb"    void "\GOT{lq}{cmatrix.lq}\verb"(scmatrix& mL, cmatrix& mQ) const throw (cvmexception);"\\
+\verb"    void "\GOT{lq}{cmatrix.lq}\verb"(cmatrix& mL, scmatrix& mQ) const throw (cvmexception);"\\
+\verb"    void "\GOT{rq}{cmatrix.rq}\verb"(scmatrix& mR, cmatrix& mQ) const throw (cvmexception);"\\
+\verb"    void "\GOT{rq}{cmatrix.rq}\verb"(cmatrix& mR, scmatrix& mQ) const throw (cvmexception);"\\
+\verb"    void "\GOT{ql}{cmatrix.ql}\verb"(cmatrix& mQ, scmatrix& mL) const throw (cvmexception);"\\
+\verb"    void "\GOT{ql}{cmatrix.ql}\verb"(scmatrix& mQ, cmatrix& mL) const throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{vanish}{cmatrix.vanish}\verb" ();"\\
+\verb"    cmatrix& "\GOT{geru}{cmatrix.geru}\verb" (TC alpha, const cvector& vCol,"\\
+\verb"                   const cvector& vRow) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{gerc}{cmatrix.gerc}\verb" (TC alpha, const cvector& vCol,"\\
+\verb"                   const cvector& vRow) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{gemm}{cmatrix.gemm}\verb" (const cmatrix& m1, bool bTrans1,"\\
+\verb"                   const cmatrix& m2, bool bTrans2,"\\
+\verb"                   TC dAlpha, TC dBeta) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{hemm}{cmatrix.hemm}\verb" (bool bLeft, const schmatrix& ms, const cmatrix& m,"\\
+\verb"                   TC dAlpha, TC dBeta) throw (cvmexception);"\\
+\verb"    cmatrix& "\GOT{randomize\_real}{cmatrix.randomizereal}\verb" (TR dFrom, TR dTo);"\\
+\verb"    cmatrix& "\GOT{randomize\_imag}{cmatrix.randomizeimag}\verb" (TR dFrom, TR dTo);"\\
+\verb"};"
+\newpage
+
+
+
+
+\subsubsection{cmatrix ()}
+Constructor%
+\pdfdest name {cmatrix.cmatrix ()} fit
+\begin{verbatim}
+cmatrix::cmatrix ();
+\end{verbatim}
+creates  empty \verb"cmatrix" object.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m;
+std::cout << m.msize() << std::endl 
+          << m.nsize() << std::endl;
+
+m << eye_complex(3);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0
+0
+(1,0) (0,0) (0,0)
+(0,0) (1,0) (0,0)
+(0,0) (0,0) (1,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{cmatrix (int,int)}
+Constructor%
+\pdfdest name {cmatrix.cmatrix (int,int)} fit
+\begin{verbatim}
+cmatrix::cmatrix (int nM, int nN);
+\end{verbatim}
+creates  $m\times n$ \verb"cmatrix" object where $m$ is passed in
+\verb"nM" parameter (number of rows) and $n$ is passed in
+\verb"nN" (number of columns).
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive sizes passed or memory allocation failure.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m (3, 4);
+std::cout << m.msize() << std::endl 
+          << m.nsize() << std::endl 
+          << m.size()  << std::endl << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3
+4
+12
+(0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{cmatrix (TC*,int,int)}
+Constructor%
+\pdfdest name {cmatrix.cmatrix (TC*,int,int)} fit
+\begin{verbatim}
+cmatrix::cmatrix (TC* pD, int nM, int nN);
+\end{verbatim}
+creates  $m\times n$ \verb"cmatrix" object where $m$ is passed in
+\verb"nM" parameter (number of rows) and $n$ is passed in
+\verb"nN" (number of columns).
+Unlike others, this constructor \textit{does not allocate memory}.
+It just shares  memory with  array pointed to by \verb"pD".
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed.
+See also \GOT{cmatrix}{cmatrix}, \GOT{cmatrix (const TC*,int,int)}{cmatrix.cmatrix (const TC*,int,int)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+double a[] = {5., 5., 5., 5., 5., 5.,
+              5., 5., 5., 5., 5., 5.};
+cmatrix m ((std::complex<double>*) a, 2, 3);
+
+m(1,1) = std::complex<double>(1.,2.);
+std::cout << m << std::endl;
+std::cout << a[0] << " " << a[1] << " "
+          << a[2] << " " << a[3] << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (5,5) (5,5)
+(5,5) (5,5) (5,5)
+
+1 2 5 5
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{cmatrix (const TC*,int,int)}
+Constructor%
+\pdfdest name {cmatrix.cmatrix (const TC*,int,int)} fit
+\begin{verbatim}
+cmatrix::cmatrix (const TC* pD, int nM, int nN);
+\end{verbatim}
+creates  $m\times n$ \verb"cmatrix" object where $m$ is passed in
+\verb"nM" parameter (number of rows) and $n$ is passed in
+\verb"nN" (number of columns)
+and copies $m*n$ elements of  array \verb"pD" to it \GOT{by colums}{SubSubSectionStorage}.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed.
+See also \GOT{cmatrix}{cmatrix}, \GOT{cmatrix (TC*,int,int)}{cmatrix.cmatrix (TC*,int,int)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+const double a[] = {5., 5., 5., 5., 5., 5.,
+                    5., 5., 5., 5., 5., 5.};
+cmatrix m ((const std::complex<double>*) a, 2, 3);
+
+m(1,1) = std::complex<double>(1.,2.);
+std::cout << m << std::endl;
+std::cout << a[0] << " " << a[1] << " "
+          << a[2] << " " << a[3] << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (5,5) (5,5)
+(5,5) (5,5) (5,5)
+
+5 5 5 5
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{cmatrix (const cmatrix\&)}
+Copy constructor%
+\pdfdest name {cmatrix.cmatrix (const cmatrix&)} fit
+\begin{verbatim}
+cmatrix::cmatrix (const cmatrix& m);
+\end{verbatim}
+creates  \verb"cmatrix" object as a copy of \verb"m".
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+cmatrix m ((std::complex<double>*) a, 2, 3);
+cmatrix mc(m);
+
+m(1,1) = std::complex<double>(7.77,7.77);
+std::cout << m << std::endl << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(7.77,7.77) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+
+(1,2) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{cmatrix (const cvector\&,bool)}
+Constructor%
+\pdfdest name {cmatrix.cmatrix (const cvector&,bool)} fit
+\begin{verbatim}
+explicit cmatrix::cmatrix (const cvector& v, bool bBeColumn = true);
+\end{verbatim}
+creates  \verb"cmatrix" object containing \verb"v.size()" rows and
+1 column if \verb"bBeColumn" is \verb"true" or 1 row and
+\verb"v.size()" columns otherwise.
+After that it copies vector \verb"v"'s elements to
+the matrix created.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{cmatrix}{cmatrix}, \GOT{cvector}{cvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cvector v(3);
+v(1) = std::complex<double>(1.,2.);
+v(2) = std::complex<double>(2.,3.);
+v(3) = std::complex<double>(3.,4.);
+
+cmatrix mc (v);
+cmatrix mr (v, false);
+
+std::cout << mc << std::endl << mr;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2)
+(2,3)
+(3,4)
+
+(1,2) (2,3) (3,4)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{cmatrix (const rmatrix\&,bool)}
+Constructor%
+\pdfdest name {cmatrix.cmatrix (const rmatrix&,const bool)} fit
+\begin{verbatim}
+explicit cmatrix::cmatrix (const rmatrix& m, bool bRealPart = true);
+\end{verbatim}
+creates  \verb"cmatrix" object containing \verb"m.msize()" rows and
+\verb"m.nsize()" columns
+and copies matrix \verb"m" to its real part if
+\verb"bRealPart" is \verb"true" or
+to its imaginary part otherwise.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{cmatrix}{cmatrix}, \GOT{rmatrix}{rmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.};
+const rmatrix m (a, 2, 3);
+cmatrix mr(m), mi(m, false);
+
+std::cout << mr << std::endl << mi;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (3,0) (5,0)
+(2,0) (4,0) (6,0)
+
+(0,1) (0,3) (0,5)
+(0,2) (0,4) (0,6)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{cmatrix (const TR*,const TR*,int,int)}
+Constructor%
+\pdfdest name {cmatrix.cmatrix (TR*,TR*,int,int)} fit
+\begin{verbatim}
+cmatrix::cmatrix (const TR* pRe, const TR* pIm,
+                  const int nM, const int nN);
+\end{verbatim}
+creates  \verb"cmatrix" object
+of size \verb"nM" by \verb"nN" and copies every
+element of arrays pointed to by \verb"pRe" and \verb"pIm"
+to  real and imaginary part of the matrix created respectively.
+Use \verb"NULL" pointer to fill up appropriate
+part with zero values.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double re[] = {1., 2., 3., 4., 5., 6.};
+double im[] = {6., 5., 4., 3., 2., 1.};
+cmatrix m (re, im, 3, 2);
+std::cout << m << std::endl;
+re[1] = 7.77;
+std::cout << m << std::endl;
+
+const double re2[] = {1., 2., 3., 4.};
+const cmatrix m2 (re2, NULL, 2, 2);
+std::cout << m2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,6) (4,3)
+(2,5) (5,2)
+(3,4) (6,1)
+
+(1,6) (4,3)
+(2,5) (5,2)
+(3,4) (6,1)
+
+(1,0) (3,0)
+(2,0) (4,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{cmatrix (const rmatrix\&, const rmatrix\&)}
+Constructor%
+\pdfdest name {cmatrix.cmatrix (const rmatrix&, const rmatrix&)} fit
+\begin{verbatim}
+cmatrix::cmatrix (const rmatrix& mRe, const rmatrix& mIm);
+\end{verbatim}
+creates  \verb"cmatrix" object
+of size \verb"mRe.msize()" by \verb"mRe.nsize()"
+(if one of these sizes differs from appropriate size of matrix
+\verb"mIm" then  constructor throws \GOT{cvmexception}{cvmexception})
+and copies matrices \verb"mRe" and \verb"mIm"
+to  real and imaginary part of the matrix created respectively.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{cmatrix}{cmatrix}, \GOT{rmatrix}{rmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rmatrix mr(3,3), mi(3,3);
+mr(1,1) = 1.;
+mr(2,2) = 2.;
+mr(3,3) = 3.;
+mi(1,3) = 6.;
+mi(2,2) = 5.;
+mi(3,1) = 4.;
+
+const cmatrix mc(mr, mi);
+std::cout << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (0,0) (0,6)
+(0,0) (2,5) (0,0)
+(0,4) (0,0) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{submatrix}
+Submatrix constructor%
+\pdfdest name {cmatrix.submatrixctr} fit
+\begin{verbatim}
+cmatrix::cmatrix (cmatrix& m, int nRow, int nCol, 
+                              int nHeight, int nWidth);
+\end{verbatim}
+creates  \verb"cmatrix" object as  \emph{submatrix} of \verb"m".
+It means that the matrix object created shares memory with some part
+of \verb"m". This part is defined by its upper left corner (parameters 
+\verb"nRow" and \verb"nCol", both are \Based)
+and its height and width (parameters 
+\verb"nHeight" and \verb"nWidth").
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m(4,5);
+cmatrix subm(m, 2, 2, 2, 2);
+subm.set(std::complex<double>(1.,1.));
+
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (0,0) (0,0) (0,0) (0,0)
+(0,0) (1,1) (1,1) (0,0) (0,0)
+(0,0) (1,1) (1,1) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator (,)}
+Indexing operators%
+\pdfdest name {cmatrix.operator (,)} fit
+\begin{verbatim}
+TC& cmatrix::operator () (int im, int in) throw (cvmexception);
+TC cmatrix::operator () (int im, int in) const throw (cvmexception);
+\end{verbatim}
+provide access to a particular element of calling matrix. The first version
+of operator is applicable to  non-constant object.
+This version returns  \emph{l-value}
+in order to make possible write access to an element.
+Both operators are \Based.
+Operators throw \GOT{cvmexception}{cvmexception}
+if \verb"im" is outside of \verb"[1,msize()]" range or
+\verb"in" is outside of \verb"[1,nsize()]" range.
+Operators are \emph{inherited}
+in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    const cmatrix m ((std::complex<double>*) a, 2, 3);
+    scmatrix ms(2);
+    std::cout << m(1,1) << " " 
+              << m(2,3) << std::endl << std::endl;
+    ms(2,2) = std::complex<double>(7.77,7.77);
+    std::cout << ms;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (11,12)
+
+(0,0) (0,0)
+(0,0) (7.77,7.77)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator ()}
+Indexing operators%
+\pdfdest name {cmatrix.operator ()} fit
+\begin{verbatim}
+cvector cmatrix::operator () (int i) throw (cvmexception);
+const cvector cmatrix::operator () (int i) const throw (cvmexception);
+\end{verbatim}
+provide access to \hbox{$i$-th} column of calling matrix. The first version
+of operator is applicable to  non-constant object and
+\emph{returns  l-value}, i.e. vector returned shares memory
+with \hbox{$i$-th} column of calling matrix
+in order to make possible write access to it.
+The second version creates  \emph{copy} of a column and therefore is
+\emph{not  l-value}.
+Both operators are \Based.
+The operators throw \GOT{cvmexception}{cvmexception}
+if parameter \verb"i" is outside of \verb"[1,nsize()]" range.
+Operators are \emph{inherited}
+in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix},
+\GOT{Matrix::msize()}{Matrix.msize}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    const cmatrix m ((std::complex<double>*) a, 2, 3);
+    scmatrix ms(2);
+
+    std::cout << m(2) << std::endl;
+
+    ms(2) = m(3);
+    std::cout << ms;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(5,6) (7,8)
+
+(0,0) (9,10)
+(0,0) (11,12)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator []}
+Indexing operators%
+\pdfdest name {cmatrix.operator []} fit
+\begin{verbatim}
+cvector cmatrix::operator [] (int i) throw (cvmexception);
+const cvector cmatrix::operator [] (int i) const throw (cvmexception);
+\end{verbatim}
+provide access to  \hbox{$i$-th} row of calling matrix. The first version
+of operator is applicable to  non-constant object and
+\emph{returns  l-value}, i.e. the vector returned shares memory
+with \hbox{$i$-th} row of calling matrix
+in order to make possible write access to it.
+The second version creates  \emph{copy} of a row and therefore is
+\emph{not  l-value}.
+Both operators are \Based.
+The operators throw \GOT{cvmexception}{cvmexception}
+if \verb"i" is outside of \verb"[1,msize()]" range.
+Operators are \emph{inherited}
+in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix},
+\GOT{Matrix::msize()}{Matrix.msize}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    const cmatrix m ((std::complex<double>*) a, 2, 3);
+    scmatrix ms(3);
+    std::cout << m[1] << std::endl;
+    ms[1] = m[2];
+    std::cout << ms;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (5,6) (9,10)
+
+(3,4) (7,8) (11,12)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{diag}
+Functions%
+\pdfdest name {cmatrix.diag} fit
+\begin{verbatim}
+cvector cmatrix::diag (int i) throw (cvmexception);
+const cvector cmatrix::diag (int i) const throw (cvmexception);
+\end{verbatim}
+provide access to  \hbox{$i$-th} diagonal of calling matrix,
+where $i=0$ for main diagonal, $i<0$ for lower diagonals 
+and $i>0$ for upper ones.
+The first version
+of  function is applicable to  non-constant object and
+\emph{returns  l-value}, i.e. the vector returned shares memory
+with  \hbox{$i$-th} diagonal of calling matrix
+in order to make possible write access to it.
+The second version creates  \emph{copy} of a diagonal and therefore is
+\emph{not  l-value}.
+Functions throw \GOT{cvmexception}{cvmexception}
+if  parameter \verb"i" is outside of 
+\verb"[-msize()+1,nsize()-1]" range.
+Functions are \emph{inherited}
+in the classes
+\GOT{scmatrix}{scmatrix} and \GOT{scbmatrix}{scbmatrix}.
+Functions are \emph{redefined} in the class \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 
+                  10., 11., 12., 13., 14., 15., 16., 17., 18.};
+    cmatrix m (2, 3);
+    const scmatrix ms((std::complex<double>*)a, 3);
+    m.diag(-1).set(std::complex<double>(1.,1.));
+    m.diag(0).set(std::complex<double>(2.,2.));
+    m.diag(1).set(std::complex<double>(3.,3.));
+    m.diag(2).set(std::complex<double>(4.,4.));
+    std::cout << m << std::endl;
+    std::cout << ms << std::endl;
+    std::cout << ms.diag(0) << ms.diag(1);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2,2) (3,3) (4,4)
+(1,1) (2,2) (3,3)
+
+(1,2) (7,8) (13,14)
+(3,4) (9,10) (15,16)
+(5,6) (11,12) (17,18)
+
+(1,2) (9,10) (17,18)
+(7,8) (15,16)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{real}
+Function%
+\pdfdest name {cmatrix.real} fit
+\begin{verbatim}
+const rmatrix cmatrix::real () const;
+\end{verbatim}
+creates  object of type \verb"const rmatrix"
+as  real part
+of  calling matrix.
+Please note that, unlike
+\GO{cvector::real}{cvector.real}, this
+function creates new object \emph{not sharing}  memory
+with real part of calling matrix, i.e.
+the matrix returned is \emph{not  l-value}.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix}.
+See also
+\GOT{rmatrix}{rmatrix},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+cmatrix m((std::complex<double>*) a, 2, 3);
+
+std::cout << m << std::endl << m.real();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+
+1 5 9
+3 7 11
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{imag}
+Function%
+\pdfdest name {cmatrix.imag} fit
+\begin{verbatim}
+const rmatrix cmatrix::imag () const;
+\end{verbatim}
+creates  object of type \verb"const rmatrix"
+as  imaginary part
+of  calling matrix.
+Please note that, unlike
+\GO{cvector::imag}{cvector.imag}, this
+function creates new object \emph{not sharing}  memory
+with  imaginary part of  calling matrix, i.e.
+the matrix returned is \emph{not  l-value}.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix}.
+See also
+\GOT{rmatrix}{rmatrix},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+cmatrix m((std::complex<double>*) a, 2, 3);
+
+std::cout << m << std::endl << m.imag();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+
+2 6 10
+4 8 12
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{operator = (const cmatrix\&)}
+Operator%
+\pdfdest name {cmatrix.operator = (const cmatrix&)} fit
+\begin{verbatim}
+cmatrix& cmatrix::operator = (const cmatrix& m) throw (cvmexception);
+\end{verbatim}
+sets  every element of  calling rmatrix to be equal to
+appropriate element of  matrix \verb"m"
+and returns  reference to
+the matrix changed.
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of different matrix sizes.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    const cmatrix m1((std::complex<double>*) a, 2, 3);
+    cmatrix m2(2, 3);
+
+    m2 = m1;
+    std::cout << m2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign (const TC*)}
+Function%
+\pdfdest name {cmatrix.assign} fit
+\begin{verbatim}
+cmatrix& cmatrix::assign (const cvector& v) throw (cvmexception);
+cmatrix& cmatrix::assign (const TC* pD);
+\end{verbatim}
+sets every element of  calling matrix to  value of
+appropriate element of a vector~\verb'v'
+or  array pointed to by~\verb"pD"
+and returns  reference to
+the matrix changed.
+In first version it's assumed that vector passed is long
+enough to fill calling matrix. Function throws \GOT{cvmexception}{cvmexception} 
+otherwise.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+const double a[] = {1., 2., 3., 4., 5., 6.,
+                    7., 8., 9., 10., 11., 12.};
+cmatrix m(2, 3);
+
+m.assign ((const std::complex<double>*) a);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign (int, int, const cmatrix\&)}
+Function%
+\pdfdest name {cmatrix.assign (int, int, const cmatrix&)} fit
+\begin{verbatim}
+cmatrix& cmatrix::assign (int nRow, int nCol, const cmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+sets sub-matrix of  calling matrix beginning with \Based row
+\verb"nRow" and column \verb"nCol" to  matrix \verb"m" and
+returns  reference to the matrix changed. Function throws 
+ \GOT{cvmexception}{cvmexception} if \verb"nRow"
+or \verb"nCol" are not positive or matrix \verb"m" doesn't fit.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rmatrix m1(4,5);
+rmatrix m2(2,2);
+m1.set(1.);
+m2.set(2.);
+m1.assign(2,3,m2);
+std::cout << m1;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,1) (1,1) (1,1) (1,1) (1,1)
+(1,1) (1,1) (2,2) (2,2) (1,1)
+(1,1) (1,1) (2,2) (2,2) (1,1)
+(1,1) (1,1) (1,1) (1,1) (1,1)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{set (TC)}
+Function%
+\pdfdest name {cmatrix.set} fit
+\begin{verbatim}
+cmatrix& cmatrix::set (TC z);
+\end{verbatim}
+sets every element of  calling matrix to  value of
+parameter \verb"z" and returns  reference to
+the matrix changed.
+Use \GOT{vanish}{cmatrix.vanish} to set every element
+of  calling matrix to be equal to zero.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m(3, 4);
+m.set(std::complex<double>(3.,4.));
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(3,4) (3,4) (3,4) (3,4)
+(3,4) (3,4) (3,4) (3,4)
+(3,4) (3,4) (3,4) (3,4)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign\_real}
+Function%
+\pdfdest name {cmatrix.assignreal} fit
+\begin{verbatim}
+cmatrix& cmatrix::assign_real (const rmatrix& mRe) throw (cvmexception);
+\end{verbatim}
+sets real part of every element of  calling matrix to  value of
+appropriate element of  matrix \verb"mRe"
+and returns  reference to
+the matrix changed.
+Function throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{cmatrix}{cmatrix} and \GOT{rmatrix}{rmatrix}.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rmatrix m (2,3);
+cmatrix mc(2,3);
+m.randomize (0., 1.);
+
+mc.assign_real(m);
+std::cout << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.126835,0) (0.57271,0) (0.28312,0)
+(0.784417,0) (0.541673,0) (0.663869,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign\_imag}
+Function%
+\pdfdest name {cmatrix.assignimag} fit
+\begin{verbatim}
+cmatrix& cmatrix::assign_imag (const rmatrix& mIm) throw (cvmexception);
+\end{verbatim}
+sets imaginary part of every element of  calling matrix to  value of
+appropriate element of  matrix \verb"mIm"
+and returns  reference to
+the matrix changed.
+Function throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix} and \GOT{rmatrix}{rmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rmatrix m (2,3);
+cmatrix mc(2,3);
+m.randomize (0., 1.);
+
+mc.assign_imag(m);
+std::cout << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0.13831) (0,0.267373) (0,0.482345)
+(0,0.50618) (0,0.992401) (0,0.444777)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{set\_real}
+Function%
+\pdfdest name {cmatrix.setreal} fit
+\begin{verbatim}
+cmatrix& cmatrix::set_real (TR d);
+\end{verbatim}
+sets real part of every element of  calling matrix to  value of
+parameter \verb"d"
+and returns  reference to the matrix changed.
+See also \GOT{cmatrix}{cmatrix}.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m(2,3);
+m.set_real(1.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (1,0) (1,0)
+(1,0) (1,0) (1,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{set\_imag}
+Function%
+\pdfdest name {cmatrix.setimag} fit
+\begin{verbatim}
+cmatrix& cmatrix::set_imag (TR d);
+\end{verbatim}
+sets imaginary part of every element of  calling matrix to value of
+parameter \verb"d"
+and returns  reference to the matrix changed.
+See also \GOT{cmatrix}{cmatrix}.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m(2,3);
+m.set_imag(1.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,1) (0,1) (0,1)
+(0,1) (0,1) (0,1)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{resize}
+Function%
+\pdfdest name {cmatrix.resize} fit
+\begin{verbatim}
+cmatrix& cmatrix::resize (int nNewM, int nNewN) throw (cvmexception);
+\end{verbatim}
+changes  size of  calling matrix to \verb"nNewM" by \verb"nNewN"
+and returns  reference to
+the matrix changed. In case of increasing of its size, the matrix
+is filled up with zeroes.
+Function throws  \GOT{cvmexception}{cvmexception}
+in case of negative size passed or memory allocation failure.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    cmatrix m((std::complex<double>*) a, 2, 3);
+    std::cout << m << std::endl;
+    m.resize (2, 2);
+    std::cout << m << std::endl;
+    m.resize (3, 3);
+    std::cout << m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+
+(1,2) (5,6)
+(3,4) (7,8)
+
+(1,2) (5,6) (0,0)
+(3,4) (7,8) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator ==}
+Operator%
+\pdfdest name {cmatrix.operator ==} fit
+\begin{verbatim}
+bool cmatrix::operator == (const cmatrix& m) const;
+\end{verbatim}
+compares  calling matrix with  matrix \verb"m"
+and returns \verb"true" if they have the same sizes
+and their appropriate elements differ by not more than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Returns \verb"false" otherwise.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m1(2, 3);
+cmatrix m2(2, 3);
+m1.set_real(1.);
+m2.set_real(1.);
+std::cout << (m1 == m2) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator !=}
+Operator%
+\pdfdest name {cmatrix.operator !=} fit
+\begin{verbatim}
+bool cmatrix::operator != (const cmatrix& m) const;
+\end{verbatim}
+compares  calling matrix with  matrix \verb"m"
+and returns \verb"true" if they have different sizes
+or at least of their appropriate elements
+differs by more than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Returns \verb"false" otherwise.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m1(2, 3);
+cmatrix m2(2, 3);
+m1.set_real(1.);
+m2.set_real(1.);
+std::cout << (m1 != m2) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator <{}<}
+Operator%
+\pdfdest name {cmatrix.operator <<} fit
+\begin{verbatim}
+cmatrix& cmatrix::operator << (const cmatrix& m) throw (cvmexception);
+\end{verbatim}
+destroys  calling matrix, creates  new one as a copy of \verb"m"
+and returns  reference to
+the matrix changed.
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+Oerator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    cmatrix m(2,3);
+    cmatrix mc(1,1);
+    m(1,2) = std::complex<double>(1.,2.);
+    m(2,3) = std::complex<double>(2.,4.);
+    std::cout << m << mc << std::endl;
+
+    mc << m;
+    std::cout << mc;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (1,2) (0,0)
+(0,0) (0,0) (2,4)
+(0,0)
+
+(0,0) (1,2) (0,0)
+(0,0) (0,0) (2,4)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator +}
+Operator%
+\pdfdest name {cmatrix.operator +} fit
+\begin{verbatim}
+cmatrix cmatrix::operator + (const cmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"cmatrix" as  sum of
+ calling matrix and  matrix \verb"m".
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cvector::sum}{cvector.sum}, \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    const cmatrix ma ((std::complex<double>*) a, 2, 3);
+    cmatrix mb (2, 3);
+    mb.set (std::complex<double>(1.,1.));
+
+    std::cout << ma + mb << std::endl;
+    std::cout << ma + ma;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2,3) (6,7) (10,11)
+(4,5) (8,9) (12,13)
+
+(2,4) (10,12) (18,20)
+(6,8) (14,16) (22,24)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator -}
+Operator%
+\pdfdest name {cmatrix.operator -} fit
+\begin{verbatim}
+cmatrix cmatrix::operator - (const cmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"cmatrix" as  difference of
+ calling matrix and  matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cvector::diff}{cvector.diff}, \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    const cmatrix ma ((std::complex<double>*) a, 2, 3);
+    cmatrix mb (2, 3);
+    mb.set (std::complex<double>(1.,1.));
+
+    std::cout << ma - mb << std::endl;
+    std::cout << ma - ma;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,1) (4,5) (8,9)
+(2,3) (6,7) (10,11)
+
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{sum}
+Function%
+\pdfdest name {cmatrix.sum} fit
+\begin{verbatim}
+cmatrix& cmatrix::sum (const cmatrix& m1, const cmatrix& m2)
+throw (cvmexception);
+\end{verbatim}
+assigns  result of addition of
+matrices \verb"m1" and \verb"m2"  to  calling matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::operator +~}{cmatrix.operator +},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    const cmatrix ma ((std::complex<double>*) a, 2, 3);
+    cmatrix mb (2, 3);
+    cmatrix m (2, 3);
+    mb.set (std::complex<double>(1.,1.));
+
+    std::cout << m.sum(ma, mb) << std::endl;
+    std::cout << m.sum(m, mb);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2,3) (6,7) (10,11)
+(4,5) (8,9) (12,13)
+
+(3,4) (7,8) (11,12)
+(5,6) (9,10) (13,14)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{diff}
+Function%
+\pdfdest name {cmatrix.diff} fit
+\begin{verbatim}
+cmatrix& cmatrix::diff (const cmatrix& m1, const cmatrix& m2)
+throw (cvmexception);
+\end{verbatim}
+assigns  result of subtraction of
+matrices \verb"m1" and \verb"m2" to  calling matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::operator -~}{cmatrix.operator -},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    const cmatrix ma ((std::complex<double>*) a, 2, 3);
+    cmatrix mb (2, 3);
+    cmatrix m (2, 3);
+    mb.set (std::complex<double>(1.,1.));
+
+    std::cout << m.diff(ma, mb) << std::endl;
+    std::cout << m.diff(m, mb);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,1) (4,5) (8,9)
+(2,3) (6,7) (10,11)
+
+(-1,0) (3,4) (7,8)
+(1,2) (5,6) (9,10)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator +=}
+Operator%
+\pdfdest name {cmatrix.operator +=} fit
+\begin{verbatim}
+cmatrix& cmatrix::operator += (const cmatrix& m) throw (cvmexception);
+\end{verbatim}
+adds  matrix \verb"m" to  calling matrix 
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::operator +~}{cmatrix.operator +},
+\GOT{cmatrix::sum}{cmatrix.sum},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    cmatrix m1(2, 3);
+    cmatrix m2(2, 3);
+    m1.set(std::complex<double>(1.,1.));
+    m2.set(std::complex<double>(2.,2.));
+
+    m1 += m2;
+    std::cout << m1 << std::endl;
+
+    // well, you can do this too, but temporary object would be created
+    m2 += m2; 
+    std::cout << m2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(3,3) (3,3) (3,3)
+(3,3) (3,3) (3,3)
+
+(4,4) (4,4) (4,4)
+(4,4) (4,4) (4,4)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator -=}
+Operator%
+\pdfdest name {cmatrix.operator -=} fit
+\begin{verbatim}
+cmatrix& cmatrix::operator -= (const cmatrix& m) throw (cvmexception);
+\end{verbatim}
+subtracts  matrix \verb"m" from  calling matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::operator -~}{cmatrix.operator -},
+\GOT{cmatrix::diff}{cmatrix.diff},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    cmatrix m1(2, 3);
+    cmatrix m2(2, 3);
+    m1.set(std::complex<double>(1.,1.));
+    m2.set(std::complex<double>(2.,2.));
+
+    m1 -= m2;
+    std::cout << m1 << std::endl;
+
+    // well, you can do this too, but temporary object would be created
+    m2 -= m2; 
+    std::cout << m2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(-1,-1) (-1,-1) (-1,-1)
+(-1,-1) (-1,-1) (-1,-1)
+
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator - ()}
+Operator%
+\pdfdest name {cmatrix.operator - ()} fit
+\begin{verbatim}
+cmatrix cmatrix::operator - () const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"cmatrix" as
+ calling matrix multiplied by $-1$.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+const cmatrix ma ((std::complex<double>*) a, 2, 3);
+
+std::cout << - ma;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(-1,-2) (-5,-6) (-9,-10)
+(-3,-4) (-7,-8) (-11,-12)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator * (TR)}
+Operator%
+\pdfdest name {cmatrix.operator * (TR)} fit
+\begin{verbatim}
+cmatrix cmatrix::operator * (TR d) const;
+\end{verbatim}
+creates  object of type \verb"cmatrix" as  product of
+ calling matrix and  real number~\verb"d".
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::operator *=~}
+{cmatrix.operator *= (TR)},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+const cmatrix ma ((std::complex<double>*) a, 2, 3);
+
+std::cout << ma * 5.;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(5,10) (25,30) (45,50)
+(15,20) (35,40) (55,60)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator / (TR)}
+Operator%
+\pdfdest name {cmatrix.operator / (TR)} fit
+\begin{verbatim}
+cmatrix cmatrix::operator / (TR d) const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"cmatrix" as  quotient of
+ calling matrix and  real number~\verb"d". It throws
+ \GOT{cvmexception}{cvmexception}
+if \verb"d" has  absolute value equal or less than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::operator /=~}
+{cmatrix.operator /= (TR)},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    const cmatrix ma ((std::complex<double>*) a, 2, 3);
+
+    std::cout << ma / 4.;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.25,0.5) (1.25,1.5) (2.25,2.5)
+(0.75,1) (1.75,2) (2.75,3)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator * (TC)}
+Operator%
+\pdfdest name {cmatrix.operator * (TC)} fit
+\begin{verbatim}
+cmatrix cmatrix::operator * (TC z) const;
+\end{verbatim}
+creates  object of type \verb"cmatrix" as  product of
+ calling matrix and  complex number~\verb"z".
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix},
+\GOT{cmatrix::operator *=~}{cmatrix.operator *= (TC)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+const cmatrix ma ((std::complex<double>*) a, 2, 3);
+
+std::cout << ma * std::complex<double>(5.,2.);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,12) (13,40) (25,68)
+(7,26) (19,54) (31,82)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator / (TC)}
+Operator%
+\pdfdest name {cmatrix.operator / (TC)} fit
+\begin{verbatim}
+cmatrix cmatrix::operator / (TC z) const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"cmatrix" as  quotient of
+ calling matrix and  complex number~\verb"z". 
+It throws
+ \GOT{cvmexception}{cvmexception}
+if \verb"z" has  absolute value equal or less than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::operator /=~}
+{cmatrix.operator /= (TC)},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    const cmatrix ma ((std::complex<double>*) a, 2, 3);
+
+    std::cout << ma / std::complex<double>(4.,2.);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.4,0.3) (1.6,0.7) (2.8,1.1)
+(1,0.5) (2.2,0.9) (3.4,1.3)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator *= (TR)}
+Operator%
+\pdfdest name {cmatrix.operator *= (TR)} fit
+\begin{verbatim}
+cmatrix& cmatrix::operator *= (TR d);
+\end{verbatim}
+multiplies  calling matrix by  real number~\verb"d"
+and returns  reference to
+the matrix changed.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix},
+\GOT{cmatrix::operator *}{cmatrix.operator * (TR)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+cmatrix ma ((std::complex<double>*) a, 2, 3);
+
+ma *= 2.;
+std::cout << ma;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2,4) (10,12) (18,20)
+(6,8) (14,16) (22,24)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator /= (TR)}
+Operator%
+\pdfdest name {cmatrix.operator /= (TR)} fit
+\begin{verbatim}
+cmatrix& cmatrix::operator /= (TR d) throw (cvmexception);
+\end{verbatim}
+divides  calling matrix by  real number~\verb"d"
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+if \verb"d" has  absolute value equal or less
+than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::operator /~}{cmatrix.operator / (TR)},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    cmatrix ma ((std::complex<double>*) a, 2, 3);
+
+    ma /= 2.;
+    std::cout << ma;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.5,1) (2.5,3) (4.5,5)
+(1.5,2) (3.5,4) (5.5,6)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator *= (TC)}
+Operator%
+\pdfdest name {cmatrix.operator *= (TC)} fit
+\begin{verbatim}
+cmatrix& cmatrix::operator *= (TC z);
+\end{verbatim}
+multiplies  calling matrix by  complex number~\verb"z"
+and returns  reference to
+the matrix changed.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::operator *~}{cmatrix.operator * (TC)},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+cmatrix ma ((std::complex<double>*) a, 2, 3);
+
+ma *= std::complex<double>(2.,1.);
+std::cout << ma;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,5) (4,17) (8,29)
+(2,11) (6,23) (10,35)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator /= (TC)}
+Operator%
+\pdfdest name {cmatrix.operator /= (TC)} fit
+\begin{verbatim}
+cmatrix& cmatrix::operator /= (TC z) throw (cvmexception);
+\end{verbatim}
+divides  calling matrix by  complex number~\verb"z"
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+if \verb"z" has  absolute value equal or less
+than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::operator /~}{cmatrix.operator / (TC)},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6.,
+                  7., 8., 9., 10., 11., 12.};
+    cmatrix ma ((std::complex<double>*) a, 2, 3);
+
+    ma /= std::complex<double>(2.,1.);
+    std::cout << ma;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.8,0.6) (3.2,1.4) (5.6,2.2)
+(2,1) (4.4,1.8) (6.8,2.6)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{normalize}
+Function%
+\pdfdest name {cmatrix.normalize} fit
+\begin{verbatim}
+cmatrix& cmatrix::normalize ();
+\end{verbatim}
+normalizes  calling matrix so its \GO{Euclidean norm}{Array.norm}
+becomes equal to $1$ if it was greater than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}
+before the call (otherwise  function does nothing).
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+cmatrix ma ((std::complex<double>*) a, 2, 3);
+
+ma.normalize();
+std::cout << ma << ma.norm() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.0392232,0.0784465) (0.196116,0.235339) (0.353009,0.392232)
+(0.11767,0.156893) (0.274563,0.313786) (0.431455,0.470679)
+1
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{conjugation}
+Operator and functions%
+\pdfdest name {cmatrix.conj} fit
+\begin{verbatim}
+cmatrix cmatrix::operator ~ () const throw (cvmexception);
+cmatrix& cmatrix::conj (const cmatrix& m) throw (cvmexception);
+cmatrix& cmatrix::conj () throw (cvmexception);
+\end{verbatim}
+implement complex matrix conjugation.
+First operator creates  object of type \verb"cmatrix" as
+ conjugated calling matrix
+(it throws  
+\GOT{cvmexception}{cvmexception}
+in case of memory allocation failure). 
+Second function sets  calling matrix to be equal to  matrix
+\verb"m" conjugated
+(it throws  
+\GOT{cvmexception}{cvmexception}
+in case of not appropriate sizes of the operands), 
+third one makes it to be equal to
+conjugated itself (it also throws  
+\GOT{cvmexception}{cvmexception}
+in case of memory allocation failure). 
+Functions are \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::tramspose}{cmatrix.transpose}, \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+cmatrix m((std::complex<double>*) a, 2, 3);
+cmatrix mc(3,2);
+std::cout << m << std::endl << ~m << std::endl ;
+mc.conj(m);
+std::cout << mc << std::endl;
+mc.conj();
+std::cout << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+
+(1,-2) (3,-4)
+(5,-6) (7,-8)
+(9,-10) (11,-12)
+
+(1,-2) (3,-4)
+(5,-6) (7,-8)
+(9,-10) (11,-12)
+
+(1,2) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{transposition}
+Operator and functions%
+\pdfdest name {cmatrix.transpose} fit
+\begin{verbatim}
+cmatrix cmatrix::operator ! () const throw (cvmexception);
+cmatrix& cmatrix::transpose (const cmatrix& m) throw (cvmexception);
+cmatrix& cmatrix::transpose () throw (cvmexception);
+\end{verbatim}
+implement complex matrix transposition (\emph{not} conjugation).
+First operator creates  object of type \verb"cmatrix" as
+transposed calling matrix
+(it throws  
+\GOT{cvmexception}{cvmexception}
+in case of memory allocation failure). 
+Second function sets  calling matrix to be equal to  matrix
+\verb"m" transposed
+(it throws  
+\GOT{cvmexception}{cvmexception}
+in case of not appropriate sizes of the operands), 
+third one makes it to be equal to
+transposed itself (it also throws  
+\GOT{cvmexception}{cvmexception}
+in case of memory allocation failure). 
+Functions are \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix::conj}{cmatrix.conj}, \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+cmatrix m((std::complex<double>*) a, 2, 3);
+cmatrix mc(3,2);
+std::cout << m << std::endl << !m << std::endl ;
+mc.transpose(m);
+std::cout << mc << std::endl;
+mc.transpose();
+std::cout << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+
+(1,2) (3,4)
+(5,6) (7,8)
+(9,10) (11,12)
+
+(1,2) (3,4)
+(5,6) (7,8)
+(9,10) (11,12)
+
+(1,2) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{operator * (const cvector\&)}
+Operator%
+\pdfdest name {cmatrix.operator * (const cvector&)} fit
+\begin{verbatim}
+cvector cmatrix::operator * (const cvector& v) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"cvector"
+as  product of  calling matrix and  vector \verb"v".
+It throws  \GOT{cvmexception}{cvmexception}
+if number of columns of calling matrix
+differs from size of  vector \verb"v".
+Use \GOT{cvector::mult}{cvector.mult (const cmatrix&, const cvector&)}
+in order to avoid of  new object creation.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also
+\GOT{cmatrix}{cmatrix}, \GOT{cvector}{cvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m(2, 3);
+cvector v(3);
+m.set(std::complex<double>(1.,1.));
+v.set(std::complex<double>(1.,1.));
+
+std::cout << m * v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,6) (0,6)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator * (const cmatrix\&)}
+Operator%
+\pdfdest name {cmatrix.operator * (const cmatrix&)} fit
+\begin{verbatim}
+cmatrix cmatrix::operator * (const cmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"cmatrix"
+as  product of  calling matrix and  matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+if number of columns of calling matrix
+differs from number of rows of  matrix \verb"m".
+Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid of
+ new object creation.
+Operator is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m1(2, 3);
+cmatrix m2(3, 2);
+m1.set(std::complex<double>(1.,1.));
+m2.set(std::complex<double>(1.,1.));
+
+std::cout << m1 * m2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,6) (0,6)
+(0,6) (0,6)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{mult}
+Function%
+\pdfdest name {cmatrix.mult} fit
+\begin{verbatim}
+cmatrix& cmatrix::mult (const cmatrix& m1, const cmatrix& m2)
+throw (cvmexception);
+\end{verbatim}
+sets  calling matrix to be equal to  product of  matrix
+\verb"m1" by  matrix \verb"m2"
+and returns  reference to
+the matrix changed.
+Function throws  \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+Function is is \emph{inherited} in the class \GOT{scmatrix}{scmatrix}
+and \emph{redefined} in the classes
+\GOT{scbmatrix}{scbmatrix} 
+and \GOT{schmatrix}{schmatrix}.
+See also
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m1(2, 3);
+cmatrix m2(3, 2);
+scmatrix m(2);
+m1.set(std::complex<double>(1.,1.));
+m2.set(std::complex<double>(1.,1.));
+
+m.mult(m1, m2);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,6) (0,6)
+(0,6) (0,6)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{rank1update\_u}
+Function%
+\pdfdest name {cmatrix.rank1update_u} fit
+\begin{verbatim}
+cmatrix&
+cmatrix::rank1update_u (const cvector& vCol, const cvector& vRow)
+throw (cvmexception);
+\end{verbatim}
+sets calling matrix to be equal to 
+\GO{rank-1 update}{cvector.rank1update_u} (uncojugated) of vectors
+\verb"vCol" and \verb"vRow"
+and returns  reference to
+the matrix changed.
+Function throws  \GOT{cvmexception}{cvmexception}
+if number of rows of  calling matrix
+is not equal to \verb"vCol.size()"
+or number of columns is not equal to \verb"vRow.size()".
+Function is \emph{inherited} in the class
+\GOT{scmatrix}{scmatrix} and
+\emph{not applicable} to objects of the classes
+\GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix} (i.e. 
+\GOT{cvmexception}{cvmexception} would be thrown
+in case of using it for objects of those classes).
+See also \GO{cvector::rank1update\_u}{cvector.rank1update_u},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cvector vc(3), vr(2);
+cmatrix m(3, 2);
+vc.set(std::complex<double>(1.,1.));
+vr.set(std::complex<double>(1.,1.));
+
+std::cout << m.rank1update_u (vc, vr);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,2) (0,2)
+(0,2) (0,2)
+(0,2) (0,2)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{rank1update\_c}
+Function%
+\pdfdest name {cmatrix.rank1update_c} fit
+\begin{verbatim}
+cmatrix&
+cmatrix::rank1update_c (const cvector& vCol, const cvector& vRow)
+throw (cvmexception);
+\end{verbatim}
+sets calling matrix to be equal to 
+\GO{rank-1 update}{cvector.rank1update_c} (conjugated) of vectors
+\verb"vCol" and \verb"vRow"
+and returns  reference to
+the matrix changed.
+Function throws  \GOT{cvmexception}{cvmexception}
+if number of rows of  calling matrix
+is not equal to \verb"vCol.size()"
+or number of columns is not equal to \verb"vRow.size()".
+Function is \emph{inherited} in the class
+\GOT{scmatrix}{scmatrix} and
+\emph{not applicable} to objects of the classes
+\GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix} (i.e. 
+\GOT{cvmexception}{cvmexception} would be thrown
+in case of using it for objects of those classes).
+See also \GO{cvector::rank1update\_c}{cvector.rank1update_c},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cvector vc(3), vr(2);
+cmatrix m(3, 2);
+vc.set(std::complex<double>(1.,1.));
+vr.set(std::complex<double>(1.,1.));
+
+std::cout << m.rank1update_c (vc, vr);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2,0) (2,0)
+(2,0) (2,0)
+(2,0) (2,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{swap\_rows}
+Function%
+\pdfdest name {cmatrix.swap_rows} fit
+\begin{verbatim}
+cmatrix& cmatrix::swap_rows (int n1, int n2) throw (cvmexception);
+\end{verbatim}
+swaps two rows of  calling matrix and returns  reference to
+the matrix changed. \verb"n1" and \verb"n2" are
+numbers of rows to be swapped, 
+both are \Based).
+Function throws  \GOT{cvmexception}{cvmexception}
+if one of  parameters is outside of the range
+\verb"[1,msize()]".
+Function is \emph{redefined} in the class
+\GOT{scmatrix}{scmatrix} and
+\emph{not applicable} to objects of the classes
+\GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix} (i.e. 
+\GOT{cvmexception}{cvmexception} would be thrown
+in case of using it for objects of those classes).
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+cmatrix m ((std::complex<double>*)a, 3, 2);
+
+std::cout << m << std::endl;
+std::cout << m.swap_rows(2,3);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (7,8)
+(3,4) (9,10)
+(5,6) (11,12)
+
+(1,2) (7,8)
+(5,6) (11,12)
+(3,4) (9,10)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{swap\_cols}
+Function%
+\pdfdest name {cmatrix.swap_cols} fit
+\begin{verbatim}
+cmatrix& cmatrix::swap_cols (int n1, int n2) throw (cvmexception);
+\end{verbatim}
+swaps two columns of  calling matrix and returns  reference to
+the matrix changed. \verb"n1" and \verb"n2" are
+numbers of columns to be swapped, 
+both are \Based).
+Function throws  \GOT{cvmexception}{cvmexception}
+if one of  parameters is outside of the range
+\verb"[1,nsize()]".
+Function is \emph{redefined} in the class
+\GOT{scmatrix}{scmatrix} and
+\emph{not applicable} to objects of the classes
+\GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix} (i.e. 
+\GOT{cvmexception}{cvmexception} would be thrown
+in case of using it for objects of those classes).
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+cmatrix m ((std::complex<double>*)a, 2, 3);
+
+std::cout << m << std::endl;
+std::cout << m.swap_cols(2,3);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (5,6) (9,10)
+(3,4) (7,8) (11,12)
+
+(1,2) (9,10) (5,6)
+(3,4) (11,12) (7,8)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{solve}
+Functions%
+\pdfdest name {cmatrix.solve} fit
+\begin{verbatim}
+cmatrix&
+cmatrix::solve (const scmatrix& mA,
+                const cmatrix& mB, TR& dErr) throw (cvmexception);
+cmatrix&
+cmatrix::solve (const scmatrix& mA,
+                const cmatrix& vB) throw (cvmexception);
+\end{verbatim}
+set  calling matrix to be equal to  solution $X$ of the
+matrix linear equation
+$A*X=B$ where parameter \verb"mA" is square matrix $A$
+and parameter \verb"vB" is matrix $B$.
+Every function returns  reference to the matrix changed.
+The first version also sets output parameter \verb"dErr" to be equal
+to the norm of computation error.
+Functions throw \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of operands or when matrix $A$ is close to singular.
+Functions are \emph{redefined} in the class
+\GOT{scmatrix}{scmatrix} and
+\emph{inherited} thereafter in the classes
+\GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix}.
+See also
+\GOT{cvector::solve}{cvector.solve},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (4);
+
+scmatrix ma(3);
+cmatrix  mb(3,2);
+cmatrix  mx(3,2);
+double dErr;
+ma.randomize_real(0.,10.); ma.randomize_imag(0.,10.);
+mb.randomize_real(0.,10.); mb.randomize_imag(0.,10.);
+
+mx.solve (ma, mb, dErr);
+std::cout << mx << std::endl << ma * mx - mb
+          << dErr << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(+3.2103e-001,+2.8598e-002) (+1.1907e+000,-1.1101e+000)
+(+3.7451e-001,+4.2471e-001) (-2.3858e-001,+3.3028e-001)
+(+3.0085e-001,-3.0427e-001) (-7.6874e-001,+4.1100e-001)
+
+(+4.4409e-016,+0.0000e+000) (-8.8818e-016,+1.3323e-015)
+(+7.7716e-016,-8.8818e-016) (+0.0000e+000,+1.7764e-015)
+(+0.0000e+000,-8.8818e-016) (-1.7764e-015,+8.8818e-016)
++5.4774e-015
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{solve\_tran}
+Functions%
+\pdfdest name {cmatrix.solvetran} fit
+\begin{verbatim}
+cmatrix&
+cmatrix::solve_tran (const scmatrix& mA,
+                     const cmatrix& mB, TR& dErr) throw (cvmexception);
+cmatrix&
+cmatrix::solve_tran (const scmatrix& mA,
+                     const cmatrix& vB) throw (cvmexception);
+\end{verbatim}
+set calling matrix to be equal to  solution $X$ of 
+matrix linear equation
+$A^T*X=B$ (which is equivalent to $X^T*A=B^T$)
+where parameter \verb"mA" is square matrix $A$
+and parameter \verb"vB" is matrix $B$.
+Every function returns  reference to the matrix changed.
+The first version also sets  output parameter \verb"dErr" to be equal
+to the norm of computation error.
+Functions throw \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of the operands or when the matrix $A$ is close to singular.
+Functions are \emph{redefined} in  the class
+\GOT{scmatrix}{scmatrix} and
+\emph{inherited} thereafter in the classes
+\GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix}.
+See also
+\GOT{cmatrix::solve}{cmatrix.solve},
+\GOT{cvector::solve\_tran}{cvector.solvetran},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos); 
+std::cout.precision (3);
+
+scmatrix ma(3);
+cmatrix  mb(3,2);
+cmatrix  mx(3,2);
+double dErr;
+ma.randomize_real(0.,10.); ma.randomize_imag(0.,10.);
+mb.randomize_real(0.,10.); mb.randomize_imag(0.,10.);
+
+mx.solve_tran (ma, mb, dErr);
+
+std::cout << !ma * mx - mb << dErr << std::endl;
+std::cout << !mx * ma - !mb << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(+6.661e-016,+1.776e-015) (+0.000e+000,+5.690e-016)
+(-1.776e-015,-1.776e-015) (-8.882e-016,-8.882e-016)
+(-2.665e-015,+1.776e-015) (+0.000e+000,-1.110e-015)
++7.079e-015
+(+6.661e-016,+1.776e-015) (-1.776e-015,-1.776e-015) (-1.776e-015,+1.776e-015)
+(+0.000e+000,+5.690e-016) (-8.882e-016,-8.882e-016) (+0.000e+000,-1.554e-015)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{solve\_conj}
+Functions%
+\pdfdest name {cmatrix.solveconj} fit
+\begin{verbatim}
+cmatrix&
+cmatrix::solve_conj (const scmatrix& mA,
+                     const cmatrix& mB, TR& dErr) throw (cvmexception);
+cmatrix&
+cmatrix::solve_conj (const scmatrix& mA,
+                     const cmatrix& vB) throw (cvmexception);
+\end{verbatim}
+set calling matrix to be equal to  solution $X$ of 
+matrix linear equation
+$A^H*X=B$ (which is equivalent to $X^H*A=B^H$), where $A^H$ is conjugated $A$.
+Here parameter \verb"mA" is square matrix $A$
+and parameter \verb"vB" is matrix $B$.
+Every function returns  reference to the matrix changed.
+The first version also sets  output parameter \verb"dErr" to be equal
+to the norm of computation error.
+Functions throw \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of the operands or when the matrix $A$ is close to singular.
+Functions are \emph{redefined} in  the class
+\GOT{scmatrix}{scmatrix} and
+\emph{inherited} thereafter in the classes
+\GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix}.
+See also
+\GOT{cmatrix::solve}{cmatrix.solve},
+\GOT{cvector::solve\_conj}{cvector.solveconj},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos); 
+std::cout.precision (3);
+
+scmatrix ma(3);
+cmatrix  mb(3,2);
+cmatrix  mx(3,2);
+double dErr;
+ma.randomize_real(0.,10.); ma.randomize_imag(0.,10.);
+mb.randomize_real(0.,10.); mb.randomize_imag(0.,10.);
+
+mx.solve_conj (ma, mb, dErr);
+
+std::cout << ~ma * mx - mb << dErr << std::endl;
+std::cout << ~mx * ma - ~mb << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(+7.105e-015,-1.776e-015) (+1.332e-015,+8.882e-016)
+(+1.776e-015,-8.882e-016) (+8.882e-016,-8.882e-016)
+(+0.000e+000,-6.661e-016) (-1.776e-015,-2.665e-015)
++1.169e-014
+(+7.105e-015,+1.776e-015) (+1.776e-015,+8.882e-016) (-2.665e-015,+6.661e-016)
+(+1.332e-015,-8.882e-016) (+8.882e-016,+8.882e-016) (-1.776e-015,+2.665e-015)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+
+
+\subsubsection{solve\_lu}
+Functions%
+\pdfdest name {cmatrix.solvelu} fit
+\begin{verbatim}
+cmatrix&
+cmatrix::solve_lu (const scmatrix& mA, const scmatrix& mLU,
+                   const int* pPivots, const cmatrix& mB, TR& dErr)
+                   throw (cvmexception);
+cmatrix&
+cmatrix::solve_lu (const scmatrix& mA, const scmatrix& mLU,
+                   const int* pPivots, const cmatrix& vB)
+                   throw (cvmexception);
+\end{verbatim}
+set  calling matrix to be equal to solution $X$ of the
+matrix linear equation
+$A*X=B$ where  parameter \verb"mA" is  square complex matrix $A$,
+parameter \verb"mLU" is \GO{$LU$ factorization}{scmatrix.low_up}
+of  matrix $A$, parameter \verb"pPivots" is  array of pivot numbers
+created while factorizing  matrix $A$
+and  parameter \verb"vB" is  matrix $B$.
+Every function returns  reference to the matrix changed.
+The first version also sets output parameter \verb"dErr" to be equal
+to the norm of computation error.
+These functions are useful when you need to solve few linear equations
+of kind $AX=B$ with the same matrix $A$ and different matrices $B$.
+In such case you save on matrix $A$ factorization since it's needed to be
+performed just one time.
+Functions throw \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of operands or when  matrix $A$ is close to singular.
+See also
+\GOT{cvector::solve}{cvector.solve},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (4);
+try {
+    scmatrix ma(3);
+    scmatrix mLU(3);
+    cmatrix  mb1(3,2);
+    cmatrix  mb2(3,2);
+    cmatrix  mx1(3,2);
+    cmatrix  mx2(3,2);
+    iarray   nPivots(3);
+    double   dErr = 0.;
+    ma.randomize_real(0.,10.); ma.randomize_imag(0.,10.);
+    mb1.randomize_real(0.,10.); mb1.randomize_imag(0.,10.);
+    mb2.randomize_real(0.,10.); mb2.randomize_imag(0.,10.);
+
+    mLU.low_up(ma, nPivots);
+    std::cout << mx1.solve_lu (ma, mLU, nPivots, mb1, dErr);
+    std::cout << dErr << std::endl;
+    std::cout << mx2.solve_lu (ma, mLU, nPivots, mb2) << std::endl;
+    std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(4.2888e-01,8.2409e-02) (-1.1261e-01,-5.7778e-01)
+(5.8052e-01,3.2179e-01) (2.5811e-01,-3.8609e-02)
+(-3.1499e-02,-7.0014e-01) (1.2652e+00,4.5309e-01)
+5.2931e-15
+(3.0153e-01,-5.6606e-01) (-1.6308e-01,1.8217e-01)
+(7.4971e-01,-1.1305e-01) (5.2187e-01,2.3441e-01)
+(-1.9916e-01,1.4493e+00) (9.1046e-02,3.5242e-01)
+
+(0.0000e+00,-8.8818e-16) (0.0000e+00,-8.8818e-16)
+(-4.4409e-16,0.0000e+00) (0.0000e+00,-8.8818e-16)
+(0.0000e+00,0.0000e+00) (0.0000e+00,0.0000e+00)
+
+(-8.8818e-16,8.8818e-16) (-8.8818e-16,-1.7764e-15)
+(0.0000e+00,0.0000e+00) (2.2204e-16,-8.8818e-16)
+(4.4409e-16,-8.8818e-16) (1.3878e-17,-4.4409e-16)
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{svd}
+Functions%
+\pdfdest name {cmatrix.svd} fit
+\begin{verbatim}
+rvector
+cmatrix::svd () throw (cvmexception);
+rvector
+cmatrix::svd (scmatrix& mU, scmatrix& mVH) throw (cvmexception);
+\end{verbatim}
+create  object of type \verb"rvector"
+as  vector of
+\GO{singular values}{rvector.svd} of  calling matrix.
+The second version 
+sets output parameter \verb"mU" to be equal
+to  matrix
+$U$ of size $m\times m$ (and change
+ size of the object if it's needed) and
+\verb"mVH" to be equal
+to  matrix $V^H$ of size $n\times n$.
+All  functions throw
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands
+or in case of convergence error.
+Use \GOT{rvector::svd}{rvector.svd} in order to avoid of
+ new vector creation.
+Function is \emph{redefined} in the  classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{schmatrix}{schmatrix}.
+See also
+\GOT{rvector}{rvector},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (3);
+try {
+    double m[] = {1., -1., 1., 2., -2., 1.,
+                  3., -2., 1., 0., -2., 1.};
+    cmatrix mA((std::complex<double>*) m, 2, 3);
+    cmatrix mSigma(2,3);
+    rvector v(2);
+    scmatrix mU(2), mVH(3);
+
+    v = mA.svd(mU, mVH);
+    mSigma.diag(0) = cvector(v);
+
+    std::cout << mU << std::endl;
+    std::cout << mVH << std::endl;
+    std::cout << mSigma << std::endl;
+
+    std::cout << (mA * ~mVH - mU * mSigma).norm() << std::endl;
+    std::cout << (~mA * mU - ~(mSigma * mVH)).norm() << std::endl;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(-4.861e-01,0.000e+00) (8.739e-01,0.000e+00)
+(7.956e-01,-3.616e-01) (4.425e-01,-2.012e-01)
+
+(-7.590e-02,4.474e-01) (7.488e-01,-1.820e-01) (-4.474e-01,1.327e-02)
+(8.084e-01,1.878e-01) (-1.576e-02,5.238e-01) (-1.878e-01,3.558e-02)
+(1.065e-01,3.065e-01) (3.597e-01,4.669e-02) (8.727e-01,4.012e-02)
+
+(5.452e+00,0.000e+00) (0.000e+00,0.000e+00) (0.000e+00,0.000e+00)
+(0.000e+00,0.000e+00) (1.131e+00,0.000e+00) (0.000e+00,0.000e+00)
+
+1.357e-15
+1.267e-15
+\end{Verbatim}
+\newpage
+
+
+
+
+
+
+\subsubsection{pinv}
+Functions%
+\pdfdest name {cmatrix.pinv} fit
+\begin{verbatim}
+cmatrix  cmatrix::pinv (TR threshold = cvmMachSp()) const 
+                        throw (cvmexception);
+cmatrix& cmatrix::pinv (const basic_rmatrix& mA, 
+                        TR threshold = cvmMachSp()) 
+                        throw (cvmexception);
+\end{verbatim}
+implement complex matrix pseudo inversion~\GO{\cite{Gantmaher},~p.~33}{biblio}
+(or Moore-Penrose generalized inversion~\GO{\cite{Horn},~p.~421}{biblio}).
+Strictly defined,  $n\times m$ matrix $A^{+}$ is 
+\textit{pseudo inversion} of $m\times n$ matrix $A$ if the following two equations
+are satisfied:
+\begin{gather*}
+AA^{+}A=A,\\
+A^{+}=QA^H=A^HP
+\end{gather*}
+where $Q$ and $P$ are some matrices. To compute  pseudo inversion, we use
+\GO{Singular Value Decomposition (SVD)}{rvector.svd} 
+\begin{equation*}
+A = U\Sigma V^H
+\end{equation*}
+of matrix $A$, thus
+\begin{equation*}
+A^{+} = V\Sigma^{-1}U^{H},
+\end{equation*}
+where $\Sigma^{-1}$ is  diagonal $n\times m$ matrix having inverted
+diagonal values of  matrix $\Sigma$ if they are greater than some threshold,
+and zeros otherwise.
+
+First version creates  object of type \verb"cmatrix" as
+ pseudo inverted calling matrix
+(it throws 
+\GOT{cvmexception}{cvmexception}
+in case of memory allocation failure).
+Second function sets  calling matrix to be equal to  matrix
+\verb"mA" pseudo inverted
+(it throws 
+\GOT{cvmexception}{cvmexception}
+in case of not appropriate sizes of the operands).
+The threshold parameter sets  minimum distinguishable
+from zero singular value to be used to compute the pseudo inversion.
+All values equal or less than the threshold are treated as zeros.
+Functions are \emph{inherited} in the classes
+\GOT{scmatrix}{scmatrix} and \GOT{schmatrix}{schmatrix}
+and \emph{redefined} in \GOT{scbmatrix}{scbmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+try {
+    cmatrix mA(2,3);
+    mA(1,1) = tcomplex(1.,2.);  mA(1,2) = tcomplex(-1.,3.); 
+    mA(1,3) = tcomplex(0.,-1.);
+    mA(2,1) = tcomplex(1.,-2.); mA(2,2) = tcomplex(1.,-4.); 
+    mA(2,3) = tcomplex(1.,0.);
+
+    cmatrix mX = mA.pinv();
+    std::cout << mX << (mA * mX * mA - mA).norm2() << std::endl;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(+3.2407407e-01,-1.1111111e-01) (+2.5925926e-01,-1.8518519e-02)
+(-1.3888889e-01,-2.7777778e-02) (-5.5555556e-02,+1.6666667e-01)
+(+1.4814815e-01,+2.3148148e-01) (+1.6666667e-01,+1.4814815e-01)
++3.3217718e-15
+\end{Verbatim}
+Band matrix example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    scbmatrix mA (40, 1, 0);
+    mA.diag(0).randomize_real(-1.,1.);
+    mA.diag(0).randomize_imag(-3.,2.);
+    mA.diag(-1).randomize_real(5.,10.);
+    mA.diag(-1).randomize_imag(-3.,7.);
+
+    scmatrix mX (40);
+    mX.pinv(mA);
+    std::cout << (mA * mX * mA - mA).norm2() << std::endl;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
++6.3113999e-14
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{gels}
+Functions%
+\pdfdest name {cmatrix.gels} fit
+\begin{verbatim}
+cmatrix  cmatrix::gels (bool conjugate, const cmatrix& mB,
+                        cvector& vErr) const throw (cvmexception);
+cmatrix& cmatrix::gels (bool conjugate, 
+                        const cmatrix& mA, const cmatrix& mB,
+                        cvector& vErr) throw (cvmexception);
+cvector  cmatrix::gels (bool conjugate, const cvector& mB,
+                        TC& cErr) const throw (cvmexception);
+\end{verbatim}
+solve overdetermined or underdetermined linear systems 
+\begin{equation*}
+A*x=b
+\end{equation*}
+for $m\times n$ matrix $A$ (or its conjugated) where 
+$b$ is a vector of length $k$ 
+or systems 
+\begin{equation*}
+A*X=B
+\end{equation*}
+for multiple vectors $b$ stored as columns of $k\times l$ matrix $B$ where
+$k=m$ in non-transposed case and $k=n$ otherwise.
+The algorithm uses  QR or LQ factorization of $A$.
+It is assumed that $A$ has full rank, infinity returned otherwise.
+Internally  functions use \verb"?GELS" LAPACK routines. 
+If $m>n$ and \verb"conjugate=false" or $m<n$ and \verb"conjugate=true", then 
+the system is overdetermined, thus the algorithm tries to find the least squares solution $x$
+of the problem
+\begin{equation*}
+\|A*x-b\|_2\to\min\quad\text{or}\quad\|A^H*x-b\|_2\to\min\
+\end{equation*}
+respectively. Output vector \verb"vErr" of length $l$ 
+(or complex number \verb"cErr" for single vector $b$) returns residual sum of squares.
+The system is underdetermined otherwise, and the algorithm finds its minimum norm solution.
+In this case \verb"vErr" (or \verb"cErr") is set to zero. In both cases the solution computed
+satisfies $x=\pinv(A)*b$, but this algorithm is faster than pseudo inversion.
+Matrix $A$ is passed as  argument \verb"mA" or (in second case) it's  calling object.
+First and third versions return the solution as  new matrix or vector object.
+Second version sets calling object to be the solution.
+Functions throw
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+Functions are \emph{inherited} in all complex matrix classes.
+See also \GOT{cmatrix}{cmatrix}, \GOT{cvector::gels}{cvector.gels},
+\GOT{cmatrix::pinv}{cmatrix.pinv}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix a(7, 5);
+cmatrix b(7, 2);
+cmatrix bt(5, 2);
+cvector bv(5);
+cvector vErr(2);
+tcomplex dErr;
+a.randomize_real(-10., 10.);
+a.randomize_imag(-10., 10.);
+b.randomize_real(-10., 10.);
+b.randomize_imag(-10., 10.);
+bt.randomize_real(-10., 10.);
+bt.randomize_imag(-10., 10.);
+bv.randomize_real(-10., 10.);
+bv.randomize_imag(-10., 10.);
+
+cmatrix x = a.gels(false, b, vErr);
+cvector vt = a.gels(true, bv, dErr);
+cmatrix xt(7,2);
+xt.gels(true, a, bt, vErr);
+
+std::cout << (a.pinv()*b - x).norm() << std::endl;
+std::cout << (~a.pinv()*bv - vt).norm() << std::endl;
+std::cout << (~a.pinv()*bt - xt).norm() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++1.3258216e-015
++1.0696705e-015
++1.1685394e-015
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{gelsy}
+Functions%
+\pdfdest name {cmatrix.gelsy} fit
+\begin{verbatim}
+cmatrix  cmatrix::gelsy (const cmatrix& mB, int& rank,
+                         TR tol = cvmMachSp()) const throw (cvmexception);
+cmatrix& cmatrix::gelsy (const cmatrix& mA, const cmatrix& mB, int& rank,
+                         TR tol = cvmMachSp()) throw (cvmexception);
+cvector  cmatrix::gelsy (const cvector& mB, int& rank,
+                         TR tol = cvmMachSp()) const throw (cvmexception);
+\end{verbatim}
+compute the minimum-norm solution to the linear
+least squares problem 
+\begin{equation*}
+\|A*x-b\|_2\to\min
+\end{equation*}
+using  complete orthogonal factorization of $m\times n$ matrix $A$.
+Here $b$ is a vector of length $m$.
+Multiple vectors $b$ can be stored as columns of $m\times l$ matrix $B$.
+Matrix $A$ may be rank-deficient, functions return its effective rank in \verb"rank"
+output parameter using \verb"tol" tolerance.
+Internally functions use \verb"?GELSY" LAPACK routines, see more details
+about the algorithm in those routines' documentation.
+Matrix $A$ is passed as  argument \verb"mA" or (in second case) it's  calling object.
+First and third versions return the solution as  new matrix or vector object.
+Second version sets calling object to be the solution.
+Functions throw
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+Functions are \emph{inherited} in all complex matrix classes.
+See also \GOT{cmatrix}{cmatrix}, \GOT{cvector::gelsy}{cvector.gelsy}, 
+\GOT{cmatrix::gelss}{cmatrix.gelss}, \GOT{cmatrix::gelsd}{cmatrix.gelsd}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix a(4, 5);
+cmatrix b(4, 2);
+cvector bv(4);
+a.randomize_real(-10., 10.);
+a.randomize_imag(-10., 10.);
+b.randomize_real(-10., 10.);
+b.randomize_imag(-10., 10.);
+bv.randomize_real(-10., 10.);
+bv.randomize_imag(-10., 10.);
+tint rank;
+
+cmatrix x = a.gelsy(b, rank);
+cvector xv = a.gelsy(bv, rank);
+cmatrix x2(5,2);
+x2.gelsy(a, b, rank);
+
+std::cout << (a*x - b).norm() << std::endl;
+std::cout << (a*xv - bv).norm() << std::endl;
+std::cout << (a*x2 - b).norm() << std::endl;
+std::cout << rank << " " << a.rank() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++8.9701623e-015
++6.9342294e-015
++8.9701623e-015
++4 +4
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{gelss}
+Functions%
+\pdfdest name {cmatrix.gelss} fit
+\begin{verbatim}
+cmatrix  cmatrix::gelss (const cmatrix& mB, int& rank, rvector& sv,
+                         TR tol = cvmMachSp()) const throw (cvmexception);
+cmatrix& cmatrix::gelss (const cmatrix& mA, const cmatrix& mB, 
+                         rvector& sv, int& rank, TR tol = cvmMachSp()) 
+                         throw (cvmexception);
+cvector  cmatrix::gelss (const cvector& mB, rvector& sv, int& rank,
+                         TR tol = cvmMachSp()) const throw (cvmexception);
+\end{verbatim}
+compute the minimum-norm solution to the linear
+least squares problem 
+\begin{equation*}
+\|A*x-b\|_2\to\min
+\end{equation*}
+using singular value decomposition  of $m\times n$ matrix $A$.
+Here $b$ is a vector of length $m$.
+Multiple vectors $b$ can be stored as columns of $m\times l$ matrix $B$.
+Matrix $A$ may be rank-deficient, functions return its effective rank in \verb"rank"
+output parameter using \verb"tol" tolerance. These functions also compute 
+singular values of $A$ in decreasing order and return them in \verb"sv" output parameter
+having $\min(m,n)$ size.
+Internally functions use \verb"?GELSS" LAPACK routines, see more details
+about the algorithm in those routines' documentation.
+Matrix $A$ is passed as  argument \verb"mA" or (in second case) it's  calling object.
+First and third versions return the solution as  new matrix or vector object.
+Second version sets calling object to be the solution.
+Functions throw
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+Functions are \emph{inherited} in all complex matrix classes.
+See also \GOT{cmatrix}{cmatrix}, \GOT{cvector::gelss}{cvector.gelss},
+\GOT{cmatrix::gelsy}{cmatrix.gelsy}, \GOT{cmatrix::gelsd}{cmatrix.gelsd}.
+Example:
+
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix a(4, 5);
+cmatrix b(4, 2);
+cvector bv(4);
+rvector sv(4);
+tint rank;
+a.randomize_real(-10., 10.);
+a.randomize_imag(-10., 10.);
+b.randomize_real(-10., 10.);
+b.randomize_imag(-10., 10.);
+bv.randomize_real(-10., 10.);
+bv.randomize_imag(-10., 10.);
+
+cmatrix x = a.gelss(b, sv, rank);
+cvector xv = a.gelss(bv, sv, rank);
+cmatrix xt(5,2);
+xt.gelss(a, b, sv, rank);
+
+std::cout << (a*x - b).norm() << std::endl;
+std::cout << (a*xv - bv).norm() << std::endl;
+std::cout << (a*xt - b).norm() << std::endl;
+std::cout << (sv - a.svd()).norm() << std::endl;
+std::cout << rank << " " << a.rank() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++2.3444861e-013
++4.6335022e-014
++2.3444861e-013
++1.1234667e-014
++4 +4
+\end{Verbatim}
+\newpage
+
+
+
+
+
+
+\subsubsection{gelsd}
+Functions%
+\pdfdest name {cmatrix.gelsd} fit
+\begin{verbatim}
+cmatrix  cmatrix::gelsd (const cmatrix& mB, int& rank, rvector& sv,
+                         TR tol = cvmMachSp()) const throw (cvmexception);
+cmatrix& cmatrix::gelsd (const cmatrix& mA, const cmatrix& mB, 
+                         rvector& sv, int& rank, TR tol = cvmMachSp()) 
+                         throw (cvmexception);
+cvector  cmatrix::gelsd (const cvector& mB, rvector& sv, int& rank,
+                         TR tol = cvmMachSp()) const throw (cvmexception);
+\end{verbatim}
+compute the minimum-norm solution to the linear
+least squares problem 
+\begin{equation*}
+\|A*x-b\|_2\to\min
+\end{equation*}
+using singular value decomposition of $m\times n$ matrix $A$
+and divide and conquer method.
+Here $b$ is a vector of length $m$.
+Multiple vectors $b$ can be stored as columns of $m\times l$ matrix $B$.
+Matrix $A$ may be rank-deficient, functions return its effective rank in \verb"rank"
+output parameter using \verb"tol" tolerance. These functions also compute 
+singular values of $A$ in decreasing order and return them in \verb"sv" output parameter
+having $\min(m,n)$ size.
+Internally functions use \verb"?GELSD" LAPACK routines, see more details
+about the algorithm in those routines' documentation.
+Matrix $A$ is passed as  argument \verb"mA" or (in second case) it's  calling object.
+First and third versions return the solution as  new matrix or vector object.
+Second version sets calling object to be the solution.
+Functions throw
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+Functions are \emph{inherited} in all complex matrix classes.
+See also \GOT{cmatrix}{cmatrix}, \GOT{cvector::gelsd}{cvector.gelsd},
+\GOT{cmatrix::gelsy}{cmatrix.gelsy}, \GOT{cmatrix::gelss}{cmatrix.gelss}.
+Example:
+
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix a(4, 5);
+cmatrix b(4, 2);
+cvector bv(4);
+rvector sv(4);
+tint rank;
+a.randomize_real(-10., 10.);
+a.randomize_imag(-10., 10.);
+b.randomize_real(-10., 10.);
+b.randomize_imag(-10., 10.);
+bv.randomize_real(-10., 10.);
+bv.randomize_imag(-10., 10.);
+
+cmatrix x = a.gelsd(b, sv, rank);
+cvector xv = a.gelsd(bv, sv, rank);
+cmatrix xt(5,2);
+xt.gelsd(a, b, sv, rank);
+
+std::cout << (a*x - b).norm() << std::endl;
+std::cout << (a*xv - bv).norm() << std::endl;
+std::cout << (a*xt - b).norm() << std::endl;
+std::cout << (sv - a.svd()).norm() << std::endl;
+std::cout << rank << " " << a.rank() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++1.2865301e-014
++1.2824878e-014
++1.2865301e-014
++1.2809491e-014
++4 +4
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{rank}
+Function%
+\pdfdest name {cmatrix.rank} fit
+\begin{verbatim}
+int cmatrix::rank (TR eps = cvmMachSp()) const throw (cvmexception);
+\end{verbatim}
+returns  rank of  calling matrix as  number of
+\GO{singular values}{rvector.svd}
+with \GO{normalized}{cvector.normalize}
+absolute value greater than or
+equal to  parameter \verb"eps" (this is the
+\GO{largest relative spacing}{Utilities.cvmMachSp} by default).
+Function throws \GOT{cvmexception}{cvmexception}
+in case of convergence error.
+Function is \emph{inherited} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{schmatrix}{schmatrix}.
+See also
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.,
+              7., 8., 9., 10., 11., 12.};
+cmatrix m(a, NULL, 3, 4);
+
+std::cout << m << m.rank() << std::endl;
+m(3,4) = std::complex<double>(0.,1.);
+std::cout << m.rank() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (4,0) (7,0) (10,0)
+(2,0) (5,0) (8,0) (11,0)
+(3,0) (6,0) (9,0) (12,0)
+2
+3
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{qr}
+Functions%
+\pdfdest name {cmatrix.qr} fit
+\begin{verbatim}
+void cmatrix::qr (cmatrix& mQ, scmatrix& mR) const throw (cvmexception);
+void cmatrix::qr (scmatrix& mQ, cmatrix& mR) const throw (cvmexception);
+\end{verbatim}
+compute QR factorization as
+\begin{equation*}
+M=QR
+\end{equation*}
+where 
+$M$ is  calling matrix, unitary matrix $Q$ 
+and upper triangular matrix $R$ are \verb"mQ" and \verb"mR"
+respectively. First version implements so-called "economy" algorithm
+which for  given $m\times n$ matrix $M$ computes $m\times n$ matrix $Q$
+and $n\times n$ matrix $R$. Second version is  "full" mode one 
+computing $m\times m$ matrix $Q$ and $m\times n$ matrix $R$.
+Functions throw
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+Functions are \emph{redefined} in the class
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+treal ar[] = {1., 2., 3., 4., 5., 6.};
+treal ai[] = {1., -1., 2., -2., 3., -3.};
+const cvm::cmatrix mh(ar, ai, 2, 3);
+const cvm::cmatrix mv(ar, ai, 3, 2);
+cvm::scmatrix s2(2), s3(3);
+cvm::cmatrix  h(2,3), v(3,2);
+
+mh.qr(h,s3);
+std::cout << (eye_complex(2)-~cmatrix(h,1,1,2,2)*cmatrix(h,1,1,2,2)).norm()
+          << " " << (mh - h * s3).norm() << std::endl;
+mh.qr(s2,h);
+std::cout << (eye_complex(2) - ~s2 * s2).norm()
+          << " " << (mh - s2 * h).norm() << std::endl;
+mv.qr(v,s2);
+std::cout << (eye_complex(2) - ~v * v).norm()
+          << " " << (mv - v * s2).norm() << std::endl;
+mv.qr(s3,v);
+std::cout << (eye_complex(3) - ~s3 * s3).norm()
+          << " " << (mv - s3 * v).norm() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++2.5145832e-16 +1.3506446e-15
++2.5145832e-16 +1.3506446e-15
++2.5367068e-16 +1.4432899e-15
++3.8435519e-16 +1.4432899e-15
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{lq}
+Functions%
+\pdfdest name {cmatrix.lq} fit
+\begin{verbatim}
+void cmatrix::lq (scmatrix& mL, cmatrix& mQ) const throw (cvmexception);
+void cmatrix::lq (cmatrix& mL, scmatrix& mQ) const throw (cvmexception);
+\end{verbatim}
+compute LQ factorization as
+\begin{equation*}
+M=LQ
+\end{equation*}
+where 
+$M$ is  calling matrix, upper triangular (trapezoidal) matrix $L$ 
+and unitary matrix $Q$ are \verb"mL" and \verb"mQ"
+respectively. First version implements so-called "economy" algorithm
+which for  given $m\times n$ matrix $M$ computes $m\times m$ matrix $L$
+and $m\times n$ matrix $Q$. Second version is  "full" mode one 
+computing $m\times n$ matrix $L$ and $n\times n$ matrix $Q$.
+Functions throw
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+Functions are \emph{redefined} in the class
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+treal ar[] = {1., 2., 3., 4., 5., 6.};
+treal ai[] = {1., -1., 2., -2., 3., -3.};
+const cvm::cmatrix mh(ar, ai, 2, 3);
+const cvm::cmatrix mv(ar, ai, 3, 2);
+cvm::scmatrix s2(2), s3(3);
+cvm::cmatrix  h(2,3), v(3,2);
+
+mh.lq(s2,h);
+std::cout << (eye_complex(2) - h * ~h).norm() << " " << (mh - s2 * h)
+             .norm() << std::endl;
+mv.lq(s3,v);
+std::cout << (eye_complex(2) - ~cmatrix(v,1,1,2,2) * cmatrix(v,1,1,2,2))
+             .norm() << " " << (mv - s3 * v).norm() << std::endl;
+mh.lq(h,s3);
+std::cout << (eye_complex(3) - s3 * ~s3).norm() << " " << (mh - h * s3)
+             .norm() << std::endl;
+mv.lq(v,s2);
+std::cout << (eye_complex(2) - s2 * ~s2).norm() << " " << (mv - v * s2)
+             .norm() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++1.3374617e-015 +7.4806297e-015
++6.6728929e-016 +2.9205408e-015
++1.4349634e-015 +7.4806297e-015
++6.7217793e-016 +2.9205408e-015
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{rq}
+Functions%
+\pdfdest name {cmatrix.rq} fit
+\begin{verbatim}
+void cmatrix::rq (scmatrix& mR, cmatrix& mQ) const throw (cvmexception);
+void cmatrix::rq (cmatrix& mR, scmatrix& mQ) const throw (cvmexception);
+\end{verbatim}
+compute RQ factorization as
+\begin{equation*}
+M=RQ
+\end{equation*}
+where 
+$M$ is  calling matrix, upper triangular matrix $R$
+and unitary matrix $Q$ are \verb"mR" and \verb"mQ"
+respectively. First version implements so-called "economy" algorithm
+which for  given $m\times n$ matrix $M$ computes $m\times m$ matrix $R$
+and $m\times n$ matrix $Q$. Second version is  "full" mode one
+computing $m\times n$ matrix $R$ and $n\times n$ matrix $Q$.
+Following \URL{this definition}{http://www.netlib.org/scalapack/slug/node57.html}
+the implementation assumes that $m\le n$ and throws \GOT{cvmexception}{cvmexception}
+otherwise.
+Functions also throw
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands passed.
+Functions are \emph{redefined} in the class
+\GOT{srmatrix}{srmatrix}.
+See also \GOT{rmatrix}{rmatrix},
+\GOT{srmatrix}{srmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+treal ar[] = {1., 2., 3., 4., 5., 6.};
+treal ai[] = {1., -1., 2., -2., 3., -3.};
+const cvm::cmatrix mh(ar, ai, 2, 3);
+const cvm::cmatrix mv(ar, ai, 3, 2);
+cvm::scmatrix s2(2), s3(3);
+cvm::cmatrix  h(2,3), v(3,2);
+
+mh.rq(h,s3);
+std::cout << (eye_complex(2) - cmatrix(s3,2,1,2,3) * ~cmatrix(s3,2,1,2,3))
+             .norm() << " " << (mh - h * s3).norm() << std::endl;
+
+mh.rq(s2,h);
+std::cout << (eye_complex(2) - h * ~h).norm()
+          << " " << (mh - s2 * h).norm() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++3.1898416e-016 +2.2342807e-015
++3.1898416e-016 +2.2342807e-015
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{ql}
+Functions%
+\pdfdest name {cmatrix.ql} fit
+\begin{verbatim}
+void cmatrix::ql (cmatrix& mQ, scmatrix& mL) const throw (cvmexception);
+void cmatrix::ql (scmatrix& mQ, cmatrix& mL) const throw (cvmexception);
+\end{verbatim}
+compute QL factorization as
+\begin{equation*}
+M=QL
+\end{equation*}
+where 
+$M$ is  calling matrix, unitary matrix $Q$ 
+and lower triangular matrix $L$ are \verb"mQ" and \verb"mL"
+respectively. First version implements so-called "economy" algorithm
+which for  given $m\times n$ matrix $M$ computes $m\times n$ matrix $Q$
+and $n\times n$ matrix $L$. Second version is  "full" mode one
+computing $m\times m$ matrix $Q$ and $m\times n$ matrix $L$.
+Following \URL{this definition}{http://www.netlib.org/scalapack/slug/node57.html}
+the implementation assumes that $m\ge n$ and throws \GOT{cvmexception}{cvmexception}
+otherwise.
+Functions also throw
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands passed.
+Functions are \emph{redefined} in the class
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+treal ar[] = {1., 2., 3., 4., 5., 6.};
+treal ai[] = {1., -1., 2., -2., 3., -3.};
+const cvm::cmatrix mv(ar, ai, 3, 2);
+cvm::scmatrix s2(2), s3(3);
+cvm::cmatrix v(3,2);
+
+mv.ql(v,s2);
+std::cout << (eye_complex(2) - ~v * v).norm()
+          << " " << (mv - v * s2).norm() << std::endl;
+
+mv.ql(s3,v);
+std::cout << (eye_complex(2) - ~cmatrix(s3,1,2,3,2) * cmatrix(s3,1,2,3,2))
+             .norm() << " " << (mv - s3 * v).norm() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++1.1857187e-016 +9.4857497e-016
++1.1857187e-016 +9.4857497e-016
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{vanish}
+Function%
+\pdfdest name {cmatrix.vanish} fit
+\begin{verbatim}
+cmatrix& cmatrix::vanish();
+\end{verbatim}
+sets every element of  calling matrix to be equal to zero
+and returns  reference to
+the matrix changed. This function is faster
+than, for example,
+\GOT{cmatrix::set(TC)}{cmatrix.set}
+with zero operand passed.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{schmatrix}{schmatrix}.
+See also \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+cmatrix m(4, 3);
+m.randomize_real(0.,1.);
+m.randomize_imag(1.,2.);
+
+std::cout << m << std::endl;
+std::cout << m.vanish ();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.851527,1.16376) (0.557512,1.90188) (0.0343638,1.52068)
+(0.478042,1.29106) (0.561724,1.19764) (0.320994,1.35804)
+(0.264534,1.40986) (0.113468,1.75137) (0.37727,1.54994)
+(0.521409,1.83035) (0.559465,1.35072) (0.809198,1.12537)
+
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{geru}
+Function%
+\pdfdest name {cmatrix.geru} fit
+\begin{verbatim}
+cmatrix&
+cmatrix::geru (TC dAlpha, const cvector& vCol, const cvector& vRow)
+throw (cvmexception);
+\end{verbatim}
+calls one of \verb"?GERU" routines of the
+\URL{BLAS library}{http://www.netlib.org/blas}
+performing  \GO{rank-1 update}{cvector.rank1update_u}
+(unconjugated)
+matrix-vector operation defined as
+\begin{equation*}
+M=\alpha\begin{pmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_m
+\end{pmatrix}
+\begin{pmatrix}
+y_1 & y_2 & \cdots & y_n
+\end{pmatrix} + M,
+\end{equation*}
+where $\alpha$ is  complex number
+(parameter \verb"dAlpha"),
+$M$ is  calling matrix
+and $x$ and $y$ are complex vectors (parameters \verb"vCol"
+and \verb"vRow" respectively).
+Function
+returns  reference to the matrix changed and throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+Function is \emph{inherited} in  the class
+\GOT{scmatrix}{scmatrix} and
+\emph{not applicable} to objects of the classes
+\GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix} (i.e. \GOT{cvmexception}{cvmexception} would be thrown
+in case of using it for objects of those classes).
+See also
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (5);
+
+std::complex<double> alpha = std::complex<double>(1.2,4.11);
+cmatrix m(3,2);
+cvector vc(3);
+cvector vr(2);
+m.randomize_real(-1., 2.); m.randomize_imag(-3., 2.);
+vc.randomize_real(-1., 3.); vc.randomize_imag(1., 3.); 
+vr.randomize_real(0., 2.); vr.randomize_imag(-1., 2.); 
+
+std::cout << m + vc.rank1update_u (vr) * alpha << std::endl;
+std::cout << m.geru(alpha, vc, vr);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2.88144e+00,3.54299e+00) (-8.14760e+00,-1.03789e+00)
+(6.33361e-01,3.35209e+00) (-4.81787e+00,-8.53964e+00)
+(5.44811e-01,1.37156e+00) (-5.97006e+00,-5.00794e+00)
+
+(2.88144e+00,3.54299e+00) (-8.14760e+00,-1.03789e+00)
+(6.33361e-01,3.35209e+00) (-4.81787e+00,-8.53964e+00)
+(5.44811e-01,1.37156e+00) (-5.97006e+00,-5.00794e+00)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{gerc}
+Function%
+\pdfdest name {cmatrix.gerc} fit
+\begin{verbatim}
+cmatrix&
+cmatrix::gerc (TC dAlpha, const cvector& vCol, const cvector& vRow)
+throw (cvmexception);
+\end{verbatim}
+calls one of \verb"?GERC" routines of the
+\URL{BLAS library}{http://www.netlib.org/blas}
+performing  \GO{rank-1 update}{cvector.rank1update_c}
+(conjugated)
+matrix-vector operation defined as
+\begin{equation*}
+M=\alpha\begin{pmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_m
+\end{pmatrix}
+\begin{pmatrix}
+y_1^* & y_2^* & \hdots & y_n^*
+\end{pmatrix} + M,
+\end{equation*}
+where $\alpha$ is  complex number
+(parameter \verb"dAlpha"),
+$M$ is  calling matrix
+and $x$ and $y$ are complex vectors (parameters \verb"vCol"
+and \verb"vRow" respectively).
+Function
+returns  reference to the matrix changed and throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+Function is \emph{inherited} in the class
+\GOT{scmatrix}{scmatrix} and
+\emph{not applicable} to objects of the classes
+\GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix} (i.e. \GOT{cvmexception}{cvmexception} would be thrown
+in case of using it for objects of those classes).
+See also
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (5);
+
+std::complex<double> alpha = std::complex<double>(1.2,4.11);
+cmatrix m(3,2);
+cvector vc(3);
+cvector vr(2);
+m.randomize_real(-1., 2.); m.randomize_imag(-3., 2.);
+vc.randomize_real(-1., 3.); vc.randomize_imag(1., 3.); 
+vr.randomize_real(0., 2.); vr.randomize_imag(-1., 2.); 
+
+std::cout << m + vc.rank1update_c (vr) * alpha << std::endl;
+std::cout << m.gerc(alpha, vc, vr);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.27138e+01,1.58049e+01) (1.00616e+01,2.21197e+01)
+(1.93326e+01,1.41763e+01) (1.74769e+01,2.49013e+01)
+(8.09961e+00,1.36259e+01) (5.86738e+00,1.97800e+01)
+
+(1.27138e+01,1.58049e+01) (1.00616e+01,2.21197e+01)
+(1.93326e+01,1.41763e+01) (1.74769e+01,2.49013e+01)
+(8.09961e+00,1.36259e+01) (5.86738e+00,1.97800e+01)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{gemm}
+Function%
+\pdfdest name {cmatrix.gemm} fit
+\begin{verbatim}
+cmatrix& cmatrix::gemm (const cmatrix& m1, bool bConj1, 
+                        const cmatrix& m2, bool bConj2, 
+                        TC dAlpha, TC dBeta) throw (cvmexception);
+\end{verbatim}
+calls one of \verb"?GEMM" routines of the
+\URL{BLAS library}{http://www.netlib.org/blas}
+performing  
+matrix-matrix operation defined as
+\begin{equation*}
+M=\alpha\,\mathcal{C}(M_1)\cdot\mathcal{C}(M_2) + \beta M,
+\end{equation*}
+where $\alpha$ and $\beta$ are complex numbers
+(parameters \verb"dAlpha" and \verb"dBeta"),
+$M$ is  calling matrix
+and $M_1$ and $M_2$ are matrices (parameters \verb"m1"
+and \verb"m2" respectively). Function $\mathcal{C}(M_i)$
+congugates matrix $M_i$ if appropriate boolean
+parameter \verb"bConj*" is equal to \verb"true"
+and does nothing otherwise.
+Function
+returns  reference to the matrix changed and throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+Function is \emph{inherited} in  the class
+\GOT{scmatrix}{scmatrix} and
+\emph{not applicable} to objects of the classes
+\GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix} (i.e. \GOT{cvmexception}{cvmexception} would be thrown
+in case of using it for objects of those classes).
+See also
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (3);
+
+try {
+    std::complex<double> alpha = std::complex<double>(1.1,2.1);
+    std::complex<double> beta = std::complex<double>(0.71,0.12);
+    cmatrix m1(4,3); cmatrix m2(4,3);
+    cmatrix m(3,3);
+    m.randomize_real(-1., 2.); m.randomize_imag(1., 3.); 
+    m1.randomize_real(-1., 3.); m1.randomize_imag(-2., 4.); 
+    m2.randomize_real(0., 2.); m2.randomize_imag(-3., 2.);
+
+    std::cout << ~m1 * m2 * alpha + m * beta << std::endl;
+    std::cout << m.gemm(m1, true, m2, false, alpha, beta);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(3.225e+01,3.611e+01) (2.042e+01,1.206e+01) (5.065e+01,-2.261e+01)
+(3.009e+01,3.665e+00) (2.167e+01,-3.327e+00) (4.305e+01,-1.960e+01)
+(1.156e+01,-4.966e+00) (4.067e+00,-1.181e+01) (1.121e+01,-2.684e+01)
+
+(3.225e+01,3.611e+01) (2.042e+01,1.206e+01) (5.065e+01,-2.261e+01)
+(3.009e+01,3.665e+00) (2.167e+01,-3.327e+00) (4.305e+01,-1.960e+01)
+(1.156e+01,-4.966e+00) (4.067e+00,-1.181e+01) (1.121e+01,-2.684e+01)
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{hemm}
+Function%
+\pdfdest name {cmatrix.hemm} fit
+\begin{verbatim}
+cmatrix& cmatrix::hemm (bool bLeft, const schmatrix& ms,
+                        const cmatrix& m, TC dAlpha, TC dBeta)
+                        throw (cvmexception);
+\end{verbatim}
+calls one of \verb"?HEMM" routines of the
+\URL{BLAS library}{http://www.netlib.org/blas}
+performing one of 
+matrix-matrix operations defined as
+\begin{equation*}
+M=\alpha\,M_h\cdot M_1 + \beta M\quad\text{or}\quad M=\alpha\,M_1\cdot M_h + \beta M,
+\end{equation*}
+where $\alpha$ and $\beta$ are complex numbers
+(parameters \verb"dAlpha" and \verb"dBeta"),
+$M$ is  calling matrix,
+$M_h$ is  hermitian matrix and $M_1$ 
+is  complex matrix (parameters \verb"ms"
+and \verb"m" respectively). 
+First operation is performed if \verb"bLeft" passed
+is \verb"true" and second one otherwise.
+Function
+returns  reference to the matrix changed and throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+Function is \emph{inherited} in  the classes
+\GOT{scmatrix}{scmatrix} and
+\GOT{schmatrix}{schmatrix} and
+\emph{not applicable} to objects of the class
+\GOT{scbmatrix}{scbmatrix} (i.e. \GOT{cvmexception}{cvmexception} would be thrown
+in case of using it for objects of that class).
+See also \GOT{schmatrix}{schmatrix},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (3);
+
+try {
+    std::complex<double> alpha = std::complex<double>(1.3,0.21);
+    std::complex<double> beta = std::complex<double>(0.5,-0.1);
+    cmatrix m1(2,3);
+    cmatrix m2(3,2);
+    schmatrix ms(2);
+    cmatrix m(2,3);
+    m.randomize_real(-1., 2.); m.randomize_imag(1., 3.); 
+    m1.randomize_real(-1., 3.); m1.randomize_imag(1., 2.);
+    m2.randomize_real(0., 2.); m2.randomize_imag(-3., -1.);
+    ms.randomize_real(-3., 1.); ms.randomize_imag(-1.3, 4.);
+
+    std::cout << ms * m1 * alpha + m * beta << std::endl;
+    std::cout << m.hemm (true, ms, m1, alpha, beta) << std::endl;
+
+    m.resize(3,2);
+    m.randomize_real(-1.4, 1.3); m.randomize_imag(1.1, 3.); 
+    std::cout << m2 * ms * alpha + m * beta << std::endl;
+    std::cout << m.hemm (false, ms, m2, alpha, beta);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.096e+00,-7.692e+00) (-7.923e+00,-3.909e+00) (-1.324e+01,-5.264e+00)
+(2.415e+00,1.240e+00) (4.384e-01,-1.771e+00) (7.495e-01,-2.740e+00)
+
+(1.096e+00,-7.692e+00) (-7.923e+00,-3.909e+00) (-1.324e+01,-5.264e+00)
+(2.415e+00,1.240e+00) (4.384e-01,-1.771e+00) (7.495e-01,-2.740e+00)
+
+(-5.007e+00,1.010e+01) (2.341e+00,3.248e+00)
+(-8.753e+00,7.854e+00) (3.152e+00,4.491e+00)
+(-9.162e+00,6.401e+00) (-1.168e+00,3.973e+00)
+
+(-5.007e+00,1.010e+01) (2.341e+00,3.248e+00)
+(-8.753e+00,7.854e+00) (3.152e+00,4.491e+00)
+(-9.162e+00,6.401e+00) (-1.168e+00,3.973e+00)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{randomize\_real}
+Function%
+\pdfdest name {cmatrix.randomizereal} fit
+\begin{verbatim}
+cmatrix& cmatrix::randomize_real (TR dFrom, TR dTo);
+\end{verbatim}
+fills  real part of  calling matrix with 
+pseudo-random numbers distributed between
+\verb"dFrom" and \verb"dTo".
+Function
+returns  reference to the matrix changed.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix}.
+See also
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (3);
+
+cmatrix m(2,3);
+m.randomize_real(-1., 2.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.090e+00,0.000e+00) (-6.375e-01,0.000e+00) (1.248e+00,0.000e+00)
+(-1.272e-01,0.000e+00) (-8.557e-01,0.000e+00) (4.848e-01,0.000e+00)
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{randomize\_imag}
+Function%
+\pdfdest name {cmatrix.randomizeimag} fit
+\begin{verbatim}
+cmatrix& cmatrix::randomize_imag (TR dFrom, TR dTo);
+\end{verbatim}
+fills  imaginary part of  calling matrix with 
+pseudo-random numbers distributed between
+\verb"dFrom" and \verb"dTo".
+Function
+returns  reference to the matrix changed.
+Function is \emph{redefined} in the classes
+\GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix} and
+\GOT{schmatrix}{schmatrix}.
+See also
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (3);
+
+cmatrix m(2,3);
+m.randomize_imag(-1., 2.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.000e+00,1.113e+00) (0.000e+00,6.615e-01) (0.000e+00,1.017e+00)
+(0.000e+00,-3.397e-01) (0.000e+00,1.577e+00) (0.000e+00,8.071e-01)
+\end{Verbatim}
+\newpage
+

@@ -1,0 +1,686 @@
+\select@language {russian}
+\select@language {english}
+\contentsline {section}{\numberline {1}Preface}{1}
+\contentsline {subsection}{\numberline {1.1}Brief history}{1}
+\contentsline {subsection}{\numberline {1.2}Libraries Supported}{1}
+\contentsline {subsection}{\numberline {1.3}Object Model}{2}
+\contentsline {subsection}{\numberline {1.4}Installation}{3}
+\contentsline {subsubsection}{\numberline {1.4.1}Directory Structure}{3}
+\contentsline {subsubsection}{\numberline {1.4.2}Usage Notes}{3}
+\contentsline {subsubsection}{\numberline {1.4.3}Installation -- Win32}{4}
+\contentsline {subsubsection}{\numberline {1.4.4}Installation -- Unix and MinGW}{4}
+\contentsline {subsection}{\numberline {1.5}Storage}{5}
+\contentsline {subsection}{\numberline {1.6}Indexing}{6}
+\contentsline {subsection}{\numberline {1.7}Polymorphism}{6}
+\contentsline {subsection}{\numberline {1.8}Multi-threading}{7}
+\contentsline {subsection}{\numberline {1.9}Regression test utility}{7}
+\contentsline {section}{\numberline {2}CVM Class Library Reference}{8}
+\contentsline {subsection}{\numberline {2.1}basic\_array}{8}
+\contentsline {subsubsection}{\numberline {2.1.1}basic\_array()}{10}
+\contentsline {subsubsection}{\numberline {2.1.2}basic\_array(int, bool)}{11}
+\contentsline {subsubsection}{\numberline {2.1.3}basic\_array(T*, int)}{12}
+\contentsline {subsubsection}{\numberline {2.1.4}basic\_array(const T*, int)}{13}
+\contentsline {subsubsection}{\numberline {2.1.5}basic\_array(const T*, const T*)}{14}
+\contentsline {subsubsection}{\numberline {2.1.6}basic\_array(const basic\_array\&)}{15}
+\contentsline {subsubsection}{\numberline {2.1.7}size()}{16}
+\contentsline {subsubsection}{\numberline {2.1.8}get(), operator T*()}{17}
+\contentsline {subsubsection}{\numberline {2.1.9}Indexing operators}{18}
+\contentsline {subsubsection}{\numberline {2.1.10}operator = (const basic\_array\&)}{19}
+\contentsline {subsubsection}{\numberline {2.1.11}assign(const T*)}{20}
+\contentsline {subsubsection}{\numberline {2.1.12}set(T)}{21}
+\contentsline {subsubsection}{\numberline {2.1.13}resize}{22}
+\contentsline {subsubsection}{\numberline {2.1.14}STL-specific type definitions}{23}
+\contentsline {subsubsection}{\numberline {2.1.15}STL-specific functions:\\ begin(), end(), rbegin(), rend(), \\ max\_size(), capacity(), empty(), front(), back(),\\ assign(), resize(), clear(), swap()}{25}
+\contentsline {subsubsection}{\numberline {2.1.16}at()}{27}
+\contentsline {subsubsection}{\numberline {2.1.17}push\_back(const T\&), pop\_back()}{28}
+\contentsline {subsubsection}{\numberline {2.1.18}insert (iterator, const T\&), erase (iterator)}{29}
+\contentsline {subsubsection}{\numberline {2.1.19}operator >{}> <> (std::istream\& is, basic\_array<T>\& aIn)}{30}
+\contentsline {subsubsection}{\numberline {2.1.20}operator <{}< <> (std::ostream\& os, const basic\_array<T>\& aOut)}{31}
+\contentsline {subsection}{\numberline {2.2}Array}{32}
+\contentsline {subsubsection}{\numberline {2.2.1}incr}{33}
+\contentsline {subsubsection}{\numberline {2.2.2}indofmax}{34}
+\contentsline {subsubsection}{\numberline {2.2.3}indofmin}{35}
+\contentsline {subsubsection}{\numberline {2.2.4}norm}{36}
+\contentsline {subsubsection}{\numberline {2.2.5}norminf}{37}
+\contentsline {subsubsection}{\numberline {2.2.6}norm1}{38}
+\contentsline {subsubsection}{\numberline {2.2.7}norm2}{39}
+\contentsline {subsubsection}{\numberline {2.2.8}operator >{}> <> (std::istream\& is, Array<TR,TC>\& aIn)}{40}
+\contentsline {subsubsection}{\numberline {2.2.9}operator <{}< <> (std::ostream\& os, const Array<TR,TC>\& aOut)}{41}
+\contentsline {subsection}{\numberline {2.3}rvector}{42}
+\contentsline {subsubsection}{\numberline {2.3.1}rvector ()}{45}
+\contentsline {subsubsection}{\numberline {2.3.2}rvector (int)}{46}
+\contentsline {subsubsection}{\numberline {2.3.3}rvector (std::initializer\_list<TC>)}{47}
+\contentsline {subsubsection}{\numberline {2.3.4}rvector (int, TR)}{48}
+\contentsline {subsubsection}{\numberline {2.3.5}rvector (TR*,int,int)}{49}
+\contentsline {subsubsection}{\numberline {2.3.6}rvector (const TR*,int,int)}{50}
+\contentsline {subsubsection}{\numberline {2.3.7}rvector (const rvector\&)}{51}
+\contentsline {subsubsection}{\numberline {2.3.8}operator = (const rvector\&)}{52}
+\contentsline {subsubsection}{\numberline {2.3.9}assign(const TR*, int)}{53}
+\contentsline {subsubsection}{\numberline {2.3.10}assign(int, const TR*, int)}{54}
+\contentsline {subsubsection}{\numberline {2.3.11}assign(int, const TR*, int, int)}{55}
+\contentsline {subsubsection}{\numberline {2.3.12}assign (int, const rvector\&)}{56}
+\contentsline {subsubsection}{\numberline {2.3.13}set(TR)}{57}
+\contentsline {subsubsection}{\numberline {2.3.14}resize}{58}
+\contentsline {subsubsection}{\numberline {2.3.15}operator ==}{59}
+\contentsline {subsubsection}{\numberline {2.3.16}operator !=}{60}
+\contentsline {subsubsection}{\numberline {2.3.17}operator <{}<}{61}
+\contentsline {subsubsection}{\numberline {2.3.18}operator +}{62}
+\contentsline {subsubsection}{\numberline {2.3.19}operator -}{63}
+\contentsline {subsubsection}{\numberline {2.3.20}sum}{64}
+\contentsline {subsubsection}{\numberline {2.3.21}diff}{65}
+\contentsline {subsubsection}{\numberline {2.3.22}operator +=}{66}
+\contentsline {subsubsection}{\numberline {2.3.23}operator -=}{67}
+\contentsline {subsubsection}{\numberline {2.3.24}operator - ()}{68}
+\contentsline {subsubsection}{\numberline {2.3.25}operator * (TR)}{69}
+\contentsline {subsubsection}{\numberline {2.3.26}operator / (TR)}{70}
+\contentsline {subsubsection}{\numberline {2.3.27}operator *=}{71}
+\contentsline {subsubsection}{\numberline {2.3.28}operator /=}{72}
+\contentsline {subsubsection}{\numberline {2.3.29}normalize}{73}
+\contentsline {subsubsection}{\numberline {2.3.30}operator * (const rvector\&)}{74}
+\contentsline {subsubsection}{\numberline {2.3.31}operator * (const rmatrix\&)}{75}
+\contentsline {subsubsection}{\numberline {2.3.32}mult (const rvector\&, const rmatrix\&)}{76}
+\contentsline {subsubsection}{\numberline {2.3.33}mult (const rmatrix\&, const rvector\&)}{77}
+\contentsline {subsubsection}{\numberline {2.3.34}rank1update}{78}
+\contentsline {subsubsection}{\numberline {2.3.35}solve}{79}
+\contentsline {subsubsection}{\numberline {2.3.36}solve\_tran}{80}
+\contentsline {subsubsection}{\numberline {2.3.37}operator / (const srmatrix\&)}{81}
+\contentsline {subsubsection}{\numberline {2.3.38}operator \% (const srmatrix\&)}{82}
+\contentsline {subsubsection}{\numberline {2.3.39}solve\_lu}{83}
+\contentsline {subsubsection}{\numberline {2.3.40}gels}{85}
+\contentsline {subsubsection}{\numberline {2.3.41}gelsy}{86}
+\contentsline {subsubsection}{\numberline {2.3.42}gelss}{87}
+\contentsline {subsubsection}{\numberline {2.3.43}gelsd}{88}
+\contentsline {subsubsection}{\numberline {2.3.44}svd}{89}
+\contentsline {subsubsection}{\numberline {2.3.45}eig}{91}
+\contentsline {subsubsection}{\numberline {2.3.46}gemv}{93}
+\contentsline {subsubsection}{\numberline {2.3.47}gbmv}{94}
+\contentsline {subsubsection}{\numberline {2.3.48}randomize}{95}
+\contentsline {subsection}{\numberline {2.4}cvector}{96}
+\contentsline {subsubsection}{\numberline {2.4.1}cvector ()}{99}
+\contentsline {subsubsection}{\numberline {2.4.2}cvector (int)}{100}
+\contentsline {subsubsection}{\numberline {2.4.3}cvector (std::initializer\_list<TC>)}{101}
+\contentsline {subsubsection}{\numberline {2.4.4}cvector (int, TC)}{102}
+\contentsline {subsubsection}{\numberline {2.4.5}cvector (TC*,int,int)}{103}
+\contentsline {subsubsection}{\numberline {2.4.6}cvector (const TC*,int,int)}{104}
+\contentsline {subsubsection}{\numberline {2.4.7}cvector (const cvector\&)}{105}
+\contentsline {subsubsection}{\numberline {2.4.8}cvector (const TR*,const TR*,int,int,int)}{106}
+\contentsline {subsubsection}{\numberline {2.4.9}cvector (const rvector\&, const rvector\&)}{107}
+\contentsline {subsubsection}{\numberline {2.4.10}cvector (const TR*,int,bool,int)}{108}
+\contentsline {subsubsection}{\numberline {2.4.11}cvector (const rvector\&,bool)}{109}
+\contentsline {subsubsection}{\numberline {2.4.12}real}{110}
+\contentsline {subsubsection}{\numberline {2.4.13}imag}{111}
+\contentsline {subsubsection}{\numberline {2.4.14}operator = (const cvector\&)}{112}
+\contentsline {subsubsection}{\numberline {2.4.15}assign(const TC*, int)}{113}
+\contentsline {subsubsection}{\numberline {2.4.16}assign(int, const TC*, int)}{114}
+\contentsline {subsubsection}{\numberline {2.4.17}assign(int, const TR*, int, int)}{115}
+\contentsline {subsubsection}{\numberline {2.4.18}assign (int, const cvector\&)}{116}
+\contentsline {subsubsection}{\numberline {2.4.19}set(TC)}{117}
+\contentsline {subsubsection}{\numberline {2.4.20}assign\_real}{118}
+\contentsline {subsubsection}{\numberline {2.4.21}assign\_imag}{119}
+\contentsline {subsubsection}{\numberline {2.4.22}set\_real}{120}
+\contentsline {subsubsection}{\numberline {2.4.23}set\_imag}{121}
+\contentsline {subsubsection}{\numberline {2.4.24}resize}{122}
+\contentsline {subsubsection}{\numberline {2.4.25}operator ==}{123}
+\contentsline {subsubsection}{\numberline {2.4.26}operator !=}{124}
+\contentsline {subsubsection}{\numberline {2.4.27}operator <{}<}{125}
+\contentsline {subsubsection}{\numberline {2.4.28}operator +}{126}
+\contentsline {subsubsection}{\numberline {2.4.29}operator -}{127}
+\contentsline {subsubsection}{\numberline {2.4.30}sum}{128}
+\contentsline {subsubsection}{\numberline {2.4.31}diff}{129}
+\contentsline {subsubsection}{\numberline {2.4.32}operator +=}{130}
+\contentsline {subsubsection}{\numberline {2.4.33}operator -=}{131}
+\contentsline {subsubsection}{\numberline {2.4.34}operator - ()}{132}
+\contentsline {subsubsection}{\numberline {2.4.35}operator * (TR)}{133}
+\contentsline {subsubsection}{\numberline {2.4.36}operator / (TR)}{134}
+\contentsline {subsubsection}{\numberline {2.4.37}operator * (TC)}{135}
+\contentsline {subsubsection}{\numberline {2.4.38}operator / (TC)}{136}
+\contentsline {subsubsection}{\numberline {2.4.39}operator *= (TR)}{137}
+\contentsline {subsubsection}{\numberline {2.4.40}operator /= (TR)}{138}
+\contentsline {subsubsection}{\numberline {2.4.41}operator *= (TC)}{139}
+\contentsline {subsubsection}{\numberline {2.4.42}operator /= (TC)}{140}
+\contentsline {subsubsection}{\numberline {2.4.43}normalize}{141}
+\contentsline {subsubsection}{\numberline {2.4.44}conjugation}{142}
+\contentsline {subsubsection}{\numberline {2.4.45}operator * (const cvector\&)}{143}
+\contentsline {subsubsection}{\numberline {2.4.46}operator \%}{144}
+\contentsline {subsubsection}{\numberline {2.4.47}operator * (const cmatrix\&)}{145}
+\contentsline {subsubsection}{\numberline {2.4.48}mult (const cvector\&, const cmatrix\&)}{146}
+\contentsline {subsubsection}{\numberline {2.4.49}mult (const cmatrix\&, const cvector\&)}{147}
+\contentsline {subsubsection}{\numberline {2.4.50}rank1update\_u}{148}
+\contentsline {subsubsection}{\numberline {2.4.51}rank1update\_c}{149}
+\contentsline {subsubsection}{\numberline {2.4.52}solve}{150}
+\contentsline {subsubsection}{\numberline {2.4.53}solve\_tran}{151}
+\contentsline {subsubsection}{\numberline {2.4.54}solve\_conj}{152}
+\contentsline {subsubsection}{\numberline {2.4.55}operator / (const scmatrix\&)}{153}
+\contentsline {subsubsection}{\numberline {2.4.56}operator \% (const scmatrix\&)}{154}
+\contentsline {subsubsection}{\numberline {2.4.57}solve\_lu}{155}
+\contentsline {subsubsection}{\numberline {2.4.58}gels}{157}
+\contentsline {subsubsection}{\numberline {2.4.59}gelsy}{159}
+\contentsline {subsubsection}{\numberline {2.4.60}gelss}{160}
+\contentsline {subsubsection}{\numberline {2.4.61}gelsd}{161}
+\contentsline {subsubsection}{\numberline {2.4.62}eig}{162}
+\contentsline {subsubsection}{\numberline {2.4.63}gemv}{164}
+\contentsline {subsubsection}{\numberline {2.4.64}gbmv}{165}
+\contentsline {subsubsection}{\numberline {2.4.65}randomize\_real}{166}
+\contentsline {subsubsection}{\numberline {2.4.66}randomize\_imag}{167}
+\contentsline {subsection}{\numberline {2.5}Matrix}{168}
+\contentsline {subsubsection}{\numberline {2.5.1}msize}{169}
+\contentsline {subsubsection}{\numberline {2.5.2}nsize}{170}
+\contentsline {subsubsection}{\numberline {2.5.3}ld}{171}
+\contentsline {subsubsection}{\numberline {2.5.4}rowofmax}{172}
+\contentsline {subsubsection}{\numberline {2.5.5}rowofmin}{173}
+\contentsline {subsubsection}{\numberline {2.5.6}colofmax}{174}
+\contentsline {subsubsection}{\numberline {2.5.7}colofmin}{175}
+\contentsline {subsubsection}{\numberline {2.5.8}norm1}{176}
+\contentsline {subsubsection}{\numberline {2.5.9}operator >{}> <> (std::istream\& is, Matrix<TR,TC>\& mIn)}{177}
+\contentsline {subsubsection}{\numberline {2.5.10}operator <{}< <> (std::ostream\& os, const Matrix<TR,TC>\& mOut)}{178}
+\contentsline {subsection}{\numberline {2.6}rmatrix}{179}
+\contentsline {subsubsection}{\numberline {2.6.1}rmatrix ()}{183}
+\contentsline {subsubsection}{\numberline {2.6.2}rmatrix (int,int)}{184}
+\contentsline {subsubsection}{\numberline {2.6.3}rmatrix (TR*,int,int)}{185}
+\contentsline {subsubsection}{\numberline {2.6.4}rmatrix (const TR*,int,int)}{186}
+\contentsline {subsubsection}{\numberline {2.6.5}rmatrix (const rmatrix\&)}{187}
+\contentsline {subsubsection}{\numberline {2.6.6}rmatrix (const rvector\&,bool)}{188}
+\contentsline {subsubsection}{\numberline {2.6.7}submatrix}{189}
+\contentsline {subsubsection}{\numberline {2.6.8}operator (,)}{190}
+\contentsline {subsubsection}{\numberline {2.6.9}operator ()}{191}
+\contentsline {subsubsection}{\numberline {2.6.10}operator []}{192}
+\contentsline {subsubsection}{\numberline {2.6.11}diag}{193}
+\contentsline {subsubsection}{\numberline {2.6.12}operator = (const rmatrix\&)}{194}
+\contentsline {subsubsection}{\numberline {2.6.13}assign (const TR*)}{195}
+\contentsline {subsubsection}{\numberline {2.6.14}assign (int, int, const rmatrix\&)}{196}
+\contentsline {subsubsection}{\numberline {2.6.15}set (TR)}{197}
+\contentsline {subsubsection}{\numberline {2.6.16}resize}{198}
+\contentsline {subsubsection}{\numberline {2.6.17}operator ==}{199}
+\contentsline {subsubsection}{\numberline {2.6.18}operator !=}{200}
+\contentsline {subsubsection}{\numberline {2.6.19}operator <{}<}{201}
+\contentsline {subsubsection}{\numberline {2.6.20}operator +}{202}
+\contentsline {subsubsection}{\numberline {2.6.21}operator -}{203}
+\contentsline {subsubsection}{\numberline {2.6.22}sum}{204}
+\contentsline {subsubsection}{\numberline {2.6.23}diff}{205}
+\contentsline {subsubsection}{\numberline {2.6.24}operator +=}{206}
+\contentsline {subsubsection}{\numberline {2.6.25}operator -=}{207}
+\contentsline {subsubsection}{\numberline {2.6.26}operator - ()}{208}
+\contentsline {subsubsection}{\numberline {2.6.27}operator * (TR)}{209}
+\contentsline {subsubsection}{\numberline {2.6.28}operator / (TR)}{210}
+\contentsline {subsubsection}{\numberline {2.6.29}operator *= (TR)}{211}
+\contentsline {subsubsection}{\numberline {2.6.30}operator /= (TR)}{212}
+\contentsline {subsubsection}{\numberline {2.6.31}normalize}{213}
+\contentsline {subsubsection}{\numberline {2.6.32}transposition}{214}
+\contentsline {subsubsection}{\numberline {2.6.33}operator * (const rvector\&)}{215}
+\contentsline {subsubsection}{\numberline {2.6.34}operator * (const rmatrix\&)}{216}
+\contentsline {subsubsection}{\numberline {2.6.35}mult}{217}
+\contentsline {subsubsection}{\numberline {2.6.36}rank1update}{218}
+\contentsline {subsubsection}{\numberline {2.6.37}swap\_rows}{219}
+\contentsline {subsubsection}{\numberline {2.6.38}swap\_cols}{220}
+\contentsline {subsubsection}{\numberline {2.6.39}solve}{221}
+\contentsline {subsubsection}{\numberline {2.6.40}solve\_tran}{222}
+\contentsline {subsubsection}{\numberline {2.6.41}solve\_lu}{223}
+\contentsline {subsubsection}{\numberline {2.6.42}svd}{225}
+\contentsline {subsubsection}{\numberline {2.6.43}pinv}{227}
+\contentsline {subsubsection}{\numberline {2.6.44}gels}{229}
+\contentsline {subsubsection}{\numberline {2.6.45}gelsy}{231}
+\contentsline {subsubsection}{\numberline {2.6.46}gelss}{233}
+\contentsline {subsubsection}{\numberline {2.6.47}gelsd}{235}
+\contentsline {subsubsection}{\numberline {2.6.48}rank}{237}
+\contentsline {subsubsection}{\numberline {2.6.49}ger}{238}
+\contentsline {subsubsection}{\numberline {2.6.50}gemm}{240}
+\contentsline {subsubsection}{\numberline {2.6.51}symm}{241}
+\contentsline {subsubsection}{\numberline {2.6.52}qr}{243}
+\contentsline {subsubsection}{\numberline {2.6.53}lq}{244}
+\contentsline {subsubsection}{\numberline {2.6.54}rq}{245}
+\contentsline {subsubsection}{\numberline {2.6.55}ql}{246}
+\contentsline {subsubsection}{\numberline {2.6.56}vanish}{247}
+\contentsline {subsubsection}{\numberline {2.6.57}randomize}{248}
+\contentsline {subsection}{\numberline {2.7}cmatrix}{249}
+\contentsline {subsubsection}{\numberline {2.7.1}cmatrix ()}{253}
+\contentsline {subsubsection}{\numberline {2.7.2}cmatrix (int,int)}{254}
+\contentsline {subsubsection}{\numberline {2.7.3}cmatrix (TC*,int,int)}{255}
+\contentsline {subsubsection}{\numberline {2.7.4}cmatrix (const TC*,int,int)}{256}
+\contentsline {subsubsection}{\numberline {2.7.5}cmatrix (const cmatrix\&)}{257}
+\contentsline {subsubsection}{\numberline {2.7.6}cmatrix (const cvector\&,bool)}{258}
+\contentsline {subsubsection}{\numberline {2.7.7}cmatrix (const rmatrix\&,bool)}{259}
+\contentsline {subsubsection}{\numberline {2.7.8}cmatrix (const TR*,const TR*,int,int)}{260}
+\contentsline {subsubsection}{\numberline {2.7.9}cmatrix (const rmatrix\&, const rmatrix\&)}{261}
+\contentsline {subsubsection}{\numberline {2.7.10}submatrix}{262}
+\contentsline {subsubsection}{\numberline {2.7.11}operator (,)}{263}
+\contentsline {subsubsection}{\numberline {2.7.12}operator ()}{264}
+\contentsline {subsubsection}{\numberline {2.7.13}operator []}{265}
+\contentsline {subsubsection}{\numberline {2.7.14}diag}{266}
+\contentsline {subsubsection}{\numberline {2.7.15}real}{267}
+\contentsline {subsubsection}{\numberline {2.7.16}imag}{268}
+\contentsline {subsubsection}{\numberline {2.7.17}operator = (const cmatrix\&)}{269}
+\contentsline {subsubsection}{\numberline {2.7.18}assign (const TC*)}{270}
+\contentsline {subsubsection}{\numberline {2.7.19}assign (int, int, const cmatrix\&)}{271}
+\contentsline {subsubsection}{\numberline {2.7.20}set (TC)}{272}
+\contentsline {subsubsection}{\numberline {2.7.21}assign\_real}{273}
+\contentsline {subsubsection}{\numberline {2.7.22}assign\_imag}{274}
+\contentsline {subsubsection}{\numberline {2.7.23}set\_real}{275}
+\contentsline {subsubsection}{\numberline {2.7.24}set\_imag}{276}
+\contentsline {subsubsection}{\numberline {2.7.25}resize}{277}
+\contentsline {subsubsection}{\numberline {2.7.26}operator ==}{278}
+\contentsline {subsubsection}{\numberline {2.7.27}operator !=}{279}
+\contentsline {subsubsection}{\numberline {2.7.28}operator <{}<}{280}
+\contentsline {subsubsection}{\numberline {2.7.29}operator +}{281}
+\contentsline {subsubsection}{\numberline {2.7.30}operator -}{282}
+\contentsline {subsubsection}{\numberline {2.7.31}sum}{283}
+\contentsline {subsubsection}{\numberline {2.7.32}diff}{284}
+\contentsline {subsubsection}{\numberline {2.7.33}operator +=}{285}
+\contentsline {subsubsection}{\numberline {2.7.34}operator -=}{286}
+\contentsline {subsubsection}{\numberline {2.7.35}operator - ()}{287}
+\contentsline {subsubsection}{\numberline {2.7.36}operator * (TR)}{288}
+\contentsline {subsubsection}{\numberline {2.7.37}operator / (TR)}{289}
+\contentsline {subsubsection}{\numberline {2.7.38}operator * (TC)}{290}
+\contentsline {subsubsection}{\numberline {2.7.39}operator / (TC)}{291}
+\contentsline {subsubsection}{\numberline {2.7.40}operator *= (TR)}{292}
+\contentsline {subsubsection}{\numberline {2.7.41}operator /= (TR)}{293}
+\contentsline {subsubsection}{\numberline {2.7.42}operator *= (TC)}{294}
+\contentsline {subsubsection}{\numberline {2.7.43}operator /= (TC)}{295}
+\contentsline {subsubsection}{\numberline {2.7.44}normalize}{296}
+\contentsline {subsubsection}{\numberline {2.7.45}conjugation}{297}
+\contentsline {subsubsection}{\numberline {2.7.46}transposition}{298}
+\contentsline {subsubsection}{\numberline {2.7.47}operator * (const cvector\&)}{299}
+\contentsline {subsubsection}{\numberline {2.7.48}operator * (const cmatrix\&)}{300}
+\contentsline {subsubsection}{\numberline {2.7.49}mult}{301}
+\contentsline {subsubsection}{\numberline {2.7.50}rank1update\_u}{302}
+\contentsline {subsubsection}{\numberline {2.7.51}rank1update\_c}{303}
+\contentsline {subsubsection}{\numberline {2.7.52}swap\_rows}{304}
+\contentsline {subsubsection}{\numberline {2.7.53}swap\_cols}{305}
+\contentsline {subsubsection}{\numberline {2.7.54}solve}{306}
+\contentsline {subsubsection}{\numberline {2.7.55}solve\_tran}{307}
+\contentsline {subsubsection}{\numberline {2.7.56}solve\_conj}{308}
+\contentsline {subsubsection}{\numberline {2.7.57}solve\_lu}{309}
+\contentsline {subsubsection}{\numberline {2.7.58}svd}{311}
+\contentsline {subsubsection}{\numberline {2.7.59}pinv}{313}
+\contentsline {subsubsection}{\numberline {2.7.60}gels}{315}
+\contentsline {subsubsection}{\numberline {2.7.61}gelsy}{317}
+\contentsline {subsubsection}{\numberline {2.7.62}gelss}{319}
+\contentsline {subsubsection}{\numberline {2.7.63}gelsd}{321}
+\contentsline {subsubsection}{\numberline {2.7.64}rank}{323}
+\contentsline {subsubsection}{\numberline {2.7.65}qr}{324}
+\contentsline {subsubsection}{\numberline {2.7.66}lq}{325}
+\contentsline {subsubsection}{\numberline {2.7.67}rq}{326}
+\contentsline {subsubsection}{\numberline {2.7.68}ql}{327}
+\contentsline {subsubsection}{\numberline {2.7.69}vanish}{328}
+\contentsline {subsubsection}{\numberline {2.7.70}geru}{329}
+\contentsline {subsubsection}{\numberline {2.7.71}gerc}{331}
+\contentsline {subsubsection}{\numberline {2.7.72}gemm}{333}
+\contentsline {subsubsection}{\numberline {2.7.73}hemm}{335}
+\contentsline {subsubsection}{\numberline {2.7.74}randomize\_real}{337}
+\contentsline {subsubsection}{\numberline {2.7.75}randomize\_imag}{338}
+\contentsline {subsection}{\numberline {2.8}srmatrix}{339}
+\contentsline {subsubsection}{\numberline {2.8.1}srmatrix ()}{342}
+\contentsline {subsubsection}{\numberline {2.8.2}srmatrix (int)}{343}
+\contentsline {subsubsection}{\numberline {2.8.3}srmatrix (TR*,int)}{344}
+\contentsline {subsubsection}{\numberline {2.8.4}srmatrix (const TR*,int)}{345}
+\contentsline {subsubsection}{\numberline {2.8.5}srmatrix (const srmatrix\&)}{346}
+\contentsline {subsubsection}{\numberline {2.8.6}srmatrix (const rmatrix\&)}{347}
+\contentsline {subsubsection}{\numberline {2.8.7}srmatrix (const rvector\&)}{348}
+\contentsline {subsubsection}{\numberline {2.8.8}submatrix}{349}
+\contentsline {subsubsection}{\numberline {2.8.9}operator (,)}{350}
+\contentsline {subsubsection}{\numberline {2.8.10}operator ()}{351}
+\contentsline {subsubsection}{\numberline {2.8.11}operator []}{352}
+\contentsline {subsubsection}{\numberline {2.8.12}operator = (const srmatrix\&)}{353}
+\contentsline {subsubsection}{\numberline {2.8.13}assign (const TR*)}{354}
+\contentsline {subsubsection}{\numberline {2.8.14}assign (int, int, const rmatrix\&)}{355}
+\contentsline {subsubsection}{\numberline {2.8.15}set (TR)}{356}
+\contentsline {subsubsection}{\numberline {2.8.16}resize}{357}
+\contentsline {subsubsection}{\numberline {2.8.17}operator <{}<}{358}
+\contentsline {subsubsection}{\numberline {2.8.18}operator +}{359}
+\contentsline {subsubsection}{\numberline {2.8.19}operator -}{360}
+\contentsline {subsubsection}{\numberline {2.8.20}sum}{361}
+\contentsline {subsubsection}{\numberline {2.8.21}diff}{362}
+\contentsline {subsubsection}{\numberline {2.8.22}operator +=}{363}
+\contentsline {subsubsection}{\numberline {2.8.23}operator -=}{364}
+\contentsline {subsubsection}{\numberline {2.8.24}operator - ()}{365}
+\contentsline {subsubsection}{\numberline {2.8.25}operator ++}{366}
+\contentsline {subsubsection}{\numberline {2.8.26}operator -{}-}{367}
+\contentsline {subsubsection}{\numberline {2.8.27}operator * (TR)}{368}
+\contentsline {subsubsection}{\numberline {2.8.28}operator / (TR)}{369}
+\contentsline {subsubsection}{\numberline {2.8.29}operator *= (TR)}{370}
+\contentsline {subsubsection}{\numberline {2.8.30}operator /= (TR)}{371}
+\contentsline {subsubsection}{\numberline {2.8.31}normalize}{372}
+\contentsline {subsubsection}{\numberline {2.8.32}transposition}{373}
+\contentsline {subsubsection}{\numberline {2.8.33}operator * (const rvector\&)}{374}
+\contentsline {subsubsection}{\numberline {2.8.34}operator * (const rmatrix\&)}{375}
+\contentsline {subsubsection}{\numberline {2.8.35}operator * (const srmatrix\&)}{376}
+\contentsline {subsubsection}{\numberline {2.8.36}operator *= (const srmatrix\&)}{377}
+\contentsline {subsubsection}{\numberline {2.8.37}swap\_rows}{378}
+\contentsline {subsubsection}{\numberline {2.8.38}swap\_cols}{379}
+\contentsline {subsubsection}{\numberline {2.8.39}solve}{380}
+\contentsline {subsubsection}{\numberline {2.8.40}solve\_tran}{382}
+\contentsline {subsubsection}{\numberline {2.8.41}operator \% (const rvector\&)}{384}
+\contentsline {subsubsection}{\numberline {2.8.42}operator / (const rvector\&)}{385}
+\contentsline {subsubsection}{\numberline {2.8.43}solve\_lu}{386}
+\contentsline {subsubsection}{\numberline {2.8.44}det}{388}
+\contentsline {subsubsection}{\numberline {2.8.45}low\_up}{389}
+\contentsline {subsubsection}{\numberline {2.8.46}cond}{391}
+\contentsline {subsubsection}{\numberline {2.8.47}inv}{392}
+\contentsline {subsubsection}{\numberline {2.8.48}exp}{393}
+\contentsline {subsubsection}{\numberline {2.8.49}polynomial}{395}
+\contentsline {subsubsection}{\numberline {2.8.50}eig}{397}
+\contentsline {subsubsection}{\numberline {2.8.51}Cholesky}{399}
+\contentsline {subsubsection}{\numberline {2.8.52}Bunch-Kaufman}{400}
+\contentsline {subsubsection}{\numberline {2.8.53}qr}{401}
+\contentsline {subsubsection}{\numberline {2.8.54}lq}{402}
+\contentsline {subsubsection}{\numberline {2.8.55}ql}{403}
+\contentsline {subsubsection}{\numberline {2.8.56}rq}{404}
+\contentsline {subsubsection}{\numberline {2.8.57}identity}{405}
+\contentsline {subsubsection}{\numberline {2.8.58}vanish}{406}
+\contentsline {subsubsection}{\numberline {2.8.59}randomize}{407}
+\contentsline {subsection}{\numberline {2.9}scmatrix}{408}
+\contentsline {subsubsection}{\numberline {2.9.1}scmatrix ()}{412}
+\contentsline {subsubsection}{\numberline {2.9.2}scmatrix (int)}{413}
+\contentsline {subsubsection}{\numberline {2.9.3}scmatrix (TC*,int)}{414}
+\contentsline {subsubsection}{\numberline {2.9.4}scmatrix (const TC*,int)}{415}
+\contentsline {subsubsection}{\numberline {2.9.5}scmatrix (const scmatrix\&)}{416}
+\contentsline {subsubsection}{\numberline {2.9.6}scmatrix (const cmatrix\&)}{417}
+\contentsline {subsubsection}{\numberline {2.9.7}scmatrix (const cvector\&)}{418}
+\contentsline {subsubsection}{\numberline {2.9.8}scmatrix (const srmatrix\&,bool)}{419}
+\contentsline {subsubsection}{\numberline {2.9.9}scmatrix (const TR*,const TR*,int)}{420}
+\contentsline {subsubsection}{\numberline {2.9.10}scmatrix (const srmatrix\&, const srmatrix\&)}{421}
+\contentsline {subsubsection}{\numberline {2.9.11}submatrix}{422}
+\contentsline {subsubsection}{\numberline {2.9.12}operator (,)}{423}
+\contentsline {subsubsection}{\numberline {2.9.13}operator ()}{424}
+\contentsline {subsubsection}{\numberline {2.9.14}operator []}{425}
+\contentsline {subsubsection}{\numberline {2.9.15}real}{426}
+\contentsline {subsubsection}{\numberline {2.9.16}imag}{427}
+\contentsline {subsubsection}{\numberline {2.9.17}operator = (const scmatrix\&)}{428}
+\contentsline {subsubsection}{\numberline {2.9.18}assign (const TC*)}{429}
+\contentsline {subsubsection}{\numberline {2.9.19}assign (int, int, const cmatrix\&)}{430}
+\contentsline {subsubsection}{\numberline {2.9.20}set (TC)}{431}
+\contentsline {subsubsection}{\numberline {2.9.21}assign\_real}{432}
+\contentsline {subsubsection}{\numberline {2.9.22}assign\_imag}{433}
+\contentsline {subsubsection}{\numberline {2.9.23}set\_real}{434}
+\contentsline {subsubsection}{\numberline {2.9.24}set\_imag}{435}
+\contentsline {subsubsection}{\numberline {2.9.25}resize}{436}
+\contentsline {subsubsection}{\numberline {2.9.26}operator <{}<}{437}
+\contentsline {subsubsection}{\numberline {2.9.27}operator +}{438}
+\contentsline {subsubsection}{\numberline {2.9.28}operator -}{439}
+\contentsline {subsubsection}{\numberline {2.9.29}sum}{440}
+\contentsline {subsubsection}{\numberline {2.9.30}diff}{441}
+\contentsline {subsubsection}{\numberline {2.9.31}operator +=}{442}
+\contentsline {subsubsection}{\numberline {2.9.32}operator -=}{443}
+\contentsline {subsubsection}{\numberline {2.9.33}operator - ()}{444}
+\contentsline {subsubsection}{\numberline {2.9.34}operator ++}{445}
+\contentsline {subsubsection}{\numberline {2.9.35}operator -{}-}{446}
+\contentsline {subsubsection}{\numberline {2.9.36}operator * (TR)}{447}
+\contentsline {subsubsection}{\numberline {2.9.37}operator / (TR)}{448}
+\contentsline {subsubsection}{\numberline {2.9.38}operator * (TC)}{449}
+\contentsline {subsubsection}{\numberline {2.9.39}operator / (TC)}{450}
+\contentsline {subsubsection}{\numberline {2.9.40}operator *= (TR)}{451}
+\contentsline {subsubsection}{\numberline {2.9.41}operator /= (TR)}{452}
+\contentsline {subsubsection}{\numberline {2.9.42}operator *= (TC)}{453}
+\contentsline {subsubsection}{\numberline {2.9.43}operator /= (TC)}{454}
+\contentsline {subsubsection}{\numberline {2.9.44}normalize}{455}
+\contentsline {subsubsection}{\numberline {2.9.45}conjugation}{456}
+\contentsline {subsubsection}{\numberline {2.9.46}transposition}{457}
+\contentsline {subsubsection}{\numberline {2.9.47}operator * (const cvector\&)}{458}
+\contentsline {subsubsection}{\numberline {2.9.48}operator * (const cmatrix\&)}{459}
+\contentsline {subsubsection}{\numberline {2.9.49}operator * (const scmatrix\&)}{460}
+\contentsline {subsubsection}{\numberline {2.9.50}operator *= (const scmatrix\&)}{461}
+\contentsline {subsubsection}{\numberline {2.9.51}swap\_rows}{462}
+\contentsline {subsubsection}{\numberline {2.9.52}swap\_cols}{463}
+\contentsline {subsubsection}{\numberline {2.9.53}solve}{464}
+\contentsline {subsubsection}{\numberline {2.9.54}solve\_tran}{466}
+\contentsline {subsubsection}{\numberline {2.9.55}solve\_conj}{468}
+\contentsline {subsubsection}{\numberline {2.9.56}operator \% (const cvector\&)}{470}
+\contentsline {subsubsection}{\numberline {2.9.57}operator / (const cvector\&)}{471}
+\contentsline {subsubsection}{\numberline {2.9.58}solve\_lu}{472}
+\contentsline {subsubsection}{\numberline {2.9.59}det}{474}
+\contentsline {subsubsection}{\numberline {2.9.60}low\_up}{475}
+\contentsline {subsubsection}{\numberline {2.9.61}cond}{477}
+\contentsline {subsubsection}{\numberline {2.9.62}inv}{478}
+\contentsline {subsubsection}{\numberline {2.9.63}exp}{479}
+\contentsline {subsubsection}{\numberline {2.9.64}polynomial}{481}
+\contentsline {subsubsection}{\numberline {2.9.65}eig}{483}
+\contentsline {subsubsection}{\numberline {2.9.66}Cholesky}{484}
+\contentsline {subsubsection}{\numberline {2.9.67}Bunch-Kaufman}{485}
+\contentsline {subsubsection}{\numberline {2.9.68}qr}{486}
+\contentsline {subsubsection}{\numberline {2.9.69}lq}{487}
+\contentsline {subsubsection}{\numberline {2.9.70}rq}{488}
+\contentsline {subsubsection}{\numberline {2.9.71}ql}{489}
+\contentsline {subsubsection}{\numberline {2.9.72}identity}{490}
+\contentsline {subsubsection}{\numberline {2.9.73}vanish}{491}
+\contentsline {subsubsection}{\numberline {2.9.74}randomize\_real}{492}
+\contentsline {subsubsection}{\numberline {2.9.75}randomize\_imag}{493}
+\contentsline {subsection}{\numberline {2.10}BandMatrix}{494}
+\contentsline {subsubsection}{\numberline {2.10.1}lsize}{495}
+\contentsline {subsubsection}{\numberline {2.10.2}usize}{496}
+\contentsline {subsection}{\numberline {2.11}srbmatrix}{497}
+\contentsline {subsubsection}{\numberline {2.11.1}srbmatrix ()}{499}
+\contentsline {subsubsection}{\numberline {2.11.2}srbmatrix (int)}{500}
+\contentsline {subsubsection}{\numberline {2.11.3}srbmatrix (int,int,int)}{501}
+\contentsline {subsubsection}{\numberline {2.11.4}srbmatrix (TR*,int,int,int)}{502}
+\contentsline {subsubsection}{\numberline {2.11.5}srbmatrix (const TR*,int,int,int)}{503}
+\contentsline {subsubsection}{\numberline {2.11.6}srbmatrix (const srbmatrix\&)}{504}
+\contentsline {subsubsection}{\numberline {2.11.7}srbmatrix (const rmatrix\&,int,int)}{505}
+\contentsline {subsubsection}{\numberline {2.11.8}srbmatrix (const rvector\&)}{506}
+\contentsline {subsubsection}{\numberline {2.11.9}operator (,)}{507}
+\contentsline {subsubsection}{\numberline {2.11.10}operator ()}{508}
+\contentsline {subsubsection}{\numberline {2.11.11}operator []}{509}
+\contentsline {subsubsection}{\numberline {2.11.12}operator = (const srbmatrix\&)}{510}
+\contentsline {subsubsection}{\numberline {2.11.13}assign (const TR*)}{511}
+\contentsline {subsubsection}{\numberline {2.11.14}set (TR)}{512}
+\contentsline {subsubsection}{\numberline {2.11.15}resize}{513}
+\contentsline {subsubsection}{\numberline {2.11.16}resize\_lu}{514}
+\contentsline {subsubsection}{\numberline {2.11.17}operator ==}{515}
+\contentsline {subsubsection}{\numberline {2.11.18}operator !=}{516}
+\contentsline {subsubsection}{\numberline {2.11.19}operator <{}<}{517}
+\contentsline {subsubsection}{\numberline {2.11.20}operator +}{518}
+\contentsline {subsubsection}{\numberline {2.11.21}operator -}{519}
+\contentsline {subsubsection}{\numberline {2.11.22}sum}{520}
+\contentsline {subsubsection}{\numberline {2.11.23}diff}{521}
+\contentsline {subsubsection}{\numberline {2.11.24}operator +=}{522}
+\contentsline {subsubsection}{\numberline {2.11.25}operator -=}{523}
+\contentsline {subsubsection}{\numberline {2.11.26}operator - ()}{524}
+\contentsline {subsubsection}{\numberline {2.11.27}operator ++}{525}
+\contentsline {subsubsection}{\numberline {2.11.28}operator -{}-}{526}
+\contentsline {subsubsection}{\numberline {2.11.29}operator * (TR)}{527}
+\contentsline {subsubsection}{\numberline {2.11.30}operator / (TR)}{528}
+\contentsline {subsubsection}{\numberline {2.11.31}operator *= (TR)}{529}
+\contentsline {subsubsection}{\numberline {2.11.32}operator /= (TR)}{530}
+\contentsline {subsubsection}{\numberline {2.11.33}normalize}{531}
+\contentsline {subsubsection}{\numberline {2.11.34}transposition}{532}
+\contentsline {subsubsection}{\numberline {2.11.35}operator * (const rvector\&)}{533}
+\contentsline {subsubsection}{\numberline {2.11.36}operator * (const rmatrix\&)}{534}
+\contentsline {subsubsection}{\numberline {2.11.37}operator * (const srmatrix\&)}{535}
+\contentsline {subsubsection}{\numberline {2.11.38}operator * (const srbmatrix\&)}{536}
+\contentsline {subsubsection}{\numberline {2.11.39}low\_up}{537}
+\contentsline {subsubsection}{\numberline {2.11.40}operator / (const rvector\&)}{539}
+\contentsline {subsubsection}{\numberline {2.11.41}identity}{540}
+\contentsline {subsubsection}{\numberline {2.11.42}vanish}{541}
+\contentsline {subsubsection}{\numberline {2.11.43}randomize}{542}
+\contentsline {subsection}{\numberline {2.12}scbmatrix}{543}
+\contentsline {subsubsection}{\numberline {2.12.1}scbmatrix ()}{545}
+\contentsline {subsubsection}{\numberline {2.12.2}scbmatrix (int)}{546}
+\contentsline {subsubsection}{\numberline {2.12.3}scbmatrix (int,int,int)}{547}
+\contentsline {subsubsection}{\numberline {2.12.4}scbmatrix (TC*,int,int,int)}{548}
+\contentsline {subsubsection}{\numberline {2.12.5}scbmatrix (const TC*,int,int,int)}{549}
+\contentsline {subsubsection}{\numberline {2.12.6}scbmatrix (const scbmatrix\&)}{550}
+\contentsline {subsubsection}{\numberline {2.12.7}scbmatrix (const cmatrix\&,int,int)}{551}
+\contentsline {subsubsection}{\numberline {2.12.8}scbmatrix (const cvector\&)}{552}
+\contentsline {subsubsection}{\numberline {2.12.9}scbmatrix (const srbmatrix\&,bool)}{553}
+\contentsline {subsubsection}{\numberline {2.12.10}scbmatrix (const srbmatrix\&, const srbmatrix\&)}{554}
+\contentsline {subsubsection}{\numberline {2.12.11}operator (,)}{555}
+\contentsline {subsubsection}{\numberline {2.12.12}operator ()}{556}
+\contentsline {subsubsection}{\numberline {2.12.13}operator []}{557}
+\contentsline {subsubsection}{\numberline {2.12.14}real}{558}
+\contentsline {subsubsection}{\numberline {2.12.15}imag}{559}
+\contentsline {subsubsection}{\numberline {2.12.16}operator = (const scbmatrix\&)}{560}
+\contentsline {subsubsection}{\numberline {2.12.17}assign (const TC*)}{561}
+\contentsline {subsubsection}{\numberline {2.12.18}set (TC)}{562}
+\contentsline {subsubsection}{\numberline {2.12.19}assign\_real}{563}
+\contentsline {subsubsection}{\numberline {2.12.20}assign\_imag}{564}
+\contentsline {subsubsection}{\numberline {2.12.21}set\_real}{565}
+\contentsline {subsubsection}{\numberline {2.12.22}set\_imag}{566}
+\contentsline {subsubsection}{\numberline {2.12.23}resize}{567}
+\contentsline {subsubsection}{\numberline {2.12.24}resize\_lu}{568}
+\contentsline {subsubsection}{\numberline {2.12.25}operator ==}{569}
+\contentsline {subsubsection}{\numberline {2.12.26}operator !=}{570}
+\contentsline {subsubsection}{\numberline {2.12.27}operator <{}<}{571}
+\contentsline {subsubsection}{\numberline {2.12.28}operator +}{572}
+\contentsline {subsubsection}{\numberline {2.12.29}operator -}{573}
+\contentsline {subsubsection}{\numberline {2.12.30}sum}{574}
+\contentsline {subsubsection}{\numberline {2.12.31}diff}{575}
+\contentsline {subsubsection}{\numberline {2.12.32}operator +=}{576}
+\contentsline {subsubsection}{\numberline {2.12.33}operator -=}{577}
+\contentsline {subsubsection}{\numberline {2.12.34}operator - ()}{578}
+\contentsline {subsubsection}{\numberline {2.12.35}operator ++}{579}
+\contentsline {subsubsection}{\numberline {2.12.36}operator -{}-}{580}
+\contentsline {subsubsection}{\numberline {2.12.37}operator * (TR)}{581}
+\contentsline {subsubsection}{\numberline {2.12.38}operator / (TR)}{582}
+\contentsline {subsubsection}{\numberline {2.12.39}operator * (TC)}{583}
+\contentsline {subsubsection}{\numberline {2.12.40}operator / (TC)}{584}
+\contentsline {subsubsection}{\numberline {2.12.41}operator *= (TR)}{585}
+\contentsline {subsubsection}{\numberline {2.12.42}operator /= (TR)}{586}
+\contentsline {subsubsection}{\numberline {2.12.43}operator *= (TC)}{587}
+\contentsline {subsubsection}{\numberline {2.12.44}operator /= (TC)}{588}
+\contentsline {subsubsection}{\numberline {2.12.45}normalize}{589}
+\contentsline {subsubsection}{\numberline {2.12.46}conjugation}{590}
+\contentsline {subsubsection}{\numberline {2.12.47}transposition}{592}
+\contentsline {subsubsection}{\numberline {2.12.48}operator * (const cvector\&)}{594}
+\contentsline {subsubsection}{\numberline {2.12.49}operator * (const cmatrix\&)}{595}
+\contentsline {subsubsection}{\numberline {2.12.50}operator * (const scmatrix\&)}{596}
+\contentsline {subsubsection}{\numberline {2.12.51}operator * (const scbmatrix\&)}{597}
+\contentsline {subsubsection}{\numberline {2.12.52}low\_up}{598}
+\contentsline {subsubsection}{\numberline {2.12.53}operator / (const cvector\&)}{600}
+\contentsline {subsubsection}{\numberline {2.12.54}identity}{601}
+\contentsline {subsubsection}{\numberline {2.12.55}vanish}{602}
+\contentsline {subsubsection}{\numberline {2.12.56}randomize\_real}{603}
+\contentsline {subsubsection}{\numberline {2.12.57}randomize\_imag}{604}
+\contentsline {subsection}{\numberline {2.13}srsmatrix}{605}
+\contentsline {subsubsection}{\numberline {2.13.1}srsmatrix ()}{607}
+\contentsline {subsubsection}{\numberline {2.13.2}srsmatrix (int)}{608}
+\contentsline {subsubsection}{\numberline {2.13.3}srsmatrix (TR*,int)}{609}
+\contentsline {subsubsection}{\numberline {2.13.4}srsmatrix (const TR*,int)}{610}
+\contentsline {subsubsection}{\numberline {2.13.5}srsmatrix (const srsmatrix\&)}{611}
+\contentsline {subsubsection}{\numberline {2.13.6}srsmatrix (const rmatrix\&)}{612}
+\contentsline {subsubsection}{\numberline {2.13.7}srsmatrix (const rvector\&)}{613}
+\contentsline {subsubsection}{\numberline {2.13.8}submatrix}{614}
+\contentsline {subsubsection}{\numberline {2.13.9}operator (,)}{615}
+\contentsline {subsubsection}{\numberline {2.13.10}operator ()}{616}
+\contentsline {subsubsection}{\numberline {2.13.11}operator []}{617}
+\contentsline {subsubsection}{\numberline {2.13.12}diag}{618}
+\contentsline {subsubsection}{\numberline {2.13.13}operator = (const srsmatrix\&)}{619}
+\contentsline {subsubsection}{\numberline {2.13.14}assign (const TR*)}{620}
+\contentsline {subsubsection}{\numberline {2.13.15}assign (int, const srsmatrix\&)}{621}
+\contentsline {subsubsection}{\numberline {2.13.16}set (TR)}{622}
+\contentsline {subsubsection}{\numberline {2.13.17}set (int,int,TR)}{623}
+\contentsline {subsubsection}{\numberline {2.13.18}set\_diag (int,rvector)}{624}
+\contentsline {subsubsection}{\numberline {2.13.19}resize}{625}
+\contentsline {subsubsection}{\numberline {2.13.20}operator ==}{626}
+\contentsline {subsubsection}{\numberline {2.13.21}operator !=}{627}
+\contentsline {subsubsection}{\numberline {2.13.22}operator <{}<}{628}
+\contentsline {subsubsection}{\numberline {2.13.23}operator +}{629}
+\contentsline {subsubsection}{\numberline {2.13.24}operator -}{630}
+\contentsline {subsubsection}{\numberline {2.13.25}sum}{631}
+\contentsline {subsubsection}{\numberline {2.13.26}diff}{632}
+\contentsline {subsubsection}{\numberline {2.13.27}operator +=}{633}
+\contentsline {subsubsection}{\numberline {2.13.28}operator -=}{634}
+\contentsline {subsubsection}{\numberline {2.13.29}operator - ()}{635}
+\contentsline {subsubsection}{\numberline {2.13.30}operator ++}{636}
+\contentsline {subsubsection}{\numberline {2.13.31}operator -{}-}{637}
+\contentsline {subsubsection}{\numberline {2.13.32}operator * (TR)}{638}
+\contentsline {subsubsection}{\numberline {2.13.33}operator / (TR)}{639}
+\contentsline {subsubsection}{\numberline {2.13.34}operator *= (TR)}{640}
+\contentsline {subsubsection}{\numberline {2.13.35}operator /= (TR)}{641}
+\contentsline {subsubsection}{\numberline {2.13.36}normalize}{642}
+\contentsline {subsubsection}{\numberline {2.13.37}transposition}{643}
+\contentsline {subsubsection}{\numberline {2.13.38}operator * (const rvector\&)}{644}
+\contentsline {subsubsection}{\numberline {2.13.39}operator * (const rmatrix\&)}{645}
+\contentsline {subsubsection}{\numberline {2.13.40}operator * (const srmatrix\&)}{646}
+\contentsline {subsubsection}{\numberline {2.13.41}operator / (const rvector\&)}{647}
+\contentsline {subsubsection}{\numberline {2.13.42}syrk}{648}
+\contentsline {subsubsection}{\numberline {2.13.43}syr2k}{650}
+\contentsline {subsubsection}{\numberline {2.13.44}inv}{652}
+\contentsline {subsubsection}{\numberline {2.13.45}exp}{653}
+\contentsline {subsubsection}{\numberline {2.13.46}polynomial}{655}
+\contentsline {subsubsection}{\numberline {2.13.47}eig}{657}
+\contentsline {subsubsection}{\numberline {2.13.48}Cholesky}{658}
+\contentsline {subsubsection}{\numberline {2.13.49}Bunch-Kaufman}{659}
+\contentsline {subsubsection}{\numberline {2.13.50}identity}{660}
+\contentsline {subsubsection}{\numberline {2.13.51}vanish}{661}
+\contentsline {subsubsection}{\numberline {2.13.52}randomize}{662}
+\contentsline {subsection}{\numberline {2.14}schmatrix}{663}
+\contentsline {subsubsection}{\numberline {2.14.1}schmatrix ()}{666}
+\contentsline {subsubsection}{\numberline {2.14.2}schmatrix (int)}{667}
+\contentsline {subsubsection}{\numberline {2.14.3}schmatrix (TC*,int)}{668}
+\contentsline {subsubsection}{\numberline {2.14.4}schmatrix (const TC*,int)}{669}
+\contentsline {subsubsection}{\numberline {2.14.5}schmatrix (const schmatrix\&)}{670}
+\contentsline {subsubsection}{\numberline {2.14.6}schmatrix (const cmatrix\&)}{671}
+\contentsline {subsubsection}{\numberline {2.14.7}schmatrix (const rvector\&)}{672}
+\contentsline {subsubsection}{\numberline {2.14.8}schmatrix (const srsmatrix\&)}{673}
+\contentsline {subsubsection}{\numberline {2.14.9}schmatrix (const TR*,const TR*,int)}{674}
+\contentsline {subsubsection}{\numberline {2.14.10}schmatrix (const srmatrix\&, const srmatrix\&)}{675}
+\contentsline {subsubsection}{\numberline {2.14.11}submatrix}{676}
+\contentsline {subsubsection}{\numberline {2.14.12}operator (,)}{677}
+\contentsline {subsubsection}{\numberline {2.14.13}operator ()}{678}
+\contentsline {subsubsection}{\numberline {2.14.14}operator []}{679}
+\contentsline {subsubsection}{\numberline {2.14.15}diag}{680}
+\contentsline {subsubsection}{\numberline {2.14.16}real}{681}
+\contentsline {subsubsection}{\numberline {2.14.17}imag}{682}
+\contentsline {subsubsection}{\numberline {2.14.18}operator = (const schmatrix\&)}{683}
+\contentsline {subsubsection}{\numberline {2.14.19}assign (const TC*)}{684}
+\contentsline {subsubsection}{\numberline {2.14.20}assign (int, int, const schmatrix\&)}{685}
+\contentsline {subsubsection}{\numberline {2.14.21}set (int,int,TC)}{686}
+\contentsline {subsubsection}{\numberline {2.14.22}set\_diag}{687}
+\contentsline {subsubsection}{\numberline {2.14.23}set\_main\_diag}{688}
+\contentsline {subsubsection}{\numberline {2.14.24}assign\_real}{689}
+\contentsline {subsubsection}{\numberline {2.14.25}set\_real}{690}
+\contentsline {subsubsection}{\numberline {2.14.26}resize}{691}
+\contentsline {subsubsection}{\numberline {2.14.27}operator ==}{692}
+\contentsline {subsubsection}{\numberline {2.14.28}operator !=}{693}
+\contentsline {subsubsection}{\numberline {2.14.29}operator <{}<}{694}
+\contentsline {subsubsection}{\numberline {2.14.30}operator +}{695}
+\contentsline {subsubsection}{\numberline {2.14.31}operator -}{696}
+\contentsline {subsubsection}{\numberline {2.14.32}sum}{697}
+\contentsline {subsubsection}{\numberline {2.14.33}diff}{698}
+\contentsline {subsubsection}{\numberline {2.14.34}operator +=}{699}
+\contentsline {subsubsection}{\numberline {2.14.35}operator -=}{700}
+\contentsline {subsubsection}{\numberline {2.14.36}operator - ()}{701}
+\contentsline {subsubsection}{\numberline {2.14.37}operator ++}{702}
+\contentsline {subsubsection}{\numberline {2.14.38}operator -{}-}{703}
+\contentsline {subsubsection}{\numberline {2.14.39}operator * (TR)}{704}
+\contentsline {subsubsection}{\numberline {2.14.40}operator / (TR)}{705}
+\contentsline {subsubsection}{\numberline {2.14.41}operator * (TC)}{706}
+\contentsline {subsubsection}{\numberline {2.14.42}operator / (TC)}{707}
+\contentsline {subsubsection}{\numberline {2.14.43}operator *= (TR)}{708}
+\contentsline {subsubsection}{\numberline {2.14.44}operator /= (TR)}{709}
+\contentsline {subsubsection}{\numberline {2.14.45}normalize}{710}
+\contentsline {subsubsection}{\numberline {2.14.46}conjugation}{711}
+\contentsline {subsubsection}{\numberline {2.14.47}transposition}{712}
+\contentsline {subsubsection}{\numberline {2.14.48}operator * (const cvector\&)}{713}
+\contentsline {subsubsection}{\numberline {2.14.49}operator * (const cmatrix\&)}{714}
+\contentsline {subsubsection}{\numberline {2.14.50}operator * (const scmatrix\&)}{715}
+\contentsline {subsubsection}{\numberline {2.14.51}operator / (const cvector\&)}{716}
+\contentsline {subsubsection}{\numberline {2.14.52}herk}{717}
+\contentsline {subsubsection}{\numberline {2.14.53}her2k}{719}
+\contentsline {subsubsection}{\numberline {2.14.54}inv}{722}
+\contentsline {subsubsection}{\numberline {2.14.55}exp}{723}
+\contentsline {subsubsection}{\numberline {2.14.56}polynomial}{725}
+\contentsline {subsubsection}{\numberline {2.14.57}eig}{727}
+\contentsline {subsubsection}{\numberline {2.14.58}Cholesky}{728}
+\contentsline {subsubsection}{\numberline {2.14.59}Bunch-Kaufman}{729}
+\contentsline {subsubsection}{\numberline {2.14.60}identity}{730}
+\contentsline {subsubsection}{\numberline {2.14.61}vanish}{731}
+\contentsline {subsubsection}{\numberline {2.14.62}randomize\_real}{732}
+\contentsline {subsubsection}{\numberline {2.14.63}randomize\_imag}{733}
+\contentsline {subsection}{\numberline {2.15}cvmexception}{734}
+\contentsline {subsubsection}{\numberline {2.15.1}cause}{735}
+\contentsline {subsubsection}{\numberline {2.15.2}what}{736}
+\contentsline {subsubsection}{\numberline {2.15.3}Customization}{737}
+\contentsline {subsection}{\numberline {2.16}Utilities}{738}
+\contentsline {subsubsection}{\numberline {2.16.1}cvmMalloc}{739}
+\contentsline {subsubsection}{\numberline {2.16.2}cvmAddRef}{740}
+\contentsline {subsubsection}{\numberline {2.16.3}cvmFree}{741}
+\contentsline {subsubsection}{\numberline {2.16.4}cvmExit}{742}
+\contentsline {subsubsection}{\numberline {2.16.5}cvmMachMin}{743}
+\contentsline {subsubsection}{\numberline {2.16.6}cvmMachSp}{744}
+\contentsline {subsubsection}{\numberline {2.16.7}eye\_real}{745}
+\contentsline {subsubsection}{\numberline {2.16.8}eye\_complex}{746}
+\contentsline {subsubsection}{\numberline {2.16.9}operator *}{747}
+\contentsline {subsection}{\numberline {2.17}Pool Manager}{749}
+\select@language {russian}
+\select@language {english}
+\select@language {russian}
+\select@language {english}

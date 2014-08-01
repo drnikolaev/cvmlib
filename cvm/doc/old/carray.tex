@@ -1,0 +1,778 @@
+\bigskip
+\noindent
+\verb"class ComplexArray : public virtual Array<tcomplex> {"\\
+\verb"public:"\\
+\verb"    "\GOT{operator tcomplex*}{ComplexArray.operator tcomplex*}\verb" ();"\\
+\verb"    "\GOT{operator const tcomplex*}{ComplexArray.operator const tcomplex*}\verb" () const;"\\
+\verb"    ComplexArray& "\GOT{operator *=}{ComplexArray.operator *= (treal)}\verb" (const treal dMult);"\\
+\verb"    ComplexArray& "\GOT{operator /=}{ComplexArray.operator /= (treal)}\verb" (const treal dDiv);"\\
+\verb"    ComplexArray& "\GOT{operator *=}{ComplexArray.operator *= (tcomplex)}\verb" (const tcomplex cMult);"\\
+\verb"    ComplexArray& "\GOT{operator /=}{ComplexArray.operator /= (tcomplex)}\verb" (const tcomplex cDiv);"\\
+\verb"    ComplexArray& "\GOT{assign}{ComplexArray.assign (*,*,int,int)}\verb" (const treal* pRe, const treal* pIm,"\\
+\verb"                          int nReIncr = 1, int nImIncr = 1);"\\
+\verb"    ComplexArray& "\GOT{assign}{ComplexArray.assign (RealArray&,RealArray&)}\verb" (const RealArray& vRe,"\\
+\verb"                          const RealArray& vIm)"\\
+\verb"                          throw (cvmexception);"\\
+\verb"    ComplexArray& "\GOT{assign\_real}{ComplexArray.assign_real (*,int)}\verb" (const treal* pRe,"\\
+\verb"                               int nReIncr = 1);"\\
+\verb"    ComplexArray& "\GOT{assign\_imag}{ComplexArray.assign_imag (*,int)}\verb" (const treal* pIm,"\\
+\verb"                               int nImIncr = 1);"\\
+\verb"    ComplexArray& "\GOT{assign\_real}{ComplexArray.assign_real (RealArray&)}\verb" (const RealArray& vRe)"\\
+\verb"                               throw (cvmexception);"\\
+\verb"    ComplexArray& "\GOT{assign\_imag}{ComplexArray.assign_imag (RealArray&)}\verb" (const RealArray& vIm)"\\
+\verb"                               throw (cvmexception);"\\
+\verb"    ComplexArray& "\GOT{assign\_real}{ComplexArray.assign_real (treal)}\verb" (const treal d);"\\
+\verb"    ComplexArray& "\GOT{assign\_imag}{ComplexArray.assign_imag (treal)}\verb" (const treal d);"\\
+\verb"    ComplexArray& "\GOT{conj}{ComplexArray.conj}\verb" ();"\\
+\verb"    ComplexArray& "\GOT{conj}{ComplexArray.conj (ComplexArray&)}\verb" (const ComplexArray& aArg)"\\
+\verb"                        throw (cvmexception);"\\
+\verb"    ComplexArray& "\GOT{normalize}{ComplexArray.normalize}\verb" ();"\\
+\verb"};"
+\newpage
+
+
+
+
+\subsubsection{operator tcomplex*}
+The%
+\pdfdest name {ComplexArray.operator tcomplex*} fit{ }
+operator
+\begin{verbatim}
+ComplexArray::operator tcomplex* ();
+\end{verbatim}
+returns the pointer to the first element of an array.
+The operator is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+void some_library_function (int n, complex<double>* p)
+{
+    for (int i = 0; i < n; i++) {
+        ((double*) (p + i)) [1] = - p[i].imag();
+    }
+}
+
+.......
+
+cvector v(3);
+v(1) = tcomplex(1., 2.);
+v(2) = tcomplex(2., 3.);
+v(3) = tcomplex(3., 4.);
+
+cout << v;
+some_library_function (v.size(), v);
+cout << v;
+\end{verbatim}
+prints
+\begin{verbatim}
+(1,2) (2,3) (3,4)
+(1,-2) (2,-3) (3,-4)
+\end{verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator const tcomplex*}
+The%
+\pdfdest name {ComplexArray.operator const tcomplex*} fit{ }
+operator
+\begin{verbatim}
+ComplexArray::operator const tcomplex* () const;
+\end{verbatim}
+returns the constant pointer to the first
+element of an constant array.
+The operator is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexAr\-ray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+double some_library_function (int n, const complex<double>* p)
+{
+    int i;
+    double d = 0.;
+
+    for (i = 0; i < n; i++) {
+        d += p[i].real() * p[i].real() +
+             p[i].imag() * p[i].imag();
+    }
+    return sqrt(d);
+}
+
+.......
+
+cout.setf (ios::scientific | ios::showpos);
+cout.precision (12);
+
+const treal re[] = {1., 2., 3., 4.};
+const treal im[] = {2., 1., 0., -2.};
+const cvector v(re, im, 4);
+
+cout << some_library_function (v.size(), v) << endl;
+\end{verbatim}
+prints
+\begin{verbatim}
++6.244997998398e+000
+\end{verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator *= (treal)}
+The%
+\pdfdest name {ComplexArray.operator *= (treal)} fit{ }
+operator
+\begin{verbatim}
+ComplexArray& ComplexArray::operator *= (const treal dMult);
+\end{verbatim}
+multiplies a calling object by a value of
+parameter \verb"dMult" and returns the reference to
+the object it changes.
+The operator is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+cvector v(3);
+v(1) = tcomplex(1., 2.);
+v(2) = tcomplex(2., 3.);
+v(3) = tcomplex(3., 4.);
+
+cout << (v *= 5.);
+\end{verbatim}
+prints
+\begin{verbatim}
+(5,10) (10,15) (15,20)
+\end{verbatim}
+\newpage
+
+
+
+\subsubsection{operator /= (treal)}
+The%
+\pdfdest name {ComplexArray.operator /= (treal)} fit{ }
+operator
+\begin{verbatim}
+ComplexArray& ComplexArray::operator /= (const treal dDiv);
+\end{verbatim}
+divides a calling object by a value of
+parameter \verb"dDiv" and returns the reference to
+the object it changes.
+The operator is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+cvector v(3);
+v(1) = tcomplex(1., 2.);
+v(2) = tcomplex(2., 3.);
+v(3) = tcomplex(3., 4.);
+
+cout << (v /= 4.);
+\end{verbatim}
+prints
+\begin{verbatim}
+(0.25,0.5) (0.5,0.75) (0.75,1)
+\end{verbatim}
+\newpage
+
+
+
+\subsubsection{operator *= (tcomplex)}
+The%
+\pdfdest name {ComplexArray.operator *= (tcomplex)} fit{ }
+operator
+\begin{verbatim}
+ComplexArray&
+ComplexArray::operator *= (const tcomplex cMult);
+\end{verbatim}
+multiplies a calling object by a value of
+parameter \verb"cMult" and returns the reference to
+the object it changes.
+The operator is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+cvector v(3);
+v(1) = tcomplex(1., 2.);
+v(2) = tcomplex(2., 3.);
+v(3) = tcomplex(3., 4.);
+
+cout << (v *= tcomplex(5., 2.));
+\end{verbatim}
+prints
+\begin{verbatim}
+(1,12) (4,19) (7,26)
+\end{verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator /= (tcomplex)}
+The%
+\pdfdest name {ComplexArray.operator /= (tcomplex)} fit{ }
+operator
+\begin{verbatim}
+ComplexArray&
+ComplexArray::operator /= (const tcomplex cDiv);
+\end{verbatim}
+divides a calling object by a value of
+parameter \verb"cDiv" and returns the reference to
+the object it changes.
+The operator is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+cvector v(3);
+v(1) = tcomplex(1., 2.);
+v(2) = tcomplex(2., 3.);
+v(3) = tcomplex(3., 4.);
+
+cout << (v /= tcomplex(4., -2.));
+\end{verbatim}
+prints
+\begin{verbatim}
+(0,0.5) (0.1,0.8) (0.2,1.1)
+\end{verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign (*,*,int,int)}
+The%
+\pdfdest name {ComplexArray.assign (*,*,int,int)} fit{ }
+function
+\begin{verbatim}
+ComplexArray&
+ComplexArray::assign (const treal* pRe, const treal* pIm,
+                      int nReIncr = 1, int nImIncr = 1);
+\end{verbatim}
+assigns to a calling object's real and imaginary parts
+values of arrays pointed to by the parameters
+\verb"pRe" and \verb"pIm" and returns the reference to
+the object it changes. The increments between array elements
+are equal to values of the parameters \verb"nReIncr" and \verb"nImIncr"
+accordingly.
+The function is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+const treal re[] = {1., 2., 3., 4., 5.};
+const treal im[] = {2., 1., 0., -1., -2.};
+
+cvector v (3);
+scmatrix m (2);
+
+v.assign (re, im, 2, 1);
+m.assign (re, im);
+
+cout << v << endl << m;
+\end{verbatim}
+prints
+\begin{verbatim}
+(1,2) (3,1) (5,0)
+
+(1,2) (3,0)
+(2,1) (4,-1)
+\end{verbatim}
+\newpage
+
+
+\subsubsection{assign (RealArray\&,RealArray\&)}
+The%
+\pdfdest name {ComplexArray.assign (RealArray&,RealArray&)} fit{ }
+function
+\begin{verbatim}
+ComplexArray&
+ComplexArray::assign (const RealArray& vRe, const RealArray& vIm)
+throw (cvmexception);
+\end{verbatim}
+assigns to a calling object's real and imaginary parts
+values of arrays
+\verb"vRe" and \verb"vIm" and returns the reference to
+the object it changes.
+The function is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+try {
+    rvector vr(3);
+    vr(1) = 1.;
+    vr(2) = 2.;
+    vr(3) = 3.;
+
+    treal im[] = {2., 1., 0.};
+    rvector vi(im, 3);
+
+    cvector v(3);
+    cout << v.assign (vr, vi);
+}
+catch (cvmexception& e) {
+    cout << "Exception " << e.cause () <<
+                    ": " << e.what () << endl;
+}
+\end{verbatim}
+prints
+\begin{verbatim}
+(1,2) (2,1) (3,0)
+\end{verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign\_real (*,int)}
+The%
+\pdfdest name {ComplexArray.assign_real (*,int)} fit{ }
+function
+\begin{verbatim}
+ComplexArray&
+ComplexArray::assign_real (const treal* pRe, int nReIncr = 1);
+\end{verbatim}
+assigns to a calling object's real part
+a value of an array pointed to by the parameter
+\verb"pRe" and returns the reference to
+the object it changes. The increment between array elements
+is equal to a value of the parameter \verb"nReIncr".
+The function is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+cvector v(3);
+v(1) = tcomplex(1., 2.);
+v(2) = tcomplex(2., 3.);
+v(3) = tcomplex(3., 4.);
+
+cout << v;
+
+const treal re[] = {2., 1., 0., -1., -2.};
+v.assign_real (re, 2);
+
+cout << v;
+\end{verbatim}
+prints
+\begin{verbatim}
+(1,2) (2,3) (3,4)
+(2,2) (0,3) (-2,4)
+\end{verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign\_imag (*,int)}
+The%
+\pdfdest name {ComplexArray.assign_imag (*,int)} fit{ }
+function
+\begin{verbatim}
+ComplexArray&
+ComplexArray::assign_imag (const treal* pIm, int nImIncr = 1);
+\end{verbatim}
+assigns to a calling object's imaginary part
+a value of an array pointed to by the parameter
+\verb"pIm" and returns the reference to
+the object it changes. The increment between array elements
+is equal to a value of the parameter \verb"nImIncr".
+The function is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+cvector v(3);
+v(1) = tcomplex(1., 2.);
+v(2) = tcomplex(2., 3.);
+v(3) = tcomplex(3., 4.);
+
+cout << v;
+
+const treal im[] = {2., 1., 0., -1., -2.};
+v.assign_imag (im, 2);
+
+cout << v;
+\end{verbatim}
+prints
+\begin{verbatim}
+(1,2) (2,3) (3,4)
+(1,2) (2,0) (3,-2)
+\end{verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign\_real (RealArray\&)}
+The%
+\pdfdest name {ComplexArray.assign_real (RealArray&)} fit{ }
+function
+\begin{verbatim}
+ComplexArray&
+ComplexArray::assign_real (const RealArray& vRe)
+throw (cvmexception);
+\end{verbatim}
+assigns to a calling object's real part
+a value of an array
+\verb"vRe" and returns the reference to
+the object it changes.
+The function is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+try {
+    cvector vc(3);
+    vc(1) = tcomplex(1., 2.);
+    vc(2) = tcomplex(2., 3.);
+    vc(3) = tcomplex(3., 4.);
+
+    cout << vc;
+
+    rvector vr(3);
+    vr(1) = 1.;
+    vr(3) = -1.;
+
+    vc.assign_real (vr);
+
+    cout << vc;
+}
+catch (cvmexception& e) {
+    cout << "Exception " << e.cause () <<
+                    ": " << e.what () << endl;
+}
+\end{verbatim}
+prints
+\begin{verbatim}
+(1,2) (2,3) (3,4)
+(1,2) (0,3) (-1,4)
+\end{verbatim}
+\newpage
+
+
+
+\subsubsection{assign\_imag (RealArray\&)}
+The%
+\pdfdest name {ComplexArray.assign_imag (RealArray&)} fit{ }
+function
+\begin{verbatim}
+ComplexArray&
+ComplexArray::assign_imag (const RealArray& vIm)
+throw (cvmexception);
+\end{verbatim}
+assigns to a calling object's imaginary part
+a value of an array
+\verb"vIm" and returns the reference to
+the object it changes.
+The function is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+try {
+    cvector vc(3);
+    vc(1) = tcomplex(1., 2.);
+    vc(2) = tcomplex(2., 3.);
+    vc(3) = tcomplex(3., 4.);
+
+    cout << vc;
+
+    rvector vr(3);
+    vr(1) = 1.;
+    vr(3) = -1.;
+
+    vc.assign_imag (vr);
+
+    cout << vc;
+}
+catch (cvmexception& e) {
+    cout << "Exception " << e.cause () <<
+                    ": " << e.what () << endl;
+}
+\end{verbatim}
+prints
+\begin{verbatim}
+(1,2) (2,3) (3,4)
+(1,1) (2,0) (3,-1)
+\end{verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign\_real (treal)}
+The%
+\pdfdest name {ComplexArray.assign_real (treal)} fit{ }
+function
+\begin{verbatim}
+ComplexArray&
+ComplexArray::assign_real (const treal d);
+\end{verbatim}
+assigns to every element of a calling object's real part
+a value of the parameter
+\verb"d" and returns the reference to
+the object it changes.
+The function is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+cvector v(5);
+cout << v.assign_real (3.);
+\end{verbatim}
+prints
+\begin{verbatim}
+(3,0) (3,0) (3,0) (3,0) (3,0)
+\end{verbatim}
+\newpage
+
+
+\subsubsection{assign\_imag (treal)}
+The%
+\pdfdest name {ComplexArray.assign_imag (treal)} fit{ }
+function
+\begin{verbatim}
+ComplexArray&
+ComplexArray::assign_imag (const treal d);
+\end{verbatim}
+assigns to every element of a calling object's imaginary part
+a value of the parameter
+\verb"d" and returns the reference to
+the object it changes.
+The function is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+cvector v(5);
+cout << v.assign_imag (3.);
+\end{verbatim}
+prints
+\begin{verbatim}
+(0,3) (0,3) (0,3) (0,3) (0,3)
+\end{verbatim}
+\newpage
+
+
+\subsubsection{conj}
+The%
+\pdfdest name {ComplexArray.conj} fit{ }
+function
+\begin{verbatim}
+ComplexArray& ComplexArray::conj ();
+\end{verbatim}
+multiplies a calling object's imaginary part by $-1$
+and returns the reference to
+the object it changes. Use \verb"transpose" or \verb"operator~"
+in order to
+make hermitian conjugation of a matrix.
+The function is inherited in the class
+\GOT{cvector}{cvector}
+and redefined in the classes
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+cvector v(3);
+v(1) = tcomplex(1., 2.);
+v(2) = tcomplex(2., 3.);
+v(3) = tcomplex(3., 4.);
+
+cout << v;
+v.conj ();
+cout << v << endl;
+
+scmatrix m (2);
+m.assign_real (1.);
+m.assign_imag (2.);
+m(1,2) = tcomplex (3., 4.);
+
+cout << m;
+m.conj ();
+cout << m;
+\end{verbatim}
+prints
+\begin{verbatim}
+(1,2) (2,3) (3,4)
+(1,-2) (2,-3) (3,-4)
+
+(1,2) (3,4)
+(1,2) (1,2)
+(1,-2) (3,-4)
+(1,-2) (1,-2)
+\end{verbatim}
+\newpage
+
+
+
+
+\subsubsection{conj (ComplexArray\&)}
+The%
+\pdfdest name {ComplexArray.conj (ComplexArray&)} fit{ }
+function
+\begin{verbatim}
+ComplexArray&
+ComplexArray::conj (const ComplexArray& aArg)
+throw (cvmexception);
+\end{verbatim}
+assigns to a calling object
+an array \verb"aArg"
+with imaginary part multiplied by $-1$
+and returns the reference to
+the object it changes. Use \verb"transpose" or \verb"operator~"
+in order to
+make hermitian conjugation of a matrix.
+The function is inherited in the class
+\GOT{cvector}{cvector}
+and redefined in the classes
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+cvector v1(3), v2(3);
+v1(1) = tcomplex(1., 2.);
+v1(2) = tcomplex(2.,3.);
+v1(3)=tcomplex(3.,4.);
+
+v2.conj (v1);
+cout << v1 << v2 << endl;
+
+scmatrix m1(2), m2(2);
+m1.assign_real (1.);
+m1.assign_imag (2.);
+m1(1,2) = tcomplex (3., 4.);
+
+m2.conj (m1);
+cout << m1 << m2;
+\end{verbatim}
+prints
+\begin{verbatim}
+(1,2) (2,3) (3,4)
+(1,-2) (2,-3) (3,-4)
+
+(1,2) (3,4)
+(1,2) (1,2)
+(1,-2) (3,-4)
+(1,-2) (1,-2)
+\end{verbatim}
+\newpage
+
+
+
+\subsubsection{normalize}
+The%
+\pdfdest name {ComplexArray.normalize} fit{ }
+function
+\begin{verbatim}
+ComplexArray& ComplexArray::normalize ();
+\end{verbatim}
+normalizes an array so its \GO{Euclidean norm}{Array.norm}
+becomes equal to 1. The function is inherited in the classes
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix},
+\GOT{scmatrix}{scmatrix}.
+See also \GOT{ComplexArray}{ComplexArray}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+cvector v(3);
+v(1) = tcomplex(1., 2.);
+v(2) = tcomplex(2., 3.);
+v(3) = tcomplex(3., 4.);
+
+v.normalize ();
+cout << v << v.norm() << endl;
+\end{verbatim}
+prints
+\begin{verbatim}
+(0.152499,0.304997) (0.304997,0.457496) (0.457496,0.609994)
+1
+\end{verbatim}
+\newpage
+

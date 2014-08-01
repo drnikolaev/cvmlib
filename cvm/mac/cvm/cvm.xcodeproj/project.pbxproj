@@ -1,0 +1,300 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2253B4E1182CA7D50049A7B5 /* cfun.h in Headers */ = {isa = PBXBuildFile; fileRef = 2253B4E0182CA7D50049A7B5 /* cfun.h */; };
+		556B9D351626883E0048AFFE /* arrays.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556B9D2A1626883E0048AFFE /* arrays.cpp */; };
+		556B9D361626883E0048AFFE /* blas.h in Headers */ = {isa = PBXBuildFile; fileRef = 556B9D2B1626883E0048AFFE /* blas.h */; };
+		556B9D371626883E0048AFFE /* cmatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556B9D2C1626883E0048AFFE /* cmatrix.cpp */; };
+		556B9D381626883E0048AFFE /* cvector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556B9D2D1626883E0048AFFE /* cvector.cpp */; };
+		556B9D391626883E0048AFFE /* cvm.h in Headers */ = {isa = PBXBuildFile; fileRef = 556B9D2E1626883E0048AFFE /* cvm.h */; };
+		556B9D3A1626883E0048AFFE /* globals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556B9D2F1626883E0048AFFE /* globals.cpp */; };
+		556B9D3B1626883E0048AFFE /* rmatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556B9D301626883E0048AFFE /* rmatrix.cpp */; };
+		556B9D3C1626883E0048AFFE /* rvector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556B9D311626883E0048AFFE /* rvector.cpp */; };
+		556B9D3D1626883E0048AFFE /* scmatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556B9D321626883E0048AFFE /* scmatrix.cpp */; };
+		556B9D3E1626883E0048AFFE /* srmatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556B9D331626883E0048AFFE /* srmatrix.cpp */; };
+		556B9D3F1626883E0048AFFE /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556B9D341626883E0048AFFE /* utils.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2253B4E0182CA7D50049A7B5 /* cfun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cfun.h; path = ../../src/cfun.h; sourceTree = "<group>"; };
+		556B9D23162688180048AFFE /* libcvm.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libcvm.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		556B9D2A1626883E0048AFFE /* arrays.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = arrays.cpp; path = ../../src/arrays.cpp; sourceTree = "<group>"; };
+		556B9D2B1626883E0048AFFE /* blas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = blas.h; path = ../../src/blas.h; sourceTree = "<group>"; };
+		556B9D2C1626883E0048AFFE /* cmatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cmatrix.cpp; path = ../../src/cmatrix.cpp; sourceTree = "<group>"; };
+		556B9D2D1626883E0048AFFE /* cvector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cvector.cpp; path = ../../src/cvector.cpp; sourceTree = "<group>"; };
+		556B9D2E1626883E0048AFFE /* cvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cvm.h; path = ../../src/cvm.h; sourceTree = "<group>"; };
+		556B9D2F1626883E0048AFFE /* globals.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = globals.cpp; path = ../../src/globals.cpp; sourceTree = "<group>"; };
+		556B9D301626883E0048AFFE /* rmatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = rmatrix.cpp; path = ../../src/rmatrix.cpp; sourceTree = "<group>"; };
+		556B9D311626883E0048AFFE /* rvector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = rvector.cpp; path = ../../src/rvector.cpp; sourceTree = "<group>"; };
+		556B9D321626883E0048AFFE /* scmatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = scmatrix.cpp; path = ../../src/scmatrix.cpp; sourceTree = "<group>"; };
+		556B9D331626883E0048AFFE /* srmatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = srmatrix.cpp; path = ../../src/srmatrix.cpp; sourceTree = "<group>"; };
+		556B9D341626883E0048AFFE /* utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = utils.cpp; path = ../../src/utils.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		556B9D20162688180048AFFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		556B9D18162688180048AFFE = {
+			isa = PBXGroup;
+			children = (
+				2253B4E0182CA7D50049A7B5 /* cfun.h */,
+				556B9D2A1626883E0048AFFE /* arrays.cpp */,
+				556B9D2B1626883E0048AFFE /* blas.h */,
+				556B9D2C1626883E0048AFFE /* cmatrix.cpp */,
+				556B9D2D1626883E0048AFFE /* cvector.cpp */,
+				556B9D2E1626883E0048AFFE /* cvm.h */,
+				556B9D2F1626883E0048AFFE /* globals.cpp */,
+				556B9D301626883E0048AFFE /* rmatrix.cpp */,
+				556B9D311626883E0048AFFE /* rvector.cpp */,
+				556B9D321626883E0048AFFE /* scmatrix.cpp */,
+				556B9D331626883E0048AFFE /* srmatrix.cpp */,
+				556B9D341626883E0048AFFE /* utils.cpp */,
+				556B9D24162688180048AFFE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		556B9D24162688180048AFFE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				556B9D23162688180048AFFE /* libcvm.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		556B9D21162688180048AFFE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2253B4E1182CA7D50049A7B5 /* cfun.h in Headers */,
+				556B9D361626883E0048AFFE /* blas.h in Headers */,
+				556B9D391626883E0048AFFE /* cvm.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		556B9D22162688180048AFFE /* cvm */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 556B9D27162688180048AFFE /* Build configuration list for PBXNativeTarget "cvm" */;
+			buildPhases = (
+				556B9D1F162688180048AFFE /* Sources */,
+				556B9D20162688180048AFFE /* Frameworks */,
+				556B9D21162688180048AFFE /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = cvm;
+			productName = cvm;
+			productReference = 556B9D23162688180048AFFE /* libcvm.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		556B9D1A162688180048AFFE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Nikolaev, Sergei";
+			};
+			buildConfigurationList = 556B9D1D162688180048AFFE /* Build configuration list for PBXProject "cvm" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 556B9D18162688180048AFFE;
+			productRefGroup = 556B9D24162688180048AFFE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				556B9D22162688180048AFFE /* cvm */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		556B9D1F162688180048AFFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				556B9D351626883E0048AFFE /* arrays.cpp in Sources */,
+				556B9D371626883E0048AFFE /* cmatrix.cpp in Sources */,
+				556B9D381626883E0048AFFE /* cvector.cpp in Sources */,
+				556B9D3A1626883E0048AFFE /* globals.cpp in Sources */,
+				556B9D3B1626883E0048AFFE /* rmatrix.cpp in Sources */,
+				556B9D3C1626883E0048AFFE /* rvector.cpp in Sources */,
+				556B9D3D1626883E0048AFFE /* scmatrix.cpp in Sources */,
+				556B9D3E1626883E0048AFFE /* srmatrix.cpp in Sources */,
+				556B9D3F1626883E0048AFFE /* utils.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		556B9D25162688180048AFFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = 4.8;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-lgfortran",
+					"-lftn_em64t_debug",
+				);
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		556B9D26162688180048AFFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_VERSION = 4.8;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-lgfortran",
+					"-lftn_em64t",
+				);
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		556B9D28162688180048AFFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				EXECUTABLE_PREFIX = lib;
+				GCC_VERSION = "";
+				INSTALL_PATH = /Users/sam/cvmlib/lib64;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../lib64\"",
+					/usr/local/lib,
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-lgfortran",
+					"-lftn_em64t_debug",
+					"-llapack_em64t_debug",
+					"-lblas_em64t_debug",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		556B9D29162688180048AFFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				EXECUTABLE_PREFIX = lib;
+				GCC_VERSION = "";
+				INSTALL_PATH = /Users/sam/cvmlib/lib64;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../lib64\"",
+					/usr/local/lib,
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-lgfortran",
+					"-lftn_em64t",
+					"-llapack_em64t",
+					"-lblas_em64t",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		556B9D1D162688180048AFFE /* Build configuration list for PBXProject "cvm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				556B9D25162688180048AFFE /* Debug */,
+				556B9D26162688180048AFFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		556B9D27162688180048AFFE /* Build configuration list for PBXNativeTarget "cvm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				556B9D28162688180048AFFE /* Debug */,
+				556B9D29162688180048AFFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 556B9D1A162688180048AFFE /* Project object */;
+}

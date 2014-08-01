@@ -1,0 +1,180 @@
+\subsection{Functions}
+Classes%
+\pdfdest name {SectionFunctions} fit%
+\pdfdest name {Functions} fit{}
+\verb"rfunction"  and \verb"cfunction" 
+encapsulate elementary functions of real
+       or complex numbers.
+Typically they are used to convert strings entered by a user to
+computable expressions without need to parse same expression
+over and over again. Also might be used to simplify computable
+expressions and to compute derivatives analytically, i.e.
+without using numerical methods. Functions can have zero, one
+or more than one variables and can be parameterized.
+See online documentation for details.
+
+Operators and functions supported in expressions:
+\begin{align*}
++\ -\ *\ /\ \PVerb{^} \quad & \text{add, subtract, multiply, divide, power}\\
+\texttt{exp(x)}\quad & e^x \\
+\texttt{sqrt(x)}\quad & \sqrt x\\
+\texttt{log(x)}\quad & \text{natural logarithm of}\ x\\
+\texttt{log10(x)}\quad & \text{common (base 10) logarithm of}\ x\\
+\texttt{sin(x)}\quad & \text{sine of}\ x\\
+\texttt{cos(x)}\quad & \text{cosine of}\ x\\
+\texttt{tan(x)}\quad & \text{tangent of}\ x\\
+\texttt{asin(x)}\quad & \text{arc sine of}\ x\\
+\texttt{acos(x)}\quad & \text{arc cosine of}\ x\\
+\texttt{atan(x)}\quad & \text{arc tangent of}\ x\\
+\texttt{sinh(x)}\quad & \text{hyperbolic sine of}\ x\\
+\texttt{cosh(x)}\quad & \text{hyperbolic cosine of}\ x\\
+\texttt{tanh(x)}\quad & \text{hyperbolic tangent of}\ x\\
+\texttt{sinint(x)}\quad & \text{sine integral of}\ x,\quad
+\int_0^x \frac{\sin t}{t}dt\\
+\texttt{cosint(x)}\quad & \text{cosine integral of}\ x,\quad
+-\int_x^\infty \frac{\cos t}{t}dt \\
+\texttt{sign(x)}\quad & \text{sign of}\ x,\quad
+ \left\{
+  \begin{aligned}
+-1 & \text{ if } x < 0\\
+ 0 & \text{ if } x = 0\\
+ 1 & \text{ if } x > 0
+  \end{aligned}
+ \right.\\
+\texttt{abs(x)}\quad & |x| \\
+\texttt{iif(x,expr1,expr2)}\quad & \text{immediate if}\quad
+ \left\{
+  \begin{aligned}
+expr1 & \text{ if } x < 0\\
+expr2 & \text{ if } x \ge 0
+  \end{aligned}
+ \right.\\
+\texttt{sat(x,y)}\quad & \text{satellite function of}\ x\
+\text{and}\ y,\quad
+ \left\{
+  \begin{aligned}
+1 & \text{ if } x > |y|\\
+0 & \text{ if } -|y| \le x \le |y|\\
+-1 & \text{ if } x < -|y|
+  \end{aligned}
+ \right.\\
+\texttt{i}\quad & 1\ \text{(one)}\\
+ & 0\ \text{(empty field means zero)}
+\end{align*}
+
+
+Example:
+\begin{Verbatim}
+using namespace cvm;
+try {
+    rfunction rf("{x,y} cos(x)*cos(y) + x + x + x");
+    std::cout << rf.simp() << std::endl;
+    std::cout << rf.drv(0) << std::endl;
+    std::cout << rf.drv(1) << std::endl;
+    double vars[] = {0., 0.};
+    std::cout << rf(vars) << std::endl;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+{x,y} x*3+cos(x)*cos(y)
+{x,y} 3-sin(x)*cos(y)
+{x,y} -sin(y)*cos(x)
+1
+\end{Verbatim}
+
+
+\subsection{Function vectors and matrices}
+Classes%
+\pdfdest name {FunctionsVM} fit{}
+\verb"rfvector", \verb"cfvector", 
+\verb"rfmatrix" and \verb"cfmatrix" 
+encapsulate vectors and matrices of elementary functions of real
+       or complex numbers.
+See online documentation for details.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+try {
+    rfunction f1("{x} x+sin(x/2)");
+    rfunction f2(2.);
+    // note: (f2^2) in parenthesis to follow priority:
+    std::cout << (f1*f2 + (f2^2)).simp() << std::endl;
+
+    string_array sa;
+    sa.push_back ("{x,y} x+y");
+    sa.push_back ("{x,y} x-y");
+    rfvector fv1(sa), fv2(sa);
+    
+    rfunction f = fv1 * fv2;
+    std::cout << f << std::endl;
+    std::cout << f.drv(0) << std::endl; // derivative by x
+    std::cout << f.drv(1) << std::endl; // derivative by y
+
+
+    double vars[] = {1., 2.};
+    std::cout << f(vars) << std::endl;
+    
+    string_array sa1;
+    sa1.push_back ("{x,y} x");
+    sa1.push_back ("{x,y} y");
+    sa1.push_back ("{x,y} 1");
+    sa1.push_back ("{x,y} 2");
+    sa1.push_back ("{x,y} 3");
+    sa1.push_back ("{x,y} 4");
+    rfmatrix fm(2,3,sa1);
+
+    rfvector fvm = fv1 * fm;
+    std::cout << fvm << std::endl;
+
+    std::cout << std::endl;
+    string_array sa2;
+    sa2.push_back ("{x,y} 2*x^2+3*y^3");
+    sa2.push_back ("{x,y} 4*x^3-5*y^2");
+    sa2.push_back ("{x,y} -x^4+6*y^2");
+    rfvector fv(sa2);
+
+    rfmatrix fmj = fv.jacobian();
+    std::cout << fv << std::endl << fmj << std::endl;
+    std::cout << fmj(vars);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+{x} (x+sin(x/2))*2+4
+{x,y} (x+y)^2+(x-y)^2
+{x,y} 4*x
+{x,y} 2*(x+y)+(-2)*(x-y)
+10
+{x,y} (x+y)*x+(x-y)*y {x,y} x+y+(x-y)*2 {x,y} (x+y)*3+(x-y)*4
+
+
+{x,y} 2*x^2+3*y^3 {x,y} 4*x^3-5*y^2 {x,y} -x^4+6*y^2
+
+{x,y} 4*x {x,y} 9*y^2
+{x,y} 12*x^2 {x,y} (-10)*y
+{x,y} (-4)*x^3 {x,y} 12*y
+
+4 36
+12 -20
+-4 24
+\end{Verbatim}
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage

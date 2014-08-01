@@ -1,0 +1,415 @@
+\bigskip
+\noindent%
+\verb"template <typename TR, typename TC>"\\
+\verb"class Array : public basic_array<TC> {"\\
+\verb"public:"\\
+\verb"    int "\GOT{incr}{Array.incr}\verb" () const;"\\
+\verb"    int "\GOT{indofmax}{Array.indofmax}\verb" () const;"\\
+\verb"    int "\GOT{indofmin}{Array.indofmin}\verb" () const;"\\
+\verb"    virtual TR "\GOT{norm}{Array.norm}\verb" () const;"\\
+\verb"    virtual TR "\GOT{norminf}{Array.norminf}\verb" () const;"\\
+\verb"    virtual TR "\GOT{norm1}{Array.norm1}\verb" () const;"\\
+\verb"    virtual TR "\GOT{norm2}{Array.norm2}\verb" () const;"\\
+\verb" "\\
+\verb"    <typename TR, typename TC>"\\
+\verb"    friend std::istream& "\GOT{operator >{}> <>}{Array.input}\verb" (std::istream& is,"\\
+\verb"                                         Array<TR,TC>& aIn);"\\
+\verb" "\\
+\verb"    <typename TR, typename TC>"\\
+\verb"    friend std::ostream& "\GOT{operator <{}< <>}{Array.output}\verb" (std::ostream& os,"\\
+\verb"                                         const Array<TR,TC>& aOut);"\\
+\verb"};"
+\newpage
+
+
+\subsubsection{incr}
+Function%
+\pdfdest name {Array.incr} fit
+\begin{Verbatim}
+int Array<TR,TC>::incr () const;
+\end{Verbatim}
+returns  increment between elements of calling array.
+This function is \emph{inherited} in all classes of the library:
+\GOT{rvector}{rvector},   \GOT{cvector}{cvector},
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+It always returns $1$ for matrices.
+See also \GOT{Array}{Array}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.};
+rvector v1 (a, 3, 2);
+rvector v2(10);
+
+std::cout << v1 << v1.incr () << std::endl;
+std::cout << v2.incr () << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 3 5
+2
+1
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{indofmax}
+Function%
+\pdfdest name {Array.indofmax} fit{}
+\begin{Verbatim}
+int Array<TR,TC>::indofmax () const;
+\end{Verbatim}
+returns \Based
+index of calling array's element with maximum
+absolute value.
+Function is \emph{inherited}%
+\footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
+in all classes of the library:
+\GOT{rvector}{rvector},   \GOT{cvector}{cvector},
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{Array}{Array}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {3., 2., -5., -4., 5., -6.};
+const rvector v (a, 4);
+const rmatrix m (a, 2, 3);
+
+std::cout << v << v.indofmax () << std::endl << std::endl;
+std::cout << m << m.indofmax () << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3 2 -5 -4
+3
+
+3 -5 5
+2 -4 -6
+6
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{indofmin}
+Function%
+\pdfdest name {Array.indofmin} fit
+\begin{Verbatim}
+int Array<TR,TC>::indofmin () const;
+\end{Verbatim}
+returns  \Based
+index of calling array's element with minimum
+absolute value.
+Function is \emph{inherited}%
+\footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
+in all classes of the library:
+\GOT{rvector}{rvector},   \GOT{cvector}{cvector},
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{Array}{Array}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {3., 2., -5., 0., 0., -6.};
+const rvector v (a, 4);
+const rmatrix m (a, 2, 3);
+
+std::cout << v << v.indofmin () << std::endl << std::endl;
+std::cout << m << m.indofmin () << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3 2 -5 0
+4
+
+3 -5 0
+2 0 -6
+4
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{norm}
+Virtual function%
+\pdfdest name {Array.norm} fit
+\begin{verbatim}
+virtual TR Array<TR,TC>::norm() const;
+\end{verbatim}
+returns Euclidean norm of calling array that for vectors is defined as
+\begin{equation*}
+{\|x\|}_E=\left(\sum_{i=1}^{n} |x_i|^2\right)^{1/2}
+\end{equation*}
+and for matrices as
+\begin{equation*}
+{\|A\|}_E=\left(\sum_{i=1}^{m}\sum_{j=1}^{n} |a_{ij}|^2\right)^{1/2},
+\end{equation*}
+where $A$ is $m\times n$ matrix.
+Function is \emph{inherited}
+in the following classes of the library:
+\GOT{rvector}{rvector},   \GOT{cvector}{cvector},
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+It's \emph{redefined} in
+\GOT{srbmatrix}{srbmatrix} and \GOT{scbmatrix}{scbmatrix}.
+See also \GOT{rvector::nor\-ma\-lize}{rvector.normalize},
+\GOT{cvector::nor\-ma\-lize}{cvector.normalize},
+\GOT{rmatrix::nor\-ma\-lize}{rmatrix.normalize},
+\GOT{cmatrix::nor\-ma\-lize}{cmatrix.normalize} and
+\GOT{Array}{Array}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (ios::scientific | ios::showpos);
+std::cout.precision (12);
+
+double a[] = {1., 2., 3., -4., 5., -6.};
+const rvector v (a, 3);
+const rmatrix m (a, 2, 3);
+
+std::cout << v << v.norm () << std::endl << std::endl;
+std::cout << m << m.norm () << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++1.000000000000e+000 +2.000000000000e+000 +3.000000000000e+000
++3.741657386774e+000
+
++1.000000000000e+000 +3.000000000000e+000 +5.000000000000e+000
++2.000000000000e+000 -4.000000000000e+000 -6.000000000000e+000
++9.539392014169e+000
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{norminf}
+Virtual function%
+\pdfdest name {Array.norminf} fit
+\begin{verbatim}
+virtual TR Array<TR,TC>::norminf () const;
+\end{verbatim}
+returns  infinity norm of calling array that for vectors
+is defined as
+\begin{equation*}
+{\|x\|}_\infty=\max_{i=1,\dots,n} |x_i|
+\end{equation*}
+and for matrices as
+\begin{equation*}
+{\|A\|}_\infty=\max_{i=1,\dots,m} \sum_{j=1}^{n} |a_{ij}|,
+\end{equation*}
+where $A$ is $m\times n$ matrix.
+Function is \emph{inherited}
+in
+\GOT{rvector}{rvector} and   \GOT{cvector}{cvector}
+classes of the library.
+It's \emph{redefined} in \GOT{Matrix}{Matrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{Matrix::norm1}{Matrix.norm1}, \GOT{Array}{Array}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., -4., 5., -6.};
+const rvector v (a, 3);
+const rmatrix m (a, 2, 3);
+
+std::cout << v << v.norminf () << std::endl;
+std::cout << m << m.norminf () << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+3
+
+1 3 5
+2 -4 -6
+12
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{norm1}
+Virtual function%
+\pdfdest name {Array.norm1} fit
+\begin{verbatim}
+virtual TR Array<TR,TC>::norm1 () const;
+\end{verbatim}
+returns 1-norm of calling array that for vectors
+is defined as
+\begin{equation*}
+{\|x\|}_1=\sum_{i=1}^{n} |x_i|
+\end{equation*}
+and for matrices as
+\begin{equation*}
+{\|A\|}_{1}=\max_{j=1,\dots,n} \sum_{i=1}^{m} |a_{ij}|,
+\end{equation*}
+where $x$ is  vector of size $n$ and $A$ is  $m\times n$ matrix.
+Function is \emph{inherited} in
+\GOT{rvector}{rvector} and \GOT{cvector}{cvector} classes.
+It's \emph{redefined} in
+\GOT{rmatrix}{rmatrix} and \GOT{cmatrix}{cmatrix}
+and inherited thereafter.
+See also \GOT{Array}{Array}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (12);
+
+double a[] = {1., 2., 3., -4., 5., -6.};
+const rvector v (a, 3);
+const rmatrix m (a, 2, 3);
+
+std::cout << v << v.norm1 () << std::endl << std::endl;
+std::cout << m << m.norm1 () << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++1.000000000000e+000 +2.000000000000e+000 +3.000000000000e+000
++6.000000000000e+000
+
++1.000000000000e+000 +3.000000000000e+000 +5.000000000000e+000
++2.000000000000e+000 -4.000000000000e+000 -6.000000000000e+000
++1.100000000000e+001
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{norm2}
+Virtual function%
+\pdfdest name {Array.norm2} fit
+\begin{verbatim}
+virtual TR Array<TR,TC>::norm2 () const;
+\end{verbatim}
+returns  2-norm of calling array that for vectors
+is defined as
+\begin{equation*}
+{\|x\|}_2={\|x\|}_E=\left(\sum_{i=1}^{n} |x_i|^2\right)^{1/2}
+\end{equation*}
+and for matrices as
+\begin{equation*}
+{\|A\|}_2=\max_i\sigma_i = \left(\max_{|x|=1}\,
+(Ax\cdot Ax)\right)^{1/2},
+\end{equation*}
+where $\sigma_i$ is  \hbox{$i$-th} singular value
+of $m\times n$ matrix $A,\ i=1,\dots,\min(m,n)$.
+Function is \emph{inherited} in
+\GOT{rvector}{rvector} and \GOT{cvector}{cvector} classes.
+It's \emph{redefined} in
+\GOT{rmatrix}{rmatrix} and \GOT{cmatrix}{cmatrix}
+and inherited thereafter.
+See also \GOT{Array}{Array}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (12);
+
+double a[] = {1., 2., 3., -4., 5., -6.};
+const rvector v (a, 3);
+const rmatrix m (a, 2, 3);
+
+std::cout << v << v.norm2 () << std::endl << std::endl;
+std::cout << m << m.norm2 () << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++1.000000000000e+000 +2.000000000000e+000 +3.000000000000e+000
++3.741657386774e+000
+
++1.000000000000e+000 +3.000000000000e+000 +5.000000000000e+000
++2.000000000000e+000 -4.000000000000e+000 -6.000000000000e+000
++9.319612060784e+000
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator >{}> <> (std::istream\& is, Array<TR,TC>\& aIn)}
+Friend template operator%
+\pdfdest name {Array.input} fit
+\begin{verbatim}
+template <typename TR, typename TC>
+friend std::istream& operator >> <> (std::istream& is,
+                                     Array<TR,TC>& aIn);
+\end{verbatim}
+fills calling object referenced by parameter \verb"aIn" with numbers from
+\verb"is" stream.
+See also \GOT{basic\_array::ope\-ra\-tor >{}>\ }{basicarray.input},
+\GOT{Array}{Array}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left);
+std::cout.precision (2);
+
+try {
+    std::ofstream os;
+    os.open ("in.txt");
+    os << 1.2 << " " << 2.3 << std::endl << 3.4;
+    os.close ();
+
+    std::ifstream is("in.txt");
+    rvector v(5);
+    is >> v;
+
+    std::cout << v;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.20e+000 2.30e+000 3.40e+000 0.00e+000 0.00e+000
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator <{}< <> (std::ostream\& os, const Array<TR,TC>\& aOut)}
+Friend template operator%
+\pdfdest name {Array.output} fit
+\begin{verbatim}
+template <typename TR, typename TC>
+friend std::ostream& operator << <> (std::ostream& os,
+                                     const Array<TR,TC>& aOut);
+\end{verbatim}
+outputs calling object referenced by \verb"aOut" into
+\verb"os" stream.
+Operator is \GO{redefined}{Matrix.output}
+in the class
+\GOT{Matrix}{Matrix}.
+See also \GOT{basic\_array::ope\-ra\-tor <{}<\ }{basicarray.output},
+\GOT{Array}{Array}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left);
+std::cout.precision (2);
+
+cvector v(3);
+v(1) = tcomplex (1., 2.);
+v(2) = tcomplex (3., 4.);
+
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.00e+000,2.00e+000) (3.00e+000,4.00e+000) (0.00e+000,0.00e+000)
+\end{Verbatim}
+\newpage
+

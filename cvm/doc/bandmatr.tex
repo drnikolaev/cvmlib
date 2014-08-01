@@ -1,0 +1,75 @@
+\bigskip
+\noindent%
+\verb"template <typename TR, typename TC>"\\
+\verb"class BandMatrix {"\\
+\verb"public:"\\
+\verb"    int "\GOT{lsize}{BandMatrix.lsize}\verb" () const;"\\
+\verb"    int "\GOT{usize}{BandMatrix.usize}\verb" () const;"\\
+\verb"};"
+\newpage
+
+
+\subsubsection{lsize}
+Function%
+\pdfdest name {BandMatrix.lsize} fit
+\begin{verbatim}
+int BandMatrix<TR,TC>::lsize () const;
+\end{verbatim}
+returns number of lower sub-diagonals
+of calling matrix.
+Function is \emph{inherited} in the classes
+\GOT{srbmatrix}{srbmatrix} and \GOT{scbmatrix}{scbmatrix}.
+See also \GOT{BandMatrix}{BandMatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srbmatrix m(4,2,1);
+m.set(1.);
+std::cout << m;
+std::cout << m.msize() << " " << m.nsize() << " " << m.size();
+std::cout << " " << m.lsize() << " " << m.usize() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 1 0 0
+1 1 1 0
+1 1 1 1
+0 1 1 1
+4 4 16 2 1
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{usize}
+Function%
+\pdfdest name {BandMatrix.usize} fit
+\begin{verbatim}
+int BandMatrix<TR,TC>::usize () const;
+\end{verbatim}
+returns number of upper sub-diagonals
+of calling matrix.
+Function is \emph{inherited} in the classes
+\GOT{srbmatrix}{srbmatrix} and \GOT{scbmatrix}{scbmatrix}.
+See also \GOT{BandMatrix}{BandMatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srbmatrix m(4,2,1);
+m.set(1.);
+std::cout << m;
+std::cout << m.msize() << " " << m.nsize() << " " << m.size() ;
+std::cout << " " << m.lsize() << " " << m.usize() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 1 0 0
+1 1 1 0
+1 1 1 1
+0 1 1 1
+4 4 16 2 1
+\end{Verbatim}
+\newpage
+
+

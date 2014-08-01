@@ -1,0 +1,824 @@
+%\bigskip
+\noindent%
+\verb"template <typename T>"\\
+\verb"class basic_array {"\\
+\verb"public:"\\
+\verb"    int "\GOT{basic\_array}{basicarray.ctr}\verb" ();"\\
+\verb"    explicit "\GOT{basic\_array}{basicarray.ctr2}\verb" (int nSize, bool bZeroMemory = true);"\\
+\verb"    "\GOT{basic\_array}{basicarray.ctr2.5}\verb" (T* p, int nSize);"\\
+\verb"    "\GOT{basic\_array}{basicarray.ctr3}\verb" (const T* p, int nSize);"\\
+\verb"    "\GOT{basic\_array}{basicarray.ctrstl}\verb" (const T* first, const T* last);"\\
+\verb"    "\GOT{basic\_array}{basicarray.copyctr}\verb" (const basic_array& a);"\\
+\verb"    int "\GOT{size}{basicarray.size}\verb" () const;"\\
+\verb"    T* "\GOT{get}{basicarray.get}\verb" ();"\\
+\verb"    const T* "\GOT{get}{basicarray.get}\verb" () const;"\\
+\verb"    "\GOT{operator T*}{basicarray.get}\verb" ();"\\
+\verb"    "\GOT{operator const T*}{basicarray.get}\verb" () const;"\\
+\verb"    T& "\GOT{operator ()}{basicarray.indexing}\verb" (int i) throw (cvmexception);"\\
+\verb"    T "\GOT{operator ()}{basicarray.indexing}\verb" (int i) const throw (cvmexception);"\\
+\verb"    T& "\GOT{operator []}{basicarray.indexing}\verb" (size_type i) throw (cvmexception);"\\
+\verb"    T "\GOT{operator []}{basicarray.indexing}\verb" (size_type i) const throw (cvmexception);"\\
+\verb"    T& "\GOT{operator []}{basicarray.indexing}\verb" (int i) throw (cvmexception);"\\
+\verb"    T "\GOT{operator []}{basicarray.indexing}\verb" (int i) const throw (cvmexception);"\\
+\verb"    basic_array& "\GOT{operator =}{basicarray.operator =}\verb" (const basic_array& a) throw (cvmexception);"\\
+\verb"    basic_array& "\GOT{assign}{basicarray.assign}\verb" (const T* p);"\\
+\verb"    basic_array& "\GOT{set}{basicarray.set}\verb" (T x);"\\
+\verb"    basic_array& "\GOT{resize}{basicarray.resize}\verb" (int nNewSize) throw (cvmexception);"\\
+\verb"    // "\GOT{STL-specific type definitions}{basicarray.typedefs}\\
+\verb"    typedef T value_type;"\\
+\verb"    typedef value_type* pointer;"\\
+\verb"    typedef const value_type* const_pointer;"\\
+\verb"    typedef value_type* iterator;"\\
+\verb"    typedef const value_type* const_iterator;"\\
+\verb"    typedef value_type& reference;"\\
+\verb"    typedef const value_type& const_reference;"\\
+\verb"    typedef size_t size_type;"\\
+\verb"    typedef ptrdiff_t difference_type;"\\
+\verb"    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;"\\
+\verb"    typedef std::reverse_iterator<iterator> reverse_iterator;"\\
+\verb"    // STL-specific functions"\\
+\verb"    iterator "\GOT{begin}{basicarray.beginend}\verb" ();"\\
+\verb"    const_iterator "\GOT{begin}{basicarray.beginend}\verb" () const;"\\
+\verb"    iterator "\GOT{end}{basicarray.beginend}\verb" ();"\\
+\verb"    const_iterator "\GOT{end}{basicarray.beginend}\verb" () const;"\\
+\verb"    reverse_iterator "\GOT{rbegin}{basicarray.beginend}\verb" ();"\\
+\verb"    const_reverse_iterator "\GOT{rbegin}{basicarray.beginend}\verb" () const;"\\
+\verb"    reverse_iterator "\GOT{rend}{basicarray.beginend}\verb" ();"\\
+\verb"    const_reverse_iterator "\GOT{rend}{basicarray.beginend}\verb" () const;"\\
+\verb"    size_type "\GOT{max\_size}{basicarray.beginend}\verb" () const;"\\
+\verb"    size_type "\GOT{capacity}{basicarray.beginend}\verb" () const;"\\
+\verb"    bool "\GOT{empty}{basicarray.beginend}\verb" () const;"\\
+\verb"    reference "\GOT{front}{basicarray.beginend}\verb" ();"\\
+\verb"    const_reference "\GOT{front}{basicarray.beginend}\verb" ();"\\
+\verb"    reference "\GOT{back}{basicarray.beginend}\verb" ();"\\
+\verb"    const_reference "\GOT{back}{basicarray.beginend}\verb" () const;"\\
+%\verb"    void "\GOT{reserve}{basicarray.beginend}\verb" (size_type n) throw (cvmexception);"\\
+\verb"    void "\GOT{assign}{basicarray.beginend}\verb" (size_type n, const T& val) throw (cvmexception);"\\
+\verb"    void "\GOT{assign}{basicarray.beginend}\verb" (const_iterator first,"\\
+\verb"                 const_iterator last) throw (cvmexception);"\\
+\verb"    void "\GOT{resize}{basicarray.beginend}\verb" (size_type nNewSize) throw (cvmexception);"\\
+\verb"    void "\GOT{clear}{basicarray.beginend}\verb" ();"\\
+\verb"    void "\GOT{swap}{basicarray.beginend}\verb" (basic_array& v);"\\
+\verb"    reference "\GOT{at}{basicarray.at}\verb" (size_type n) throw (cvmexception);"\\
+\verb"    const_reference "\GOT{at}{basicarray.at}\verb" (size_type n) const throw (cvmexception);"\\
+\verb"    void "\GOT{push\_back}{basicarray.pushpop}\verb" (const T& x) throw (cvmexception);"\\
+\verb"    void "\GOT{pop\_back}{basicarray.pushpop}\verb" () throw (cvmexception);"\\
+\verb"    iterator "\GOT{insert}{basicarray.inserterase}\verb" (iterator position, const T& x) throw (cvmexception);"\\
+\verb"    iterator "\GOT{erase}{basicarray.inserterase}\verb" (iterator position) throw (cvmexception);"\\
+\verb" "\\
+\verb"    template <typename T>"\\
+\verb"    friend std::istream& "\GOT{operator >{}> <>}{basicarray.input}\verb" (const std::istream& is,"\\
+\verb"                                         basic_array<T>& aIn);"\\
+\verb" "\\
+\verb"    template <typename T>"\\
+\verb"    friend std::ostream& "\GOT{operator <{}< <>}{basicarray.output}\verb" (std::ostream& os,"\\
+\verb"                                         const basic_array<T>& aOut);"\\
+\verb"};"
+\newpage
+
+
+\subsubsection{basic\_array()}
+Default constructor%
+\pdfdest name {basicarray.ctr} fit
+\begin{verbatim}
+basic_array<T>::basic_array();
+\end{verbatim}
+creates  empty \verb"basic_array" object. See also 
+\GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+iarray a;
+std::cout << a.size() << std::endl;
+a.resize(10);
+std::cout << a.size() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0
+10
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{basic\_array(int, bool)}
+Constructor%
+\pdfdest name {basicarray.ctr2} fit
+\begin{verbatim}
+explicit basic_array<T>::basic_array(int nSize, bool bZeroMemory = true);
+\end{verbatim}
+creates  \verb"basic_array" object of size equal to \verb"nSize". 
+Allocated memory is initialized with zero values by default 
+(you can pass \verb"false" in second argument in order to 
+avoid this initialization). 
+Constructor throws \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed or memory allocation failure.
+See also
+\GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+iarray a(5);
+std::cout << a.size() << " " << a[1] << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+5 0
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{basic\_array(T*, int)}
+Constructor%
+\pdfdest name {basicarray.ctr2.5} fit
+\begin{verbatim}
+basic_array<T>::basic_array (T* p, int nSize);
+\end{verbatim}
+creates  \verb"basic_array" object of size equal to 
+\verb"nSize" and shares memory (shallow copy) with array pointed to by \verb"p" parameter.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed.
+See also \GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+int a[] = {1, 2, 3, 4};
+iarray v (a, 3);
+std::cout << v;
+a[0] = 77;
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+77 2 3
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{basic\_array(const T*, int)}
+Constructor%
+\pdfdest name {basicarray.ctr3} fit
+\begin{verbatim}
+basic_array<T>::basic_array (const T* p, int nSize);
+\end{verbatim}
+creates  \verb"basic_array" object of size equal to 
+\verb"nSize" and copies \verb"nSize" elements of
+an array \verb"p" to it.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed or memory allocation failure.
+See also \GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+const int a[] = {1, 2, 3, 4};
+iarray v (a, 3);
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{basic\_array(const T*, const T*)}
+Constructor%
+\pdfdest name {basicarray.ctrstl} fit
+\begin{verbatim}
+basic_array<T>::basic_array (const T* first, const T* last);
+\end{verbatim}
+creates  \verb"basic_array" object of size equal to 
+\verb"last-first" and copies all elements in the range
+of \verb"[first,last)" to it.
+Constructor throws \GOT{cvmexception}{cvmexception}
+in case of wrong range passed or memory allocation failure.
+See also \GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+const int a[] = {1, 2, 3, 4};
+const iarray v (a+1, a+3);
+std::cout << v << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+2 3
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{basic\_array(const basic\_array\&)}
+Copy constructor%
+\pdfdest name {basicarray.copyctr} fit
+\begin{verbatim}
+basic_array<T>::basic_array (const basic_array& a);
+\end{verbatim}
+creates  \verb"basic_array" object of size equal to size of
+vector \verb"a" and 
+sets every element of created array to  value of
+appropriate element of  \verb"a".
+See also \GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+iarray a(5);
+a.set(3);
+iarray b(a);
+std::cout << b;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3 3 3 3 3
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{size()}
+Function%
+\pdfdest name {basicarray.size} fit
+\begin{verbatim}
+int basic_array<T>::size () const;
+\end{verbatim}
+returns  number of elements of calling array.
+This function is \emph{inherited} in all classes of the library:
+\GOT{rvector}{rvector},   \GOT{cvector}{cvector},
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rvector v(3);
+cmatrix m(10,20);
+cout << v.size() << " " << m.size() << endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3 200
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{get(), operator T*()}
+Functions and operators%
+\pdfdest name {basicarray.get} fit
+\begin{verbatim}
+T* basic_array<T>::get ();
+const T* basic_array<T>::get () const;
+basic_array<T>::operator T* ();
+basic_array<T>::operator const T* () const;
+\end{verbatim}
+return  pointer to beginning (first element) of calling array.
+These functions and operators are \emph{inherited} in all 
+classes of the library:
+\GOT{rvector}{rvector},   \GOT{cvector}{cvector},
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+void cprint (const std::complex<double>* p, int size)
+{
+    for (int i = 0; i < size; ++i)
+        std::cout << p[i] << " ";
+    std::cout << std::endl;
+}
+...
+iarray a(10);
+scmatrix m(3);
+a[2] = 1;
+m(3,1) = std::complex<double>(1., 2.);
+std::cout << a.get()[1] << std::endl;
+cprint(m, 3);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1
+(0.00e+00,0.00e+00) (0.00e+00,0.00e+00) (1.00e+00,2.00e+00)
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{Indexing operators}
+Indexing operators%
+\pdfdest name {basicarray.indexing} fit
+\begin{verbatim}
+T& basic_array<T>::operator () (int i) throw (cvmexception);
+T  basic_array<T>::operator () (int i) const throw (cvmexception);
+T& basic_array<T>::operator [] (size_type i) throw (cvmexception);
+T  basic_array<T>::operator [] (size_type i) const throw (cvmexception);
+T& basic_array<T>::operator [] (int i) throw (cvmexception);
+T  basic_array<T>::operator [] (int i) const throw (cvmexception);
+\end{verbatim}
+return  reference (or value for constant versions)
+to \verb"i"-th element of calling array. Please note that \emph{all indexing 
+operators of the library are \Based.}
+These operators are \emph{inherited} in 
+\GOT{rvector}{rvector} and \GOT{cvector}{cvector} 
+classes of the library but \emph{reimplemented} in other ones:
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    rvector v (10);
+    v[1] = 1.;
+    v(2) = 2.;
+    std::cout << v;
+
+    double a[] = {1., 2., 3., 4.};
+    const rvector vc (a, 4);
+    std::cout << vc(1) << " " << vc[2] << std::endl;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 0 0 0 0 0 0 0 0
+1 2
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator = (const basic\_array\&)}
+Assignment operator%
+\pdfdest name {basicarray.operator =} fit
+\begin{verbatim}
+basic_array<T>&
+basic_array<T>::operator = (const basic_array& a) throw (cvmexception);
+\end{verbatim}
+sets every element of  calling array to  value of
+appropriate element of  array \verb"a"
+and returns  reference to the object changed.
+This operator is \emph{reimplemented} in all classes of the library:
+\GOT{rvector}{rvector}, \GOT{cvector}{cvector} ,
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{basic\_array}{basicarray}.
+Operator throws \GOT{cvmexception}{cvmexception}
+in case of different sizes of the arrays.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+iarray a(5), b(5);
+a.set(3);
+b = a;
+std::cout << b;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3 3 3 3 3
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{assign(const T*)}
+Function%
+\pdfdest name {basicarray.assign} fit
+\begin{verbatim}
+basic_array<T>& basic_array<T>::assign (const T* p);
+\end{verbatim}
+sets every element of  calling array to  value of
+appropriate element of  array pointed to by parameter \verb"p"
+and returns  reference to the object changed.
+This function is \emph{reimplemented} in all classes of the library:
+\GOT{rvector}{rvector}, \GOT{cvector}{cvector} ,
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+const int a[] = {1, 2, 3, 4, 5, 6, 7};
+iarray v (5);
+
+v.assign(a);
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3 4 5
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{set(T)}
+Function%
+\pdfdest name {basicarray.set} fit
+\begin{verbatim}
+basic_array<T>& basic_array<T>::set (T x);
+\end{verbatim}
+sets every element of  calling array to  value of
+parameter \verb"x"
+and returns  reference to the object changed.
+This function is \emph{reimplemented} in all classes of the library:
+\GOT{rvector}{rvector}, \GOT{cvector}{cvector} ,
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+iarray a(5);
+a.set(3);
+std::cout << a;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3 3 3 3 3
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{resize}
+Function%
+\pdfdest name {basicarray.resize} fit
+\begin{verbatim}
+basic_array<T>&
+basic_array<T>::resize (int nNewSize) throw (cvmexception);
+\end{verbatim}
+changes  size of  calling array to be equal to
+\verb"nNewSize" and returns  reference to
+the array changed. Calling array
+will be filled with zeroes in case of increasing of its size.
+This function is \emph{reimplemented} in all classes of the library:
+\GOT{rvector}{rvector}, \GOT{cvector}{cvector} ,
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+Function throws \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed or memory allocation failure.
+See also \GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    const int a[] = {1, 2, 3, 4};
+    iarray v (a, 3);
+    std::cout << v;
+    v.resize(2);
+    std::cout << v;
+    v.resize(4);
+    std::cout << v;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+1 2
+1 2 0 0
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{STL-specific type definitions}
+Type definitions%
+\pdfdest name {basicarray.typedefs} fit
+\begin{verbatim}
+typedef T value_type;
+typedef value_type* pointer;
+typedef const value_type* const_pointer;
+typedef value_type* iterator;
+typedef const value_type* const_iterator;
+typedef value_type& reference;
+typedef const value_type& const_reference;
+typedef size_t size_type;
+typedef ptrdiff_t difference_type;
+typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+typedef std::reverse_iterator<iterator> reverse_iterator;
+\end{verbatim}
+are provided for every class of the library to be compatible 
+with STL algorithms and methods. See also 
+\GOT{basic\_array}{basicarray}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rvector vs1(5);
+vs1[1] = 1.; vs1[2] = 2.; vs1[3] = 3.; vs1[4] = 4.; vs1[5] = 5.;
+std::cout << vs1;
+
+rvector::iterator it = vs1.begin() + 1;
+rvector::iterator ite = vs1.erase(it);
+std::cout << vs1;
+std::cout << *ite << std::endl;
+
+ite = vs1.insert(ite, 10.);
+std::cout << vs1;
+std::cout << *ite << std::endl;
+
+vs1.push_back(11.);
+std::cout << vs1;
+
+vs1.randomize(0., 2.);
+std::cout << vs1;
+std::sort(vs1.begin(), vs1.end());
+std::cout << vs1;
+std::cout << *std::max_element(vs1.begin(), vs1.end()) << std::endl;
+
+std::reverse(vs1.begin(), vs1.end());
+std::cout << vs1;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.00e+000 2.00e+000 3.00e+000 4.00e+000 5.00e+000
+1.00e+000 3.00e+000 4.00e+000 5.00e+000
+3.00e+000
+1.00e+000 1.00e+001 3.00e+000 4.00e+000 5.00e+000
+1.00e+001
+1.00e+000 1.00e+001 3.00e+000 4.00e+000 5.00e+000 1.10e+001
+1.11e-001 4.96e-001 1.70e+000 1.91e+000 1.19e-001 1.11e+000
+1.11e-001 1.19e-001 4.96e-001 1.11e+000 1.70e+000 1.91e+000
+1.91e+000
+1.91e+000 1.70e+000 1.11e+000 4.96e-001 1.19e-001 1.11e-001
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{STL-specific functions:\\
+begin(), end(), rbegin(), rend(), \\
+max\_size(), capacity(), empty(), front(), back(),\\
+%reserve(),\\
+assign(), resize(), clear(), swap()}
+Functions%     %%%void basic_array<T>::reserve (size_type n);
+\pdfdest name {basicarray.beginend} fit
+\begin{verbatim}
+basic_array<T>::iterator basic_array<T>::begin();
+basic_array<T>::const_iterator basic_array<T>::begin() const;
+basic_array<T>::iterator basic_array<T>::end();
+basic_array<T>::const_iterator basic_array<T>::end() const;
+basic_array<T>::reverse_iterator basic_array<T>::rbegin();
+basic_array<T>::const_reverse_iterator basic_array<T>::rbegin() const;
+basic_array<T>::reverse_iterator basic_array<T>::rend();
+basic_array<T>::const_reverse_iterator basic_array<T>::rend();
+basic_array<T>::size_type basic_array<T>::max_size() const;
+basic_array<T>::size_type basic_array<T>::capacity() const;
+bool basic_array<T>::empty() const;
+basic_array<T>::reference basic_array<T>::front();
+basic_array<T>::const_reference basic_array<T>::front();
+basic_array<T>::reference basic_array<T>::back();
+basic_array<T>::const_reference basic_array<T>::back();
+void basic_array<T>::assign (size_type n, 
+                             const T& val) throw (cvmexception);
+void basic_array<T>::assign (const_iterator first, 
+                             const_iterator last) throw (cvmexception);
+void basic_array<T>::resize (size_type nNewSize) throw (cvmexception);
+void basic_array<T>::clear();
+void basic_array<T>::swap (basic_array& v) throw (cvmexception);
+\end{verbatim}
+are provided for every class of the library to be compatible 
+with STL algorithms and methods. See also 
+\GOT{basic\_array}{basicarray} 
+and \URL{STL documentation}{http://www.sgi.com/tech/stl/}
+for further details.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+iarray a(5);
+a[1] = 1; a[2] = 2; a[3] = 3; a[4] = 4; a[5] = 5;
+
+for (iarray::reverse_iterator it = a.rbegin(); it != a.rend(); ++it)
+{
+    std::cout << *it << " ";
+}
+std::cout << std::endl;
+std::cout << a.front() << std::endl;
+std::cout << a.back() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+5 4 3 2 1
+1
+5
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{at()}
+Functions%
+\pdfdest name {basicarray.at} fit
+\begin{verbatim}
+basic_array<T>::reference
+basic_array<T>::at(size_type n) throw (cvmexception);
+
+basic_array<T>::const_reference 
+basic_array<T>::at(size_type n) throw (cvmexception);
+\end{verbatim}
+return  reference to  \verb"(n-1)"-th element of calling array, i.e.,
+unlike \GO{indexing operators}{basicarray.indexing},
+these functions are \emph{$0$-based}.
+They are provided for every class of the library to be compatible 
+with STL algorithms and methods. 
+Functions throw  \GOT{cvmexception}{cvmexception}
+in case of negative parameter passed.
+See also 
+\GOT{basic\_array}{basicarray} 
+and \URL{STL documentation}{http://www.sgi.com/tech/stl/}
+for further details.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+iarray a(5);
+a[1] = 1; a[2] = 2; a[3] = 3; a[4] = 4; a[5] = 5;
+std::cout << a.at(0) << " " << a.at(1) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{push\_back(const T\&), pop\_back()}
+Functions%
+\pdfdest name {basicarray.pushpop} fit
+\begin{verbatim}
+void basic_array<T>::push_back (const T& x) throw (cvmexception);
+void basic_array<T>::pop_back () throw (cvmexception);
+\end{verbatim}
+add and remove an element to/from calling array.
+They are provided for every class of the library to be compatible 
+with STL algorithms and methods. Since CVM doesn't 
+pre-allocate  memory for extra storage, these functions
+\emph{will require memory reallocation every time they are being executed}
+and may slow down your application. Please consider usage of
+\verb"std::vector<T>" in such cases.
+Functions throw  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also 
+\GOT{basic\_array}{basicarray} 
+and \URL{STL documentation}{http://www.sgi.com/tech/stl/}
+for further details.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+iarray a(5);
+a.push_back(77);
+std::cout << a;
+a.pop_back();
+std::cout << a;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 0 0 0 0 77
+0 0 0 0 0
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{insert (iterator, const T\&), erase (iterator)}
+Functions%
+\pdfdest name {basicarray.inserterase} fit
+\begin{verbatim}
+basic_array<T>::iterator 
+basic_array<T>::insert (iterator pos, const T& x) throw (cvmexception);
+
+basic_array<T>::iterator 
+basic_array<T>::erase (iterator pos) throw (cvmexception);
+\end{verbatim}
+insert and remove an element to/from calling array at given position \verb"pos".
+They are provided for every class of the library to be compatible 
+with STL algorithms and methods. Since CVM doesn't 
+pre-allocate  memory for extra storage, these functions
+\emph{will require memory reallocation every time they are executed}
+and may slow down your application. Please consider usage of
+\verb"std::vector<T>" in such cases.
+Functions throw  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also 
+\GOT{basic\_array}{basicarray} 
+and \URL{STL documentation}{http://www.sgi.com/tech/stl/}
+for further details.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+iarray a(5);
+iarray::iterator pos = a.begin() + 2;
+a.insert(pos, 77);
+std::cout << a;
+pos = a.begin() + 1;
+a.erase(pos);
+std::cout << a;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 0 77 0 0 0
+0 77 0 0 0
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator >{}> <> (std::istream\& is, basic\_array<T>\& aIn)}
+Friend template operator%
+\pdfdest name {basicarray.input} fit
+\begin{verbatim}
+template <typename T>
+friend std::istream& operator >> <> (std::istream& is, 
+                                     basic_array<T>& aIn);
+\end{verbatim}
+fills  object referenced by \verb"aIn" with numbers from
+\verb"is" stream.
+Operator is \GO{redefined}{Array.input} in the class
+\GOT{Array}{Array}.
+See also \GOT{basic\_array}{basicarray} 
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    std::ofstream os;
+    os.open ("in.txt");
+    os << 1 << " " << 2 << std::endl << 3;
+    os.close ();
+
+    std::ifstream is("in.txt");
+    iarray v(5);
+    is >> v;
+
+    std::cout << v;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3 0 0
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator <{}< <> (std::ostream\& os, const basic\_array<T>\& aOut)}
+Friend template operator%
+\pdfdest name {basicarray.output} fit
+\begin{verbatim}
+template <typename T>
+friend std::ostream& operator << <> (std::ostream& os,
+                                     const basic_array<T>& aOut);
+\end{verbatim}
+outputs  object referenced by \verb"aOut" into
+\verb"os" stream.
+Operator is \GO{redefined}{Array.output} in the class
+\GOT{Array}{Array}.
+See also \GOT{basic\_array}{basicarray} 
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+iarray v(5);
+v(1) = 1;
+v(2) = 2;
+
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 0 0 0
+\end{Verbatim}
+\newpage
+

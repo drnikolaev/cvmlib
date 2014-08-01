@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="88">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="cvm">
+      <df name="src">
+        <in>arrays.cpp</in>
+        <in>cmatrix.cpp</in>
+        <in>cvector.cpp</in>
+        <in>cvm.h</in>
+        <in>globals.cpp</in>
+        <in>rmatrix.cpp</in>
+        <in>rvector.cpp</in>
+        <in>scmatrix.cpp</in>
+        <in>srmatrix.cpp</in>
+        <in>utils.cpp</in>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>GNU_4.7.1|GNU</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile MAC=1 EM64T=1 ILP64=1 </buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>../lib64/regtest_cvm_em64t_ilp64_debug</executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>src</pElem>
+            </incDir>
+          </ccTool>
+        </makeTool>
+      </makefileType>
+      <item path="src/arrays.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/cmatrix.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/cvector.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/cvm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/globals.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/rmatrix.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/rvector.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/scmatrix.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/srmatrix.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/utils.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

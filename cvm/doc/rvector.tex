@@ -1,0 +1,2218 @@
+\bigskip
+\noindent%
+\verb"template <typename TR>"\\
+\verb"class rvector : public Array<TR,TR> {"\\
+\verb"public:"\\
+\verb"    "\GOT{rvector}{rvector.rvector ()}\verb" ();"\\
+\verb"    explicit "\GOT{rvector}{rvector.rvector (int)}\verb" (int nSize);"\\
+\verb"    "\GOT{rvector}{rvector (std::initializerlist)}\verb" (std::initializer_list<TR> list);"\\
+\verb"    "\GOT{rvector}{rvector.rvector (int, TR)}\verb" (int nSize, TR d);"\\
+\verb"    "\GOT{rvector}{rvector.rvector (TR*,int,int)}\verb" (TR* pD, int nSize, int nIncr = 1);"\\
+\verb"    "\GOT{rvector}{rvector.rvector (const TR*,int,int)}\verb" (const TR* pD, int nSize, int nIncr = 1);"\\
+\verb"    "\GOT{rvector}{rvector.rvector (const rvector&)}\verb" (const rvector& v);"\\
+\verb"    rvector& "\GOT{operator =}{rvector.operator = (const rvector&)}\verb" (const rvector& v) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{assign}{rvector.assign (const TR*, int)}\verb" (const TR* p, int nIncr = 1);"\\
+\verb"    rvector& "\GOT{assign}{rvector.assign (int, const TR*, int)}\verb" (int n, const TR* p, int nIncr = 1);"\\
+\verb"    rvector& "\GOT{assign}{rvector.assign (int, const TR*, int, int)}\verb" (int n, const TR* p, int nSize, int nIncr);"\\
+\verb"    rvector& "\GOT{assign}{rvector.assign (int, const rvector&)}\verb" (int n, const rvector& v) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{set}{rvector.set (TR)}\verb" (TR x);"\\
+\verb"    rvector& "\GOT{resize}{rvector.resize}\verb" (int nNewSize) throw (cvmexception);"\\
+\verb"    bool "\GOT{operator ==}{rvector.operator ==}\verb" (const rvector& v) const;"\\
+\verb"    bool "\GOT{operator !=}{rvector.operator !=}\verb" (const rvector& v) const;"\\
+\verb"    rvector& "\GOT{operator <{}<}{rvector.operator <<}\verb" (const rvector& v) throw (cvmexception);"\\
+\verb"    rvector "\GOT{operator +}{rvector.operator +}\verb" (const rvector& v) const throw (cvmexception);"\\
+\verb"    rvector "\GOT{operator -}{rvector.operator -}\verb" (const rvector& v) const throw (cvmexception);"\\
+\verb"    rvector& "\GOT{sum}{rvector.sum}\verb" (const rvector& v1,"\\
+\verb"                  const rvector& v2) const throw (cvmexception);"\\
+\verb"    rvector& "\GOT{diff}{rvector.diff}\verb" (const rvector& v1,"\\
+\verb"                   const rvector& v2) const throw (cvmexception);"\\
+\verb"    rvector& "\GOT{operator +=}{rvector.operator +=}\verb" (const rvector& v) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{operator -=}{rvector.operator -=}\verb" (const rvector& v) throw (cvmexception);"\\
+\verb"    rvector "\GOT{operator -}{rvector.operator - ()}\verb" () const;"\\
+\verb"    rvector "\GOT{operator *}{rvector.operator * (TR)}\verb" (TR d) const throw (cvmexception);"\\
+\verb"    rvector "\GOT{operator /}{rvector.operator / (TR)}\verb" (TR d) const throw (cvmexception);"\\
+\verb"    rvector& "\GOT{operator *=}{rvector.operator *=}\verb" (TR d);"\\
+\verb"    rvector& "\GOT{operator /=}{rvector.operator /=}\verb" (TR d) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{normalize}{rvector.normalize}\verb" ();"\\
+\verb"    TR "\GOT{operator *}{rvector.operator * (const rvector&)}\verb" (const rvector& v) const throw (cvmexception);"\\
+\verb"    rvector "\GOT{operator *}{rvector.operator * (const rmatrix&)}\verb" (const rmatrix& m) const"\\
+\verb"                        throw (cvmexception);"\\
+\verb"    rvector& "\GOT{mult}{rvector.mult (const rvector&, const rmatrix&)}\verb" (const rvector& v, const rmatrix& m)"\\
+\verb"                   throw (cvmexception);"\\
+\verb"    rvector& "\GOT{mult}{rvector.mult (const rmatrix&, const rvector&)}\verb" (const rmatrix& m, const rvector& v)"\\
+\verb"                   throw (cvmexception);"\\
+\verb"    rmatrix "\GOT{rank1update}{rvector.rank1update}\verb" (const rvector& v) const;"\\
+\verb"    rvector& "\GOT{solve}{rvector.solve}\verb" (const srmatrix& mA,"\\
+\verb"                    const rvector& vB, TR& dErr)"\\
+\verb"                    throw (cvmexception);"\\
+\verb"    rvector& "\GOT{solve}{rvector.solve}\verb" (const srmatrix& mA,"\\
+\verb"                    const rvector& vB) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{solve\_tran}{rvector.solvetran}\verb" (const srmatrix& mA,"\\
+\verb"                         const rvector& vB, TR& dErr)"\\
+\verb"                         throw (cvmexception);"\\
+\verb"    rvector& "\GOT{solve\_tran}{rvector.solvetran}\verb" (const srmatrix& mA,"\\
+\verb"                         const rvector& vB) throw (cvmexception);"\\
+\verb"    rvector "\GOT{operator /}{rvector.operator / (srmatrix)}\verb" (const srmatrix& mA) const throw (cvmexception);"\\
+\verb"    rvector "\GOT{operator \%}{rvector.operator percent (srmatrix)}\verb" (const srmatrix& mA) const throw (cvmexception);"\\
+\verb"    rvector& "\GOT{solve\_lu}{rvector.solvelu}\verb" (const srmatrix& mA, const srmatrix& mLU,"\\
+\verb"                       const int* pPivots, const rvector& vB, TR& dErr)"\\
+\verb"                       throw (cvmexception);"\\
+\verb"    rvector& "\GOT{solve\_lu}{rvector.solvelu}\verb" (const srmatrix& mA, const srmatrix& mLU,"\\
+\verb"                       const int* pPivots, const rvector& vB)"\\
+\verb"                       throw (cvmexception);"\\
+\verb"    rvector& "\GOT{gels}{rvector.gels}\verb" (bool transpose, const rmatrix& mA, const rvector& mB,"\\
+\verb"                   TR& dErr) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{gelsy}{rvector.gelsy}\verb" (const rmatrix& mA, const rvector& mB,"\\
+\verb"                    int& rank, TR tol = cvmMachSp())"\\
+\verb"                    throw (cvmexception);"\\
+\verb"    rvector& "\GOT{gelss}{rvector.gelss}\verb" (const rmatrix& mA, const rvector& mB,"\\
+\verb"                    rvector& sv, int& rank, TR tol = cvmMachSp())"\\
+\verb"                    throw (cvmexception);"\\
+\verb"    rvector& "\GOT{gelsd}{rvector.gelsd}\verb" (const rmatrix& mA, const rvector& mB,"\\
+\verb"                    rvector& sv, int& rank, TR tol = cvmMachSp())"\\
+\verb"                    throw (cvmexception);"\\
+\verb"    rvector& "\GOT{svd}{rvector.svd}\verb" (const rmatrix& mArg) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{svd}{rvector.svd}\verb" (const cmatrix& mArg) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{svd}{rvector.svd}\verb" (const rmatrix& mArg,"\\
+\verb"                  srmatrix& mU, srmatrix& mVH) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{svd}{rvector.svd}\verb" (const cmatrix& mArg,"\\
+\verb"                  scmatrix& mU, scmatrix& mVH) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{eig}{rvector.eig}\verb" (const srsmatrix& mArg) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{eig}{rvector.eig}\verb" (const srsmatrix& mArg,"\\
+\verb"                  srmatrix& mEigVect) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{eig}{rvector.eig}\verb" (const schmatrix& mArg) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{eig}{rvector.eig}\verb" (const schmatrix& mArg,"\\
+\verb"                  scmatrix& mEigVect) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{gemv}{rvector.gemv}\verb" (bool bLeft, const rmatrix& m, TR dAlpha,"\\
+\verb"                   const rvector& v, TR dBeta) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{gbmv}{rvector.gbmv}\verb" (bool bLeft, const srbmatrix& m, TR dAlpha,"\\
+\verb"                   const rvector& v, TR dBeta) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{randomize}{rvector.randomize}\verb" (TR dFrom, TR dTo);"\\
+\verb"};"
+\newpage
+
+
+\subsubsection{rvector ()}
+Constructor%
+\pdfdest name {rvector.rvector ()} fit
+\begin{verbatim}
+rvector::rvector ();
+\end{verbatim}
+creates  empty \verb"rvector" object.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+rvector v;
+std::cout << v.size() << std::endl;
+
+v.resize (5);
+v(1) = 1.5;
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0
+1.50e+000 0.00e+000 0.00e+000 0.00e+000 0.00e+0000
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{rvector (int)}
+Constructor%
+\pdfdest name {rvector.rvector (int)} fit
+\begin{verbatim}
+explicit rvector::rvector (int nSize);
+\end{verbatim}
+creates \verb"rvector" object of size equal to \verb"nSize".
+It throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed or memory allocation failure.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+rvector v (5);
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0.00e+000 0.00e+000 0.00e+000 0.00e+000 0.00e+000
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{rvector (std::initializer\_list<TC>)}
+Constructor%
+\pdfdest name {rvector (std::initializerlist)} fit
+\begin{verbatim}
+rvector::rvector (std::initializer_list<TR> list);
+\end{verbatim}
+creates \verb"rvector" object and fills it with values provided in the initializer list.
+This constructor is available only if your compiler supports initializer lists
+(GCC 4.4 and higher, MS Visual Studio 2013 and higher, Apple LLVM 5.0 and higher).
+It throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
+
+rvector v = { 1, -2, 3.456, 99.99 };
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.000e+000 - 2.000e+000 3.456e+000 9.999e+001
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{rvector (int, TR)}
+Constructor%
+\pdfdest name {rvector.rvector (int, TR)} fit
+\begin{verbatim}
+rvector::rvector (int nSize, TR d);
+\end{verbatim}
+creates \verb"rvector" object of size equal to \verb"nSize"
+and fills it with value of \verb"d".
+It throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed or memory allocation failure.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+rvector v (5, 1.5);
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.50e+00 1.50e+00 1.50e+00 1.50e+00 1.50e+00
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{rvector (TR*,int,int)}
+Constructor%
+\pdfdest name {rvector.rvector (TR*,int,int)} fit
+\begin{verbatim}
+rvector::rvector (TR* pD, int nSize, int nIncr = 1);
+\end{verbatim}
+creates \verb"rvector" object of size equal to \verb"nSize".
+Unlike others, this constructor \emph{does not allocate memory}.
+It just shares memory with  array pointed to by \verb"pD" using
+distance between elements equal to \verb"nIncr".
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed.
+See also \GOT{rvector}{rvector}, \GOT{rvector (const TR*,int,int)}{rvector.rvector (const TR*,int,int)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+double a[] = {7., 7., 7., 7., 7., 7., 7.,};
+
+rvector v1 (a, 4, 2);
+
+std::cout << v1;
+v1(2) = 1.23;
+std::cout << v1 << std::endl;
+
+for (int i = 0; i < 3; i++) {
+    std::cout << a[i] << " ";
+}
+std::cout << std::endl;
+
+rvector v2 (a, 5);
+std::cout << v2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+7.00e+000 7.00e+000 7.00e+000 7.00e+000
+7.00e+000 1.23e+000 7.00e+000 7.00e+000
+
+7.00e+000 7.00e+000 1.23e+000
+7.00e+000 7.00e+000 1.23e+000 7.00e+000 7.00e+000
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{rvector (const TR*,int,int)}
+Constructor%
+\pdfdest name {rvector.rvector (const TR*,int,int)} fit
+\begin{verbatim}
+rvector::rvector (const TR* pD, int nSize, int nIncr = 1);
+\end{verbatim}
+creates \verb"rvector" object of size equal to \verb"nSize"
+and copies \verb"nSize" elements of
+ array \verb"pD" to it using increment \verb"nIncr" ($1$ by default).
+Object created has increment set to $1$.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed.
+See also \GOT{rvector}{rvector}, \GOT{rvector (TR*,int,int)}{rvector.rvector (TR*,int,int)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+const double a[] = {7., 7., 7., 7., 7., 7., 7.,};
+
+rvector v1 (a, 4, 2);
+
+std::cout << v1;
+v1(2) = 1.23;
+std::cout << v1 << std::endl;
+
+for (int i = 0; i < 3; i++) {
+    std::cout << a[i] << " ";
+}
+std::cout << std::endl;
+
+rvector v2 (a, 5);
+std::cout << v2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+7.00e+000 7.00e+000 7.00e+000 7.00e+000
+7.00e+000 1.23e+000 7.00e+000 7.00e+000
+
+7.00e+000 7.00e+000 7.00e+000
+7.00e+000 7.00e+000 7.00e+000 7.00e+000 7.00e+000
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{rvector (const rvector\&)}
+Copy constructor%
+\pdfdest name {rvector.rvector (const rvector&)} fit
+\begin{verbatim}
+rvector::rvector (const rvector& v);
+\end{verbatim}         
+creates \verb"rvector" object of size equal to size of
+vector \verb"v" and sets every element of created vector to be equal to
+appropriate element of \verb"v".
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+double a[] = {1., 2., 3., 4., 5., 6., 7.,};
+const rvector v (a, 4, 2);
+rvector vc (v);
+
+vc(1) = 77.;
+std::cout << vc;
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+7.70e+001 3.00e+000 5.00e+000 7.00e+000
+1.00e+000 3.00e+000 5.00e+000 7.00e+000
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator = (const rvector\&)}
+Operator%
+\pdfdest name {rvector.operator = (const rvector&)} fit
+\begin{verbatim}
+rvector& rvector::operator = (const rvector& v) throw (cvmexception);
+\end{verbatim}
+sets every element of calling vector to be equal to
+appropriate element of vector \verb"v"
+and returns  reference to
+the vector changed.
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of different vector sizes.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    double a[] = {1., 2., 3., 4., 5.};
+    const rvector v (a, 5);
+    rvector vc(5);
+
+    vc = v;
+    std::cout << vc;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.00e+000 2.00e+000 3.00e+000 4.00e+000 5.00e+000
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{assign(const TR*, int)}
+Function%
+\pdfdest name {rvector.assign (const TR*, int)} fit
+\begin{verbatim}
+rvector& rvector::assign (const TR* p, int nIncr = 1);
+\end{verbatim}
+sets every element of calling vector to be equal to
+every \verb"nIncr"-th element of  array pointed to by parameter \verb"p"
+and returns  reference to the vector changed.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+const double a[] = {1., 2., 3., 4., 5., 6., 7.,};
+rvector v (5);
+rvector v2 (4);
+
+v.assign(a);
+v2.assign(a, 2);
+std::cout << v;
+std::cout << v2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.00e+000 2.00e+000 3.00e+000 4.00e+000 5.00e+000
+1.00e+000 3.00e+000 5.00e+000 7.00e+000
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{assign(int, const TR*, int)}
+Function%
+\pdfdest name {rvector.assign (int, const TR*, int)} fit
+\begin{verbatim}
+rvector& rvector::assign (int n, const TR* p, int nIncr = 1);
+\end{verbatim}
+sets every element of calling vector, starting from \Based \verb"n"-th one,
+to be equal to
+every \verb"nIncr"-th element of  array pointed to by parameter \verb"p"
+and returns  reference to the vector changed.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left);
+std::cout.precision (2);
+
+const double a[] = {1., 2., 3., 4., 5.};
+rvector v (5);
+rvector v2 (5);
+
+v.assign(2, a);
+v2.assign(3, a, 2);
+std::cout << v;
+std::cout << v2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0.00e+000 1.00e+000 2.00e+000 3.00e+000 4.00e+000
+0.00e+000 0.00e+000 1.00e+000 3.00e+000 5.00e+000
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{assign(int, const TR*, int, int)}
+Function%
+\pdfdest name {rvector.assign (int, const TR*, int, int)} fit
+\begin{verbatim}
+rvector& rvector::assign (int n, const TR* p, int nSize, tint nIncr);
+\end{verbatim}
+sets every element of calling vector, starting from \Based \verb"n"-th one,
+up to \verb"nSize" total,
+to be equal to
+every \verb"nIncr"-th element of  array pointed to by parameter \verb"p"
+and returns  reference to the vector changed.
+If \verb"n + nSize" goes beyond vector boundaries assignment stops at the last element.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left);
+std::cout.precision (2);
+
+const double a[] = {1., 2., 3., 4., 5., 6., 7.};
+rvector v (5);
+
+v.assign(2, a, 5, 2);
+std::cout << v;
+v.assign(2, a, 3, 1);
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0.00e+000 1.00e+000 3.00e+000 5.00e+000 7.00e+000
+0.00e+000 1.00e+000 2.00e+000 3.00e+000 7.00e+000
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{assign (int, const rvector\&)}
+Function%
+\pdfdest name {rvector.assign (int, const rvector&)} fit
+\begin{verbatim}
+rvector& rvector::assign (int n, const rvector& v) throw (cvmexception);
+\end{verbatim}
+sets every element of calling vector's sub-vector
+beginning with \Based index \verb"n" to vector \verb"v"
+and returns  reference to the vector changed.
+Function throws  \GOT{cvmexception}{cvmexception}
+if \verb"n" is not positive or \verb"v.size()+n-1" is greater than
+calling vector's size.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+rvector v1(5);
+rvector v2(2);
+v1.set(1.);
+v2.set(2.);
+v1.assign(3, v2);
+std::cout << v1;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.00e+00 1.00e+00 2.00e+00 2.00e+00 1.00e+00
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{set(TR)}
+Function%
+\pdfdest name {rvector.set (TR)} fit
+\begin{verbatim}
+rvector& rvector::set (TR x);
+\end{verbatim}
+sets every element of calling vector to be equal to
+parameter \verb"x"
+and returns  reference to the vector changed.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+rvector v(5);
+v.set(3.);
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3.00e+000 3.00e+000 3.00e+000 3.00e+000 3.00e+000
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{resize}
+Function%
+\pdfdest name {rvector.resize} fit
+\begin{verbatim}
+rvector& rvector::resize (int nNewSize) throw (cvmexception);
+\end{verbatim}
+changes size of calling vector to be equal to
+\verb"nNewSize" and returns  reference to
+the vector changed.
+In case of increasing of its size, the vector
+is filled up with zeroes.
+Function throws  \GOT{cvmexception}{cvmexception}
+in case of negative size passed or memory allocation failure.
+See also \GOT{basic\_array::resize}{basicarray.resize} and
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    double a[] = {1., 2., 3., 4.};
+    rvector v (a, 3);
+    std::cout << v;
+    v.resize(2);
+    std::cout << v;
+    v.resize(4);
+    std::cout << v;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.00e+00 2.00e+00 3.00e+00
+1.00e+00 2.00e+00
+1.00e+00 2.00e+00 0.00e+00 0.00e+00
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator ==}
+Operator%
+\pdfdest name {rvector.operator ==} fit
+\begin{verbatim}
+bool rvector::operator == (const rvector& v) const;
+\end{verbatim}
+compares calling vector with vector \verb"v"
+and returns \verb"true" if they have same sizes
+and their appropriate elements differ by not more than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Returns \verb"false" otherwise.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4.};
+rvector v1 (a, 4);
+rvector v2 (4);
+
+v2 (1) = 1.; v2 (2) = 2.;
+v2 (3) = 3.; v2 (4) = 4.;
+
+cout << (v1 == v2) << endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator !=}
+Operator%
+\pdfdest name {rvector.operator !=} fit
+\begin{verbatim}
+bool rvector::operator != (const rvector& v) const;
+\end{verbatim}
+compares calling vector with vector \verb"v"
+and returns \verb"true" if they have different sizes
+or at least one of their appropriate elements
+differs by more than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Returns \verb"false" otherwise.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4.};
+rvector v1 (a, 4);
+rvector v2 (4);
+
+v2 (1) = 1.; v2 (2) = 2.;
+v2 (3) = 3.; v2 (4) = 4.;
+
+cout << (v1 != v2) << endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator <{}<}
+Operator%
+\pdfdest name {rvector.operator <<} fit
+\begin{verbatim}
+rvector& rvector::operator << (const rvector& v) throw (cvmexception);
+\end{verbatim}
+destroys calling vector, creates a new one as a copy of \verb"v"
+and returns  reference to the vector changed.
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    rvector v (5);
+    rvector vc (3);
+    v(1) = 1.;
+    v(2) = 2.;
+    std::cout << v << vc << std::endl;
+
+    vc << v;
+    std::cout << vc;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.00e+000 2.00e+000 0.00e+000 0.00e+000 0.00e+000
+0.00e+000 0.00e+000 0.00e+000
+
+1.00e+000 2.00e+000 0.00e+000 0.00e+000 0.00e+000
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator +}
+Operator%
+\pdfdest name {rvector.operator +} fit
+\begin{verbatim}
+rvector rvector::operator + (const rvector& v) const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"rvector" as sum of
+ calling vector and vector \verb"v".
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands
+or memory allocation failure.
+See also \GOT{rvector}{rvector},
+\GOT{rvector::sum}{rvector.sum}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    double a[] = {1., 2., 3., 4.};
+    const double b[] = {3., 5., 7., 9.};
+    const rvector va (a, 4);
+    rvector vb (4);
+    vb.assign(b);
+
+    std::cout << va + vb;
+    std::cout << va + va;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+4.00e+000 7.00e+000 1.00e+001 1.30e+001
+2.00e+000 4.00e+000 6.00e+000 8.00e+000
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator -}
+Operator%
+\pdfdest name {rvector.operator -} fit
+\begin{verbatim}
+rvector rvector::operator - (const rvector& v) const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"rvector" as  difference of
+ calling vector and vector \verb"v".
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands
+or memory allocation failure.
+See also \GOT{rvector::diff}{rvector.diff}, \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    double a[] = {1., 2., 3., 4.};
+    const double b[] = {3., 5., 7., 9.};
+    const rvector va (a, 4);
+    rvector vb (4);
+    vb.assign(b);
+
+    std::cout << va - vb;
+    std::cout << va - va;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-2.00e+000 -3.00e+000 -4.00e+000 -5.00e+000
+0.00e+000 0.00e+000 0.00e+000 0.00e+000
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{sum}
+Function%
+\pdfdest name {rvector.sum} fit
+\begin{verbatim}
+rvector& rvector::sum (const rvector& v1, const rvector& v2)
+throw (cvmexception);
+\end{verbatim}
+assigns  result of addition of
+vectors \verb"v1" and \verb"v2"  to  calling vector
+and returns  reference to
+the vector changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{rvector::operator +~}{rvector.operator +},
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    double a[] = {1., 2., 3., 4.};
+    double b[] = {2., 3., 4., 5.};
+    rvector va (a, 4);
+    rvector vb (b, 4);
+    rvector v (4);
+
+    std::cout << v.sum(va, vb);
+    std::cout << v.sum(v, va);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3.00e+00 5.00e+00 7.00e+00 9.00e+00
+4.00e+00 7.00e+00 1.00e+01 1.30e+01
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{diff}
+Function%
+\pdfdest name {rvector.diff} fit
+\begin{verbatim}
+rvector& rvector::diff (const rvector& v1, const rvector& v2)
+throw (cvmexception);
+\end{verbatim}
+assigns  result of subtraction of
+vectors \verb"v1" and \verb"v2" to  calling vector
+and returns  reference to
+the vector changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{rvector::operator -~}{rvector.operator -},
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    double a[] = {1., 2., 3., 4.};
+    double b[] = {2., 3., 4., 5.};
+    rvector va (a, 4);
+    rvector vb (b, 4);
+    rvector v (4);
+
+    std::cout << v.diff(va, vb);
+    std::cout << v.diff(v, va);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-1.00e+00 -1.00e+00 -1.00e+00 -1.00e+00
+-2.00e+00 -3.00e+00 -4.00e+00 -5.00e+00
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator +=}
+Operator%
+\pdfdest name {rvector.operator +=} fit
+\begin{verbatim}
+rvector& rvector::operator += (const rvector& v) throw (cvmexception);
+\end{verbatim}
+adds vector \verb"v" to  calling vector 
+and returns  reference to
+the vector changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{rvector::operator +~}{rvector.operator +},
+\GOT{rvector::sum}{rvector.sum},
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    rvector v1 (4);
+    rvector v2 (4);
+    v1.set(1.);
+    v2.set(2.);
+
+    v1 += v2;
+    std::cout << v1;
+
+    // well, you can do this too, but temporary object would be created
+    v2 += v2; 
+    std::cout << v2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3.00e+00 3.00e+00 3.00e+00 3.00e+00
+4.00e+00 4.00e+00 4.00e+00 4.00e+00
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator -=}
+Operator%
+\pdfdest name {rvector.operator -=} fit
+\begin{verbatim}
+rvector& rvector::operator -= (const rvector& v) throw (cvmexception);
+\end{verbatim}
+subtracts vector \verb"v" from calling vector 
+and returns  reference to
+the vector changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{rvector::operator -~}{rvector.operator -},
+\GOT{rvector::diff}{rvector.diff},
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    rvector v1 (4);
+    rvector v2 (4);
+    v1.set(1.);
+    v2.set(2.);
+
+    v1 -= v2;
+    std::cout << v1;
+
+    // well, you can do this too, but temporary object would be created
+    v2 -= v2; 
+    std::cout << v2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-1.00e+00 -1.00e+00 -1.00e+00 -1.00e+00
+0.00e+00 0.00e+00 0.00e+00 0.00e+00
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator - ()}
+Operator%
+\pdfdest name {rvector.operator - ()} fit
+\begin{verbatim}
+rvector rvector::operator - () const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"rvector" as
+calling vector multiplied by $-1$.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+double a[] = {1., 2., 3., 4.};
+const rvector v (a, 4);
+
+std::cout << - v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-1.00e+00 -2.00e+00 -3.00e+00 -4.00e+00
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator * (TR)}
+Operator%
+\pdfdest name {rvector.operator * (TR)} fit
+\begin{verbatim}
+rvector rvector::operator * (TR d) const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"rvector" as  product of
+calling vector and number \verb"d".
+It throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{rvector::operator *=}{rvector.operator *=},
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+double a[] = {1., 2., 3., 4.};
+const rvector v (a, 4);
+
+std::cout << v * 5.;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+5.00e+00 1.00e+01 1.50e+01 2.00e+01
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator / (TR)}
+Operator%
+\pdfdest name {rvector.operator / (TR)} fit
+\begin{verbatim}
+rvector rvector::operator / (TR d) const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"rvector" as  quotient of
+calling vector and number \verb"d". It throws
+ \GOT{cvmexception}{cvmexception}
+if \verb"d" has  absolute value equal or less
+than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+It also throws exception
+in case of memory allocation failure.
+See also \GOT{rvector::operator /=}{rvector.operator /=},
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    double a[] = {1., 2., 3., 4.};
+    const rvector v (a, 4);
+
+    std::cout << v / 2.;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+5.00e-01 1.00e+00 1.50e+00 2.00e+00
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator *=}
+Operator%
+\pdfdest name {rvector.operator *=} fit
+\begin{verbatim}
+rvector& rvector::operator *= (TR d);
+\end{verbatim}
+multiplies calling vector by number \verb"d"
+and returns  reference to
+the vector changed.
+See also \GOT{rvector::operator *~}{rvector.operator * (TR)},
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+rvector v (4);
+v.set(2.);
+v *= 2.
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+4.00e+00 4.00e+00 4.00e+00 4.00e+00
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator /=}
+Operator%
+\pdfdest name {rvector.operator /=} fit
+\begin{verbatim}
+rvector& rvector::operator /= (TR d) throw (cvmexception);
+\end{verbatim}
+divides calling vector by number \verb"d"
+and returns  reference to
+the vector changed.
+It throws  \GOT{cvmexception}{cvmexception}
+if \verb"d" has  absolute value equal or less
+than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+See also \GOT{rvector::operator /~}{rvector.operator / (TR)},
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    rvector v (4);
+    v.set(3.);
+    v /= 2.;
+    std::cout << v;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.50e+00 1.50e+00 1.50e+00 1.50e+00
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{normalize}
+Function%
+\pdfdest name {rvector.normalize} fit
+\begin{verbatim}
+rvector& rvector::normalize ();
+\end{verbatim}
+normalizes calling vector so its \GO{Euclidean norm}{Array.norm}
+becomes equal to $1$ if it was greater than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}
+before the call (otherwise it does nothing).
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+rvector v(4);
+v(1) = 1.;
+v(2) = 2.;
+v(3) = 3.;
+v(4) = 4.;
+std::cout << v.normalize();
+std::cout << v.norm() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.83e-01 3.65e-01 5.48e-01 7.30e-01
+1.00e+00
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator * (const rvector\&)}
+Operator%
+\pdfdest name {rvector.operator * (const rvector&)} fit
+\begin{verbatim}
+TR rvector::operator * (const rvector& v) const throw (cvmexception);
+\end{verbatim}
+returns  scalar product of calling vector and \verb"v".
+It throws
+ \GOT{cvmexception}{cvmexception}
+if the operands have different sizes.
+See also
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    double a[] = {1., 2., 3., 4.};
+    rvector v1(4);
+    rvector v2(4);
+    v1.assign(a);
+    v2.assign(a);
+
+    std::cout << v1 * v2 << std::endl;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3.00e+01
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator * (const rmatrix\&)}
+Operator%
+\pdfdest name {rvector.operator * (const rmatrix&)} fit
+\begin{verbatim}
+rvector rvector::operator * (const rmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"rvector" as  product of
+calling vector and matrix \verb"m".
+Use
+%\GOT{rvector::mult (const rvector\&, const rmatrix\&)}
+\GOT{mult}
+{rvector.mult (const rvector&, const rmatrix&)}
+function
+to avoid new object creation.
+Operator throws
+ \GOT{cvmexception}{cvmexception}
+if  calling vector's size
+differs from  number of rows in  matrix \verb"m".
+See also \GOT{rvector}{rvector}, \GOT{rmatrix}{rmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    rvector v(2);
+    rmatrix m(2, 3);
+    v.set(2.);
+    m.set(1.);
+
+    std::cout << v * m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+4.00e+00 4.00e+00 4.00e+00
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{mult (const rvector\&, const rmatrix\&)}
+Function%
+\pdfdest name {rvector.mult (const rvector&, const rmatrix&)} fit
+\begin{verbatim}
+rvector& rvector::mult (const rvector& v, const rmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+sets calling vector to be equal to  product of vector
+\verb"v" by matrix \verb"m"
+and returns  reference to
+the object changed.
+See also
+\GOT{rvector::mult (const rmatrix\&, const rvector\&)}
+{rvector.mult (const rmatrix&, const rvector&)},
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    rvector v2(2), v3(3);
+    rmatrix m(2, 3);
+    v2.set(2.);
+    m.set(1.);
+
+    std::cout << v3.mult(v2, m);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+4.00e+00 4.00e+00 4.00e+00
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{mult (const rmatrix\&, const rvector\&)}
+Function%
+\pdfdest name {rvector.mult (const rmatrix&, const rvector&)} fit
+\begin{verbatim}
+rvector& rvector::mult (const rmatrix& m, const rvector& v)
+throw (cvmexception);
+\end{verbatim}
+sets calling vector to be equal to  product of matrix \verb"m"
+by vector \verb"v"
+and returns  reference to
+the vector changed.
+See also
+\GOT{rvector::mult (const rvector\&, const rmatrix\&)}
+{rvector.mult (const rvector&, const rmatrix&)},
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+try {
+    rvector v2(2), v3(3);
+    rmatrix m(2, 3);
+    v3.set(2.);
+    m.set(1.);
+
+    std::cout << v2.mult(m, v3);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+6.00e+00 6.00e+00
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{rank1update}
+Function%
+\pdfdest name {rvector.rank1update} fit
+\begin{verbatim}
+rmatrix rvector::rank1update (const rvector& v) const;
+\end{verbatim}
+creates  object of type \GOT{rmatrix}{rmatrix}
+as  rank-1 update of
+calling vector and vector \verb"v".
+The rank-1 update of vector-column $x$ of size $m$ and
+vector-row $y$ of size $n$ is defined as $m\times n$ matrix
+\begin{equation*}
+\begin{pmatrix}
+x_1 y_1 & x_1 y_2 & \cdots & x_1 y_n \\
+x_2 y_1 & x_2 y_2 & \cdots & x_2 y_n \\
+\hdotsfor{4} \\
+x_m y_1 & x_m y_2 & \cdots & x_m y_n
+\end{pmatrix} =
+\begin{pmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_m
+\end{pmatrix}
+\begin{pmatrix}
+y_1 & y_2 & \cdots & y_n
+\end{pmatrix}.
+\end{equation*}
+See also \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+rvector v1(3);
+rvector v2(2);
+v1.set(2.);
+v2.set(2.);
+std::cout << v1.rank1update (v2);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+4.00e+00 4.00e+00
+4.00e+00 4.00e+00
+4.00e+00 4.00e+00
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{solve}
+Functions%
+\pdfdest name {rvector.solve} fit
+\begin{verbatim}
+rvector& rvector::solve (const srmatrix& mA,
+                         const rvector& vB, TR& dErr)
+                         throw (cvmexception);
+rvector& rvector::solve (const srmatrix& mA,
+                         const rvector& vB)
+                         throw (cvmexception);
+\end{verbatim}
+set calling vector to be equal to solution $x$ of  linear equation
+$A*x=b$ where parameter \verb"mA" is  square matrix $A$
+and parameter \verb"vB" is  vector $b$.
+Every function returns  reference to the vector changed.
+The first version also sets output parameter \verb"dErr" to be equal
+to the norm of computation error.
+These functions throw \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of the objects or when  matrix $A$ is close to singular.
+See also \GOT{operator \% (srmatrix)}{rvector.operator percent (srmatrix)}, 
+\GOT{rvector::solve\_tran}{rvector.solvetran}, \GOT{rvector}{rvector}, \GOT{srmatrix}{srmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (12);
+
+try {
+    double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
+    double b[] = {1., 2., 3.};
+    srmatrix ma(m, 3);
+    rvector  vb(b, 3);
+    rvector  vx(3);
+    double   dErr = 0.;
+
+    std::cout << vx.solve (ma, vb, dErr);
+    std::cout << dErr << std::endl;
+
+    std::cout << ma * vx - vb;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
++8.000000000000e+00 -8.000000000000e+00 +3.000000000000e+00
++6.661338147751e-15
++0.000000000000e+00 +0.000000000000e+00 +0.000000000000e+00
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{solve\_tran}
+Functions%
+\pdfdest name {rvector.solvetran} fit
+\begin{verbatim}
+rvector& rvector::solve_tran (const srmatrix& mA,
+                              const rvector& vB, TR& dErr)
+                              throw (cvmexception);
+rvector& rvector::solve_tran (const srmatrix& mA,
+                              const rvector& vB)
+                              throw (cvmexception);
+\end{verbatim}
+set calling vector to be equal to solution $x$ of linear equation
+$A^T*x=b$ (which is equivalent to $x*A=b$) 
+where parameter \verb"mA" is  square matrix $A$
+and parameter \verb"vB" is  vector $b$.
+Every function returns  reference to the vector changed.
+The first version also sets output parameter \verb"dErr" to be equal
+to the norm of computation error.
+These functions throw \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of the objects or when  matrix $A$ is close to singular.
+See also \GOT{operator / (srmatrix)}{rvector.operator / (srmatrix)}, 
+\GOT{rvector::solve}{rvector.solve}, \GOT{rvector}{rvector}, \GOT{srmatrix}{srmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (12);
+
+try {
+    double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
+    double b[] = {1., 2., 3.};
+    srmatrix ma(m, 3);
+    rvector  vb(b, 3);
+    rvector  vx(3);
+    double   dErr = 0.;
+
+    std::cout << vx.solve_tran (ma, vb, dErr);
+    std::cout << dErr << std::endl;
+
+    std::cout << vx * ma - vb;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
++1.000000000000e+000 +0.000000000000e+000 +0.000000000000e+000
++7.105427357601e-015
++0.000000000000e+000 +0.000000000000e+000 +0.000000000000e+000
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator / (const srmatrix\&)}
+Operator%
+\pdfdest name {rvector.operator / (srmatrix)} fit
+\begin{verbatim}
+rvector operator / (const srmatrix& mA) const throw (cvmexception);
+\end{verbatim}
+returns solution $x$ of  linear equation
+$A^T*x=b$ (which is equivalent to $x*A=b$) 
+where parameter \verb"mA" is  square matrix $A$
+and calling vector is $b$.
+This operator throws \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of the objects or when  matrix $A$ is close to singular.
+See also \GOT{rvector::solve\_tran}{rvector.solvetran}, \GOT{rvector}{rvector}, \GOT{srmatrix}{srmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (12);
+
+try {
+    double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
+    double b[] = {1., 2., 3.};
+    srmatrix ma(m, 3);
+    rvector  vb(b, 3);
+    rvector  vx(3);
+
+    vx = vb / ma;
+
+    std::cout << vx * ma - vb;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
++0.000000000000e+000 +0.000000000000e+000 +0.000000000000e+000
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator \% (const srmatrix\&)}
+Operator%
+\pdfdest name {rvector.operator percent (srmatrix)} fit
+\begin{verbatim}
+rvector operator % (const srmatrix& mA) const throw (cvmexception);
+\end{verbatim}
+returns solution $x$ of linear equation
+$A*x=b$ where parameter \verb"mA" is  square matrix $A$
+and calling vector is $b$.
+This operator throws \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of the objects or when  matrix $A$ is close to singular.
+See also \GOT{rvector::solve}{rvector.solve}, \GOT{rvector}{rvector}, \GOT{srmatrix}{srmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (12);
+
+try {
+    double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
+    double b[] = {1., 2., 3.};
+    srmatrix ma(m, 3);
+    rvector  vb(b, 3);
+    rvector  vx(3);
+
+    vx = vb % ma;
+
+    std::cout << ma * vx - vb;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
++0.000000000000e+000 +0.000000000000e+000 +0.000000000000e+000
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{solve\_lu}
+Functions%
+\pdfdest name {rvector.solvelu} fit
+\begin{verbatim}
+rvector& 
+rvector::solve_lu (const srmatrix& mA, const srmatrix& mLU, 
+                   const int* pPivots, const rvector& vB, TR& dErr)
+                   throw (cvmexception);
+
+rvector&
+rvector::solve_lu (const srmatrix& mA, const srmatrix& mLU, 
+                   const int* pPivots, const rvector& vB)
+                   throw (cvmexception);
+\end{verbatim}
+set calling vector to be equal to solution $x$ of linear equation
+$A*x=b$ where parameter \verb"mA" is  square matrix $A$,
+parameter \verb"mLU" is \GO{$LU$ factorization}{srmatrix.low_up}
+of  matrix $A$, parameter \verb"pPivots" is an array of pivot numbers
+created while factorizing  matrix $A$
+and parameter \verb"vB" is  vector $b$.
+Every function returns  reference to the vector changed.
+The first version also sets output parameter \verb"dErr" to be equal
+to the norm of computation error.
+These functions are useful when you need to solve few linear equations
+of kind $Ax=b$ with the same matrix $A$ and different vectors $b$.
+In such case you save on matrix $A$ factorization since it's needed to be
+performed just one time.
+These functions throw \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of the objects or when  matrix $A$ is close to singular.
+See also \GOT{rvector}{rvector}, \GOT{srmatrix}{srmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (12);
+
+try {
+    double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
+    double b1[] = {1., 2., 3.};
+    double b2[] = {0., -1., -2.};
+    srmatrix ma(m, 3);
+    srmatrix mLU(3);
+    rvector  vb1(b1, 3);
+    rvector  vb2(b2, 3);
+    rvector  vx1(3);
+    rvector  vx2(3);
+    iarray   nPivots(3);
+    double   dErr = 0.;
+
+    mLU.low_up(ma, nPivots);
+    std::cout << vx1.solve_lu (ma, mLU, nPivots, vb1, dErr);
+    std::cout << dErr << std::endl;
+    std::cout << vx2.solve_lu (ma, mLU, nPivots, vb2);
+    std::cout << ma * vx1 - vb1 << ma * vx2 - vb2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
++8.000000000000e+000 -8.000000000000e+000 +3.000000000000e+000
++6.661338147751e-015
+-5.000000000000e+000 +4.000000000000e+000 -1.000000000000e+000
++0.000000000000e+000 +0.000000000000e+000 +0.000000000000e+000
++0.000000000000e+000 +0.000000000000e+000 +0.000000000000e+000
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{gels}
+Function%
+\pdfdest name {rvector.gels} fit
+\begin{verbatim}
+rvector& rvector::gels (bool transpose, 
+                        const rmatrix& mA, const rvector& mB,
+                        TR& dErr) throw (cvmexception);
+\end{verbatim}
+solves overdetermined or underdetermined linear system
+\begin{equation*}
+A*x=b
+\end{equation*}
+for $m\times n$ matrix $A$ (or transposed one) where 
+$b$ is a vector of length $k$ 
+and $k=m$ in non-transposed case and $k=n$ otherwise.
+The algorithm uses QR or LQ factorization of $A$.
+It is assumed that $A$ has full rank, infinity returned otherwise.
+Internally  function uses \verb"?GELS" LAPACK routines. 
+If $m>n$ and \verb"transpose=false" or $m<n$ and \verb"transpose=true", then 
+the system is overdetermined, thus the algorithm tries to find the least squares solution $x$
+of the problem
+\begin{equation*}
+\|A*x-b\|_2\to\min\quad\text{or}\quad\|A^H*x-b\|_2\to\min\
+\end{equation*}
+respectively. Real number \verb"dErr" returns residual sum of squares.
+The system is underdetermined otherwise, and the algorithm finds its minimum norm solution.
+In this case \verb"bErr" is set to zero. In both cases the solution computed
+satisfies $x=\pinv(A)*b$, but this algorithm is faster than pseudo inversion.
+%Matrix $A$ is passed as an argument \verb"mA".
+Function sets calling object to be the solution and returns reference to it.
+It throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+See also \GOT{rvector}{rvector}, \GOT{rmatrix::gels}{rmatrix.gels}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+rmatrix a(7, 5);
+rvector b(7), bt(5);
+treal dErr;
+a.randomize(-10., 10.);
+b.randomize(-10., 10.);
+bt.randomize(-10., 10.);
+
+rvector x(5);
+x.gels(false, a, b, dErr);
+cvm::rvector xt(7);
+xt.gels(true, a, bt, dErr);
+std::cout << (a.pinv()*b - x).norm() << std::endl;
+std::cout << (~a.pinv()*bt - xt).norm() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++5.1347815e-016
++1.1752774e-015
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{gelsy}
+Function%
+\pdfdest name {rvector.gelsy} fit
+\begin{verbatim}
+rvector& rvector::gelsy (const rmatrix& mA, const rvector& mB, int& rank,
+                         TR tol = cvmMachSp()) throw (cvmexception);
+\end{verbatim}
+computes minimum-norm solution to linear
+least squares problem 
+\begin{equation*}
+\|A*x-b\|_2\to\min
+\end{equation*}
+using complete orthogonal factorization of $m\times n$ matrix $A$.
+Here $b$ is a vector of length $m$.
+Matrix $A$ may be rank-deficient, function returns its effective rank in \verb"rank"
+output parameter using \verb"tol" tolerance.
+Internally  function uses \verb"?GELSY" LAPACK routines, see more details
+about the algorithm in those routines' documentation.
+Matrix $A$ is passed as argument \verb"mA".
+Function sets calling object to be the solution and returns reference to it.
+It throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+See also \GOT{rvector}{rvector}, 
+\GOT{rvector::gelss}{rvector.gelss}, \GOT{rvector::gelsd}{rvector.gelsd}, 
+\GOT{rmatrix::gelsy}{rmatrix.gelsy}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rmatrix a(4, 5);
+rvector b(4);
+a.randomize(-10., 10.);
+b.randomize(-10., 10.);
+rvector x(5);
+tint rank;
+
+x.gelsy(a, b, rank);
+std::cout << (a*x - b).norm() << std::endl;
+std::cout << rank << " " << a.rank() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++2.1326688e-015
++4 +4
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{gelss}
+Function%
+\pdfdest name {rvector.gelss} fit
+\begin{verbatim}
+rvector& rvector::gelss (const rmatrix& mA, const rvector& mB, int& rank,
+                         rvector& sv, TR tol = cvmMachSp())
+                         throw (cvmexception);
+\end{verbatim}
+computes minimum-norm solution to linear
+least squares problem 
+\begin{equation*}
+\|A*x-b\|_2\to\min
+\end{equation*}
+using singular value decomposition of $m\times n$ matrix $A$.
+Here $b$ is a vector of length $m$.
+Matrix $A$ may be rank-deficient,  function returns 
+its effective rank in \verb"rank"
+output parameter using \verb"tol" tolerance.
+This function also computes
+singular values of $A$ in decreasing order and returns them in \verb"sv" output parameter
+having $\min(m,n)$ size.
+Internally  function uses \verb"?GELSS" LAPACK routines, see more details
+about the algorithm in that routine's documentation.
+Matrix $A$ is passed as  argument \verb"mA".
+Function sets calling object to be the solution and returns reference to it.
+It throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+See also \GOT{rvector}{rvector}, 
+\GOT{rvector::gelsy}{rvector.gelsy}, \GOT{rvector::gelsd}{rvector.gelsd}, 
+\GOT{rmatrix::gelss}{rmatrix.gelss}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rmatrix a(4, 5);
+rvector b(4);
+a.randomize(-10., 10.);
+b.randomize(-10., 10.);
+rvector sv(4);
+rvector x(5);
+tint rank;
+
+x.gelss(a, b, sv, rank);
+std::cout << (a*x - b).norm() << std::endl;
+std::cout << (sv - a.svd()).norm() << std::endl;
+std::cout << rank << " " << a.rank() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++7.7937340e-015
++1.2338969e-014
++4 +4
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{gelsd}
+Function%
+\pdfdest name {rvector.gelsd} fit
+\begin{verbatim}
+rvector& rvector::gelsd (const rmatrix& mA, const rvector& mB, int& rank,
+                         rvector& sv, TR tol = cvmMachSp())
+                         throw (cvmexception);
+\end{verbatim}
+computes minimum-norm solution to linear
+least squares problem 
+\begin{equation*}
+\|A*x-b\|_2\to\min
+\end{equation*}
+using singular value decomposition of $m\times n$ matrix $A$
+and divide and conquer method.
+Here $b$ is a vector of length $m$.
+Matrix $A$ may be rank-deficient, function returns 
+its effective rank in \verb"rank"
+output parameter using \verb"tol" tolerance.
+This function also computes
+singular values of $A$ in decreasing order and returns them in \verb"sv" output parameter
+having $\min(m,n)$ size.
+Internally function uses \verb"?GELSD" LAPACK routines, see more details
+about the algorithm in that routine's documentation.
+Matrix $A$ is passed as  argument \verb"mA".
+Function sets calling object to be the solution and returns reference to it.
+It throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+See also \GOT{rvector}{rvector}, 
+\GOT{rvector::gelsy}{rvector.gelsy}, \GOT{rvector::gelss}{rvector.gelss},
+\GOT{rmatrix::gelsd}{rmatrix.gelsd}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rmatrix a(4, 5);
+rvector b(4);
+a.randomize(-10., 10.);
+b.randomize(-10., 10.);
+rvector sv(4);
+rvector x(5);
+tint rank;
+
+x.gelsd(a, b, sv, rank);
+std::cout << (a*x - b).norm() << std::endl;
+std::cout << (sv - a.svd()).norm() << std::endl;
+std::cout << rank << " " << a.rank() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++7.8441794e-015
++5.1021966e-015
++4 +4
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{svd}
+Functions%
+\pdfdest name {rvector.svd} fit
+\begin{verbatim}
+rvector&
+rvector::svd (const rmatrix& mArg) throw (cvmexception);
+rvector&
+rvector::svd (const cmatrix& mArg) throw (cvmexception);
+
+rvector&
+rvector::svd (const rmatrix& mArg,
+              srmatrix& mU, srmatrix& mVH) throw (cvmexception);
+rvector&
+rvector::svd (const cmatrix& mArg,
+              scmatrix& mU, scmatrix& mVH) throw (cvmexception);
+\end{verbatim}
+set calling vector to be equal to singular values
+\begin{equation*}
+\sigma_1\ge\sigma_2\ge\dots\ge\sigma_{\min(m,n)}\ge 0
+\end{equation*}
+of $m\times n$ matrix $A$ (parameter \verb"mArg").
+These values are the main
+diagonal of matrix $\Sigma$ of the singular value decomposition
+\begin{equation*}
+A=U\Sigma V^H
+\end{equation*}
+where
+$U$ and $V$ are orthogonal
+for real $A$ and unitary for complex $A$.
+$V^H$ is transposed $V$ for real one and
+hermitian conjugated $V$ for complex one.
+First $\min(m, n)$
+columns of  matrices $U$ and $V$ are
+left and right singular
+vectors of $A$ respectively.
+Singular values and singular vectors satisfy
+\begin{equation*}
+Av_i=\sigma_i u_i\ \ \text{ and }\ \ A^Hu_i=\sigma_i v_i
+\end{equation*}
+where $u_i$ and $v_i$ are \hbox{$i$-th}
+columns of $U$ and $V$ respectively.
+Third and fourth versions of  functions
+set output parameter \verb"mU" to be equal
+to  matrix $U$ of size $m\times m$ and
+\verb"mVH" to be equal
+to  matrix $V^H$ of size $n\times n$.
+%\emph{Please note that, unlike others, these functions resize the parameters} \verb"mU" \emph{and} \verb"mVH".
+All  functions
+return  reference to the object they change and throw
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate calling object size
+(it must be equal to $\min(m,n)$), matrix \verb'mU' size 
+(must be $m\times m$), matrix \verb'mVH' size
+(must be $n\times n$) or in case of convergence error.
+See also
+\GOT{rvector}{rvector},
+\GOT{rmatrix}{rmatrix},
+\GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (10);
+
+try {
+    double m[] = {1., -1., 1., 2., -2., 1.,
+                  3., -2., 1., 0., -2., 1.};
+    rmatrix mA(m,4,3);
+    rmatrix mSigma(4,3);
+    rvector v(3);
+    srmatrix mU(4), mVH(3);
+
+    v.svd(mA, mU, mVH);
+    mSigma.diag(0) = v;
+
+    std::cout << mU << std::endl;
+    std::cout << mVH << std::endl;
+    std::cout << mSigma << std::endl;
+
+    std::cout << (mA * ~mVH - mU * mSigma).norm() << std::endl;
+    std::cout << (~mA * mU - ~(mSigma * mVH)).norm() << std::endl;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-4.8425643615e-01 +1.9516809011e-01 +1.1506232201e-02 -8.5280286542e-01
++2.1685987119e-01 -3.4107922671e-01 -8.8948423927e-01 -2.1320071636e-01
++6.6237057295e-01 +7.1553688692e-01 -6.1787070600e-02 -2.1320071636e-01
+-5.2889765022e-01 +5.7756501033e-01 -4.5262319054e-01 +4.2640143271e-01
+
+-2.2124855498e-01 +8.5354150454e-01 -4.7171599183e-01
++9.5937301747e-01 +1.0365951763e-01 -2.6240830353e-01
+-1.7507852602e-01 -5.1060905244e-01 -8.4179920723e-01
+
++4.9561500411e+00 +0.0000000000e+00 +0.0000000000e+00
++0.0000000000e+00 +2.5088408581e+00 +0.0000000000e+00
++0.0000000000e+00 +0.0000000000e+00 +3.7721919242e-01
++0.0000000000e+00 +0.0000000000e+00 +0.0000000000e+00
+
++1.3710111285e-15
++2.4829995848e-15
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{eig}
+Functions%
+\pdfdest name {rvector.eig} fit
+\begin{verbatim}
+rvector&
+rvector::eig (const srsmatrix& mArg) throw (cvmexception);
+rvector&
+rvector::eig (const schmatrix& mArg) throw (cvmexception);
+
+rvector&
+rvector::eig (const srsmatrix& mArg,
+              srmatrix& mEigVect) throw (cvmexception);
+rvector&
+rvector::eig (const schmatrix& mArg,
+              scmatrix& mEigVect) throw (cvmexception);
+\end{verbatim}
+solve symmetric eigenvalue problem and
+set calling vector to be equal to eigenvalues
+of symmetric
+or hermitian matrix \verb"mArg".
+The symmetric eigenvalue problem is defined
+as follows: given symmetric
+or hermitian matrix $A$, find the eigenvalues $\lambda$
+and the corresponding
+eigenvectors $z$ that satisfy the equation
+\begin{equation*}
+Az = \lambda z.
+\end{equation*}
+All $n$ eigenvalues are real not only for real
+symmetric but also for complex Hermitian matrices $A$,
+and there exists an
+orthogonal system of $n$ eigenvectors.
+If $A$ is  symmetric or Hermitian
+positive-definite matrix, all eigenvalues are positive.
+See~\GO{\cite{Lancaster}}{biblio} for further details.
+The third and fourth versions of  functions
+set  output parameter \verb"mEigVect" to be equal
+to  square matrix containing eigenvectors as columns.
+All  functions
+return  reference to the vector they change and throw
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate calling object sizes
+or in case of convergence error.
+See also
+\GOT{rvector}{rvector}, \GOT{cvector::eig}{cvector.eig},
+\GOT{srsmatrix}{srsmatrix}, \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (3);
+
+try {
+    srsmatrix m(3);
+    srmatrix me(3);
+    rvector v(3);
+    m.randomize(1., 3.);
+
+    v.eig (m, me);
+    std::cout << v;
+
+    std::cout << m * me(1) - me(1) * v(1);
+    std::cout << m * me(2) - me(2) * v(2);
+    std::cout << m * me(3) - me(3) * v(3);
+    std::cout << me(1) * me(2) << std::endl; // orthogonality check
+
+    schmatrix mc(3);
+    scmatrix mce(3);
+    mc.randomize_real(1., 3.);
+    mc.randomize_imag(1., 3.);
+
+    v.eig (mc, mce);
+    std::cout << v;
+
+    std::cout << mc * mce(1) - mce(1) * v(1);
+    std::cout << mc * mce(2) - mce(2) * v(2);
+    std::cout << mc * mce(3) - mce(3) * v(3);
+    std::cout << mce(1) % mce(2) << std::endl; // orthogonality check
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-9.360e-01 +3.535e-01 +6.376e+00
+-4.441e-16 -5.551e-16 -6.106e-16
++3.331e-16 +1.145e-16 +1.110e-16
+-4.441e-16 +0.000e+00 -4.441e-16
++2.060e-17
+-3.274e+00 +9.710e-01 +8.209e+00
+(-4.441e-16,-1.221e-15) (-1.443e-15,-4.441e-16) (-8.882e-16,+4.683e-16)
+(-5.551e-16,-2.776e-16) (+0.000e+00,-4.025e-16) (+6.661e-16,-2.461e-17)
+(-5.551e-16,+0.000e+00) (+4.441e-16,-4.441e-16) (+0.000e+00,+3.896e-16)
+(+1.608e-16,-2.261e-17)
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{gemv}
+Function%
+\pdfdest name {rvector.gemv} fit
+\begin{verbatim}
+rvector& rvector::gemv (bool bLeft, const rmatrix& m, TR dAlpha,
+                        const rvector& v, TR dBeta) throw (cvmexception);
+\end{verbatim}
+calls one of \verb"?GEMV" routines of the
+\URL{BLAS library}{http://www.netlib.org/blas}
+performing matrix-vector operation defined as
+\begin{equation*}
+c=\alpha\,M\cdot v + \beta\,c\quad\text{or}\quad c=\alpha\,v\cdot M + \beta\, c,
+\end{equation*}
+where $\alpha$ and $\beta$ are real numbers 
+(parameters \verb"dAlpha" and \verb"dBeta"),
+$M$ is  matrix (parameter \verb"m")
+and $v$ and $c$ are vectors (parameter \verb"v"
+and calling vector respectively).
+First operation is performed if \verb"bLeft" passed
+is \verb"false" and second one otherwise.
+Function
+returns  reference to the vector changed and throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+See also
+\GOT{rvector}{rvector},
+\GOT{rmatrix}{rmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (7);
+
+try {
+    double alpha = 1.3;
+    double beta = -0.7;
+    rmatrix m(4,3);
+    rvector c(4);
+    rvector v(3);
+    m.randomize(-1., 2.); v.randomize(-1., 3.); c.randomize(0., 2.);
+
+    std::cout << m * v * alpha + c * beta;
+    std::cout << c.gemv(false, m, alpha, v, beta);
+    std::cout << c * m * alpha + v * beta;
+    std::cout << v.gemv(true, m, alpha, c, beta);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-3.5397829e-02 +3.1990410e-02 +3.2633344e-01 -5.4669713e-01
+-3.5397829e-02 +3.1990410e-02 +3.2633344e-01 -5.4669713e-01
+-4.7697026e-01 -2.2544922e-01 -5.5204984e-01
+-4.7697026e-01 -2.2544922e-01 -5.5204984e-01
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{gbmv}
+Function%
+\pdfdest name {rvector.gbmv} fit
+\begin{verbatim}
+rvector& rvector::gbmv (bool bLeft, const srbmatrix& m, TR dAlpha,
+                        const rvector& v, TR dBeta) throw (cvmexception);
+\end{verbatim}
+calls one of \verb"?GBMV" routines of the
+\URL{BLAS library}{http://www.netlib.org/blas}
+performing matrix-vector operation defined as
+\begin{equation*}
+c=\alpha\,M\cdot v + \beta\,c\quad\text{or}\quad c=\alpha\,v\cdot M + \beta\, c,
+\end{equation*}
+where $\alpha$ and $\beta$ are real numbers 
+(parameters \verb"dAlpha" and \verb"dBeta"),
+$M$ is  band matrix (parameter \verb"m")
+and $v$ and $c$ are vectors (parameter \verb"v"
+and calling vector respectively).
+First operation is performed if \verb"bLeft" passed
+is \verb"false" and second one otherwise.
+Function
+returns  reference to the vector changed and throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+See also
+\GOT{rvector}{rvector},
+\GOT{srbmatrix}{srbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (7);
+
+try {
+    double alpha = 1.3;
+    double beta = -0.7;
+    srbmatrix m(3, 1, 0);
+    rvector c(3);
+    rvector v(3);
+    m.randomize(-1., 2.); v.randomize(-1., 3.); c.randomize(0., 2.);
+
+    std::cout << m * v * alpha + c * beta;
+    std::cout << c.gbmv(false, m, alpha, v, beta);
+    std::cout << c * m * alpha + v * beta;
+    std::cout << v.gbmv(true, m, alpha, c, beta);
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
++1.4551599e+00 -5.1882508e-01 -5.2088503e-02
++1.4551599e+00 -5.1882508e-01 -5.2088503e-02
++7.3471591e-01 -2.6952064e-01 -2.0478054e-01
++7.3471591e-01 -2.6952064e-01 -2.0478054e-01
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{randomize}
+Function%
+\pdfdest name {rvector.randomize} fit
+\begin{verbatim}
+rvector& rvector::randomize (TR dFrom, TR dTo);
+\end{verbatim}
+fills calling vector with pseudo-random numbers distributed between
+\verb"dFrom" and \verb"dTo".
+It returns  reference to the vector changed.
+See also
+\GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (7);
+
+rvector v(4);
+v.randomize(-2.,3.);
+std::cout << v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-1.1160314e+000 2.5649586e+000 8.9345988e-001 -1.1631825e+000
+\end{Verbatim}
+\newpage
+

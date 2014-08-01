@@ -1,0 +1,193 @@
+\bigskip
+\noindent
+\verb"template <class t_type>"\\
+\verb"class SqMatrix : public virtual Matrix<t_type> {"\\
+\verb"public:"\\
+\verb"    SqMatrix& "\GOT{operator ++}{SqMatrix.operator ++}\verb" ();"\\
+\verb"    SqMatrix& "\GOT{operator --}{SqMatrix.operator --}\verb" ();"\\
+\verb"    SqMatrix& "\GOT{identity}{SqMatrix.identity}\verb" ();"\\
+\verb"    SqMatrix& "\GOT{transpose}{SqMatrix.transpose}\verb" ();"\\
+\verb"};"
+\newpage
+
+
+
+
+\subsubsection{operator ++}
+Operator%
+\pdfdest name {SqMatrix.operator ++} fit
+\begin{verbatim}
+SqMatrix<t_type>&
+SqMatrix<t_type>::operator ++ ();
+\end{verbatim}
+adds to  calling object identity matrix of the same size
+and returns reference to
+the object changed.
+Operator is inherited in the classes
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix}.
+See also \GOT{SqMatrix}{SqMatrix}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+treal re[] = {1., 2., 3., 4.};
+treal im[] = {1., -1., 2., -2.};
+srmatrix mr(2);
+scmatrix mc(2);
+
+mr = re;
+mc.assign(re, im);
+
+cout << mr << mc << endl;
+
+++mr;
+++mc;
+cout << mr << mc;
+\end{verbatim}
+prints
+\begin{verbatim}
+1 3
+2 4
+(1,1) (3,2)
+(2,-1) (4,-2)
+
+2 3
+2 5
+(2,1) (3,2)
+(2,-1) (5,-2)
+\end{verbatim}
+\newpage
+
+
+
+\subsubsection{operator --}
+Operator%
+\pdfdest name {SqMatrix.operator --} fit
+\begin{verbatim}
+SqMatrix<t_type>&
+SqMatrix<t_type>::operator -- ();
+\end{verbatim}
+subtracts from  calling object identity matrix of the same size
+and returns reference to
+the object changed.
+Operator is inherited in the classes
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix}.
+See also \GOT{SqMatrix}{SqMatrix}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+treal re[] = {1., 2., 3., 4.};
+treal im[] = {1., -1., 2., -2.};
+srmatrix mr(2);
+scmatrix mc(2);
+
+mr = re;
+mc.assign(re, im);
+
+cout << mr << mc << endl;
+
+--mr;
+--mc;
+cout << mr << mc;
+\end{verbatim}
+prints
+\begin{verbatim}
+1 3
+2 4
+(1,1) (3,2)
+(2,-1) (4,-2)
+
+0 3
+2 3
+(0,1) (3,2)
+(2,-1) (3,-2)
+\end{verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{identity}
+Function%
+\pdfdest name {SqMatrix.identity} fit
+\begin{verbatim}
+SqMatrix<t_type>&
+SqMatrix<t_type>::identuty ();
+\end{verbatim}
+sets  calling object to be equal to identity matrix of the same size
+and returns reference to
+the object changed.
+Function is inherited in the classes
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix}.
+See also \GOT{SqMatrix}{SqMatrix}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+srmatrix mr(4);
+scmatrix mc(3);
+
+mr(1,2) = 1.;
+
+mr.identity();
+mc.identity();
+
+cout << mr << mc;
+\end{verbatim}
+prints
+\begin{verbatim}
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+(1,0) (0,0) (0,0)
+(0,0) (1,0) (0,0)
+(0,0) (0,0) (1,0)
+\end{verbatim}
+\newpage
+
+
+
+\subsubsection{transpose}
+Function%
+\pdfdest name {SqMatrix.transpose} fit
+\begin{verbatim}
+SqMatrix<t_type>& SqMatrix<t_type>::transpose ();
+\end{verbatim}
+sets  calling object to be equal
+to itself transposed
+and returns  reference to
+the object changed.
+Function is inherited in the classes
+\GOT{srmatrix}{srmatrix} and \GOT{scmatrix}{scmatrix}.
+See also \GOT{SqMatrix}{SqMatrix}.
+
+Example of usage:
+\begin{verbatim}
+using namespace cvm;
+
+treal a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
+srmatrix m(a, 3);
+
+cout << m << endl;
+
+m.transpose();
+cout << m;
+\end{verbatim}
+prints
+\begin{verbatim}
+1 4 7
+2 5 8
+3 6 9
+
+1 2 3
+4 5 6
+7 8 9
+\end{verbatim}
+\newpage
+

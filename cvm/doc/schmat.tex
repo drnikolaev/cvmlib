@@ -1,0 +1,2825 @@
+\bigskip
+\noindent
+\verb"template <typename TR, typename TC>"\\
+\verb"class schmatrix : public scmatrix <TR,TC> {"\\
+\verb"public:"\\
+\verb"    "\GOT{schmatrix}{schmatrix.schmatrix ()}\verb" ();"\\
+\verb"    explicit "\GOT{schmatrix}{schmatrix.schmatrix (int)}\verb" (int nMN);"\\
+\verb"    "\GOT{schmatrix}{schmatrix.schmatrix (TC*,int)}\verb" (TC* pD, int nMN, TR tol = cvmMachSp());"\\
+\verb"    "\GOT{schmatrix}{schmatrix.schmatrix (const TC*,int)}\verb" (const TC* pD, int nMN, TR tol = cvmMachSp());"\\
+\verb"    "\GOT{schmatrix}{schmatrix.schmatrix (const schmatrix&)}\verb" (const schmatrix& m);"\\
+\verb"    explicit "\GOT{schmatrix}{schmatrix.schmatrix (const cmatrix&)}\verb" (const cmatrix& m, TR tol = cvmMachSp());"\\
+\verb"    explicit "\GOT{schmatrix}{schmatrix.schmatrix (const rvector&)}\verb" (const rvector& v);"\\
+\verb"    explicit "\GOT{schmatrix}{schmatrix.schmatrix (const srsmatrix&)}\verb" (const srsmatrix& m);"\\
+\verb"    "\GOT{schmatrix}{schmatrix.schmatrix (TR*,TR*,int)}\verb" (const TR* pRe, const TR* pIm, int nMN,"\\
+\verb"               TR tol = cvmMachSp());"\\
+\verb"    "\GOT{schmatrix}{schmatrix.schmatrix (const srmatrix&, const srmatrix&)}\verb" (const srmatrix& mRe, const srmatrix& mIm,"\\
+\verb"               TR tol = cvmMachSp());"\\
+\verb"    "\GOT{schmatrix}{schmatrix.submatrixctr}\verb" (schmatrix& m, int nRowCol, int nSize);"\\
+\verb"    TC "\GOT{operator ()}{schmatrix.operator (,)}\verb" (int im, int in) const throw (cvmexception);"\\
+\verb"    const cvector "\GOT{operator ()}{schmatrix.operator ()}\verb" (int i) const throw (cvmexception);"\\
+\verb"    const cvector "\GOT{operator []}{schmatrix.operator []}\verb" (int i) const throw (cvmexception);"\\
+\verb"    const cvector "\GOT{diag}{schmatrix.diag}\verb" (int i) const throw (cvmexception);"\\
+\verb"    const srsmatrix "\GOT{real}{schmatrix.real}\verb" () const;"\\
+\verb"    const srmatrix "\GOT{imag}{schmatrix.imag}\verb" () const;"\\
+\verb"    schmatrix& "\GOT{operator =}{schmatrix.operator = (const schmatrix&)}\verb" (const schmatrix& m) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{assign}{schmatrix.assign}\verb" (const cvector& v, TR tol = cvmMachSp())"\\
+\verb"                       throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{assign}{schmatrix.assign}\verb" (const TC* pD, TR tol = cvmMachSp())"\\
+\verb"                       throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{assign}{schmatrix.assign (int, const schmatrix&)}\verb" (int nRowCol, const schmatrix& m)"\\
+\verb"                       throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{set}{schmatrix.set(int,int,TC)}\verb" (int nRow, int nCol, TC z);"\\
+\verb"    schmatrix& "\GOT{set\_diag}{schmatrix.set_diag}\verb" (int i, const cvector& v) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{set\_main\_diag}{schmatrix.set_main_diag}\verb" (const rvector& v) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{assign\_real}{schmatrix.assign_real}\verb" (const srsmatrix& m) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{set\_real}{schmatrix.set_real}\verb" (TR d) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{resize}{schmatrix.resize}\verb" (int nNewMN) throw (cvmexception);"\\
+\verb"    bool "\GOT{operator ==}{schmatrix.operator ==}\verb" (const schmatrix& v) const;"\\
+\verb"    bool "\GOT{operator !=}{schmatrix.operator !=}\verb" (const schmatrix& v) const;"\\
+\verb"    schmatrix& "\GOT{operator <{}<}{schmatrix.operator <<}\verb" (const schmatrix& m) throw (cvmexception);"\\
+\verb"    schmatrix "\GOT{operator +}{schmatrix.operator +}\verb" (const schmatrix& m) const"\\
+\verb"                          throw (cvmexception);"\\
+\verb"    schmatrix "\GOT{operator -}{schmatrix.operator -}\verb" (const schmatrix& m) const"\\
+\verb"                          throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{sum}{schmatrix.sum}\verb" (const schmatrix& m1,"\\
+\verb"                    const schmatrix& m2) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{diff}{schmatrix.diff}\verb" (const schmatrix& m1,"\\
+\verb"                     const schmatrix& m2) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{operator +=}{schmatrix.operator +=}\verb" (const schmatrix& m) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{operator -=}{schmatrix.operator -=}\verb" (const schmatrix& m) throw (cvmexception);"\\
+\verb"    schmatrix "\GOT{operator -}{schmatrix.operator - ()}\verb" () const;"\\
+\verb"    schmatrix& "\GOT{operator ++}{schmatrix.operator ++}\verb" ();"\\
+\verb"    schmatrix& "\GOT{operator ++}{schmatrix.operator ++}\verb" (int);"\\
+\verb"    schmatrix& "\GOT{operator -{}-}{schmatrix.operator --}\verb" ();"\\
+\verb"    schmatrix& "\GOT{operator -{}-}{schmatrix.operator --}\verb" (int);"\\
+\verb"    schmatrix "\GOT{operator *}{schmatrix.operator * (TR)}\verb" (TR d) const;"\\
+\verb"    schmatrix "\GOT{operator /}{schmatrix.operator / (TR)}\verb" (TR d) const throw (cvmexception);"\\
+\verb"    scmatrix "\GOT{operator *}{schmatrix.operator * (TC)}\verb" (TC z) const;"\\
+\verb"    scmatrix "\GOT{operator /}{schmatrix.operator / (TC)}\verb" (TC z) const throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{operator *=}{schmatrix.operator *= (TR)}\verb" (TR d);"\\
+\verb"    schmatrix& "\GOT{operator /=}{schmatrix.operator /= (TR)}\verb" (TR d) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{normalize}{schmatrix.normalize}\verb" ();"\\
+\verb"    schmatrix "\GOT{operator \TildaT}{schmatrix.conj}\verb" () const;"\\
+\verb"    schmatrix "\GOT{operator !}{schmatrix.transpose}\verb" () const;"\\
+\verb"    schmatrix& "\GOT{conj}{schmatrix.conj}\verb" (const schmatrix& m) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{conj}{schmatrix.conj}\verb" ();"\\
+\verb"    schmatrix& "\GOT{transpose}{schmatrix.transpose}\verb" (const schmatrix& m) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{transpose}{schmatrix.transpose}\verb" ();"\\
+\verb"    cvector "\GOT{operator *}{schmatrix.operator * (const cvector&)}\verb" (const cvector& v) const throw (cvmexception);"\\
+\verb"    cmatrix "\GOT{operator *}{schmatrix.operator * (const cmatrix&)}\verb" (const cmatrix& m) const throw (cvmexception);"\\
+\verb"    scmatrix "\GOT{operator *}{schmatrix.operator * (const scmatrix&)}\verb" (const scmatrix& m) const throw (cvmexception);"\\
+\verb"    cvector "\GOT{operator /}{schmatrix.operator / (cvector)}\verb" (const cvector& vB) const throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{herk}{schmatrix.herk}\verb" (TR alpha,"\\
+\verb"                     const cvector& v, TR beta) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{herk}{schmatrix.herk}\verb" (bool bTransp, TR alpha,"\\
+\verb"                     const cmatrix& m, TR beta) throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{her2k}{schmatrix.her2k}\verb" (TC alpha,"\\
+\verb"                     const cvector& v1, const cvector& v2, TR beta)"\\
+\verb"                     throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{her2k}{schmatrix.her2k}\verb" (bool bTransp, TC alpha,"\\
+\verb"                     const cmatrix& m1, const cmatrix& m2, TR beta)"\\
+\verb"                     throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{inv}{schmatrix.inv}\verb" (const schmatrix& mArg) throw (cvmexception);"\\
+\verb"    schmatrix "\GOT{inv}{schmatrix.inv}\verb" () const throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{exp}{schmatrix.exp}\verb" (const schmatrix& m,"\\
+\verb"                    TR tol = cvmMachSp ()) throw (cvmexception);"\\
+\verb"    schmatrix "\GOT{exp}{schmatrix.exp}\verb" (TR tol = cvmMachSp ()) const throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{polynom}{schmatrix.polynom}\verb" (const schmatrix& m, const rvector& v)"\\
+\verb"                        throw (cvmexception);"\\
+\verb"    schmatrix "\GOT{polynom}{schmatrix.polynom}\verb" (const rvector& v) const throw (cvmexception);"\\
+\verb"    rvector "\GOT{eig}{schmatrix.eig}\verb" (scmatrix& mEigVect) const throw (cvmexception);"\\
+\verb"    rvector "\GOT{eig}{schmatrix.eig}\verb" () const throw (cvmexception);"\\
+\verb"    scmatrix "\GOT{cholesky}{schmatrix.cholesky}\verb" () const throw (cvmexception);"\\
+\verb"    scmatrix "\GOT{bunch\_kaufman}{schmatrix.bunch_kaufman}\verb" () const throw (cvmexception);"\\
+\verb"    schmatrix& "\GOT{identity}{schmatrix.identity}\verb" ();"\\
+\verb"    schmatrix& "\GOT{vanish}{schmatrix.vanish}\verb" ();"\\
+\verb"    schmatrix& "\GOT{randomize\_real}{schmatrix.randomizereal}\verb" (TR dFrom, TR dTo);"\\
+\verb"    schmatrix& "\GOT{randomize\_imag}{schmatrix.randomizeimag}\verb" (TR dFrom, TR dTo);"\\
+\verb"};"
+\newpage
+
+
+\subsubsection{schmatrix ()}
+Constructor%
+\pdfdest name {schmatrix.schmatrix ()} fit
+\begin{verbatim}
+schmatrix::schmatrix ();
+\end{verbatim}
+creates  empty \verb"schmatrix" object.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+schmatrix m;
+std::cout << m.msize() << " " << m.nsize() << " " 
+          << m.size() << std::endl;
+
+m.resize (3);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 0 0
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{schmatrix (int)}
+Constructor%
+\pdfdest name {schmatrix.schmatrix (int)} fit
+\begin{verbatim}
+explicit schmatrix::schmatrix (int nMN);
+\end{verbatim}
+creates  $n\times n$ \verb"schmatrix" object where $n$ is passed in
+\verb"nMN" parameter.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed or memory allocation failure.
+See also \GOT{schmat\-rix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+schmatrix m (4);
+std::cout << m.msize() << std::endl 
+          << m.nsize() << std::endl
+          << m.size() << std::endl << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+4
+4
+16
+(0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{schmatrix (TC*,int)}
+Constructor%
+\pdfdest name {schmatrix.schmatrix (TC*,int)} fit
+\begin{verbatim}
+schmatrix::schmatrix (TC* pD, int nMN, TR tol = cvmMachSp());
+\end{verbatim}
+creates  $n\times n$ \verb"scmatrix" object where $n$ is passed in
+\verb"nMN" parameter.
+Unlike others, this constructor \textit{does not allocate  memory}.
+It just shares  memory with  array pointed to by \verb"pD".
+Constructor throws  \GOT{cvmexception}{cvmexception}
+if the matrix created doesn't appear to be hermitian (tolerance is set by
+parameter \verb'tol') or in case of non-positive size passed. 
+If subsequent application flow would change the array passed so
+it becomes not  hermitian matrix anymore then results are not predictable.
+See also \GOT{schmatrix}{schmatrix},
+\GOT{schmatrix (const TC*,int)}{schmatrix.schmatrix (const TC*,int)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m ((std::complex<double>*)a, 3);
+m.set(2,1,std::complex<double>(8.,8.));
+std::cout << m << std::endl;
+std::cout << a[0] << " " << a[1] << " " << a[2] << " "
+          << a[3] << " " << a[4] << " " << a[5] << " " << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (8,-8) (-1,-2)
+(8,8) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+
+1 0 8 8 -1 2
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{schmatrix (const TC*,int)}
+Constructor%
+\pdfdest name {schmatrix.schmatrix (const TC*,int)} fit
+\begin{verbatim}
+schmatrix::schmatrix (const TC* pD, int nMN, TR tol = cvmMachSp());
+\end{verbatim}
+creates  $n\times n$ \verb"scmatrix" object where $n$ is passed in
+\verb"nMN" parameter
+and copies $n*n$ elements of  array \verb"pD" to it \GOT{by colums}{SubSubSectionStorage}.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+if the matrix created doesn't appear to be hermitian (tolerance is set by
+parameter \verb'tol') or in case of non-positive size passed. 
+See also \GOT{schmatrix}{schmatrix},
+\GOT{schmatrix (TC*,int)}{schmatrix.schmatrix (TC*,int)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+const double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+                    0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m ((const std::complex<double>*)a, 3);
+m.set(2,1,std::complex<double>(8.,8.));
+std::cout << m << std::endl;
+std::cout << a[0] << " " << a[1] << " " << a[2] << " "
+          << a[3] << " " << a[4] << " " << a[5] << " " << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (8,-8) (-1,-2)
+(8,8) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+
+1 0 2 1 -1 2
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{schmatrix (const schmatrix\&)}
+Copy constructor%
+\pdfdest name {schmatrix.schmatrix (const schmatrix&)} fit
+\begin{verbatim}
+schmatrix::schmatrix (const schmatrix& m)
+\end{verbatim}
+creates  \verb"schmatrix" object as a copy of \verb"m".
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left |
+                std::ios::showpos); 
+std::cout.precision (1);
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m ((std::complex<double>*)a, 3);
+scmatrix mc(m);
+
+m.set(1,2, std::complex<double>(7.7,7.7));
+std::cout << m << std::endl << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(+1.0e+000,+0.0e+000) (+7.7e+000,+7.7e+000) (-1.0e+000,-2.0e+000)
+(+7.7e+000,-7.7e+000) (+2.0e+000,+0.0e+000) (+0.0e+000,-3.0e+000)
+(-1.0e+000,+2.0e+000) (+0.0e+000,+3.0e+000) (+3.0e+000,+0.0e+000)
+
+(+1.0e+000,+0.0e+000) (+2.0e+000,-1.0e+000) (-1.0e+000,-2.0e+000)
+(+2.0e+000,+1.0e+000) (+2.0e+000,+0.0e+000) (+0.0e+000,-3.0e+000)
+(-1.0e+000,+2.0e+000) (+0.0e+000,+3.0e+000) (+3.0e+000,+0.0e+000)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{schmatrix (const cmatrix\&)}
+Constructor%
+\pdfdest name {schmatrix.schmatrix (const cmatrix&)} fit
+\begin{verbatim}
+explicit schmatrix::schmatrix (const cmatrix& m, TR tol = cvmMachSp())
+\end{verbatim}
+creates  \verb"schmatrix" object as a copy of matrix \verb"m".
+It's assumed that $m\times n$ matrix \verb"m" must have equal
+sizes, i.e. $m = n$ is satisfied and it has to be  hermitian one
+(tolerance is set by parameter \verb'tol').
+Constructor throws  \GOT{cvmexception}{cvmexception}
+if this is not true or in case of memory allocation failure.
+See also \GOT{schmatrix}{schmatrix} and \GOT{cmatrix}{cmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+cmatrix m ((std::complex<double>*)a, 3, 3);
+scmatrix mch(m);
+std::cout << mch;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{schmatrix (const rvector\&)}
+Constructor%
+\pdfdest name {schmatrix.schmatrix (const rvector&)} fit
+\begin{verbatim}
+explicit schmatrix::schmatrix (const rvector& v);
+\end{verbatim}
+creates  \verb"schmatrix" object
+of size \verb"v.size()" by \verb"v.size()"
+and assigns vector \verb"v" to its main diagonal.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{schmatrix}{schmatrix} and \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5.};
+const rvector v (a, 5);
+schmatrix m(v);
+std::cout << m.msize() << " " << m.nsize() << " " 
+          << m.size() << std::endl << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+5 5 25
+(1,0) (0,0) (0,0) (0,0) (0,0)
+(0,0) (2,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (3,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (4,0) (0,0)
+(0,0) (0,0) (0,0) (0,0) (5,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{schmatrix (const srsmatrix\&)}
+Constructor%
+\pdfdest name {schmatrix.schmatrix (const srsmatrix&)} fit
+\begin{verbatim}
+explicit schmatrix::schmatrix (const srsmatrix& m);
+\end{verbatim}
+creates  \verb"schmatrix" object
+having the same dimension as real symmetric matrix \verb"m"
+and copies  matrix \verb"m" to its real part.
+See also \GOT{schmatrix}{schmatrix} and 
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a, 3);
+schmatrix mch(m);
+std::cout << mch;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,0) (3,0)
+(2,0) (5,0) (6,0)
+(3,0) (6,0) (9,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{schmatrix (const TR*,const TR*,int)}
+Constructor%
+\pdfdest name {schmatrix.schmatrix (TR*,TR*,int)} fit
+\begin{verbatim}
+schmatrix::schmatrix (const TR* pRe, const TRl* pIm, int nMN,
+                      TR tol = cvmMachSp());
+\end{verbatim}
+creates  \verb"schmatrix" object
+of size \verb"nMN" by \verb"nMN" and copies every
+element of arrays pointed to by \verb"pRe" and \verb"pIm"
+to  real and imaginary part of the matrix created respectively.
+Use \verb"NULL" pointer to fill up appropriate
+part with zero values.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+if the matrix created doesn't appear to be hermitian (tolerance is et by parameter \verb'tol')
+or in case of memory allocation failure.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double re[] = {1., 2., -1., 2., 2., 0., -1., 0., 3.};
+double im[] = {0., 1., 2., -1., 0., 3., -2., -3., 0.};
+schmatrix m(re, im, 3);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{schmatrix (const srmatrix\&, const srmatrix\&)}
+Constructor%
+\pdfdest name {schmatrix.schmatrix (const srmatrix&, const srmatrix&)} fit
+\begin{verbatim}
+schmatrix::schmatrix (const srmatrix& mRe, const srmatrix& mIm,
+                      TR tol = cvmMachSp());
+\end{verbatim}
+creates  \verb"schmatrix" object
+of the same size as \verb"mRe" and \verb"mIm" has
+(it throws \GOT{cvmexception}{cvmexception}
+if \verb"mRe" and
+\verb"mIm" have different sizes)
+and copies matrices \verb"mRe" and \verb"mIm"
+to  real and imaginary part of the matrix created respectively.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+if the matrix created doesn't appear to be hermitian (tolerance is et by parameter \verb'tol')
+or in case of memory allocation failure.
+See also \GOT{schmatrix}{schmatrix}, \GOT{srmatrix}{srmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double re[] = {1., 2., -1., 2., 2., 0., -1., 0., 3.};
+double im[] = {0., 1., 2., -1., 0., 3., -2., -3., 0.};
+srmatrix mr(re, 3);
+srmatrix mi(im, 3);
+schmatrix m(mr, mi);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{submatrix}
+Submatrix constructor%
+\pdfdest name {schmatrix.submatrixctr} fit
+\begin{verbatim}
+schmatrix::schmatrix (schmatrix& m, int nRowCol, int nSize);
+\end{verbatim}
+creates  \verb"scmatrix" object as  \emph{submatrix} of \verb"m".
+It means that the matrix object created shares  memory with some part
+of \verb"m". This part is defined by its upper left corner (parameter 
+\verb"nRowCol", \Based)
+and its size (parameter \verb"nSize").
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m ((std::complex<double>*)a, 3);
+schmatrix m2 (m, 1, 2);
+
+std::cout << m2 << std::endl;
+m2.set_real(7.7);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1)
+(2,1) (2,0)
+
+(7.7,0) (7.7,-1) (-1,-2)
+(7.7,1) (7.7,0) (0,-3)
+(-1,2) (0,3) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator (,)}
+Indexing operator%
+\pdfdest name {schmatrix.operator (,)} fit
+\begin{verbatim}
+TC schmatrix::operator () (int im, int in) const throw (cvmexception);
+\end{verbatim}
+returns value of element of calling hermitian matrix located on
+\verb"im"-row and \verb"in"-th column. 
+Operator is \Based.
+It throws \GOT{cvmexception}{cvmexception}
+if some of parameters passed
+is outside of \verb"[1,msize()]" range.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m ((std::complex<double>*)a, 3);
+std::cout << m << std::endl;
+std::cout << m(3,2) << " " << m(1,3) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+
+(0,3) (-1,-2)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator ()}
+Indexing operator%
+\pdfdest name {schmatrix.operator ()} fit
+\begin{verbatim}
+const cvector schmatrix::operator () (int i) const throw (cvmexception);
+\end{verbatim}
+provides access to \hbox{$i$-th} column of calling hermitian matrix.
+Unlike \GO{scmatrix::operator~()}{scmatrix.operator ()},
+this operator creates only \emph{copy} of a column and therefore
+it returns
+\emph{not  l-value}.
+Operator is \Based.
+It throws \GOT{cvmexception}{cvmexception}
+if parameter \verb"i" is outside of \verb"[1,nsize()]" range.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m ((std::complex<double>*)a, 3);
+std::cout << m << std::endl;
+std::cout << m(1) << std::endl << m(3);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+
+(1,0) (2,1) (-1,2)
+
+(-1,-2) (0,-3) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator []}
+Indexing operator%
+\pdfdest name {schmatrix.operator []} fit
+\begin{verbatim}
+const cvector schmatrix::operator [] (int i) const throw (cvmexception);
+\end{verbatim}
+provides access to \hbox{$i$-th} row of calling hermitian matrix.
+Unlike \GO{scmatrix::operator~[]}{scmatrix.operator []},
+this operator creates only \emph{copy} of a column and therefore
+it returns
+\emph{not  l-value}.
+Operator is \Based.
+It throws \GOT{cvmexception}{cvmexception}
+if parameter \verb"i" is outside of \verb"[1,nsize()]" range.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m ((std::complex<double>*)a, 3);
+std::cout << m << std::endl;
+std::cout << m[1] << std::endl << m[3];
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+
+(1,0) (2,-1) (-1,-2)
+
+(-1,2) (0,3) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{diag}
+Functions%
+\pdfdest name {schmatrix.diag} fit
+\begin{verbatim}
+const cvector schmatrix::diag (int i) const throw (cvmexception);
+\end{verbatim}
+provide access to \hbox{$i$-th} diagonal of calling matrix,
+where $i=0$ for main diagonal, $i<0$ for lower diagonals 
+and $i>0$ for upper ones.
+Unlike \GO{cmatrix::diag}{cmatrix.diag},
+this operator creates only  \emph{copy} of a diagonal and therefore 
+it returns \emph{not  l-value}.
+Function throws \GOT{cvmexception}{cvmexception}
+if  parameter \verb"i" is outside of 
+\verb"[-msize()+1,nsize()-1]" range.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m ((std::complex<double>*)a, 3);
+std::cout << m << std::endl;
+std::cout << m.diag(-2)
+          << m.diag(-1)
+          << m.diag(0)
+          << m.diag(1)
+          << m.diag(2);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+
+(-1,2)
+(2,1) (0,3)
+(1,0) (2,0) (3,0)
+(2,-1) (0,-3)
+(-1,-2)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{real}
+Function%
+\pdfdest name {schmatrix.real} fit
+\begin{verbatim}
+const srsmatrix schmatrix::real () const;
+\end{verbatim}
+creates  object of type \verb"const srsmatrix"
+as  real part
+of  calling hermitian matrix.
+Please note that, unlike
+\GO{cvector::real}{cvector.real}, this
+function creates new object \emph{not sharing}  memory
+with  real part of  calling matrix, i.e.
+the matrix returned is \emph{not  l-value}.
+See also
+\GOT{srsmatrix}{srsmatrix},
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m ((std::complex<double>*)a, 3);
+std::cout << m << std::endl;
+std::cout << m.real();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+
+1 2 -1
+2 2 0
+-1 0 3
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{imag}
+Function%
+\pdfdest name {schmatrix.imag} fit
+\begin{verbatim}
+const srmatrix schmatrix::imag () const;
+\end{verbatim}
+creates  object of type \verb"const srmatrix"
+as imaginary part
+of  calling matrix.
+Please note that, unlike
+\GO{cvector::imag}{cvector.imag}, this
+function creates new object \emph{not sharing}  memory
+with  imaginary part of calling matrix, i.e.
+the matrix returned is \emph{not  l-value}.
+See also
+\GOT{srmatrix}{srmatrix},
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m ((std::complex<double>*)a, 3);
+std::cout << m << std::endl;
+std::cout << m.imag();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+
+0 -1 -2
+1 0 -3
+2 3 0
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator = (const schmatrix\&)}
+Operator%
+\pdfdest name {schmatrix.operator = (const schmatrix&)} fit
+\begin{verbatim}
+schmatrix& schmatrix::operator = (const schmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+sets  every element of  calling hermitian matrix to  value of
+appropriate element of  hermitian matrix \verb"m"
+and returns  reference to
+the matrix changed.
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of different matrix sizes.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+                  0., 3., -1., -2., 0., -3., 3., 0.};
+    schmatrix m1((std::complex<double>*)a, 3);
+    schmatrix m2(3);
+    
+    m2 = m1;
+    std::cout << m2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{assign (const TC*)}
+Function%
+\pdfdest name {schmatrix.assign} fit
+\begin{verbatim}
+schmatrix& schmatrix::assign (const cvector& v, TR tol = cvmMachSp())
+throw (cvmexception);
+
+schmatrix& schmatrix::assign (const TC* pD, TR tol = cvmMachSp())
+throw (cvmexception);
+\end{verbatim}
+sets every element of  calling hermitian matrix to  value of
+appropriate element of  vector~\verb'v'
+or  array pointed to by~\verb"pD"
+and returns  reference to
+the matrix changed.
+In first version it's assumed that vector passed is long
+enough to fill calling matrix. Function throws \GOT{cvmexception}{cvmexception} 
+otherwise.
+Function throws  \GOT{cvmexception}{cvmexception}
+if the matrix changed doesn't appear to be hermitian 
+(tolerance is set by parameter \verb'tol').
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m(3);
+m.assign((std::complex<double>*)a);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{assign (int, int, const schmatrix\&)}
+Function%
+\pdfdest name {schmatrix.assign (int, const schmatrix&)} fit
+\begin{verbatim}
+schmatrix& schmatrix::assign (int nRowCol, const schmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+sets main sub-matrix of  calling hermitian matrix beginning with \Based row
+\verb"nRowCol" to  hermitian matrix \verb"m" and
+returns  reference to the matrix changed.
+Function throws 
+ \GOT{cvmexception}{cvmexception} if \verb"nRowCol"
+is not positive or matrix \verb"m" doesn't fit.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+schmatrix m1(5);
+schmatrix m2(2);
+m2.set_main_diag(rvector(2,2.));
+m2.set(1,2,std::complex<double>(2.,2.));
+m1.assign(2,m2);
+std::cout << m1;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (0,0) (0,0) (0,0) (0,0)
+(0,0) (2,0) (2,2) (0,0) (0,0)
+(0,0) (2,-2) (2,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{set (int,int,TC)}
+Function%
+\pdfdest name {schmatrix.set(int,int,TC)} fit
+\begin{verbatim}
+schmatrix& schmatrix::set (int nRow, int nCol, TC z) throw (cvmexception);
+\end{verbatim}
+sets an element located on \verb"nRow"'s row (\Based)
+and \verb"nCol"'s column (\Based) to  value of
+parameter \verb"z" and
+an element located
+on \verb"nCol"'s row
+and \verb"nRow"'s column to  value of
+parameter \verb"z" conjugated (keeping
+ calling matrix to be hermitian).
+Function returns  reference to
+the matrix changed.
+It throws \GOT{cvmexception}{cvmexception}
+if any of parameters passed
+is outside of \verb"[1,msize()]" range.
+It also throws in case of assigning
+complex number with non-zero imaginary part
+to any element on the main diagonal.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+
+m.set(1,2,std::complex<double>(7.7,7.7));
+m.set(3,3,11.11);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (7.7,7.7) (-1,-2)
+(7.7,-7.7) (2,0) (0,-3)
+(-1,2) (0,3) (11.11,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{set\_diag}
+Function%
+\pdfdest name {schmatrix.set_diag} fit
+\begin{verbatim}
+schmatrix& schmatrix::set_diag (int i, const cvector& v)
+throw (cvmexception);
+\end{verbatim}
+sets  \hbox{$i$-th} diagonal of  calling hermitian matrix,
+$i<0$ for lower diagonals 
+and $i>0$ for upper ones, to be equal to  complex vector
+passed in parameter \verb"v".
+Function also sets $-i$-th diagonal to
+be equal to  vector \verb"v" conjugated,
+thus keeping calling matrix to be hermitian.
+Parameter \verb"i" is \emph{not} \Based.
+Function returns  reference to
+the matrix changed
+and throws \GOT{cvmexception}{cvmexception}
+if parameter \verb"i" passed
+is outside of \verb"[-msize()+1,nsize()-1]" range
+or equal to zero. 
+It also throws if vector \verb"v" passed has size not equal to
+\verb"msize()-abs(i)".
+Use \GOT{schmatrix::set\_main\_diag}{schmatrix.set_main_diag}
+to set  main diagonal.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+cvector v(2);
+v.set(std::complex<double>(7.7,7.7));
+m.set_diag(1, v);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (7.7,7.7) (-1,-2)
+(7.7,-7.7) (2,0) (7.7,7.7)
+(-1,2) (7.7,-7.7) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{set\_main\_diag}
+Function%
+\pdfdest name {schmatrix.set_main_diag} fit
+\begin{verbatim}
+schmatrix& schmatrix::set_main_diag (const rvector& v)
+throw (cvmexception);
+\end{verbatim}
+sets  main diagonal of  calling hermitian 
+matrix to be equal to  real vector
+passed in parameter \verb"v".
+Function returns  reference to
+the matrix changed.
+It throws \GOT{cvmexception}{cvmexception}
+if vector \verb"v" passed has  size not equal to
+\verb"msize()".
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+rvector v(3);
+v.set(7.7);
+m.set_main_diag(v);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(7.7,0) (2,-1) (-1,-2)
+(2,1) (7.7,0) (0,-3)
+(-1,2) (0,3) (7.7,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign\_real}
+Function%
+\pdfdest name {schmatrix.assign_real} fit
+\begin{verbatim}
+schmatrix& schmatrix::assign_real (const srsmatrix& m) 
+throw (cvmexception);
+\end{verbatim}
+sets real part of  calling hermitian matrix to be equal to
+real symmetric matrix \verb"m".
+Function returns reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+srsmatrix ms(3);
+ms.set(7.);
+m.assign_real(ms);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(7,0) (7,-1) (7,-2)
+(7,1) (7,0) (7,-3)
+(7,2) (7,3) (7,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{set\_real}
+Function%
+\pdfdest name {schmatrix.set_real} fit
+\begin{verbatim}
+schmatrix& schmatrix::set_real (TR d);
+\end{verbatim}
+sets every element of  real part of  calling 
+hermitian matrix to be equal to
+ real number \verb"d".
+Function returns  reference to
+the matrix changed.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+m.set_real(7.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(7,0) (7,-1) (7,-2)
+(7,1) (7,0) (7,-3)
+(7,2) (7,3) (7,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{resize}
+Function%
+\pdfdest name {schmatrix.resize} fit
+\begin{verbatim}
+schmatrix& schmatrix::resize (int nNewMN) throw (cvmexception);
+\end{verbatim}
+changes  size of  calling hermitian matrix to \verb"nNewMN" by \verb"nNewMN"
+and returns  reference to
+the matrix changed. In case of increasing of its size, calling matrix
+is filled up with zeroes. 
+Function throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed or memory allocation failure.
+See also 
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+std::cout << m << std::endl;
+m.resize(4);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+
+(1,0) (2,-1) (-1,-2) (0,0)
+(2,1) (2,0) (0,-3) (0,0)
+(-1,2) (0,3) (3,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator ==}
+Operator%
+\pdfdest name {schmatrix.operator ==} fit
+\begin{verbatim}
+bool schmatrix::operator == (const schmatrix& m) const;
+\end{verbatim}
+compares  calling hermitian matrix with  hermitian matrix \verb"m"
+and returns \verb"true" if they have the same sizes
+and their appropriate elements differ by not more than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Returns \verb"false" otherwise.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m1((std::complex<double>*)a,3);
+schmatrix m2(3);
+m2.assign((std::complex<double>*)a);
+std::cout << (m1 == m2) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator !=}
+Operator%
+\pdfdest name {schmatrix.operator !=} fit
+\begin{verbatim}
+bool schmatrix::operator != (const schmatrix& m) const;
+\end{verbatim}
+compares  calling hermitian matrix with  hermitian matrix \verb"m"
+and returns \verb"true" if they have different sizes
+or at least one of their appropriate elements
+differs by more than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Returns \verb"false" otherwise.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m1((std::complex<double>*)a,3);
+schmatrix m2(3);
+m2.assign((std::complex<double>*)a);
+m2.set(2,1,std::complex<double>(2.,1.000001));
+std::cout << (m1 != m2) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator <{}<}
+Operator%
+\pdfdest name {schmatrix.operator <<} fit
+\begin{verbatim}
+schmatrix& schmatrix::operator << (const schmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+destroys  calling hermitian matrix, creates  new one as a copy of \verb"m"
+and returns  reference to
+the matrix changed.
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+schmatrix mc(1);
+std::cout << m << std::endl;
+std::cout << mc << std::endl;
+mc << m;
+std::cout << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+
+(0,0)
+
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator +}
+Operator%
+\pdfdest name {schmatrix.operator +} fit
+\begin{verbatim}
+schmatrix schmatrix::operator + (const schmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"schmatrix" as  sum of
+ calling hermitian matrix and  hermitian matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes 
+of the operands.
+See also \GOT{schmatrix::sum}{schmatrix.sum}, \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+double b[] = {1., 0., 1., 1., 1., 1., 1., -1., 1., 0.,
+              1., 1., 1., -1., 1., -1., 1., 0.};
+schmatrix m1((std::complex<double>*)a,3);
+schmatrix m2((std::complex<double>*)b,3);
+std::cout << m1 + m2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2,0) (3,-2) (0,-3)
+(3,2) (3,0) (1,-4)
+(0,3) (1,4) (4,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator -}
+Operator%
+\pdfdest name {schmatrix.operator -} fit
+\begin{verbatim}
+schmatrix schmatrix::operator - (const schmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"schmatrix" as  difference of
+ calling hermitian matrix and  hermitian matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes 
+of the operands.
+See also \GOT{schmatrix::diff}{schmatrix.diff}, \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+double b[] = {1., 0., 1., 1., 1., 1., 1., -1., 1., 0.,
+              1., 1., 1., -1., 1., -1., 1., 0.};
+schmatrix m1((std::complex<double>*)a,3);
+schmatrix m2((std::complex<double>*)b,3);
+std::cout << m1 - m2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (1,0) (-2,-1)
+(1,0) (1,0) (-1,-2)
+(-2,1) (-1,2) (2,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{sum}
+Function%
+\pdfdest name {schmatrix.sum} fit
+\begin{verbatim}
+schmatrix& schmatrix::sum (const schmatrix& m1, const schmatrix& m2)
+throw (cvmexception);
+\end{verbatim}
+assigns  result of addition of
+hermitian matrices \verb"m1" and \verb"m2"  to  calling hermitian matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes 
+of the operands.
+See also \GOT{schmatrix::operator +~}{schmatrix.operator +},
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+double b[] = {1., 0., 1., 1., 1., 1., 1., -1., 1., 0.,
+              1., 1., 1., -1., 1., -1., 1., 0.};
+schmatrix m1((std::complex<double>*)a,3);
+schmatrix m2((std::complex<double>*)b,3);
+schmatrix m(3);
+std::cout << m.sum(m1, m2);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2,0) (3,-2) (0,-3)
+(3,2) (3,0) (1,-4)
+(0,3) (1,4) (4,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{diff}
+Function%
+\pdfdest name {schmatrix.diff} fit
+\begin{verbatim}
+schmatrix& schmatrix::diff (const schmatrix& m1, const schmatrix& m2)
+throw (cvmexception);
+\end{verbatim}
+assigns  result of subtraction of
+hermitian matrices \verb"m1" and \verb"m2" to  calling hermitian matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes 
+of the operands.
+See also \GOT{schmatrix::operator -~}{schmatrix.operator -},
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+double b[] = {1., 0., 1., 1., 1., 1., 1., -1., 1., 0.,
+              1., 1., 1., -1., 1., -1., 1., 0.};
+schmatrix m1((std::complex<double>*)a,3);
+schmatrix m2((std::complex<double>*)b,3);
+schmatrix m(3);
+std::cout << m.diff(m1, m2);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (1,0) (-2,-1)
+(1,0) (1,0) (-1,-2)
+(-2,1) (-1,2) (2,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator +=}
+Operator%
+\pdfdest name {schmatrix.operator +=} fit
+\begin{verbatim}
+schmatrix& schmatrix::operator += (const schmatrix& m) 
+throw (cvmexception);
+\end{verbatim}
+adds  hermitian matrix \verb"m" to  calling hermitian matrix 
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes 
+of the operands.
+See also \GOT{schmatrix::ope\-ra\-tor +~}{schmatrix.operator +},
+\GOT{schmatrix::sum}{schmatrix.sum},
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+double b[] = {1., 0., 1., 1., 1., 1., 1., -1., 1., 0.,
+              1., 1., 1., -1., 1., -1., 1., 0.};
+schmatrix m1((std::complex<double>*)a,3);
+schmatrix m2((std::complex<double>*)b,3);
+m1 += m2;
+m2 += m2;
+std::cout << m1 << std::endl;
+std::cout << m2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2,0) (3,-2) (0,-3)
+(3,2) (3,0) (1,-4)
+(0,3) (1,4) (4,0)
+
+(2,0) (2,-2) (2,-2)
+(2,2) (2,0) (2,-2)
+(2,2) (2,2) (2,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator -=}
+Operator%
+\pdfdest name {schmatrix.operator -=} fit
+\begin{verbatim}
+schmatrix& schmatrix::operator -= (const schmatrix& m) 
+throw (cvmexception);
+\end{verbatim}
+subtracts  hermitian matrix \verb"m" from  calling hermitian matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes 
+of the operands.
+See also \GOT{schmatrix::ope\-ra\-tor -~}{schmatrix.operator -},
+\GOT{schmatrix::diff}{schmatrix.diff},
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+double b[] = {1., 0., 1., 1., 1., 1., 1., -1., 1., 0.,
+              1., 1., 1., -1., 1., -1., 1., 0.};
+schmatrix m1((std::complex<double>*)a,3);
+schmatrix m2((std::complex<double>*)b,3);
+m1 -= m2;
+m2 -= m2;
+std::cout << m1 << std::endl;
+std::cout << m2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (1,0) (-2,-1)
+(1,0) (1,0) (-1,-2)
+(-2,1) (-1,2) (2,0)
+
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator - ()}
+Operator%
+\pdfdest name {schmatrix.operator - ()} fit
+\begin{verbatim}
+schmatrix schmatrix::operator - () const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"schmatrix" as
+ calling hermitian matrix multiplied by $-1$.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+std::cout << -m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(-1,0) (-2,1) (1,2)
+(-2,-1) (-2,0) (0,3)
+(1,-2) (0,-3) (-3,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator ++}
+Operator%
+\pdfdest name {schmatrix.operator ++} fit
+\begin{verbatim}
+schmatrix& schmatrix::operator ++ ();
+schmatrix& schmatrix::operator ++ (int);
+\end{verbatim}
+adds identity matrix to  calling hermitian matrix
+and returns  reference to
+the matrix changed.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+m++;
+std::cout << m << std::endl;
+std::cout << ++m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2,0) (2,-1) (-1,-2)
+(2,1) (3,0) (0,-3)
+(-1,2) (0,3) (4,0)
+
+(3,0) (2,-1) (-1,-2)
+(2,1) (4,0) (0,-3)
+(-1,2) (0,3) (5,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator -{}-}
+Operator%
+\pdfdest name {schmatrix.operator --} fit
+\begin{verbatim}
+schmatrix& schmatrix::operator -- ();
+schmatrix& schmatrix::operator -- (int);
+\end{verbatim}
+subtracts identity matrix from  calling hermitian matrix
+and returns  reference to
+the matrix changed.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+m--;
+std::cout << m << std::endl;
+std::cout << --m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (2,-1) (-1,-2)
+(2,1) (1,0) (0,-3)
+(-1,2) (0,3) (2,0)
+
+(-1,0) (2,-1) (-1,-2)
+(2,1) (0,0) (0,-3)
+(-1,2) (0,3) (1,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator * (TR)}
+Operator%
+\pdfdest name {schmatrix.operator * (TR)} fit
+\begin{verbatim}
+schmatrix schmatrix::operator * (TR d) const;
+\end{verbatim}
+creates  object of type \verb"schmatrix" as  product of
+ calling hermitian matrix and  real number~\verb"d".
+See also \GOT{schmatrix::ope\-ra\-tor~*=~}{schmatrix.operator *= (TR)},
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+std::cout << m * 5.;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(5,0) (10,-5) (-5,-10)
+(10,5) (10,0) (0,-15)
+(-5,10) (0,15) (15,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator / (TR)}
+Operator%
+\pdfdest name {schmatrix.operator / (TR)} fit
+\begin{verbatim}
+schmatrix schmatrix::operator / (TR d) const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"schmatrix" as  quotient of
+ calling hermitian matrix and  real number~\verb"d". It throws
+ \GOT{cvmexception}{cvmexception}
+if \verb"d" has  absolute value equal or less than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+See also \GOT{schmatrix::operator~/=~}{schmatrix.operator /= (TR)},
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+std::cout << m / 2.;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.5,0) (1,-0.5) (-0.5,-1)
+(1,0.5) (1,0) (0,-1.5)
+(-0.5,1) (0,1.5) (1.5,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator * (TC)}
+Operator%
+\pdfdest name {schmatrix.operator * (TC)} fit
+\begin{verbatim}
+scmatrix schmatrix::operator * (TC z) const;
+\end{verbatim}
+creates  object of type \verb"scmatrix" as  product of
+ calling hermitian matrix and  complex number~\verb"z".
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+std::cout << m * std::complex<double>(1.,1.);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,1) (3,1) (1,-3)
+(1,3) (2,2) (3,-3)
+(-3,1) (-3,3) (3,3)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator / (TC)}
+Operator%
+\pdfdest name {schmatrix.operator / (TC)} fit
+\begin{verbatim}
+scmatrix schmatrix::operator / (TC z) const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"scmatrix" as  quotient of
+ calling hermitian matrix and  complex number~\verb"z". 
+It throws
+ \GOT{cvmexception}{cvmexception}
+if \verb"z" has  absolute value equal or less than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+std::cout << m / std::complex<double>(1.,1.);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.5,-0.5) (0.5,-1.5) (-1.5,-0.5)
+(1.5,-0.5) (1,-1) (-1.5,-1.5)
+(0.5,1.5) (1.5,1.5) (1.5,-1.5)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator *= (TR)}
+Operator%
+\pdfdest name {schmatrix.operator *= (TR)} fit
+\begin{verbatim}
+schmatrix& schmatrix::operator *= (TR d);
+\end{verbatim}
+multiplies  calling hermitian matrix by  real number~\verb"d"
+and returns  reference to
+the matrix changed.
+See also \GOT{schmatrix::operator~*~}{schmatrix.operator * (TR)},
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+m *= 5.;
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(5,0) (10,-5) (-5,-10)
+(10,5) (10,0) (0,-15)
+(-5,10) (0,15) (15,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator /= (TR)}
+Operator%
+\pdfdest name {schmatrix.operator /= (TR)} fit
+\begin{verbatim}
+schmatrix& schmatrix::operator /= (TR d) throw (cvmexception);
+\end{verbatim}
+divides  calling hermitian matrix by  real number~\verb"d"
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+if \verb"d" has  absolute value equal or less
+than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+See also \GOT{schmatrix::operator /~}{schmatrix.operator / (TR)},
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+m /= 2.;
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.5,0) (1,-0.5) (-0.5,-1)
+(1,0.5) (1,0) (0,-1.5)
+(-0.5,1) (0,1.5) (1.5,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{normalize}
+Function%
+\pdfdest name {schmatrix.normalize} fit
+\begin{verbatim}
+schmatrix& schmatrix::normalize ();
+\end{verbatim}
+normalizes  calling hermitian matrix so 
+its \GO{Euclidean norm}{Array.norm}
+becomes equal to $1$ if it was greater than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}
+before the call (otherwise function does nothing).
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+
+m.normalize();
+std::cout << m << m.norm() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.39e-001,0.00e+000) (2.77e-001,-1.39e-001) (-1.39e-001,-2.77e-001)
+(2.77e-001,1.39e-001) (2.77e-001,0.00e+000) (0.00e+000,-4.16e-001)
+(-1.39e-001,2.77e-001) (0.00e+000,4.16e-001) (4.16e-001,0.00e+000)
+1.00e+000
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{conjugation}
+Operator and functions%
+\pdfdest name {schmatrix.conj} fit
+\begin{verbatim}
+schmatrix schmatrix::operator ~ () const throw (cvmexception);
+schmatrix& schmatrix::conj (const schmatrix& m) throw (cvmexception);
+schmatrix& schmatrix::conj () throw (cvmexception);
+\end{verbatim}
+do nothing since  matrix calling is hermitian.
+They are provided to reimplement similar member functions and operator
+of the class \GOT{scmatrix}{scmatrix}.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+
+std::cout << m - ~m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{transposition}
+Operator and functions%
+\pdfdest name {schmatrix.transpose} fit
+\begin{verbatim}
+schmatrix schmatrix::operator ! () const throw (cvmexception);
+schmatrix& schmatrix::transpose (const schmatrix& m) throw (cvmexception);
+schmatrix& schmatrix::transpose () throw (cvmexception);
+\end{verbatim}
+implement complex hermitian matrix transposition (\emph{not} conjugation).
+First operator creates  object of type \verb"schmatrix" as
+ transposed calling matrix
+(it throws  
+\GOT{cvmexception}{cvmexception}
+in case of memory allocation failure). 
+Second function sets  calling matrix to be equal to  matrix
+\verb"m" transposed
+(it throws  
+\GOT{cvmexception}{cvmexception}
+in case of not appropriate sizes of the operands), 
+third one makes it to be equal to
+transposed itself (it also throws  
+\GOT{cvmexception}{cvmexception}
+in case of memory allocation failure). 
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+schmatrix mt(3);
+std::cout << m << std::endl << !m << std::endl ;
+mt.transpose(m);
+std::cout << mt << std::endl;
+mt.transpose();
+std::cout << mt;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+
+(1,0) (2,1) (-1,2)
+(2,-1) (2,0) (0,3)
+(-1,-2) (0,-3) (3,0)
+
+(1,0) (2,1) (-1,2)
+(2,-1) (2,0) (0,3)
+(-1,-2) (0,-3) (3,0)
+
+(1,0) (2,-1) (-1,-2)
+(2,1) (2,0) (0,-3)
+(-1,2) (0,3) (3,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator * (const cvector\&)}
+Operator%
+\pdfdest name {schmatrix.operator * (const cvector&)} fit
+\begin{verbatim}
+cvector schmatrix::operator * (const cvector& v) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"cvector"
+as  product of  calling hermitian matrix and  vector \verb"v".
+It throws  \GOT{cvmexception}{cvmexception}
+if  number of columns of  calling matrix
+differs from  size of  vector \verb"v".
+Use \GOT{cvector::mult}{cvector.mult (const cmatrix&, const cvector&)}
+in order to avoid new object creation.
+See also
+\GOT{schmatrix}{schmatrix} and \GOT{cvector}{cvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+try {
+    schmatrix m((std::complex<double>*)a,3);
+    cvector v(3);
+    v.set(std::complex<double>(1.,1.));
+
+    std::cout << m * v;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(5,-1) (6,2) (-3,7)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator * (const cmatrix\&)}
+Operator%
+\pdfdest name {schmatrix.operator * (const cmatrix&)} fit
+\begin{verbatim}
+cmatrix schmatrix::operator * (const cmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"cmatrix"
+as  product of  calling hermitian matrix and  matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+if  number of columns of  calling matrix
+differs from  number of rows of  matrix \verb"m".
+Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
+ new object creation.
+See also
+\GOT{cmatrix}{cmatrix} and \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+try {
+    schmatrix ms((std::complex<double>*)a,3);
+    cmatrix m(3,2);
+    m.set(std::complex<double>(1.,1.));
+
+    std::cout << ms * m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(5,-1) (5,-1)
+(6,2) (6,2)
+(-3,7) (-3,7)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator * (const scmatrix\&)}
+Operator%
+\pdfdest name {schmatrix.operator * (const scmatrix&)} fit
+\begin{verbatim}
+scmatrix schmatrix::operator * (const scmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"scmatrix"
+as  product of  calling hermitian matrix and  matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+if the operands have different sizes.
+Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
+ new object creation.
+See also
+\GOT{scmatrix}{scmatrix} and \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+try {
+    schmatrix ms((std::complex<double>*)a,3);
+    scmatrix m(3);
+    m.set(std::complex<double>(1.,1.));
+
+    std::cout << ms * m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(5,-1) (5,-1) (5,-1)
+(6,2) (6,2) (6,2)
+(-3,7) (-3,7) (-3,7)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{operator / (const cvector\&)}
+Operator%
+\pdfdest name {schmatrix.operator / (cvector)} fit
+\begin{verbatim}
+cvector operator / (const cvector& vB) const throw (cvmexception);
+\end{verbatim}
+returns solution $x$ of linear equation
+$A*x=b$ where calling matrix is square hermitian matrix $A$
+and vector $b$ is passed in parameter \verb"vB".
+This operator throws exception 
+of type \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of the objects or when  matrix $A$ is close to singular.
+See also \GOT{cvector::solve}{cvector.solve}, 
+\GOT{scmatrix::solve}{scmatrix.solve}, 
+\GOT{cvector.operator~\%}{cvector.operator percent (scmatrix)}, 
+\GOT{cvector}{cvector}, \GOT{scmatrix}{scmatrix}, \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (2);
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+try {
+    schmatrix ma((std::complex<double>*)a,3);
+    cvector vb(3);
+    cvector vx(3);
+    vb.set(std::complex<double>(1.,2.));
+
+    vx = ma / vb;
+
+    std::cout << ma * vx - vb;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(+0.00e+000,+1.78e-015) (-8.88e-016,+3.55e-015) (-3.55e-015,-1.78e-015)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{herk}
+Functions%
+\pdfdest name {schmatrix.herk} fit
+\begin{verbatim}
+schmatrix& 
+schmatrix::herk (TR alpha, const cvector& v, TR beta) 
+                 throw (cvmexception);
+schmatrix& 
+schmatrix::herk (bool bTransp, TR alpha, const cmatrix& m, TR beta)
+                 throw (cvmexception);
+\end{verbatim}
+call \verb"ZHERK" routine of the
+\URL{BLAS library}{http://www.netlib.org/blas}
+performing  matrix-vector operation defined for the first version as
+rank-1 update operation
+\begin{equation*}
+A=\alpha\,\begin{pmatrix}
+v_1 \\
+v_2 \\
+\vdots \\
+v_n
+\end{pmatrix}
+\begin{pmatrix}
+v_1^* & v_2^* & \cdots & v_n^*
+\end{pmatrix} + \beta A,
+\end{equation*}
+and for the second version as
+\begin{equation*}
+A=\alpha MM^H + \beta A\quad\text{or}\quad A=\alpha M^HM + \beta A.
+\end{equation*}
+Here $\alpha$ and $\beta$ are real numbers 
+(parameters \verb"alpha" and \verb"beta"),
+$M$ is  complex matrix (parameter \verb"m"),
+$A$ is  calling hermitian matrix
+and $v$ is  complex vector (parameter \verb"v").
+First operation for the second version 
+is performed if \verb"bTransp" passed
+is \verb"false" and second one otherwise.
+Function
+returns  reference to the matrix changed and throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+See also
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix} and \GOT{schmatrix}{schmatrix}
+Example:
+\begin{Verbatim}
+using namespace cvm;
+const treal a[] = {1., -1., 2., 2., 3., -3.};
+const cvector v((std::complex<double>*)a, 3);
+const treal alpha = 2.12;
+const treal beta = -3.07;
+schmatrix mh(3), mh2(3);
+mh.randomize_real(-1.,2.);
+mh.randomize_imag(-2.,3.);
+mh2 = mh;
+mh.herk (alpha, v, beta);
+mh2 = alpha * schmatrix(v.rank1update_c(v)) + beta * mh2;
+std::cout << mh - mh2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+Example:
+\begin{Verbatim}
+cmatrix m(3,3);
+const treal alpha = 2.12;
+const treal beta = -3.07;
+schmatrix mh(3), mh2(3);
+m.randomize_real(-1.,2.);
+m.randomize_imag(-2.,3.);
+mh.randomize_real(-1.,2.);
+mh.randomize_imag(-2.,3.);
+mh2 = mh;
+mh.herk (false, alpha, m, beta);
+mh2 = alpha * schmatrix (m * ~m) + beta * mh2;
+std::cout << mh - mh2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+Example:
+\begin{Verbatim}
+cmatrix m(3,3);
+const treal alpha = 2.12;
+const treal beta = -3.07;
+schmatrix mh(3), mh2(3);
+m.randomize_real(-1.,2.);
+m.randomize_imag(-2.,3.);
+mh.randomize_real(-1.,2.);
+mh.randomize_imag(-2.,3.);
+mh2 = mh;
+mh.herk (true, alpha, m, beta);
+mh2 = alpha * schmatrix (~m * m) + beta * mh2;
+std::cout << mh - mh2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(3.55271e-015,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (1.77636e-015,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{her2k}
+Functions%
+\pdfdest name {schmatrix.her2k} fit
+\begin{verbatim}
+schmatrix& 
+schmatrix::her2k (TC alpha, const cvector& v1, 
+                  const cvector& v2, TR beta) throw (cvmexception);
+schmatrix& 
+schmatrix::her2k (bool bTransp, TC alpha, const cmatrix& m1, 
+                  const cmatrix& m2, TR beta) throw (cvmexception);
+\end{verbatim}
+call one of \verb"?HER2K" routines of the
+\URL{BLAS library}{http://www.netlib.org/blas}
+performing  matrix-vector operation defined for the first version as
+rank-1 update operation
+\begin{equation*}
+A=\alpha v_1 v_2^* + \alpha^* v_2 v_1^* + \beta A,
+\end{equation*}
+and for the second version as
+\begin{equation*}
+A=\alpha M_1 M_2^H + \alpha^* M_2 M_1^H + \beta A\quad
+\text{or}\quad 
+A=\alpha M_1^H M_2 + \alpha^* M_2^H M_1 + \beta A.
+\end{equation*}
+Here $\alpha$ is complex and $\beta$ is real number
+(parameters \verb"alpha" and \verb"beta"),
+$M_1$ and $M_2$ are complex matrices (parameters \verb"m1" and \verb"m2"),
+$A$ is  calling hermitian matrix
+and $v_1$ and $v_2$ are complex vectors (parameters \verb"v1" and \verb"v2").
+First operation for the second version 
+is performed if \verb"bTransp" passed
+is \verb"false" and second one otherwise.
+Function
+returns  reference to the matrix changed and throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+See also
+\GOT{cvector}{cvector},
+\GOT{cmatrix}{cmatrix} and \GOT{schmatrix}{schmatrix}
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf(std::ios::scientific | std::ios::showpos); 
+std::cout.precision(2);
+const tcomplex alpha(2.12,-0.14);
+const tcomplex alphac(2.12,0.14);
+const treal beta = -3.07;
+cvector v1(3), v2(3);
+schmatrix mh(3), mh2(3);
+v1.randomize_real(-1.,2.);
+v1.randomize_imag(-2.,3.);
+v2.randomize_real(-1.,2.);
+v2.randomize_imag(-2.,3.);
+mh.randomize_real(-1.,2.);
+mh.randomize_imag(-2.,3.);
+mh2 = mh;
+mh.her2k (alpha, v1, v2, beta);
+mh2 = schmatrix(alpha * v1.rank1update_c(v2) + 
+                alphac * v2.rank1update_c(v1)) + beta * mh2;
+std::cout << mh - mh2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(+1.78e-015,+0.00e+000) (+0.00e+000,+0.00e+000) (+0.00e+000,+0.00e+000)
+(+0.00e+000,+0.00e+000) (-1.78e-015,+0.00e+000) (+0.00e+000,+1.78e-015)
+(+0.00e+000,+0.00e+000) (+0.00e+000,-1.78e-015) (+4.44e-016,+0.00e+000)
+\end{Verbatim}
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf(std::ios::scientific | std::ios::showpos); 
+std::cout.precision(2);
+const tcomplex alpha(2.12,-0.14);
+const tcomplex alphac(2.12,0.14);
+const treal beta = -3.07;
+cmatrix m1(3,3), m2(3,3);
+schmatrix mh(3), mh2(3);
+m1.randomize_real(-1.,2.);
+m1.randomize_imag(-2.,3.);
+m2.randomize_real(-1.,2.);
+m2.randomize_imag(-2.,3.);
+mh.randomize_real(-1.,2.);
+mh.randomize_imag(-2.,3.);
+mh2 = mh;
+mh.her2k (false, alpha, m1, m2, beta);
+mh2 = schmatrix(alpha * m1 * ~m2 + 
+                alphac * m2 * ~m1, 1.e-14) + beta * mh2;
+std::cout << mh - mh2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(+0.00e+000,+4.44e-016) (+0.00e+000,+0.00e+000) (+0.00e+000,+1.78e-015)
+(+3.55e-015,+0.00e+000) (+4.44e-016,-8.88e-016) (+0.00e+000,+0.00e+000)
+(+8.88e-016,+8.88e-016) (+0.00e+000,+0.00e+000) (+8.88e-016,+1.78e-015)
+\end{Verbatim}
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf(std::ios::scientific | std::ios::showpos); 
+std::cout.precision(2);
+const tcomplex alpha(2.12,-0.14);
+const tcomplex alphac(2.12,0.14);
+const treal beta = -3.07;
+cmatrix m1(3,3), m2(3,3);
+schmatrix mh(3), mh2(3);
+m1.randomize_real(-1.,2.);
+m1.randomize_imag(-2.,3.);
+m2.randomize_real(-1.,2.);
+m2.randomize_imag(-2.,3.);
+mh.randomize_real(-1.,2.);
+mh.randomize_imag(-2.,3.);
+mh2 = mh;
+mh.her2k (true, alpha, m1, m2, beta);
+mh2 = schmatrix(alpha * ~m1 * m2 + 
+                alphac * ~m2 * m1, 1.e-14) + beta * mh2;
+std::cout << mh - mh2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(+3.55e-015,-8.88e-016) (+0.00e+000,+0.00e+000) (+0.00e+000,-1.78e-015)
+(-8.88e-016,+1.78e-015) (+0.00e+000,-4.44e-016) (+8.88e-016,+0.00e+000)
+(+0.00e+000,+3.55e-015) (-1.33e-015,-1.78e-015) (+0.00e+000,+0.00e+000)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{inv}
+Functions%
+\pdfdest name {schmatrix.inv} fit
+\begin{verbatim}
+schmatrix& schmatrix::inv (const schmatrix& m) throw (cvmexception);
+schmatrix schmatrix::inv () const throw (cvmexception);
+\end{verbatim}
+implement hermitian matrix inversion.
+The first version sets  calling hermitian matrix to be equal to 
+ hermitian matrix \verb"m" inverted and the second one
+creates  object of type \verb"schmatrix" as inverted calling matrix.
+Functions throw  \GOT{cvmexception}{cvmexception} 
+in case of inappropriate
+sizes of the operands or when  matrix to be inverted is close to
+singular.
+See also
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+const schmatrix mi = m.inv();
+
+std::cout << mi << std::endl;
+std::cout << mi * m - eye_complex(3);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(-1.50e+000,0.00e+000) (-1.67e-016,8.33e-017) (-5.00e-001,-1.00e+000)
+(-1.67e-016,-8.33e-017) (-1.00e+000,0.00e+000) (0.00e+000,-1.00e+000)
+(-5.00e-001,1.00e+000) (0.00e+000,1.00e+000) (-1.50e+000,0.00e+000)
+
+(2.22e-016,0.00e+000) (1.11e-016,0.00e+000) (2.78e-017,0.00e+000)
+(2.78e-016,2.22e-016) (4.44e-016,0.00e+000) (0.00e+000,-4.44e-016)
+(2.22e-016,-4.44e-016) (0.00e+000,-8.88e-016) (-2.22e-016,0.00e+000)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{exp}
+Functions%
+\pdfdest name {schmatrix.exp} fit
+\begin{verbatim}
+schmatrix& schmatrix::exp (const schmatrix& m, TR tol = cvmMachSp ())
+throw (cvmexception);
+
+schmatrix schmatrix::exp (TR tol = cvmMachSp ()) const
+throw (cvmexception);
+\end{verbatim}
+compute  exponent of  calling hermitian matrix using Pad\'e approximation
+defined as
+\begin{equation*}
+R_{pq}(z)=D_{pq}(z)^{-1}N_{pq}(z)=1+z+\dots+z^p/p!\,,
+\end{equation*}
+where
+\begin{align*}
+N_{pq}(z)&=\sum_{k=0}^p\frac{(p+q-k)!p!}{(p+q)!k!(q-k)!}z^k,\\
+D_{pq}(z)&=\sum_{k=0}^q\frac{(p+q-k)!p!}{(p+q)!k!(q-k)!}(-z)^k
+\end{align*}
+along with  matrix normalizing as described in
+\GO{\cite{Golub}}{biblio}, p.~572.
+Functions use \verb"ZMEXP" (or \verb"CMEXP" for \verb"float" version)
+\FORTRAN subroutine implementing the algorithm.
+The first version sets  calling hermitian matrix to be equal to
+ exponent of  hermitian matrix \verb"m" and returns 
+ reference to the matrix
+changed. The second version
+creates  object of type \verb"schmatrix" as 
+exponent of  calling matrix.
+The algorithm uses parameter \verb"tol"
+as $\varepsilon(p,q)$ in order to choose constants $p$ and $q$
+so that
+\begin{equation*}
+\varepsilon(p,q)\ge 2^{3-(p+q)}\frac{p!q!}{(p+q)!(p+q+1)!}.
+\end{equation*}
+This parameter is equal to the
+\GO{largest relative spacing}{Utilities.cvmMachSp} by default.
+Functions throw  \GOT{cvmexception}{cvmexception} 
+in case of
+inappropriate sizes of the operands or when LAPACK subroutine fails.
+See also
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left |
+                std::ios::showpos);
+std::cout.precision (15);
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+schmatrix me(3);
+me.exp(m);
+std::cout << "Column 1" << std::endl
+<< me(1,1) << std::endl << me(2,1) << std::endl << me(3,1) << std::endl
+          << "Column 2" << std::endl
+<< me(1,2) << std::endl << me(2,2) << std::endl << me(3,2) << std::endl
+          << "Column 3" << std::endl
+<< me(1,3) << std::endl << me(2,3) << std::endl << me(3,3) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+Column 1
+(+2.673228708372002e+002,+1.091141066389412e-014)
+(+3.071187567026803e+002,+1.535593783513402e+002)
+(-1.749365628720766e+002,+3.498731257441531e+002)
+Column 2
+(+3.071187567026803e+002,-1.535593783513401e+002)
+(+4.422594337092766e+002,+1.919736460939478e-015)
+(-9.600094996571151e-015,+5.034325040954932e+002)
+Column 3
+(-1.749365628720765e+002,-3.498731257441531e+002)
+(+6.184072406183948e-015,-5.034325040954932e+002)
+(+5.744416275398805e+002,+1.540673883337074e-014)
+\end{Verbatim}
+Matlab output:
+\begin{Verbatim}
+  Column 1 
+
+     2.673228708371998e+002 -7.105427357601002e-015i
+     3.071187567026802e+002 +1.535593783513401e+002i
+    -1.749365628720764e+002 +3.498731257441527e+002i
+
+  Column 2 
+
+     3.071187567026802e+002 -1.535593783513401e+002i
+     4.422594337092769e+002 -5.489286670342458e-016i
+     3.549798266275454e-015 +5.034325040954932e+002i
+
+  Column 3 
+
+    -1.749365628720763e+002 -3.498731257441526e+002i
+    -1.776065298147746e-014 -5.034325040954931e+002i
+     5.744416275398801e+002 -2.096383162906490e-014i
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{polynomial}
+Functions%
+\pdfdest name {schmatrix.polynom} fit
+\begin{verbatim}
+schmatrix& schmatrix::polynom (const schmatrix& m, const rvector& v)
+throw (cvmexception);
+
+schmatrix schmatrix::polynom (const rvector& v) const
+throw (cvmexception);
+\end{verbatim}
+compute  hermitian matrix polynomial defined as
+\begin{equation*}
+p(A)=b_0I+b_1A+\dots+b_qA^q
+\end{equation*}
+using the Horner's rule:
+\begin{equation*}
+p(A)=\sum_{k=0}^r B_k(A^s)^k,\quad s=\floor(\!\sqrt{q}\,),\ r=\floor(q/s)
+\end{equation*}
+where
+\begin{equation*}
+B_k=\begin{cases}
+\sum\limits_{i=0}^{s-1}b_{sk+i} A^i, & k=0,1,\dots,r-1\\
+\sum\limits_{i=0}^{q-sr}b_{sr+i} A^i, & k=r.
+\end{cases}
+\end{equation*}
+See also \GO{\cite{Golub}}{biblio}, p.~568.
+\emph{Real} coefficients $b_0,b_1,\dots,b_q$ are 
+passed in  parameter \verb"v",
+where $q$ is equal to \verb"v.size()-1", so  functions
+compute matrix polynomial equal to
+\begin{equation*}
+\mathtt{v[1]*I + v[2]*m +\cdots + v[v.size()]*m^{v.size()-1}}
+\end{equation*}
+The first version sets calling hermitian matrix to be equal 
+to the polynomial of hermitian matrix \verb"m"
+and the second one
+creates object of type \verb"schmatrix" as the 
+polynomial of calling symmetric matrix.
+Functions use \verb"ZPOLY" (or \verb"CPOLY" for \verb"float" version)
+\FORTRAN subroutine implementing the Horner's algorithm.
+Functions throw  \GOT{cvmexception}{cvmexception} 
+in case of inappropriate sizes of the operands.
+See also
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left |
+                std::ios::showpos);
+std::cout.precision (10);
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+            0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+double re[]={2.2,1.3,1.1,-0.9,0.2,-0.45,45.,-30.,10.,3.,1.13};
+const rvector vr(re, 11);
+schmatrix mp(3);
+
+mp.polynom (m, vr);
+
+std::cout << "Column 1" << std::endl
+<< mp(1,1) << std::endl << mp(2,1) << std::endl << mp(3,1) << std::endl
+          << "Column 2" << std::endl
+<< mp(1,2) << std::endl << mp(2,2) << std::endl << mp(3,2) << std::endl
+          << "Column 3" << std::endl
+<< mp(1,3) << std::endl << mp(2,3) << std::endl << mp(3,3) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+Column 1
+(+1.2319548758e+008,+0.0000000000e+000)
+(+1.4179323916e+008,+7.0896619580e+007)
+(-8.0802738460e+007,+1.6160547692e+008)
+Column 2
+(+1.4179323916e+008,-7.0896619580e+007)
+(+2.0399822604e+008,+0.0000000000e+000)
+(+0.0000000000e+000,+2.3250209650e+008)
+Column 3
+(-8.0802738460e+007,-1.6160547692e+008)
+(+0.0000000000e+000,-2.3250209650e+008)
+(+2.6498872674e+008,+0.0000000000e+000)
+\end{Verbatim}
+Matlab output:
+\begin{Verbatim}
+  Column 1 
+
+     1.231954875800000e+008                         
+     1.417932391600000e+008 +7.089661958000000e+007i
+    -8.080273845999999e+007 +1.616054769200000e+008i
+
+  Column 2 
+
+     1.417932391600000e+008 -7.089661958000000e+007i
+     2.039982260400000e+008                         
+                          0 +2.325020965000000e+008i
+
+  Column 3 
+
+    -8.080273845999999e+007 -1.616054769200000e+008i
+                          0 -2.325020965000000e+008i
+     2.649887267400000e+008                         
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{eig}
+Functions%
+\pdfdest name {schmatrix.eig} fit
+\begin{verbatim}
+rvector schmatrix::eig (scmatrix& mEigVect) const throw (cvmexception);
+rvector schmatrix::eig () const throw (cvmexception);
+\end{verbatim}
+solve the
+\GO{symmetric eigenvalue problem}{rvector.eig}
+and return  real vector with eigenvalues
+of  calling hermitian matrix.
+The first version
+sets  output parameter \verb"mEigVect" to be equal
+to  square matrix containing orthogonal
+eigenvectors as columns.
+All  functions
+throw 
+ \GOT{cvmexception}{cvmexception} 
+in case of inappropriate sizes of the operands
+or in case of convergence error.
+See also
+\GOT{rvector}{rvector},
+\GOT{scmatrix}{scmatrix} and
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+schmatrix m((std::complex<double>*)a,3);
+scmatrix me(3);
+rvector v(3);
+
+v = m.eig(me);
+std::cout << v << std::endl;
+cvector vc(v);
+
+std::cout << m * me(1) - me(1) * vc(1);
+std::cout << m * me(2) - me(2) * vc(2);
+std::cout << m * me(3) - me(3) * vc(3);
+// orthogonality check:
+std::cout << me(1) % me(2) << std::endl;
+std::cout << me(2) % me(3) << std::endl;
+std::cout << me(1) % me(3) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-8.13e-001 -3.44e-001 7.16e+000
+
+(1.39e-016,2.22e-016) (5.25e-017,-1.11e-016) (1.94e-016,1.67e-016)
+(4.86e-016,4.44e-016) (7.63e-017,0.00e+000) (3.33e-016,2.22e-016)
+(-2.22e-016,-8.88e-016) (-5.55e-017,-8.88e-016) (8.88e-016,-5.55e-017)
+(-5.17e-017,-9.74e-017)
+(-5.81e-017,-5.40e-017)
+(2.37e-018,-3.56e-017)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{Cholesky}
+Function%
+\pdfdest name {schmatrix.cholesky} fit
+\begin{verbatim}
+scmatrix schmatrix::cholesky () const throw (cvmexception);
+\end{verbatim}
+forms the Cholesky factorization of  hermitian positive-definite 
+matrix $A$ defined as
+\begin{equation*}
+A=U^H U,
+\end{equation*}
+where $U$ is upper triangular matrix.
+It utilizes one of \verb"?POTRF" routines of the
+\URL{LAPACK library}{http://www.netlib.org/lapack}.
+Function
+creates  object of type \verb"scmatrix" as 
+ factorization of  calling matrix.
+It throws \GOT{cvmexception}{cvmexception} 
+in case of convergence error.
+See also
+\GOT{scmatrix}{scmatrix} and
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {3., 0., 2., 1., -1., 2., 2., -1., 3., 0.,
+                0., 3., -1., -2., 0., -3., 5., 0.};
+    const schmatrix m((std::complex<double>*)a,3);
+    
+    scmatrix h = m.cholesky();
+    std::cout << h << std::endl;
+    std::cout << ~h * h - m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.73205,0) (1.1547,-0.57735) (-0.57735,-1.1547)
+(0,0) (1.1547,0) (0,-1.1547)
+(0,0) (0,0) (1.41421,0)
+
+(-4.44089e-016,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{Bunch-Kaufman}
+Function%
+\pdfdest name {schmatrix.bunch_kaufman} fit
+\begin{verbatim}
+scmatrix schmatrix::bunch_kaufman () throw (cvmexception);
+\end{verbatim}
+forms the Bunch-Kaufman factorization of  calling hermitian matrix 
+(cited from the MKL library documentation):
+\begin{equation*}
+A=PUDU^HP^H,
+\end{equation*}
+where $A$ is calling matrix,
+$P$ is  permutation matrix, $U$ and $L$ are upper and lower triangular
+matrices with unit diagonal, and $D$ is  symmetric 
+block-diagonal matrix with $1$-by-$1$ and $2$-by-$2$
+diagonal blocks. $U$ and $L$ have $2$-by-$2$ unit diagonal 
+blocks corresponding to the $2$-by-$2$ blocks of $D$.
+It utilizes one of \verb"?HETRF" routines of the
+\URL{LAPACK library}{http://www.netlib.org/lapack}.
+Function
+creates  object of type \verb"scmatrix" as 
+ factorization of  calling matrix.
+It throws \GOT{cvmexception}{cvmexception} 
+in case of convergence error.
+See also
+\GOT{scmatrix}{scmatrix} and
+\GOT{schmatrix}{schmatrix}.
+Function is mostly designed to be used for subsequent calls
+of \verb"?HETRS", \verb"?HECON" and \verb"?HETRI" routines of the
+\URL{LAPACK library}{http://www.netlib.org/lapack}.
+Currently it's used internally in \GOT{scmatrix::det}{scmatrix.det} flow
+when argument is hermitian but not positive-definite matrix.
+\newpage
+
+
+
+
+\subsubsection{identity}
+Function%
+\pdfdest name {schmatrix.identity} fit
+\begin{verbatim}
+schmatrix& schmatrix::identity();
+\end{verbatim}
+sets  calling hermitian matrix to be equal to identity matrix
+and returns  reference to
+the matrix changed. 
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+schmatrix m(3);
+m.randomize_real(0.,3.);
+m.randomize_imag(-1.,2.);
+
+std::cout << m << std::endl;
+std::cout << m.identity();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.93548,0) (1.84027,1.08353) (0.429579,-0.614093)
+(1.84027,-1.08353) (1.76922,0) (1.71364,1.82788)
+(0.429579,0.614093) (1.71364,-1.82788) (0.824915,0)
+
+(1,0) (0,0) (0,0)
+(0,0) (1,0) (0,0)
+(0,0) (0,0) (1,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{vanish}
+Function%
+\pdfdest name {schmatrix.vanish} fit
+\begin{verbatim}
+schmatrix& schmatrix::vanish();
+\end{verbatim}
+sets every element of  calling hermitian 
+matrix to be equal to zero
+and returns  reference to
+the matrix changed.
+See also \GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+schmatrix m(3);
+m.randomize_real(0.,3.);
+m.randomize_imag(-1.,2.);
+
+std::cout << m << std::endl;
+std::cout << m.vanish();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.95499,0) (1.03925,0.830378) (0.951628,0.563677)
+(1.03925,-0.830378) (0.150426,0) (2.29365,-0.580218)
+(0.951628,-0.563677) (2.29365,0.580218) (0.0841395,0)
+
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{randomize\_real}
+Function%
+\pdfdest name {schmatrix.randomizereal} fit
+\begin{verbatim}
+schmatrix& schmatrix::randomize_real (TR dFrom, TR dTo);
+\end{verbatim}
+fills  real part of  calling hermitian matrix with 
+pseudo-random numbers distributed between
+\verb"dFrom" and \verb"dTo" keeping it to be hermitian.
+Function
+returns  reference to the matrix changed.
+See also
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+schmatrix m(3);
+m.randomize_real(0.,3.);
+std::cout << m << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.98245,0) (2.72103,0) (0.167272,0)
+(2.72103,0) (0.0285653,0) (1.63765,0)
+(0.167272,0) (1.63765,0) (1.15882,0)
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{randomize\_imag}
+Function%
+\pdfdest name {schmatrix.randomizeimag} fit
+\begin{verbatim}
+schmatrix& schmatrix::randomize_imag (TR dFrom, TR dTo);
+\end{verbatim}
+fills  imaginary part of  calling hermitian matrix with 
+pseudo-random numbers distributed between
+\verb"dFrom" and \verb"dTo" keeping it to be hermitian.
+Function
+returns  reference to the matrix changed.
+See also
+\GOT{schmatrix}{schmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+schmatrix m(3);
+m.randomize_imag(0.,3.);
+std::cout << m << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (0,0.13834) (0,2.39903)
+(0,-0.13834) (0,0) (0,0.609577)
+(0,-2.39903) (0,-0.609577) (0,0)
+\end{Verbatim}
+\newpage
+

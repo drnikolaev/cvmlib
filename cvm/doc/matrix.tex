@@ -1,0 +1,390 @@
+\bigskip
+\noindent%
+\verb"template <typename TR, typename TC>"\\
+\verb"class Matrix : public Array<TR,TC> {"\\
+\verb"public:"\\
+\verb"    int "\GOT{msize}{Matrix.msize}\verb" () const;"\\
+\verb"    int "\GOT{nsize}{Matrix.nsize}\verb" () const;"\\
+\verb"    int "\GOT{ld}{Matrix.ld}\verb" () const;"\\
+\verb"    int "\GOT{rowofmax}{Matrix.rowofmax}\verb" () const;"\\
+\verb"    int "\GOT{rowofmin}{Matrix.rowofmin}\verb" () const;"\\
+\verb"    int "\GOT{colofmax}{Matrix.colofmax}\verb" () const;"\\
+\verb"    int "\GOT{colofmin}{Matrix.colofmin}\verb" () const;"\\
+\verb"    virtual TR "\GOT{norm1}{Matrix.norm1}\verb" () const;"\\
+\verb"    <typename TR, typename TC>"\\
+\verb"    friend std::ostream& "\GOT{operator >{}> <>}{Matrix.input}\verb" (std::istream& is,"\\
+\verb"                                         const Array<TR,TC>& mIn);"\\
+\verb"    <typename TR, typename TC>"\\
+\verb"    friend std::ostream& "\GOT{operator <{}< <>}{Matrix.output}\verb" (std::ostream& os,"\\
+\verb"                                         const Array<TR,TC>& mOut);"\\
+\verb"};"
+\newpage
+
+
+\subsubsection{msize}
+Function%
+\pdfdest name {Matrix.msize} fit
+\begin{verbatim}
+int Matrix<TR,TC>::msize () const;
+\end{verbatim}
+returns  number of rows of  calling matrix.
+Function is \emph{inherited} in all matrix classes
+of the library:
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{Matrix}{Matrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rmatrix m (100, 200);
+std::cout << m.msize() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+100
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{nsize}
+Function%
+\pdfdest name {Matrix.nsize} fit
+\begin{verbatim}
+int Matrix<TR,TC>::nsize () const;
+\end{verbatim}
+returns  number of columns of  calling matrix.
+Function is \emph{inherited} in all matrix classes
+of the library:
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{Matrix}{Matrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rmatrix m (100, 200);
+
+std::cout << m.nsize() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+200
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{ld}
+Function%
+\pdfdest name {Matrix.ld} fit
+\begin{verbatim}
+int Matrix<TR,TC>::ld () const;
+\end{verbatim}
+returns  leading dimension of  calling matrix.
+Leading dimension is equal to  number of rows
+for every matrix except submatrices. For submatrices
+it's equal to  number of rows of parent matrix.
+Function is \emph{inherited} in all matrix classes
+of the library:
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{Matrix}{Matrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+rmatrix m (100, 200);
+srmatrix ms (m, 30, 40, 5); // 5x5 submatrix
+std::cout << ms.ld() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+100
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{rowofmax}
+Function%
+\pdfdest name {Matrix.rowofmax} fit
+\begin{verbatim}
+int Matrix<TR,TC>::rowofmax () const;
+\end{verbatim}
+returns  \Based number of calling matrix row
+where the element with the maximum absolute value is located.
+Function is \emph{inherited}%
+\footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
+in all matrix classes
+of the library:
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{Matrix}{Matrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., -3., 1., -1.};
+rmatrix m (a, 2, 3);
+
+std::cout << m << std::endl << m.rowofmax() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 1
+0 -3 -1
+
+2
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{rowofmin}
+Function%
+\pdfdest name {Matrix.rowofmin} fit
+\begin{verbatim}
+int Matrix<TR,TC>::rowofmin () const;
+\end{verbatim}
+returns  \Based number of calling matrix row
+where the element with the minimum absolute value is located.
+Function is \emph{inherited}%
+\footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
+in all matrix classes
+of the library:
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{Matrix}{Matrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., -3., 1., -1.};
+rmatrix m (a, 2, 3);
+
+std::cout << m << std::endl << m.rowofmin() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 1
+0 -3 -1
+
+2
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{colofmax}
+Function%
+\pdfdest name {Matrix.colofmax} fit
+\begin{verbatim}
+int Matrix<TR,TC>::colofmax () const;
+\end{verbatim}
+returns  \Based number of calling matrix column 
+where the element with the maximum absolute value is located.
+Function is \emph{inherited}%
+\footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
+in all matrix classes
+of the library:
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{Matrix}{Matrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., -3., 1., -1.};
+rmatrix m (a, 2, 3);
+
+std::cout << m << std::endl << m.colofmax() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 1
+0 -3 -1
+
+2
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{colofmin}
+Function%
+\pdfdest name {Matrix.colofmin} fit
+\begin{verbatim}
+int Matrix<TR,TC>::colofmin () const;
+\end{verbatim}
+returns  \Based number of  calling matrix column 
+where the element with the minimum absolute value is located.
+Function is \emph{inherited}%
+\footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
+in all matrix classes
+of the library:
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srbmatrix}{srbmatrix}, \GOT{scbmatrix}{scbmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+See also \GOT{Matrix}{Matrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., -3., 1., -1.};
+rmatrix m (a, 2, 3);
+
+std::cout << m << std::endl << m.colofmin() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 1
+0 -3 -1
+
+1
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{norm1}
+Virtual function%
+\pdfdest name {Matrix.norm1} fit
+\begin{verbatim}
+virtual TR Matrix<TR,TC>::norm1 () const;
+\end{verbatim}
+returns  1-norm of  calling matrix that is defined as
+\begin{equation*}
+{\|A\|}_{1}=\max_{j=1,\dots,n} \sum_{i=1}^{m} |a_{ij}|,
+\end{equation*}
+where $A$ is $m\times n$ matrix.
+Function is \emph{inherited}
+in the following classes of the library:
+\GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
+\GOT{srmatrix}{srmatrix}, \GOT{scmatrix}{scmatrix},
+\GOT{srsmatrix}{srsmatrix} and \GOT{schmatrix}{schmatrix}.
+It's \emph{redefined} in
+\GOT{srbmatrix}{srbmatrix} and \GOT{scbmatrix}{scbmatrix}.
+See also \GOT{Array::norminf}{Array.norminf} and
+\GOT{Matrix}{Matrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 0., 2., -3., 1., 0.};
+rmatrix m (a, 2, 3);
+
+std::cout << m << std::endl << m.norm1() 
+          << std::endl << m.norminf() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 1
+0 -3 0
+
+5
+4
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{operator >{}> <> (std::istream\& is, Matrix<TR,TC>\& mIn)}
+Friend template operator%
+\pdfdest name {Matrix.input} fit
+\begin{verbatim}
+template <typename TR, typename TC>
+friend std::istream& operator >> <> (std::istream& is,
+                                     Matrix<TR,TC>& mIn);
+\end{verbatim}
+fills calling Matrix (row by row) referenced by parameter \verb"mIn" with numbers from
+\verb"is" stream.
+See also \GOT{Array::ope\-ra\-tor >{}>\ }{Array.input},
+\GOT{Matrix}{Matrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left);
+std::cout.precision (2);
+
+try {
+    std::ofstream os;
+    os.open ("in.txt");
+    os << 1.2 << " " << 2.3 << std::endl << 3.4;
+    os.close ();
+
+    std::ifstream is("in.txt");
+    rmatrix m(3,2);
+    is >> m;
+
+    std::cout << m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.20e+000 2.30e+000
+3.40e+000 0.00e+000
+0.00e+000 0.00e+000
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{operator <{}< <> (std::ostream\& os, const Matrix<TR,TC>\& mOut)}
+Friend template operator%
+\pdfdest name {Matrix.output} fit
+\begin{verbatim}
+template <typename TR, typename TC>
+friend std::ostream& operator << <> (std::ostream& os,
+                                     const Matrix<TR,TC>& mOut);
+\end{verbatim}
+writes matrix (row by row) referenced by parameter \verb"mOut" into
+\verb"os" stream.
+See also \GOT{Array::ope\-ra\-tor~<{}<\ }{Array.output},
+\GOT{Matrix}{Matrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+
+srmatrix m(3);
+m(1,1) = 1.;
+m(2,3) = 3.;
+
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.00e+00 0.00e+00 0.00e+00
+0.00e+00 0.00e+00 3.00e+00
+0.00e+00 0.00e+00 0.00e+00
+\end{Verbatim}
+\newpage
+
+
+

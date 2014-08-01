@@ -1,0 +1,2284 @@
+\bigskip
+\noindent
+\verb"template <typename TR>"\\
+\verb"class srsmatrix : public srmatrix <TR> {"\\
+\verb"public:"\\
+\verb"    "\GOT{srsmatrix}{srsmatrix.srsmatrix ()}\verb" ();"\\
+\verb"    explicit "\GOT{srsmatrix}{srsmatrix.srsmatrix (int)}\verb" (int nMN);"\\
+\verb"    "\GOT{srsmatrix}{srsmatrix.srsmatrix (TR*,int)}\verb" (TR* pD, int nMN, TR tol = cvmMachSp());"\\
+\verb"    "\GOT{srsmatrix}{srsmatrix.srsmatrix (const TR*,int)}\verb" (const TR* pD, int nMN, TR tol = cvmMachSp());"\\
+\verb"    "\GOT{srsmatrix}{srsmatrix.srsmatrix (const srsmatrix&)}\verb" (const srsmatrix& m);"\\
+\verb"    explicit "\GOT{srsmatrix}{srsmatrix.srsmatrix (const rmatrix&)}\verb" (const rmatrix& m, TR tol = cvmMachSp());"\\
+\verb"    explicit "\GOT{srsmatrix}{srsmatrix.srsmatrix (const rvector&)}\verb" (const rvector& v);"\\
+\verb"    "\GOT{srsmatrix}{srsmatrix.submatrixctr}\verb" (srsmatrix& m, int nRowCol, int nSize);"\\
+\verb"    TR "\GOT{operator ()}{srsmatrix.operator (,)}\verb" (int im, int in) const throw (cvmexception);"\\
+\verb"    const rvector "\GOT{operator ()}{srsmatrix.operator ()}\verb" (int i) const throw (cvmexception);"\\
+\verb"    const rvector "\GOT{operator []}{srsmatrix.operator []}\verb" (int i) const throw (cvmexception);"\\
+\verb"    const rvector "\GOT{diag}{srsmatrix.diag}\verb" (int i) const throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{operator =}{srsmatrix.operator = (const srsmatrix&)}\verb" (const srsmatrix& m) throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{assign}{srsmatrix.assign}\verb" (const rvector& v, TR tol = cvmMachSp())"\\
+\verb"                       throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{assign}{srsmatrix.assign}\verb" (const TR* pD, TR tol = cvmMachSp())"\\
+\verb"                       throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{assign}{srsmatrix.assign (int, const srsmatrix&)}\verb" (int nRowCol, const srsmatrix& m)"\\
+\verb"                       throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{set}{srsmatrix.set}\verb" (TR x);"\\
+\verb"    srsmatrix& "\GOT{set}{srsmatrix.set(int,int,TR)}\verb" (int nRow, int nCol, TR x);"\\
+\verb"    srsmatrix& "\GOT{set\_diag}{srsmatrix.setdiag}\verb" (int i, const rvector& v) throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{resize}{srsmatrix.resize}\verb" (int nNewMN) throw (cvmexception);"\\
+\verb"    bool "\GOT{operator ==}{srsmatrix.operator ==}\verb" (const srsmatrix& m) const;"\\
+\verb"    bool "\GOT{operator !=}{srsmatrix.operator !=}\verb" (const srsmatrix& m) const;"\\
+\verb"    srsmatrix& "\GOT{operator <{}<}{srsmatrix.operator <<}\verb" (const srsmatrix& m) throw (cvmexception);"\\
+\verb"    srsmatrix "\GOT{operator +}{srsmatrix.operator +}\verb" (const srsmatrix& m) const"\\
+\verb"                          throw (cvmexception);"\\
+\verb"    srsmatrix "\GOT{operator -}{srsmatrix.operator -}\verb" (const srsmatrix& m) const"\\
+\verb"                          throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{sum}{srsmatrix.sum}\verb" (const srsmatrix& m1,"\\
+\verb"                    const srsmatrix& m2) throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{diff}{srsmatrix.diff}\verb" (const srsmatrix& m1,"\\
+\verb"                     const srsmatrix& m2) throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{operator +=}{srsmatrix.operator +=}\verb" (const srsmatrix& m) throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{operator -=}{srsmatrix.operator -=}\verb" (const srsmatrix& m) throw (cvmexception);"\\
+\verb"    srsmatrix "\GOT{operator -}{srsmatrix.operator - ()}\verb" () const;"\\
+\verb"    srsmatrix& "\GOT{operator ++}{srsmatrix.operator ++}\verb" ();"\\
+\verb"    srsmatrix& "\GOT{operator ++}{srsmatrix.operator ++}\verb" (int);"\\
+\verb"    srsmatrix& "\GOT{operator -{}-}{srsmatrix.operator --}\verb" ();"\\
+\verb"    srsmatrix& "\GOT{operator -{}-}{srsmatrix.operator --}\verb" (int);"\\
+\verb"    srsmatrix "\GOT{operator *}{srsmatrix.operator * (TR)}\verb" (TR d) const;"\\
+\verb"    srsmatrix "\GOT{operator /}{srsmatrix.operator / (TR)}\verb" (TR d) const throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{operator *=}{srsmatrix.operator *= (TR)}\verb" (TR d);"\\
+\verb"    srsmatrix& "\GOT{operator /=}{srsmatrix.operator /= (TR)}\verb" (TR d) throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{normalize}{srsmatrix.normalize}\verb" ();"\\
+\verb"    srsmatrix "\GOT{operator \TildaT}{srsmatrix.transposition}\verb" () const throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{transpose}{srsmatrix.transposition}\verb" (const srsmatrix& m) throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{transpose}{srsmatrix.transposition}\verb" ();"\\
+\verb"    rvector "\GOT{operator *}{srsmatrix.operator * (const rvector&)}\verb" (const rvector& v) const throw (cvmexception);"\\
+\verb"    rmatrix "\GOT{operator *}{srsmatrix.operator * (const rmatrix&)}\verb" (const rmatrix& m) const throw (cvmexception);"\\
+\verb"    srmatrix "\GOT{operator *}{srsmatrix.operator * (const srmatrix&)}\verb" (const srmatrix& m) const throw (cvmexception);"\\
+\verb"    rvector "\GOT{operator /}{srsmatrix.operator / (rvector)}\verb" (const rvector& vB) const throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{syrk}{srsmatrix.syrk}\verb" (TR alpha,"\\
+\verb"                     const rvector& v, TR beta) throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{syrk}{srsmatrix.syrk}\verb" (bool bTransp, TR alpha,"\\
+\verb"                     const rmatrix& m, TR beta) throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{syr2k}{srsmatrix.syr2k}\verb" (TR alpha,"\\
+\verb"                     const rvector& v1, const rvector& v2, TR beta)"\\
+\verb"                     throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{syr2k}{srsmatrix.syr2k}\verb" (bool bTransp, TR alpha,"\\
+\verb"                     const rmatrix& m1, const rmatrix& m2, TR beta)"\\
+\verb"                     throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{inv}{srsmatrix.inv}\verb" (const srsmatrix& mArg) throw (cvmexception);"\\
+\verb"    srsmatrix "\GOT{inv}{srsmatrix.inv}\verb" () const throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{exp}{srsmatrix.exp}\verb" (const srsmatrix& m,"\\
+\verb"                   TR tol = cvmMachSp()) throw (cvmexception);"\\
+\verb"    srsmatrix "\GOT{exp}{srsmatrix.exp}\verb" (TR tol = cvmMachSp()) const throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{polynom}{srsmatrix.polynom}\verb" (const srsmatrix& m, const rvector& v)"\\
+\verb"                        throw (cvmexception);"\\
+\verb"    srsmatrix "\GOT{polynom}{srsmatrix.polynom}\verb" (const rvector& v) const throw (cvmexception);"\\
+\verb"    rvector "\GOT{eig}{srsmatrix.eig}\verb" (srmatrix& mEigVect) const throw (cvmexception);"\\
+\verb"    rvector "\GOT{eig}{srsmatrix.eig}\verb" () const throw (cvmexception);"\\
+\verb"    srmatrix "\GOT{cholesky}{srsmatrix.cholesky}\verb" () const throw (cvmexception);"\\
+\verb"    srmatrix "\GOT{bunch\_kaufman}{srsmatrix.bunch_kaufman}\verb" () const throw (cvmexception);"\\
+\verb"    srsmatrix& "\GOT{identity}{srsmatrix.identity}\verb" ();"\\
+\verb"    srsmatrix& "\GOT{vanish}{srsmatrix.vanish}\verb" ();"\\
+\verb"    srsmatrix& "\GOT{randomize}{srsmatrix.randomize}\verb" (TR dFrom, TR dTo);"\\
+\verb"};"
+\newpage
+
+
+
+\subsubsection{srsmatrix ()}
+Constructor%
+\pdfdest name {srsmatrix.srsmatrix ()} fit
+\begin{verbatim}
+srsmatrix::srsmatrix ();
+\end{verbatim}
+creates  empty \verb"srsmatrix" object.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srsmatrix m;
+std::cout << m.msize() << " " << m.nsize() << " " << m.size()
+          << std::endl << std::endl;
+m.resize (3);
+m.set(1.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 0 0
+
+1 1 1
+1 1 1
+1 1 1
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{srsmatrix (int)}
+Constructor%
+\pdfdest name {srsmatrix.srsmatrix (int)} fit
+\begin{verbatim}
+explicit srsmatrix::srsmatrix (int nMN);
+\end{verbatim}
+creates  $n\times n$ \verb"srsmatrix" object where $n$ is passed in
+\verb"nMN" parameter. 
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed or memory allocation failure.
+See also \GOT{srsmat\-rix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srsmatrix m(4);
+std::cout << m.msize() << " " << m.nsize() << " " << m.size()
+          << std::endl << std::endl;
+m.set(1.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+4 4 16
+
+1 1 1 1
+1 1 1 1
+1 1 1 1
+1 1 1 1
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{srsmatrix (TR*,int)}
+Constructor%
+\pdfdest name {srsmatrix.srsmatrix (TR*,int)} fit
+\begin{verbatim}
+srsmatrix::srsmatrix (TR* pD, int nMN, TR tol = cvmMachSp());
+\end{verbatim}
+creates  $n\times n$ \verb"srsmatrix" object where $n$ is passed in
+\verb"nMN" parameter.
+Unlike others, this constructor \textit{does not allocate  memory}.
+It just shares  memory with  array pointed to by \verb"pD".
+Constructor throws  \GOT{cvmexception}{cvmexception}
+if the matrix created doesn't appear to be symmetric 
+or in case of non-positive size passed. Symmetry tolerance is
+set by parameter \verb'tol'.
+If subsequent application flow would change the array passed so
+it becomes not symmetric matrix anymore then results are not predictable.
+See also \GOT{srsmatrix}{srsmatrix},
+\GOT{srsmatrix (const TR*,int)}{srsmatrix.srsmatrix (const TR*,int)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+double a[] = {1., 1., 1., 1., 1., 1., 1., 1., 1.};
+srsmatrix m (a, 3);
+m.set(2,1,5.);
+std::cout << m << std::endl;
+std::cout << a[0] << " " << a[1] << " " << a[2] << " "
+          << a[3] << " " << a[4] << " " << a[5] << " " << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 5 1
+5 1 1
+1 1 1
+
+1 5 1 5 1 1
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{srsmatrix (const TR*,int)}
+Constructor%
+\pdfdest name {srsmatrix.srsmatrix (const TR*,int)} fit
+\begin{verbatim}
+srsmatrix::srsmatrix (const TR* pD, int nMN, TR tol = cvmMachSp());
+\end{verbatim}
+creates  $n\times n$ \verb"srsmatrix" object where $n$ is passed in
+\verb"nMN" parameter
+and copies $n*n$ elements of  array \verb"pD" to it \GOT{by colums}{SubSubSectionStorage}.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+if the matrix created doesn't appear to be symmetric 
+or in case of non-positive size passed. Symmetry tolerance is
+set by parameter \verb'tol'.
+See also \GOT{srsmatrix}{srsmatrix},
+\GOT{srsmatrix (TR*,int)}{srsmatrix.srsmatrix (TR*,int)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+const double a[] = {1., 1., 1., 1., 1., 1., 1., 1., 1.};
+srsmatrix m (a, 3);
+m.set(2,1,5.);
+std::cout << m << std::endl;
+std::cout << a[0] << " " << a[1] << " " << a[2] << " "
+          << a[3] << " " << a[4] << " " << a[5] << " " << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 5 1
+5 1 1
+1 1 1
+
+1 1 1 1 1 1
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{srsmatrix (const srsmatrix\&)}
+Copy constructor%
+\pdfdest name {srsmatrix.srsmatrix (const srsmatrix&)} fit
+\begin{verbatim}
+srsmatrix::srsmatrix (const srsmatrix& m);
+\end{verbatim}
+creates  \verb"srsmatrix" object as a copy of \verb"m".
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m (a, 3);
+srmatrix mc(m);
+m.set(2,3,7.77);
+std::cout << m << std::endl << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+2 5 7.77
+3 7.77 9
+
+1 2 3
+2 5 6
+3 6 9
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{srsmatrix (const rmatrix\&)}
+Constructor%
+\pdfdest name {srsmatrix.srsmatrix (const rmatrix&)} fit
+\begin{verbatim}
+explicit srsmatrix::srsmatrix (const rmatrix& m, TR tol = cvmMachSp());
+\end{verbatim}
+creates  \verb"srsmatrix" object as a copy of matrix \verb"m".
+It's assumed that $m\times n$ matrix \verb"m" must have equal
+sizes, i.e. $m = n$ is satisfied, and must be symmetric.
+Symmetry tolerance is set by parameter \verb'tol'.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+if this is not true or in case of memory allocation failure.
+%Please note that this constructor is \emph{not explicit}.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+rmatrix m(a, 3, 3);
+srsmatrix ms(m);
+std::cout << ms;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+2 5 6
+3 6 9
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{srsmatrix (const rvector\&)}
+Constructor%
+\pdfdest name {srsmatrix.srsmatrix (const rvector&)} fit
+\begin{verbatim}
+explicit srsmatrix::srsmatrix (const rvector& v);
+\end{verbatim}
+creates  \verb"srsmatrix" object
+of size \verb"v.size()" by \verb"v.size()"
+and assigns vector \verb"v" to its main diagonal.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{srsmatrix}{srsmatrix}, \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5.};
+const rvector v(a, 5);
+srsmatrix m(v);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 0 0 0 0
+0 2 0 0 0
+0 0 3 0 0
+0 0 0 4 0
+0 0 0 0 5
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{submatrix}
+Submatrix constructor%
+\pdfdest name {srsmatrix.submatrixctr} fit
+\begin{verbatim}
+srsmatrix::srsmatrix (srsmatrix& m, int nRowCol, int nSize);
+\end{verbatim}
+creates  \verb"srmatrix" object as  \emph{submatrix} of 
+symmetric matrix \verb"m".
+It means that the matrix created shares memory with some part
+of \verb"m". This part is defined by its upper left corner (parameter
+\verb"nRowCol", \Based)
+and its size (parameter \verb"nSize").
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srsmatrix m(5);
+srsmatrix subm(m, 2, 2);
+subm.set(1.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 0 0 0 0
+0 1 1 0 0
+0 1 1 0 0
+0 0 0 0 0
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator (,)}
+Indexing operator%
+\pdfdest name {srsmatrix.operator (,)} fit
+\begin{verbatim}
+TR srsmatrix::operator () (int im, int in) const throw (cvmexception);
+\end{verbatim}
+provides access to a particular element of calling matrix. 
+Unlike indexing operators in other classes,
+this operator doesn't return  \emph{l-value}
+because this would make the matrix non-symmetric.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Use ...  to change pair of symmetric elements to keep the matrix symmetric
+Operator is \Based.
+It throws \GOT{cvmexception}{cvmexception}
+if some of parameters passed
+is outside of \verb"[1,msize()]" range.
+See also \GOT{srsmatrix}{srsmatrix},
+\GOT{Matrix::msize()}{Matrix.msize},
+\GOT{Matrix::nsize()}{Matrix.nsize}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a, 3);
+std::cout << m(1,1) << " " << m(2,3) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 6
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator ()}
+Indexing operator%
+\pdfdest name {srsmatrix.operator ()} fit
+\begin{verbatim}
+const rvector srsmatrix::operator () (int i) const throw (cvmexception);
+\end{verbatim}
+provides access to \hbox{$i$-th} column of calling matrix.
+Unlike indexing operators in other classes,
+this operator doesn't return  \emph{l-value}
+because this would make the matrix non-symmetric.
+Operator creates  object of class \verb"rvector"
+as  \emph{copy} of a column and therefore it's
+\emph{not  l-value}.
+Operator is \Based.
+It throws \GOT{cvmexception}{cvmexception}
+if parameter \verb"i" is outside of \verb"[1,nsize()]" range.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a, 3);
+std::cout << m(1) << m(2) << m(3);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+2 5 6
+3 6 9
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator []}
+Indexing operator%
+\pdfdest name {srsmatrix.operator []} fit
+\begin{verbatim}
+const rvector srsmatrix::operator [] (int i) const throw (cvmexception);
+\end{verbatim}
+provides access to \hbox{$i$-th} row of calling matrix.
+Unlike indexing operators in other classes,
+this operator doesn't return  \emph{l-value}
+because this would make the matrix non-symmetric.
+Operator creates  object of class \verb"rvector"
+as  \emph{copy} of a row and therefore it's
+\emph{not  l-value}.
+Operator is \Based.
+It throws \GOT{cvmexception}{cvmexception}
+if parameter \verb"i" is outside of \verb"[1,msize()]" range.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a, 3);
+std::cout << m[1] << m[2] << m[3];
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+2 5 6
+3 6 9
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{diag}
+Function%
+\pdfdest name {srsmatrix.diag} fit
+\begin{verbatim}
+const rvector srsmatrix::diag (int i) const throw (cvmexception);
+\end{verbatim}
+provides access to \hbox{$i$-th} diagonal of calling matrix,
+where $i=0$ for main diagonal, $i<0$ for lower diagonals 
+and $i>0$ for upper ones.
+Unlike \verb"diag" function in other classes,
+this one doesn't return  \emph{l-value}
+because this would make the matrix non-symmetric.
+Function creates  object of class \verb"rvector"
+as  \emph{copy} of a diagonal and therefore it's
+\emph{not  l-value}.
+Function is \Based.
+It throws \GOT{cvmexception}{cvmexception}
+if parameter \verb"i" is outside of 
+\verb"[-msize()+1,nsize()-1]" range.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a, 3);
+std::cout << m << std::endl
+          << m.diag(-2) << m.diag(-1) << m.diag(0)
+          << m.diag(1) << m.diag(2);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+2 5 6
+3 6 9
+
+3
+2 6
+1 5 9
+2 6
+3
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator = (const srsmatrix\&)}
+Operator%
+\pdfdest name {srsmatrix.operator = (const srsmatrix&)} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::operator = (const srsmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+sets every element of  calling symmetric matrix to  value of
+appropriate element of symmetric matrix \verb"m"
+and returns  reference to
+the matrix changed.
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+const srsmatrix m1(a, 3);
+srsmatrix m2(3);
+
+m2 = m1;
+std::cout << m2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+2 5 6
+3 6 9
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{assign (const TR*)}
+Function%
+\pdfdest name {srsmatrix.assign} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::assign (const rvector& v, TR tol = cvmMachSp())
+throw (cvmexception);
+
+srsmatrix& srsmatrix::assign (const TR* pD, TR tol = cvmMachSp())
+throw (cvmexception);
+\end{verbatim}
+sets every element of  calling matrix to  value of
+appropriate element of  vector~\verb'v'
+or  array pointed to by~\verb"pD"
+and returns  reference to
+the matrix changed.
+In first version it's assumed that vector passed is long
+enough to fill calling matrix. Function throws \GOT{cvmexception}{cvmexception} 
+otherwise.
+Function throws  \GOT{cvmexception}{cvmexception}
+if the matrix changed doesn't appear to be symmetric.
+Symmetry tolerance is set by parameter \verb'tol'.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(3);
+m.assign(a);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+2 5 6
+3 6 9
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{assign (int, const srsmatrix\&)}
+Function%
+\pdfdest name {srsmatrix.assign (int, const srsmatrix&)} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::assign (int nRowCol, const srsmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+sets main sub-matrix of  calling symmetric matrix beginning with \Based row
+\verb"nRowCol" to  symmetric matrix \verb"m" and
+returns  reference to the matrix changed.
+Function throws 
+ \GOT{cvmexception}{cvmexception} if \verb"nRowCol"
+is not positive or matrix \verb"m" doesn't fit.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srsmatrix m1(5);
+srsmatrix m2(2);
+m1.set(1.);
+m2.set(2.);
+m1.assign(2,m2);
+std::cout << m1;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 1 1 1 1
+1 2 2 1 1
+1 2 2 1 1
+1 1 1 1 1
+1 1 1 1 1
+\end{Verbatim}
+\newpage
+
+
+
+
+
+
+
+\subsubsection{set (TR)}
+Function%
+\pdfdest name {srsmatrix.set} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::set (TR x);
+\end{verbatim}
+sets every element of  calling matrix to  value of
+parameter \verb"x" and returns  reference to
+the matrix changed.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srsmatrix m(3);
+m.set(3.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3 3 3
+3 3 3
+3 3 3
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{set (int,int,TR)}
+Function%
+\pdfdest name {srsmatrix.set(int,int,TR)} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::set (int nRow, int nCol, TR x);
+\end{verbatim}
+sets both elements located on \verb"nRow"'s row
+and \verb"nCol"'s column and on 
+\verb"nCol"'s row
+and \verb"nRow"'s column to  value of
+parameter \verb"x" and returns  reference to
+the matrix changed (thus the matrix remains symmetric).
+Parameters passed 
+are \Based.
+Function throws \GOT{cvmexception}{cvmexception}
+if any of the parameters passed
+is outside of \verb"[1,msize()]" range.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srsmatrix m(3);
+m.set(3.);
+m.set(1,3,7.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3 3 7
+3 3 3
+7 3 3
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{set\_diag (int,rvector)}
+Function%
+\pdfdest name {srsmatrix.setdiag} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::set_diag (int i, const rvector& v)
+throw (cvmexception);
+\end{verbatim}
+assigns vector \verb"v"
+to \hbox{$i$-th} diagonal of calling matrix,
+where $i=0$ for main diagonal, $i<0$ for lower diagonals 
+and $i>0$ for upper ones.
+If $i\not=0$, then  function assigns the vector
+to both $i$-th and $-i$-th diagonals
+(thus calling matrix remains symmetric).
+Function returns  reference to the matrix changed.
+Parameter \verb"i" is \emph{not} \Based.
+Function throws \GOT{cvmexception}{cvmexception}
+if parameter \verb"i" is outside of 
+\verb"[-msize()+1,nsize()-1]" range or if
+vector \verb"v" passed has  size not equal to
+\verb"msize()-abs(i)".
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srsmatrix m(3);
+rvector v(2);
+m.set(3.);
+v.set(1.);
+m.set_diag(1,v);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3 1 3
+1 3 1
+3 1 3
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{resize}
+Function%
+\pdfdest name {srsmatrix.resize} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::resize (int nNewMN) throw (cvmexception);
+\end{verbatim}
+changes  size of  calling matrix to \verb"nNewMN" by \verb"nNewMN"
+and returns  reference to
+the matrix changed. In case of increasing of its size, calling matrix
+is filled up with zeroes.
+Function throws  \GOT{cvmexception}{cvmexception}
+in case of negative size passed or memory allocation failure.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a,3);
+std::cout << m << std::endl;
+m.resize(4);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+2 5 6
+3 6 9
+
+1 2 3 0
+2 5 6 0
+3 6 9 0
+0 0 0 0
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{operator ==}
+Operator%
+\pdfdest name {srsmatrix.operator ==} fit
+\begin{verbatim}
+bool srsmatrix::operator == (const srsmatrix& m) const;
+\end{verbatim}
+compares  calling  matrix with symmetric matrix \verb"m"
+and returns \verb"true" if they have the same sizes
+and their appropriate elements differ by not more than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Returns \verb"false" otherwise.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 2., 3.};
+srsmatrix m1(a, 2);
+srsmatrix m2(2);
+m2.set(1,1,1.); 
+m2.set(1,2,2.);
+m2.set(2,2,3.);
+
+std::cout << (m1 == m2) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator !=}
+Operator%
+\pdfdest name {srsmatrix.operator !=} fit
+\begin{verbatim}
+bool srsmatrix::operator != (const srsmatrix& m) const;
+\end{verbatim}
+compares  calling matrix with symmetric matrix \verb"m"
+and returns \verb"true" if they have different sizes
+or at least one of their appropriate elements
+differs by more than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Returns \verb"false" otherwise.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 2., 3.};
+srsmatrix m1(a, 2);
+srsmatrix m2(2);
+m2.set(1,1,1.0001); 
+m2.set(1,2,2.);
+m2.set(2,2,3.);
+
+std::cout << (m1 != m2) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator <{}<}
+Operator%
+\pdfdest name {srsmatrix.operator <<} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::operator << (const srsmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+destroys  calling matrix, creates  new one as a copy of \verb"m"
+and returns  reference to
+the matrix changed.
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a, 3);
+srsmatrix mc(1);
+std::cout << m << std::endl << mc << std::endl;
+mc << m;
+std::cout << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+2 5 6
+3 6 9
+
+0
+
+1 2 3
+2 5 6
+3 6 9
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator +}
+Operator%
+\pdfdest name {srsmatrix.operator +} fit
+\begin{verbatim}
+srsmatrix srsmatrix::operator + (const srsmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"srsmatrix" as  sum of
+ calling symmetric matrix and symmetric matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{srsmatrix::sum}{srsmatrix.sum}, \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m1(a, 3);
+srsmatrix m2(3);
+m2.set(1.);
+std::cout << m1 + m2 << std::endl << m1 + m1;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+2 3 4
+3 6 7
+4 7 10
+
+2 4 6
+4 10 12
+6 12 18
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator -}
+Operator%
+\pdfdest name {srsmatrix.operator -} fit
+\begin{verbatim}
+srsmatrix srsmatrix::operator - (const srsmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"srsmatrix" as  difference of
+ calling symmetric matrix and symmetric matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{srsmatrix::diff}{srsmatrix.diff}, \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m1(a, 3);
+srsmatrix m2(3);
+m2.set(1.);
+std::cout << m1 - m2 << std::endl << m1 - m1;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 1 2
+1 4 5
+2 5 8
+
+0 0 0
+0 0 0
+0 0 0
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{sum}
+Function%
+\pdfdest name {srsmatrix.sum} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::sum (const srsmatrix& m1, const srsmatrix& m2)
+throw (cvmexception);
+\end{verbatim}
+assigns  result of addition of symmetric
+matrices \verb"m1" and \verb"m2"  to  calling symmetric matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{srsmatrix::ope\-ra\-tor~+~}{srsmatrix.operator +},
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+const srsmatrix m1(a, 3);
+srsmatrix m2(3);
+srsmatrix m(3);
+m2.set(1.);
+
+std::cout << m.sum(m1, m2) << std::endl;
+std::cout << m.sum(m, m2);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+2 3 4
+3 6 7
+4 7 10
+
+3 4 5
+4 7 8
+5 8 11
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{diff}
+Function%
+\pdfdest name {srsmatrix.diff} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::diff (const srsmatrix& m1, const srsmatrix& m2)
+throw (cvmexception);
+\end{verbatim}
+assigns  result of subtraction of
+symmetric matrices \verb"m1" and \verb"m2" to  calling symmetric matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{srsmatrix::ope\-ra\-tor~-~}{srsmatrix.operator -},
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+const srsmatrix m1(a, 3);
+srsmatrix m2(3);
+srsmatrix m(3);
+m2.set(1.);
+
+std::cout << m.diff(m1, m2) << std::endl;
+std::cout << m.diff(m, m2);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 1 2
+1 4 5
+2 5 8
+
+-1 0 1
+0 3 4
+1 4 7
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator +=}
+Operator%
+\pdfdest name {srsmatrix.operator +=} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::operator += (const srsmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+adds symmetric matrix \verb"m" to  calling symmetric matrix 
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{srsmatrix::ope\-ra\-tor~+~}{srsmatrix.operator +},
+\GOT{srsmatrix::sum}{srsmatrix.sum},
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srsmatrix m1(3);
+srsmatrix m2(3);
+m1.set(1.);
+m2.set(2.);
+
+m1 += m2;
+std::cout << m1 << std::endl;
+
+// well, you can do this too, but temporary object would be created
+m2 += m2; 
+std::cout << m2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3 3 3
+3 3 3
+3 3 3
+
+4 4 4
+4 4 4
+4 4 4
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator -=}
+Operator%
+\pdfdest name {srsmatrix.operator -=} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::operator -= (const srsmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+subtracts symmetric matrix \verb"m" from  calling symmetric matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{srsmatrix::ope\-ra\-tor~-~}{srsmatrix.operator -},
+\GOT{srsmatrix::diff}{srsmatrix.diff},
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srsmatrix m1(3);
+srsmatrix m2(3);
+m1.set(1.);
+m2.set(2.);
+
+m1 -= m2;
+std::cout << m1 << std::endl;
+
+// well, you can do this too, but temporary object would be created
+m2 -= m2; 
+std::cout << m2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-1 -1 -1
+-1 -1 -1
+-1 -1 -1
+
+0 0 0
+0 0 0
+0 0 0
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator - ()}
+Operator%
+\pdfdest name {srsmatrix.operator - ()} fit
+\begin{verbatim}
+srsmatrix srsmatrix::operator - () const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"srsmatrix" as
+ calling symmetric matrix multiplied by $-1$.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a, 3);
+std::cout << -m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-1 -2 -3
+-2 -5 -6
+-3 -6 -9
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator ++}
+Operator%
+\pdfdest name {srsmatrix.operator ++} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::operator ++ ();
+srsmatrix& srsmatrix::operator ++ (int);
+\end{verbatim}
+adds identity matrix to  calling symmetric matrix
+and returns  reference to
+the matrix changed.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srsmatrix m(4);
+m.set(4.);
+m++;
+std::cout << m << std::endl;
+std::cout << ++m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+5 4 4 4
+4 5 4 4
+4 4 5 4
+4 4 4 5
+
+6 4 4 4
+4 6 4 4
+4 4 6 4
+4 4 4 6
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator -{}-}
+Operator%
+\pdfdest name {srsmatrix.operator --} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::operator -- ();
+srsmatrix& srsmatrix::operator -- (int);
+\end{verbatim}
+subtracts identity matrix from  calling symmetric matrix
+and returns  reference to
+the matrix changed.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srsmatrix m(4);
+m.set(4.);
+m--;
+std::cout << m << std::endl;
+std::cout << --m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+3 4 4 4
+4 3 4 4
+4 4 3 4
+4 4 4 3
+
+2 4 4 4
+4 2 4 4
+4 4 2 4
+4 4 4 2
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator * (TR)}
+Operator%
+\pdfdest name {srsmatrix.operator * (TR)} fit
+\begin{verbatim}
+srsmatrix srsmatrix::operator * (TR d) const;
+\end{verbatim}
+creates  object of type \verb"srsmatrix" as  product of
+ calling symmetric matrix and  number~\verb"d".
+See also \GOT{srsmatrix::ope\-ra\-tor~*=~}{srsmatrix.operator *= (TR)},
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a,3);
+std::cout << m * 5.;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+5 10 15
+10 25 30
+15 30 45
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator / (TR)}
+Operator%
+\pdfdest name {srsmatrix.operator / (TR)} fit
+\begin{verbatim}
+srsmatrix srsmatrix::operator / (TR d) const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"srsmatrix" as  quotient of
+ calling symmetric matrix and  number~\verb"d". It throws
+ \GOT{cvmexception}{cvmexception}
+if \verb"d" has  absolute value equal or less than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+See also \GOT{srsmatrix::operator~/=~}{srsmatrix.operator /= (TR)},
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a,3);
+std::cout << m / 4.;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0.25 0.5 0.75
+0.5 1.25 1.5
+0.75 1.5 2.25
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator *= (TR)}
+Operator%
+\pdfdest name {srsmatrix.operator *= (TR)} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::operator *= (TR d);
+\end{verbatim}
+multiplies  calling symmetric matrix by  number~\verb"d"
+and returns  reference to
+the matrix changed.
+See also \GOT{srsmatrix::ope\-ra\-tor~*~}{srsmatrix.operator * (TR)},
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a,3);
+m *= 2.;
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+2 4 6
+4 10 12
+6 12 18
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator /= (TR)}
+Operator%
+\pdfdest name {srsmatrix.operator /= (TR)} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::operator /= (TR d) throw (cvmexception);
+\end{verbatim}
+divides  calling symmetric matrix by  number~\verb"d"
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+if \verb"d" has  absolute value equal or less
+than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+See also \GOT{srsmatrix::operator~/~}{srsmatrix.operator / (TR)},
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a,3);
+m /= 2.;
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0.5 1 1.5
+1 2.5 3
+1.5 3 4.5
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{normalize}
+Function%
+\pdfdest name {srsmatrix.normalize} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::normalize ();
+\end{verbatim}
+normalizes  calling symmetric matrix so its \GO{Euclidean norm}{Array.norm}
+becomes equal to $1$ if it was greater than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}
+before the call (otherwise function does nothing).
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left);
+std::cout.precision (3);
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a,3);
+m.normalize();
+std::cout << m << m.norm() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+6.984e-002 1.397e-001 2.095e-001
+1.397e-001 3.492e-001 4.191e-001
+2.095e-001 4.191e-001 6.286e-001
+1.000e+000
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{transposition}
+Operator and functions%
+\pdfdest name {srsmatrix.transposition} fit
+\begin{verbatim}
+srsmatrix srsmatrix::operator ~ () const throw (cvmexception);
+srsmatrix& srsmatrix::transpose (const srsmatrix& m) throw (cvmexception);
+srsmatrix& srsmatrix::transpose ();
+\end{verbatim}
+do nothing since calling matrix is symmetric.
+They are provided to reimplement similar member functions and operator
+of the class \GOT{srmatrix}{srmatrix}.
+See also \GOT{srsmatrix}{srsmatrix}, \GOT{srmatrix}{srmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+srsmatrix m(a,3);
+std::cout << m - ~m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 0 0
+0 0 0
+0 0 0
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator * (const rvector\&)}
+Operator%
+\pdfdest name {srsmatrix.operator * (const rvector&)} fit
+\begin{verbatim}
+rvector srsmatrix::operator * (const rvector& v) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"rvector"
+as  product of  calling symmetric matrix and  vector \verb"v".
+It throws  \GOT{cvmexception}{cvmexception}
+if  number of columns of  calling matrix
+differs from  size of  vector \verb"v".
+Use \GOT{rvector::mult}{rvector.mult (const rmatrix&, const rvector&)}
+in order to avoid new object creation.
+See also
+\GOT{srsmatrix}{srsmatrix} and \GOT{rvector}{rvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    srsmatrix m (4);
+    rvector v(4);
+    m.set(1.);
+    v.set(1.);
+
+    std::cout << m * v;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+4 4 4 4
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator * (const rmatrix\&)}
+Operator%
+\pdfdest name {srsmatrix.operator * (const rmatrix&)} fit
+\begin{verbatim}
+rmatrix srsmatrix::operator * (const rmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"rmatrix"
+as  product of  calling symmetric matrix and  matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+if  number of columns of  calling matrix
+differs from  number of rows of  matrix \verb"m".
+Use \GOT{rmatrix::mult}{rmatrix.mult} in order to avoid
+ new object creation.
+See also
+\GOT{rmatrix}{rmatrix} and \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    srsmatrix ms(4);
+    rmatrix m(4,2);
+    ms.set(1.);
+    m.set(2.);
+    std::cout << ms * m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+8 8
+8 8
+8 8
+8 8
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator * (const srmatrix\&)}
+Operator%
+\pdfdest name {srsmatrix.operator * (const srmatrix&)} fit
+\begin{verbatim}
+srmatrix srsmatrix::operator * (const srmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"srmatrix"
+as  product of  calling symmetric matrix and  matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+if  operands have different sizes.
+Use \GOT{rmatrix::mult}{rmatrix.mult} in order to avoid
+ new object creation.
+See also
+\GOT{srmatrix}{srmatrix} and \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    srsmatrix ms(3);
+    srmatrix m(3);
+    ms.set(1.);
+    m.set(2.);
+    std::cout << ms * m << std::endl;
+
+    double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
+    const srsmatrix ms2(a, 3);
+    std::cout << ms2 * ms;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+6 6 6
+6 6 6
+6 6 6
+
+6 6 6
+13 13 13
+18 18 18
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{operator / (const rvector\&)}
+Operator%
+\pdfdest name {srsmatrix.operator / (rvector)} fit
+\begin{verbatim}
+rvector operator / (const rvector& vB) const throw (cvmexception);
+\end{verbatim}
+returns solution $x$ of linear equation
+$A*x=b$ where calling matrix is square symmetric matrix $A$
+and vector $b$ is passed in parameter \verb"vB".
+This operator throws exception 
+of type \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of the objects or when  matrix $A$ is close to singular.
+See also \GOT{rvector::solve}{rvector.solve}, 
+\GOT{srmatrix::solve}{srmatrix.solve}, 
+\GOT{rvector.operator~\%}{rvector.operator percent (srmatrix)}, 
+\GOT{rvector}{rvector}, \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (12);
+
+try {
+    double m[] = {3., 2., 3., 2., 5., 6., 3., 6., 9.};
+    double b[] = {1., 2., 3.};
+    srsmatrix ma(m, 3);
+    rvector  vb(b, 3);
+    rvector  vx(3);
+
+    vx = ma / vb;
+
+    std::cout << ma * vx - vb;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-1.110223024625e-016 -2.220446049250e-016 +4.440892098501e-016
+\end{Verbatim}
+\newpage
+
+
+
+
+
+
+\subsubsection{syrk}
+Functions%
+\pdfdest name {srsmatrix.syrk} fit
+\begin{verbatim}
+srsmatrix& 
+srsmatrix::syrk (TR alpha, const rvector& v, TR beta) 
+throw (cvmexception);
+
+srsmatrix& 
+srsmatrix::syrk (bool bTransp, TR alpha, const rmatrix& m, TR beta)
+throw (cvmexception);
+\end{verbatim}
+call one of \verb"?SYRK" routines of the
+\URL{BLAS library}{http://www.netlib.org/blas}
+performing  matrix-vector operation defined for the first version as
+rank-1 update operation
+\begin{equation*}
+A=\alpha\,\begin{pmatrix}
+v_1 \\
+v_2 \\
+\vdots \\
+v_n
+\end{pmatrix}
+\begin{pmatrix}
+v_1 & v_2 & \cdots & x_n
+\end{pmatrix} + \beta A,
+\end{equation*}
+and for the second version as
+\begin{equation*}
+A=\alpha MM^T + \beta A\quad\text{or}\quad A=\alpha M^TM + \beta A.
+\end{equation*}
+Here $\alpha$ and $\beta$ are real numbers 
+(parameters \verb"alpha" and \verb"beta"),
+$M$ is real matrix (parameter \verb"m"),
+$A$ is  calling symmetric matrix
+and $v$ is real vector (parameter \verb"v").
+First operation for the second version 
+is performed if \verb"bTransp" passed
+is \verb"false" and second one otherwise.
+Function
+returns  reference to the matrix changed and throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+See also
+\GOT{rvector}{rvector},
+\GOT{rmatrix}{rmatrix} and \GOT{srsmatrix}{srsmatrix}.
+
+Example:
+\begin{Verbatim}
+using namespace cvm;
+const treal alpha = 2.12;
+const treal beta = -3.07;
+rvector v(3);
+srsmatrix ms(3), ms2(3);
+v.randomize(-3.,2.);
+ms.randomize(-1.,2.);
+ms2 = ms;
+ms.syrk (alpha, v, beta);
+ms2 = alpha * srsmatrix(v.rank1update(v)) + beta * ms2;
+std::cout << ms - ms2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 0 0
+0 0 0
+0 0 0
+\end{Verbatim}
+Example:
+\begin{Verbatim}
+using namespace cvm;
+const treal alpha = 2.12;
+const treal beta = -3.07;
+rmatrix m(3,3);
+srsmatrix ms(3), ms2(3);
+m.randomize(-1.,2.);
+ms.randomize(-1.,2.);
+ms2 = ms;
+ms.syrk (false, alpha, m, beta);
+ms2 = alpha * srsmatrix (m * ~m) + beta * ms2;
+std::cout << ms - ms2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 0 0
+0 0 0
+0 0 0
+\end{Verbatim}
+Example:
+\begin{Verbatim}
+using namespace cvm;
+const treal alpha = 2.12;
+const treal beta = -3.07;
+rmatrix m(3,3);
+srsmatrix ms(3), ms2(3);
+m.randomize(-1.,2.);
+ms.randomize(-1.,2.);
+ms2 = ms;
+ms.syrk (true, alpha, m, beta);
+ms2 = alpha * srsmatrix (~m * m) + beta * ms2;
+std::cout << ms - ms2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 0 0
+0 0 0
+0 0 0
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{syr2k}
+Functions%
+\pdfdest name {srsmatrix.syr2k} fit
+\begin{verbatim}
+srsmatrix& 
+srsmatrix::syr2k (TR alpha, const rvector& v1, 
+                  const rvector& v2, TR beta) throw (cvmexception);
+srsmatrix& 
+srsmatrix::syr2k (bool bTransp, TR alpha, const rmatrix& m1, 
+                  const rmatrix& m2, TR beta) throw (cvmexception);
+\end{verbatim}
+call one of \verb"?SYR2K" routines of the
+\URL{BLAS library}{http://www.netlib.org/blas}
+performing  matrix-vector operation defined for the first version as
+rank-1 update operation
+\begin{equation*}
+A=\alpha v_1 v_2' + \alpha v_2 v_1' + \beta A,
+\end{equation*}
+and for the second version as
+\begin{equation*}
+A=\alpha M_1 M_2^T + \alpha M_2 M_1^T + \beta A\quad
+\text{or}\quad 
+A=\alpha M_1^T M_2 + \alpha M_2^T M_1 + \beta A.
+\end{equation*}
+Here $\alpha$ and $\beta$ are real numbers 
+(parameters \verb"alpha" and \verb"beta"),
+$M_1$ and $M_2$ are real matrices (parameters \verb"m1" and \verb"m2"),
+$A$ is  calling symmetric matrix
+and $v_1$ and $v_2$ are real vectors (parameters \verb"v1" and \verb"v2").
+First operation for the second version 
+is performed if \verb"bTransp" passed
+is \verb"false" and second one otherwise.
+Function
+returns  reference to the matrix changed and throws
+ \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes of the operands.
+See also
+\GOT{rvector}{rvector},
+\GOT{rmatrix}{rmatrix} and \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos); 
+std::cout.precision (2);
+const treal alpha = 2.12;
+const treal beta = -3.07;
+rvector v1(4);
+rvector v2(4);
+srsmatrix ms(4), ms2(4);
+v1.randomize(-1.,3.);
+v2.randomize(-1.,3.);
+ms.randomize(-1.,3.);
+ms2 = ms;
+ms.syr2k (alpha, v1, v2, beta);
+ms2 = alpha * srsmatrix(v1.rank1update(v2) + v2.rank1update(v1)) + beta * ms2;
+std::cout << ms - ms2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++0.00e+000 -1.33e-015 +0.00e+000 +0.00e+000
+-1.33e-015 +0.00e+000 +4.44e-016 +0.00e+000
++0.00e+000 +4.44e-016 -5.55e-017 +0.00e+000
++0.00e+000 +0.00e+000 +0.00e+000 -8.88e-016
+\end{Verbatim}
+Example:
+\begin{Verbatim}
+const treal alpha = 2.12;
+const treal beta = -3.07;
+rmatrix m1(3,3), m2(3,3);
+srsmatrix ms(3), ms2(3);
+m1.randomize(-2.,2.);
+m2.randomize(-2.,2.);
+ms.randomize(-1.,2.);
+ms2 = ms;
+ms.syr2k (false, alpha, m1, m2, beta);
+ms2 = alpha * srsmatrix (m1 * ~m2 + m2 * ~m1) + beta * ms2;
+std::cout << ms - ms2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++1.11e-015 +0.00e+000 +0.00e+000
++0.00e+000 +8.88e-016 +1.78e-015
++0.00e+000 +1.78e-015 -1.78e-015
+\end{Verbatim}
+Example:
+\begin{Verbatim}
+const treal alpha = 2.12;
+const treal beta = -3.07;
+rmatrix m1(3,3), m2(3,3);
+srsmatrix ms(3), ms2(3);
+m1.randomize(-2.,2.);
+m2.randomize(-2.,2.);
+ms.randomize(-1.,2.);
+ms2 = ms;
+ms.syr2k (true, alpha, m1, m2, beta);
+ms2 = alpha * srsmatrix (~m1 * m2 + ~m2 * m1) + beta * ms2;
+std::cout << ms - ms2;
+\end{Verbatim}
+prints
+\begin{Verbatim}
++0.00e+000 +1.78e-015 +0.00e+000
++1.78e-015 +0.00e+000 +1.33e-015
++0.00e+000 +1.33e-015 +0.00e+000
+\end{Verbatim}
+\newpage
+
+
+
+
+
+
+
+
+
+\subsubsection{inv}
+Functions%
+\pdfdest name {srsmatrix.inv} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::inv (const srsmatrix& m) throw (cvmexception);
+srsmatrix srsmatrix::inv () const throw (cvmexception);
+\end{verbatim}
+implement symmetric matrix inversion.
+The first version sets  calling symmetric matrix to be equal to 
+ symmetric matrix \verb"m" inverted and the second one
+creates  object of type \verb"srsmatrix" as inverted calling matrix.
+Functions throw  \GOT{cvmexception}{cvmexception} 
+in case of inappropriate
+sizes of the operands or when  matrix to be inverted is close to
+singular.
+See also
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (5);
+
+double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.05};
+const srsmatrix m(a, 3);
+const srsmatrix mi = m.inv();
+
+std::cout << mi << std::endl;
+std::cout << mi * m - eye_real(3);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.85000e+002 -2.00000e+000 -6.00000e+001
+-2.00000e+000 1.00000e+000 0.00000e+000
+-6.00000e+001 0.00000e+000 2.00000e+001
+
+0.00000e+000 0.00000e+000 0.00000e+000
+0.00000e+000 0.00000e+000 0.00000e+000
+0.00000e+000 0.00000e+000 0.00000e+000
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{exp}
+Functions%
+\pdfdest name {srsmatrix.exp} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::exp (const srsmatrix& m, TR tol = cvmMachSp())
+throw (cvmexception);
+
+srsmatrix srsmatrix::exp (TR tol = cvmMachSp()) const
+throw (cvmexception);
+\end{verbatim}
+compute  exponent of  calling symmetric matrix using Pad\'e approximation
+defined as
+\begin{equation*}
+R_{pq}(z)=D_{pq}(z)^{-1}N_{pq}(z)=1+z+\dots+z^p/p!\,,
+\end{equation*}
+where
+\begin{align*}
+N_{pq}(z)&=\sum_{k=0}^p\frac{(p+q-k)!p!}{(p+q)!k!(q-k)!}z^k,\\
+D_{pq}(z)&=\sum_{k=0}^q\frac{(p+q-k)!p!}{(p+q)!k!(q-k)!}(-z)^k
+\end{align*}
+along with  matrix normalizing as described in
+\GO{\cite{Golub}}{biblio}, p.~572.
+Functions use \verb"DMEXP" (or \verb"SMEXP" for \verb"float" version)
+\FORTRAN subroutine implementing the algorithm.
+The first version sets  calling symmetric matrix to be equal to
+ exponent of symmetric matrix \verb"m" and returns 
+ reference to the matrix
+changed. The second version
+creates  object of type \verb"srsmatrix" as 
+exponent of  calling matrix.
+The algorithm uses parameter \verb"tol"
+as $\varepsilon(p,q)$ in order to choose constants $p$ and $q$
+so that
+\begin{equation*}
+\varepsilon(p,q)\ge 2^{3-(p+q)}\frac{p!q!}{(p+q)!(p+q+1)!}.
+\end{equation*}
+This parameter is equal to the
+\GO{largest relative spacing}{Utilities.cvmMachSp} by default.
+Functions throw  \GOT{cvmexception}{cvmexception} 
+in case of
+inappropriate sizes of the operands or when LAPACK subroutine fails.
+See also
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (15);
+
+double a[] = {1., 2., 1., 2., 0., -1., 1., -1., 2.};
+const srsmatrix m(a, 3);
+std::cout << m.exp();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+9.198262499129184e+000 5.558586002658855e+000 3.852443363622591e+000
+5.558586002658857e+000 5.345819135506593e+000 -1.706142639036265e+000
+3.852443363622590e+000 -1.706142639036266e+000 1.090440513816545e+001
+\end{Verbatim}
+Matlab output:
+\begin{Verbatim}
+  Columns 1 through 2 
+
+    9.198262499129212e+000    5.558586002658862e+000
+    5.558586002658865e+000    5.345819135506588e+000
+    3.852443363622600e+000   -1.706142639036258e+000
+
+  Column 3 
+
+    3.852443363622601e+000
+   -1.706142639036260e+000
+    1.090440513816545e+001
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{polynomial}
+Functions%
+\pdfdest name {srsmatrix.polynom} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::polynom (const srsmatrix& m, const rvector& v)
+throw (cvmexception);
+
+srsmatrix srsmatrix::polynom (const rvector& v) const
+throw (cvmexception);
+\end{verbatim}
+compute  symmetric matrix polynomial defined as
+\begin{equation*}
+p(A)=b_0I+b_1A+\dots+b_qA^q
+\end{equation*}
+using the Horner's rule:
+\begin{equation*}
+p(A)=\sum_{k=0}^r B_k(A^s)^k,\quad s=\floor(\!\sqrt{q}\,),\ r=\floor(q/s)
+\end{equation*}
+where
+\begin{equation*}
+B_k=\begin{cases}
+\sum\limits_{i=0}^{s-1}b_{sk+i} A^i, & k=0,1,\dots,r-1\\
+\sum\limits_{i=0}^{q-sr}b_{sr+i} A^i, & k=r.
+\end{cases}
+\end{equation*}
+See also \GO{\cite{Golub}}{biblio}, p.~568.
+Coefficients $b_0,b_1,\dots,b_q$ are passed in  parameter 
+\verb"v",
+where $q$ is equal to \verb"v.size()-1", so  functions
+compute matrix polynomial equal to
+\begin{equation*}
+\mathtt{v[1]*I + v[2]*m +\cdots + v[v.size()]*m^{v.size()-1}}
+\end{equation*}
+The first version sets  calling symmetric matrix to be equal 
+to the polynomial of  symmetric matrix \verb"m"
+and the second one
+creates  object of type \verb"srsmatrix" as the 
+polynomial of calling symmetric matrix.
+Functions use \verb"DPOLY" (or \verb"SPOLY" for \verb"float" version)
+\FORTRAN subroutine implementing the Horner's algorithm.
+Functions throw  \GOT{cvmexception}{cvmexception} 
+in case of inappropriate sizes of the operands.
+See also
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (7);
+double a[] = {1., 2., 1., 2., 0., -1., 1., -1., 2.};
+double av[] = {2.2, 1.3, 1.1, -0.9, 0.2,
+              -0.45, 45, -30, 10, 3, 3.2};
+const rvector v(av, 11);
+const srsmatrix m(a, 3);
+
+std::cout << m.polynom (v);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+6.2127400e+004 2.3998000e+004 3.4100550e+004
+2.3998000e+004 2.8026850e+004 1.0102550e+004
+3.4100550e+004 1.0102550e+004 5.2024850e+004
+\end{Verbatim}
+Matlab output:
+\begin{Verbatim}
+  Columns 1 through 2 
+
+    6.212740000000001e+004    2.399800000000000e+004
+    2.399800000000000e+004    2.802685000000000e+004
+    3.410055000000000e+004    1.010255000000000e+004
+
+  Column 3 
+
+    3.410055000000000e+004
+    1.010255000000000e+004
+    5.202485000000000e+004
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{eig}
+Functions%
+\pdfdest name {srsmatrix.eig} fit
+\begin{verbatim}
+rvector srsmatrix::eig (srmatrix& mEigVect) const throw (cvmexception);
+rvector srsmatrix::eig () const throw (cvmexception);
+\end{verbatim}
+solve the 
+\GO{symmetric eigenvalue problem}{rvector.eig}
+and return  real vector with eigenvalues
+of  calling symmetric matrix.
+The first version
+sets  output parameter \verb"mEigVect" to be equal
+to  square matrix containing orthogonal
+eigenvectors as columns.
+All  functions
+throw 
+ \GOT{cvmexception}{cvmexception} 
+in case of inappropriate sizes of the operands
+or in case of convergence error.
+See also
+\GOT{rvector}{rvector},
+\GOT{srmatrix}{srmatrix} and
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (10);
+double a[] = {1., 2., 1., 2., 0., -1., 1., -1., 2.};
+const srsmatrix m(a, 3);
+srmatrix me(3);
+rvector v(3);
+
+v = m.eig(me);
+std::cout << v << std::endl;
+
+std::cout << m * me(1) - me(1) * v(1);
+std::cout << m * me(2) - me(2) * v(2);
+std::cout << m * me(3) - me(3) * v(3);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-2.0489173395e+000 2.3568958679e+000 2.6920214716e+000
+
+4.4408920985e-016 0.0000000000e+000 5.5511151231e-016
+-1.1102230246e-016 2.2204460493e-016 2.2204460493e-016
+0.0000000000e+000 -1.1102230246e-016 -4.4408920985e-016
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{Cholesky}
+Function%
+\pdfdest name {srsmatrix.cholesky} fit
+\begin{verbatim}
+srmatrix srsmatrix::cholesky () const throw (cvmexception);
+\end{verbatim}
+forms the Cholesky factorization of  symmetric positive-definite 
+matrix $A$ defined as
+\begin{equation*}
+A=U^T U,
+\end{equation*}
+where $U$ is upper triangular matrix.
+It utilizes one of \verb"?POTRF" routines of the
+\URL{LAPACK library}{http://www.netlib.org/lapack}.
+Function
+creates  object of type \verb"srmatrix" as 
+ factorization of  calling matrix.
+Function
+throws 
+ \GOT{cvmexception}{cvmexception} 
+in case of convergence error.
+See also
+\GOT{srmatrix}{srmatrix} and
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 1., 2., 5., -1., 1., -1., 20.};
+    const srsmatrix m(a, 3);
+    
+    srmatrix h = m.cholesky();
+    std::cout << h << std::endl;
+    std::cout << ~h * h - m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 1
+0 1 -3
+0 0 3.16228
+
+0 0 0
+0 0 0
+0 0 0
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{Bunch-Kaufman}
+Function%
+\pdfdest name {srsmatrix.bunch_kaufman} fit
+\begin{verbatim}
+srmatrix srsmatrix::bunch_kaufman () throw (cvmexception);
+\end{verbatim}
+forms the Bunch-Kaufman factorization of  calling symmetric matrix 
+(cited from the MKL library documentation):
+\begin{equation*}
+A=PUDU^TP^T,
+\end{equation*}
+where $A$ is calling symmetric matrix,
+$P$ is  permutation matrix, $U$ and $L$ are upper and lower triangular
+matrices with unit diagonal, and $D$ is  symmetric 
+block-diagonal matrix with $1$-by-$1$ and $2$-by-$2$
+diagonal blocks. $U$ and $L$ have $2$-by-$2$ unit diagonal 
+blocks corresponding to the $2$-by-$2$ blocks of $D$.
+It utilizes one of \verb"?SYTRF" routines of the
+\URL{LAPACK library}{http://www.netlib.org/lapack}.
+Function
+creates  object of type \verb"srmatrix" as 
+ factorization of  calling matrix.
+Function throws 
+ \GOT{cvmexception}{cvmexception} 
+in case of convergence error.
+See also
+\GOT{srmatrix}{srmatrix} and
+\GOT{srsmatrix}{srsmatrix}.
+Function is mostly designed to be used for subsequent calls
+of \verb"?SYTRS", \verb"?SYCON" and \verb"?SYTRI" routines of the
+\URL{LAPACK library}{http://www.netlib.org/lapack}.
+Currently it's used internally in \GOT{srmatrix::det}{srmatrix.det} flow
+when argument is symmetric but not positive-definite.
+\newpage
+
+
+
+
+
+\subsubsection{identity}
+Function%
+\pdfdest name {srsmatrix.identity} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::identity();
+\end{verbatim}
+sets  calling symmetric matrix to be equal to identity matrix
+and returns  reference to
+the matrix changed. 
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (3);
+srsmatrix m(3);
+m.randomize(0.,1.);
+
+std::cout << m << std::endl;
+std::cout << m.identity();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.329e-001 8.527e-001 3.110e-001
+8.527e-001 6.152e-001 3.247e-001
+3.110e-001 3.247e-001 9.145e-001
+
+1.000e+000 0.000e+000 0.000e+000
+0.000e+000 1.000e+000 0.000e+000
+0.000e+000 0.000e+000 1.000e+000
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{vanish}
+Function%
+\pdfdest name {srsmatrix.vanish} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::vanish();
+\end{verbatim}
+sets every element of  calling symmetric 
+matrix to be equal to zero
+and returns  reference to
+the matrix changed.
+See also \GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (3);
+srsmatrix m(3);
+m.randomize(0.,1.);
+
+std::cout << m << std::endl;
+std::cout << m.vanish();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.422e-001 1.477e-001 1.445e-001
+1.477e-001 8.893e-001 1.669e-002
+1.445e-001 1.669e-002 7.766e-001
+
+0.000e+000 0.000e+000 0.000e+000
+0.000e+000 0.000e+000 0.000e+000
+0.000e+000 0.000e+000 0.000e+000
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{randomize}
+Function%
+\pdfdest name {srsmatrix.randomize} fit
+\begin{verbatim}
+srsmatrix& srsmatrix::randomize (TR dFrom, TR dTo);
+\end{verbatim}
+fills  calling symmetric matrix with pseudo-random 
+numbers distributed between
+\verb"dFrom" and \verb"dTo" keeping it to be symmetric.
+Function
+returns  reference to the matrix changed.
+See also
+\GOT{srsmatrix}{srsmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (7);
+
+srsmatrix m(3);
+m.randomize(-2.,3.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+-1.2277291e+000 3.6610004e-001 2.1380047e+000
+3.6610004e-001 1.0336924e+000 -1.8565630e+000
+2.1380047e+000 -1.8565630e+000 1.7774285e+000
+\end{Verbatim}
+\newpage
+

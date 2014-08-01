@@ -1,0 +1,568 @@
+\subsection{Utilities}
+These%
+\pdfdest name {Utilities} fit{}
+functions have \verb"cvm" namespace scope and
+can be used for different purposes.
+
+\bigskip
+\noindent
+\verb"template <typename T>"\\
+\verb"T* "\GOT{cvmMalloc}{Utilities.cvmMalloc}\verb" (size_t nEls) throw (cvmexception);"\\
+\verb"template <typename T>"\\
+\verb"T* "\GOT{cvmAddRef}{Utilities.cvmAddRef}\verb" (const T* pD);"\\
+\verb"template <typename T>"\\
+\verb"int "\GOT{cvmFree}{Utilities.cvmFree}\verb" (T*& pD);"\\
+\verb"void "\GOT{cvmExit}{Utilities.cvmExit}\verb" ();"\\
+\verb"treal "\GOT{cvmMachMin}{Utilities.cvmMachMin}\verb" ();"\\
+\verb"treal "\GOT{cvmMachSp}{Utilities.cvmMachSp}\verb" ();"\\
+\verb"srmatrix "\GOT{eye\_real}{Utilities.eye_real}\verb" (int nM);"\\
+\verb"scmatrix "\GOT{eye\_complex}{Utilities.eye_complex}\verb" (int nM);"\\
+\GOT{operator * (,)}{Utilities.operator *}\verb";"\\
+\verb""
+\newpage
+
+
+
+
+\subsubsection{cvmMalloc}
+\textcolor{red}{Since version 6.0} if \verb"CVM_USE_POOL_MANAGER" macro is not defined (this is the default)
+this function simply calls \verb"::new T[nEls]" operator.%
+\pdfdest name {Utilities.cvmMalloc} fit
+\begin{verbatim}
+template <typename T>
+T* cvmMalloc (size_t nEls) throw (cvmexception);
+\end{verbatim}
+allocates \verb"nEls" units of type \verb"T"
+from the CVM library's \GO{memory pool}{SubSectionFeatures} and returns
+a pointer to the memory allocated. 
+% It can throw
+%  \GOT{cvmexception}{cvmexception} 
+% if there is not enough memory in the global pool.
+% This is the preferable way to allocate memory in case of
+% using the CVM library because it is faster and more robust.
+See also \GOT{cvmAddRef}{Utilities.cvmAddRef} and
+\GOT{cvmFree}{Utilities.cvmFree}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double* p = cvmMalloc<double> (10);
+p[0] = 1.;
+p[1] = 2.;
+p[2] = 3.;
+
+rvector v(3);
+v.assign(p);
+std::cout << v;
+
+cvmFree (p);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 2 3
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{cvmAddRef}
+\textcolor{red}{Since version 6.0 it's available only if \texttt{CVM\_USE\_POOL\_MANAGER} is defined.}%
+\pdfdest name {Utilities.cvmAddRef} fit
+\begin{verbatim}
+template <typename T>
+void cvmAddRef (const T* pD);
+\end{verbatim}
+increments a reference counter for a memory block pointed to
+by \verb"pD" if this block was allocated from the CVM library's
+memory pool (using \GOT{cvmMalloc}{Utilities.cvmMalloc} function).
+If \verb"pD" points to a foreign memory block then
+the function does nothing.
+See also \GOT{cvmAddRef}{Utilities.cvmAddRef}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double* p = cvmMalloc<double> (10);
+p[0] = 1.;
+p[1] = 2.;
+p[2] = 3.;
+
+cvmAddRef (p);
+cvmFree (p);    // this call doesn't deallocate a memory
+cvmFree (p);    // this one does
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{cvmFree}
+\textcolor{red}{Since version 6.0} if \verb"CVM_USE_POOL_MANAGER" macro is not defined (this is the default)
+then it simply calls \verb"::delete[] pD" operator if \verb"pD!=NULL" and returns zero.%
+\pdfdest name {Utilities.cvmFree} fit
+\begin{verbatim}
+template <typename T>
+int cvmFree (T*& pD);
+\end{verbatim}
+decrements a reference counter for a memory block pointed to
+by \verb"pD" if this block was allocated from the CVM library's
+memory pool (using \GOT{cvmMalloc}{Utilities.cvmMalloc} function)
+and returns the reference counter it changed.
+If the function returns zero then it sets the pointer
+\verb"pD" to be equal to \verb"NULL" and "frees" the memory, i.e.
+returns the memory block to a list of free ones (see \GO{CVM memory
+management}{SubSectionFeatures} for details).
+If \verb"pD" points to a foreign memory block then
+the function does nothing and returns $-1$.
+See also \GOT{cvmAddRef}{Utilities.cvmAddRef}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double* pf = new double[10];
+double* p  = cvmMalloc<double> (10);
+
+cvmAddRef (p);
+
+std::cout << cvmFree (p) << " ";
+std::cout << p << std::endl;
+
+std::cout << cvmFree (p) << " ";
+std::cout << p << std::endl;
+
+std::cout << cvmFree (pf) << " ";
+std::cout << pf << std::endl;
+
+delete[] pf;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 003C66B0
+0 00000000
+-1 003C7A40
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{cvmExit}
+\textcolor{red}{Since version 6.0 it's available only if \texttt{CVM\_USE\_POOL\_MANAGER} is defined.}%
+\pdfdest name {Utilities.cvmExit} fit
+\begin{verbatim}
+void cvmExit ();
+\end{verbatim}
+destroys the CVM library's \GO{memory pool}{SubSectionFeatures}
+if \verb"CVM_USE_POOL_MANAGER" is defined. Otherwise does nothing.
+All objects created using this pool are not accessible
+after calling of this function.
+Call this function in the last expression only
+if you have problems with memory deallocation
+while finishing execution of your program
+(I was not able to experience such problems,
+this function is provided just in case).
+See also \GOT{cvmMalloc}{Utilities.cvmMalloc}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+int main(int argc, char* argv[])
+    try {
+        rvector v(3);
+        v[1] = v[2] = v[3] = 1.;
+        std::cout << v.norm2() << std::endl;
+    }
+    catch (cvmexception& e) {
+        std::cout << "Exception " << e.cause ()
+                  << ": " << e.what () << std::endl;
+    }
+
+    cvmExit ();
+    return 1;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.73205
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{cvmMachMin}
+Function%
+\pdfdest name {Utilities.cvmMachMin} fit
+\begin{verbatim}
+treal cvmMachMin ();
+\end{verbatim}
+returns the smallest normalized positive number,
+i.e. \verb"numeric_limits<treal>::min()"
+where \verb"treal" is \verb"typedef"'ed as \verb"double"
+by default or as \verb"float" for float version of the library.
+See also \GOT{cvmMachSp}{Utilities.cvmMachSp}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (15);
+std::cout << cvmMachMin() << std::endl;
+\end{Verbatim}
+on Intel Pentium\textcircled{\scriptsize{R}} III machine prints
+\begin{Verbatim}
++2.225073858507201e-308
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{cvmMachSp}
+Function%
+\pdfdest name {Utilities.cvmMachSp} fit
+\begin{verbatim}
+treal cvmMachSp ();
+\end{verbatim}
+returns the largest relative spacing or, in other words,
+the difference between $1$ and the least value greater 
+than $1$ that is representable,
+i.e. \verb"numeric_limits<treal>::epsilon()"
+where \verb"treal" is \verb"typedef"'ed as \verb"double"
+by default or as \verb"float" for float version of the library.
+See also \GOT{cvmMachMin}{Utilities.cvmMachMin}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (15);
+std::cout << cvmMachSp() << std::endl;
+\end{Verbatim}
+on Intel Pentium\textcircled{\scriptsize{R}} III machine prints
+\begin{Verbatim}
++2.220446049250313e-016
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{eye\_real}
+Function%
+\pdfdest name {Utilities.eye_real} fit
+\begin{verbatim}
+srmatrix eye_real (int nM);
+\end{verbatim}
+creates a \verb"nM" by \verb"nM" object of type 
+\verb"srmatrix" 
+equal to identity matrix.
+See also \GOT{srmatrix}{srmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout << eye_real (4);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{eye\_complex}
+Function%
+\pdfdest name {Utilities.eye_complex} fit
+\begin{verbatim}
+scmatrix eye_complex (int nM);
+\end{verbatim}
+creates a \verb"nM" by \verb"nM" object of type 
+\verb"scmatrix" 
+equal to identity matrix.
+See also \GOT{scmatrix}{scmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout << eye_complex (4);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (0,0) (0,0) (0,0)
+(0,0) (1,0) (0,0) (0,0)
+(0,0) (0,0) (1,0) (0,0)
+(0,0) (0,0) (0,0) (1,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{operator *}
+Operators%
+\pdfdest name {Utilities.operator *} fit
+\begin{verbatim}
+inline rvector operator * (TR d, const rvector& v);
+inline rmatrix operator * (TR d, const rmatrix& m);
+inline srmatrix operator * (TR d, const srmatrix& m);
+inline srbmatrix operator * (TR d, const srbmatrix& m);
+inline srsmatrix operator * (TR d, const srsmatrix& m);
+inline cvector operator * (TR d, const cvector& v);
+inline cmatrix operator * (TR d, const cmatrix& m);
+inline scmatrix operator * (TR d, const scmatrix& m);
+inline scbmatrix operator * (TR d, const scbmatrix& m);
+inline schmatrix operator * (TR d, const schmatrix& m);
+inline cvector operator * (std::complex<TR> c, const cvector& v);
+inline cmatrix operator * (std::complex<TR> c, const cmatrix& m);
+inline scmatrix operator * (std::complex<TR> c, const scmatrix& m);
+inline scbmatrix operator * (std::complex<TR> c, const scbmatrix& m);
+inline schmatrix operator * (std::complex<TR> c, const schmatrix& m);
+inline rvector operator * (CVM_LONGEST_INT d, const rvector& v);
+inline rmatrix operator * (CVM_LONGEST_INT d, const rmatrix& m);
+inline srmatrix operator * (CVM_LONGEST_INT d, const srmatrix& m);
+inline srbmatrix operator * (CVM_LONGEST_INT d, const srbmatrix& m);
+inline srsmatrix operator * (CVM_LONGEST_INT d, const srsmatrix& m);
+inline cvector operator * (CVM_LONGEST_INT d, const cvector& v);
+inline cmatrix operator * (CVM_LONGEST_INT d, const cmatrix& m);
+inline scmatrix operator * (CVM_LONGEST_INT d, const scmatrix& m);
+inline scbmatrix operator * (CVM_LONGEST_INT d, const scbmatrix& m);
+inline schmatrix operator * (CVM_LONGEST_INT d, const schmatrix& m);
+\end{verbatim}
+provide an ability to make left-sided multiplication of numbers
+by different CVM objects.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+const schmatrix scm = eye_complex (4);
+std::cout << std::complex<double>(2.,1.) * scm << std::endl;
+
+rvector v(3);
+v(1) = 1.;
+v(2) = 2.;
+v(3) = 3.;
+
+std::cout << 3. * v;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2,1) (0,0) (0,0) (0,0)
+(0,0) (2,1) (0,0) (0,0)
+(0,0) (0,0) (2,1) (0,0)
+(0,0) (0,0) (0,0) (2,1)
+
+3 6 9
+\end{Verbatim}
+\newpage
+
+
+
+\subsection{Pool Manager}
+\textit{\textcolor{red}{The%
+\pdfdest name {SubSectionFeatures} fit{}
+memory management mechanism described below is no longer supported
+by default.} It was a good solution more than 10 years ago when memory allocation
+operator was relatively expensive, but now standard allocator does this job
+much faster. However, the algorithm described below may be useful as
+an error detection helper. You will need to rebuild the library in debug mode
+with}
+\verb"CVM_USE_POOL_MANAGER"\, \textit{defined in order to use it}.
+
+Since its third release the CVM library implements
+nontrivial memory management
+which should be described in detail. Earlier a memory was being
+allocated using operator \verb"new" in every constructor, and
+freed with help of \verb"delete" in every destructor. Let us
+consider an operation of multiplying of vector \verb'a' by matrix
+\verb'A' and assignment of result to vector \verb'b':
+\begin{Verbatim}
+b = a * A;
+\end{Verbatim}
+This harmless code calls two constructors (a constructor allocating
+memory for output and a copy constructor, returning output to
+a calling function), as well as two destructors deleting those
+temporary objects\footnote{\,In order to avoid those memory
+allocations you can use \verb"b.mult(a,A);"}. If sizes of the
+objects are relatively small, your processor will be longer
+allocating memory than multiplying\footnote{\,At least under Win32}.
+The idea of nontrivial memory management came from Jeff Alger's book
+\GO{\cite{JAlger}}{biblio}. Author suggests some approaches to
+memory allocation (overloading of operators \verb"new" and
+\verb"delete" or implementation of a class controlling a pool), and
+also some ways of a pool compaction (Baker's algorithm and in-place
+compaction) and references counting (using master or ``genius''
+pointers). I decided to implement
+a class controlling a pool in the CVM library.
+
+Pool is controlled by \verb"MemoryPool" class. It allocates a memory
+by blocks (so-called ``outer blocks'').
+The memory block concept is implemented in a class
+\verb"MemoryBlocks". Size of an outer block equals to the nearest
+degree of $2$ of a requested number of bytes multiplied by two. This
+can be illustrated on the following example. Let us suppose that it's
+required to allocate a memory for storage of a vector consisting
+of 1000 units:
+\begin{Verbatim}
+rvector v(1000);
+\end{Verbatim}
+If at the moment of execution of this statement there is no free
+block of size 8000 or greater in a list of free memory blocks, then
+the following (simplified) code will be executed:
+\begin{Verbatim}
+const int nUpBytes = up_value (nBytes);
+const int nRest    = nUpBytes - nBytes;
+try {
+    pB = ::new tbyte[nUpBytes];
+}
+catch (const std::bad_alloc&) {
+    throw (cvmexception (CVM_OUTOFMEMORY));
+}
+m_lOutBlocks.push_back (pB);
+m_blocks.AddPair (pB, nBytes, nRest);
+\end{Verbatim}
+where variable \verb"nBytes" has value of 8000
+(\verb"1000*sizeof(treal)"), and function \verb"up_value" returns
+the nearest degree of two multiplied by two, i.e. 16384. Thus, the
+allocated outer block can be represented as follows:
+
+\noindent
+\unitlength=1mm
+\begin{picture}(120,13)(0,0)
+\put(0,0){\includegraphics[width=340mm]{block1.pdf}}
+    \put(0,7){\texttt{pB}}
+    \put(50,7){\texttt{pB+8000}}
+    \put(118,7){\texttt{pB+16384}}
+\end{picture}\\
+\unitlength=1pt The block used for storage 1000 units of a vector
+\verb"v" (its start address here is stored in the pointer \verb"pB")
+is filled. The remaining block (named as ``free block'') consists of
+\verb"nRest=8384" bytes. Further, if application needs one more
+block of the same size (it happens in most cases while execution of
+a copy constructor), the memory will be allocated from this free
+block without calling of operator \verb"new". The result will be the
+following:
+
+\noindent
+\unitlength=1mm
+\begin{picture}(120,20)(0,0)
+\put(0,0){\includegraphics[width=340mm]{block2.pdf}}
+    \put(0,7){\texttt{pB}}
+    \put(50,7){\texttt{pB+8000}}
+    \put(106,14){\texttt{pB+16000}}
+    \put(118,7){\texttt{pB+16384}}
+    \put(115.5,13){\vector(0, -1){7}}
+\end{picture}\\
+\unitlength=1pt Remaining free block of 384 bytes will be utilized
+for memory allocation of small objects. In case of creation of an
+object of size greater than 384 bytes one more outer block will be
+created, etc. While using of this scheme sooner or later memory
+begins to be like a sieve of free and occupied blocks. To avoid this
+chaos, I have applied the logic of blocks releasing, which acts like
+an algorithm of free space compaction. Difference of this logic from
+the algorithms of compaction described in \GO{\cite{JAlger}}{biblio}
+is that occupied blocks are never being moved.
+
+Let's say one of outer blocks looks like
+
+\noindent
+\unitlength=1mm
+\begin{picture}(130,7)(0,0)
+\put(0,0){\includegraphics[width=340mm]{block3.pdf}}
+    \put(5.5,1.5){\textsf{a}}
+    \put(27,1.5){\textsf{b}}
+    \put(63,1.5){\textsf{c}}
+    \put(97.5,1.5){\textsf{d}}
+    \put(117.5,1.5){\textsf{e}}
+\end{picture}\\
+\unitlength=1pt And the block \textsf{d} is going to be released. In
+this case neighbor blocks \textsf{c} and \textsf{e} will be checked
+and if one of them (or both, as in this case) will appear as free,
+then it will be joined with the block being released. The result of
+release of the block \textsf{d} will be the following:
+
+\noindent
+\unitlength=1mm
+\begin{picture}(130,7)(0,0)
+\put(0,0){\includegraphics[width=340mm]{block4.pdf}}
+    \put(5.5,1.5){\textsf{a}}
+    \put(27,1.5){\textsf{b}}
+    \put(85,1.5){\textsf{c}}
+\end{picture}\\
+\unitlength=1pt
+And if the following object to be created will not
+find a room in the block \textsf{a},
+but find a room in the block \textsf{c}, the result of memory
+allocation will be the following:
+
+\noindent
+\unitlength=1mm
+\begin{picture}(130,7)(0,0)
+\put(0,0){\includegraphics[width=340mm]{block5.pdf}}
+    \put(5.5,1.5){\textsf{a}}
+    \put(27,1.5){\textsf{b}}
+    \put(63,1.5){\textsf{c}}
+    \put(105,1.5){\textsf{d}}
+\end{picture}\\
+\unitlength=1pt
+So, there is no any chaos.
+\newpage
+
+%\subsubsection{Allocator}
+%Since%
+%\pdfdest name {SubSubSectionAllocator} fit{}
+%version $5.1$ the library uses \verb"std::allocator".
+%However, you can rebuild the whole library using you own
+%customized allocator. Just add \verb"-DCVM_ALLOCATOR=MyAllocator" to your
+%compiler command line or define
+%\begin{Verbatim}
+%#define CVM_ALLOCATOR MyAllocator
+%#include <cvm.h>
+%\end{Verbatim}
+
+%\if 0
+%\subsubsection{CVMAllocator}
+%This mechanism is wrapped by%
+%\pdfdest name {SubSubSectionCVMAllocator} fit{} \verb"CVMAllocator"
+%since version 5.0. You can reuse this allocator in your own projects
+%as well. For example:
+%\begin{Verbatim}
+%typedef std::basic_string <char,
+%                           std::char_traits<char>,
+%                           CVMAllocator<char> >  mystring;
+%....
+%mystring str ("Hello, World!");
+%std::cout << str << std::endl;
+%\end{Verbatim}
+%
+%Moreover, you can specify your own allocator (or use a standard one)
+%for a particular object of CVM library:
+%\begin{Verbatim}
+%typedef cvm::basic_rvector <double, std::allocator>  myvector;
+%...
+%myvector v(10);
+%\end{Verbatim}
+%Please note that type name is not required to be specified for
+%allocator in this case, since CVM library uses first template parameter.
+%This way prevents from wrong allocation sizes. Please also note that
+%this feature works for MS~.NET~2003 and GCC~3.x compilers only.
+%Finally, you can rebuild the whole library for using you own
+%allocator. Just add \verb"-DCVM_ALLOCATOR=MyAllocator" to your
+%compiler command line or define
+%\begin{Verbatim}
+%#define CVM_ALLOCATOR MyAllocator
+%#include <cvm.h>
+%\end{Verbatim}
+%This feature is also available for MS~.NET~2003 and GCC~3.x
+%compilers only.
+%\fi
+
+
+

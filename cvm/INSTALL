@@ -1,0 +1,30 @@
+Use the Makefile provided in the root directory:
+
+make [release|debug|clean] [MAC=1] [IFORT=1] [ICC=1] [MKL=1] [MKL_PATH=/opt/...] 
+     [ACML=1] [ACML_MP=1] [ACML_PATH=/opt/...] [EM64T=1] [ILP64=1] [CVM_FLOAT=1] 
+     [ICCT=1] [STATIC_ONLY=1] [IFORT_PATH=/opt/...]
+
+Here
+    - release|debug is a target (by default it builds both), use "clean" to clean all 
+    - MAC=1 should be set to build the library on Mac OS.
+    - IFORT=1 instructs to use Intel Fortran compiler (by default it's a gfortran)
+    - ICC=1 instructs to use Intel C++ compiler (by default it's a g++)
+    - MKL=1 instructs to use Intel MKL library (by default it uses native BLAS and LAPACK
+      libraries)
+    - MKL_PATH=path specifies the directory where the MKL is installed to. By default it's
+      equal to "/opt/intel/mkl/10.0.011/lib/" (please make sure that this path contains 32
+      and em64t subdirectories inside).
+    - ACML=1 instructs to use AMD ACML library (overrides MKL=1 and ACML_MP=1).
+    - ACML_MP=1 instructs to use AMD ACML MP library (overrides MKL=1).
+    - ACML_PATH=path specifies the directory where the ACML is installed to. By default it's
+      equal to "/opt/acml4.0.0/" (overrides MKL_PATH).
+    - EM64T=1 instructs to build EM64T version of the library. 
+    - ILP64=1 instructs to build INT64-based version of the library (EM64T must be turned on).
+    - CVM_FLOAT=1 instructs to build float version of the library.
+    - ICCT=1 instructs to use Intel C++ compiler for building the regression test utility (by
+      default it's a g++).
+    - STATIC_ONLY=1 instructs to build .a files only. Both .so and .a will be built otherwise.
+    - IFORT_PATH=path specifies the directory where the Intel Fortran is installed to. 
+      It's required only when you build ACML version within Intel Fortran and
+      Intel C++ compilers. By default it's equal to "/opt/intel/fc/10.1.008/"
+      for 32 bit and "/opt/intel/fce/10.0.008/" for em64t. 

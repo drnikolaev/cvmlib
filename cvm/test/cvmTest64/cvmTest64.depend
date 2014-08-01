@@ -1,0 +1,200 @@
+# depslib dependency file v1.0
+1363135235 source:/Users/snikolaev/cvm/cvm/test/test.cpp
+	"StdAfx.h"
+	"../src/cvm.h"
+	"../src/cfun.h"
+	<fstream>
+	<sstream>
+	<vector>
+	<algorithm>
+	<time.h>
+	<windows.h>
+	<sys/time.h>
+
+1349666278 /Users/snikolaev/cvm/cvm/test/StdAfx.h
+	<windows.h>
+	<process.h>
+	<time.h>
+
+1364511374 /Users/snikolaev/cvm/cvm/src/cvm.h
+	<windows.h>
+	<process.h>
+	<memory>
+	<mutex>
+	<thread>
+	<unordered_map>
+	<limits>
+	<windows.h>
+	<process.h>
+	<semaphore.h>
+	<mutex>
+	<thread>
+	<memory>
+	<string.h>
+	<cstddef>
+	<stdlib.h>
+	<stdio.h>
+	<stdarg.h>
+	<math.h>
+	<float.h>
+	<time.h>
+	<iostream>
+	<list>
+	<map>
+	<string>
+	<limits>
+	<complex>
+	<algorithm>
+	<exception>
+	<new>
+	<random>
+	<assert.h>
+
+1364343479 /Users/snikolaev/cvm/cvm/src/cfun.h
+	"cvm.h"
+	<vector>
+
+1362186872 source:/Users/snikolaev/cvm/cvm/src/arrays.cpp
+	"cvm.h"
+	"blas.h"
+	<cmath>
+
+1357237530 /Users/snikolaev/cvm/cvm/src/blas.h
+
+1362186872 source:/Users/snikolaev/cvm/cvm/src/cmatrix.cpp
+	"cvm.h"
+	"blas.h"
+
+1357237530 source:/Users/snikolaev/cvm/cvm/src/cvector.cpp
+	"cvm.h"
+	"blas.h"
+
+1362468564 source:/Users/snikolaev/cvm/cvm/src/globals.cpp
+	"cvm.h"
+	"cfun.h"
+	<stdio.h>
+	<ctype.h>
+
+1362186872 source:/Users/snikolaev/cvm/cvm/src/rmatrix.cpp
+	"cvm.h"
+	"blas.h"
+
+1362186872 source:/Users/snikolaev/cvm/cvm/src/rvector.cpp
+	"cvm.h"
+	"blas.h"
+
+1362186872 source:/Users/snikolaev/cvm/cvm/src/scmatrix.cpp
+	"cvm.h"
+	"blas.h"
+
+1362186872 source:/Users/snikolaev/cvm/cvm/src/srmatrix.cpp
+	"cvm.h"
+	"blas.h"
+
+1362468337 source:/Users/snikolaev/cvm/cvm/src/utils.cpp
+	"cvm.h"
+	"blas.h"
+	"cfun.h"
+
+1405372910 source:c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\arrays.cpp
+	"cvm.h"
+	"blas.h"
+	<cmath>
+
+1405380851 c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\cvm.h
+	<windows.h>
+	<process.h>
+	<memory>
+	<mutex>
+	<thread>
+	<initializer_list>
+	<unordered_map>
+	<limits>
+	<windows.h>
+	<process.h>
+	<semaphore.h>
+	<mutex>
+	<thread>
+	<initializer_list>
+	<memory>
+	<string.h>
+	<cstddef>
+	<stdlib.h>
+	<stdio.h>
+	<stdarg.h>
+	<math.h>
+	<float.h>
+	<time.h>
+	<iostream>
+	<list>
+	<map>
+	<string>
+	<limits>
+	<complex>
+	<algorithm>
+	<exception>
+	<utility>
+	<new>
+	<random>
+	<assert.h>
+
+1405105198 c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\blas.h
+
+1405105198 source:c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\cmatrix.cpp
+	"cvm.h"
+	"blas.h"
+
+1405105198 source:c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\cvector.cpp
+	"cvm.h"
+	"blas.h"
+
+1405380800 source:c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\globals.cpp
+	"cvm.h"
+	"cfun.h"
+	<stdio.h>
+	<ctype.h>
+
+1405105198 c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\cfun.h
+	"cvm.h"
+	<ctype.h>
+	<vector>
+
+1405105198 source:c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\rmatrix.cpp
+	"cvm.h"
+	"blas.h"
+
+1405105198 source:c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\rvector.cpp
+	"cvm.h"
+	"blas.h"
+
+1405105198 source:c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\scmatrix.cpp
+	"cvm.h"
+	"blas.h"
+
+1405105198 source:c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\srmatrix.cpp
+	"cvm.h"
+	"blas.h"
+
+1405105198 source:c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\src\utils.cpp
+	"cvm.h"
+	"blas.h"
+	"cfun.h"
+
+1405105194 source:c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\test\test.cpp
+	"StdAfx.h"
+	"../src/cvm.h"
+	"../src/cfun.h"
+	<fstream>
+	<sstream>
+	<vector>
+	<algorithm>
+	<array>
+	<time.h>
+	<windows.h>
+	<sys/time.h>
+
+1405105194 c:\mingw\msys\1.0\home\snikolaev\cvmlib\cvm\test\stdafx.h
+	<windows.h>
+	<process.h>
+	<time.h>
+

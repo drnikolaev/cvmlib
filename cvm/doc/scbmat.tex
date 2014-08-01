@@ -1,0 +1,2479 @@
+\bigskip
+\noindent
+\verb"template <typename TR, typename TC>"\\
+\verb"class scbmatrix : public scmatrix <TR,TC>, public BandMatrix <TR,TC> {"\\
+\verb"public:"\\
+\verb"    "\GOT{scbmatrix}{scbmatrix.scbmatrix ()}\verb" ();"\\
+\verb"    explicit "\GOT{scbmatrix}{scbmatrix.scbmatrix (int)}\verb" (int nMN);"\\
+\verb"    "\GOT{scbmatrix}{scbmatrix.scbmatrix (int,int,int)}\verb" (int nMN);"\\
+\verb"    "\GOT{scbmatrix}{scbmatrix.scbmatrix (TC*,int,int,int)}\verb" (TC* pD, int nMN, int nKL, int nKU);"\\
+\verb"    "\GOT{scbmatrix}{scbmatrix.scbmatrix (const TC*,int,int,int)}\verb" (const TC* pD, int nMN, int nKL, int nKU);"\\
+\verb"    "\GOT{scbmatrix}{scbmatrix.scbmatrix (const scbmatrix&)}\verb" (const scbmatrix& m);"\\
+\verb"    "\GOT{scbmatrix}{scbmatrix.scbmatrix (const cmatrix&,int,int)}\verb" (const cmatrix& m, int nKL, int nKU);"\\
+\verb"    explicit "\GOT{scbmatrix}{scbmatrix.scbmatrix (const cvector&)}\verb" (const cvector& v);"\\
+\verb"    explicit "\GOT{scbmatrix}{scbmatrix.scbmatrix (const srbmatrix&,bool)}\verb" (const srbmatrix& m, bool bRealPart = true);"\\
+\verb"    "\GOT{scbmatrix}{scbmatrix.scbmatrix (const srbmatrix&, const srbmatrix&)}\verb" (const srbmatrix& mRe, const srbmatrix& mIm);"\\
+\verb"    TC& "\GOT{operator ()}{scbmatrix.operator (,)}\verb" (int im, int in) throw (cvmexception);"\\
+\verb"    TC "\GOT{operator ()}{scbmatrix.operator (,)}\verb" (int im, int in) const throw (cvmexception);"\\
+\verb"    const cvector "\GOT{operator ()}{scbmatrix.operator ()}\verb" (int i) const throw (cvmexception);"\\
+\verb"    const cvector "\GOT{operator []}{scbmatrix.operator []}\verb" (int i) const throw (cvmexception);"\\
+\verb"    const srbmatrix "\GOT{real}{scbmatrix.real}\verb" () const;"\\
+\verb"    const srbmatrix "\GOT{imag}{scbmatrix.imag}\verb" () const;"\\
+\verb"    scbmatrix& "\GOT{operator =}{scbmatrix.operator = (const scbmatrix&)}\verb" (const scbmatrix& m) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{assign}{scbmatrix.assign}\verb" (const cvector& v) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{assign}{scbmatrix.assign}\verb" (const TC* pD);"\\
+\verb"    scbmatrix& "\GOT{set}{scbmatrix.set}\verb" (TC z);"\\
+\verb"    scbmatrix& "\GOT{assign\_real}{scbmatrix.assignreal}\verb" (const srbmatrix& mRe) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{assign\_imag}{scbmatrix.assignimag}\verb" (const srbmatrix& mIm) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{set\_real}{scbmatrix.setreal}\verb" (TR d);"\\
+\verb"    scbmatrix& "\GOT{set\_imag}{scbmatrix.setimag}\verb" (TR d);"\\
+\verb"    scbmatrix& "\GOT{resize}{scbmatrix.resize}\verb" (int nNewMN) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{resize\_lu}{scbmatrix.resizelu}\verb" (int nNewKL, int nNewKU) throw (cvmexception);"\\
+\verb"    bool "\GOT{operator ==}{scbmatrix.operator ==}\verb" (const scbmatrix& v) const;"\\
+\verb"    bool "\GOT{operator !=}{scbmatrix.operator !=}\verb" (const scbmatrix& v) const;"\\
+\verb"    scbmatrix& "\GOT{operator <{}<}{scbmatrix.operator <<}\verb" (const scbmatrix& m) throw (cvmexception);"\\
+\verb"    scbmatrix "\GOT{operator +}{scbmatrix.operator +}\verb" (const scbmatrix& m) const"\\
+\verb"                          throw (cvmexception);"\\
+\verb"    scbmatrix "\GOT{operator -}{scbmatrix.operator -}\verb" (const scbmatrix& m) const"\\
+\verb"                          throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{sum}{scbmatrix.sum}\verb" (const scbmatrix& m1,"\\
+\verb"                    const scbmatrix& m2) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{diff}{scbmatrix.diff}\verb" (const scbmatrix& m1,"\\
+\verb"                     const scbmatrix& m2) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{operator +=}{scbmatrix.operator +=}\verb" (const scbmatrix& m) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{operator -=}{scbmatrix.operator -=}\verb" (const scbmatrix& m) throw (cvmexception);"\\
+\verb"    scbmatrix "\GOT{operator -}{scbmatrix.operator - ()}\verb" () const;"\\
+\verb"    scbmatrix& "\GOT{operator ++}{scbmatrix.operator ++}\verb" ();"\\
+\verb"    scbmatrix& "\GOT{operator ++}{scbmatrix.operator ++}\verb" (int);"\\
+\verb"    scbmatrix& "\GOT{operator -{}-}{scbmatrix.operator --}\verb" ();"\\
+\verb"    scbmatrix& "\GOT{operator -{}-}{scbmatrix.operator --}\verb" (int);"\\
+\verb"    scbmatrix "\GOT{operator *}{scbmatrix.operator * (TR)}\verb" (TR d) const;"\\
+\verb"    scbmatrix "\GOT{operator /}{scbmatrix.operator / (TR)}\verb" (TR d) const throw (cvmexception);"\\
+\verb"    scbmatrix "\GOT{operator *}{scbmatrix.operator * (TC)}\verb" (TC z) const;"\\
+\verb"    scbmatrix "\GOT{operator /}{scbmatrix.operator / (TC)}\verb" (TC z) const throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{operator *=}{scbmatrix.operator *= (TR)}\verb" (TR d);"\\
+\verb"    scbmatrix& "\GOT{operator /=}{scbmatrix.operator /= (TR)}\verb" (TR d) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{operator *=}{scbmatrix.operator *= (TC)}\verb" (TC z);"\\
+\verb"    scbmatrix& "\GOT{operator /=}{scbmatrix.operator /= (TC)}\verb" (TC z) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{normalize}{scbmatrix.normalize}\verb" ();"\\
+\verb"    scbmatrix "\GOT{operator \TildaT}{scbmatrix.conj}\verb" () const;"\\
+\verb"    scbmatrix "\GOT{operator !}{scbmatrix.transpose}\verb" () const;"\\
+\verb"    scbmatrix& "\GOT{conj}{scbmatrix.conj}\verb" (const scbmatrix& m) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{conj}{scbmatrix.conj}\verb" ();"\\
+\verb"    scbmatrix& "\GOT{transpose}{scbmatrix.transpose}\verb" (const scbmatrix& m) throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{transpose}{scbmatrix.transpose}\verb" ();"\\
+\verb"    cvector "\GOT{operator *}{scbmatrix.operator * (const cvector&)}\verb" (const cvector& v) const throw (cvmexception);"\\
+\verb"    cmatrix "\GOT{operator *}{scbmatrix.operator * (const cmatrix&)}\verb" (const cmatrix& m) const throw (cvmexception);"\\
+\verb"    scmatrix "\GOT{operator *}{scbmatrix.operator * (const scmatrix&)}\verb" (const scmatrix& m) const throw (cvmexception);"\\
+\verb"    scbmatrix "\GOT{operator *}{scbmatrix.operator * (const scbmatrix&)}\verb" (const scbmatrix& m) const throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{low\_up}{scbmatrix.low_up}\verb" (const scbmatrix& m,"\\
+\verb"                       int* nPivots) throw (cvmexception);"\\
+\verb"    scbmatrix "\GOT{low\_up}{scbmatrix.low_up}\verb" (int* nPivots) const throw (cvmexception);"\\
+\verb"    cvector "\GOT{operator /}{scbmatrix.operator / (cvector)}\verb" (const cvector& vB) const throw (cvmexception);"\\
+\verb"    scbmatrix& "\GOT{identity}{scbmatrix.identity} ();\\
+\verb"    scbmatrix& "\GOT{vanish}{scbmatrix.vanish}\verb" ();"\\
+\verb"    scbmatrix& "\GOT{randomize\_real}{scbmatrix.randomizereal}\verb" (TR dFrom, TR dTo);"\\
+\verb"    scbmatrix& "\GOT{randomize\_imag}{scbmatrix.randomizeimag}\verb" (TR dFrom, TR dTo);"\\
+\verb"};"
+\newpage
+
+
+
+\subsubsection{scbmatrix ()}
+Constructor%
+\pdfdest name {scbmatrix.scbmatrix ()} fit
+\begin{verbatim}
+scbmatrix::scbmatrix ();
+\end{verbatim}
+creates  empty \verb"scbmatrix" object.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+scbmatrix m;
+std::cout << m.msize() << " " << m.nsize() << " " << m.size() ;
+std::cout << " " << m.lsize() << " " << m.usize() << std::endl;
+m.resize(3);
+m.resize_lu(1,0);
+m.set(std::complex<double>(1.,2.));
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+0 0 0 0 0
+(1,2) (0,0) (0,0)
+(1,2) (1,2) (0,0)
+(0,0) (1,2) (1,2)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{scbmatrix (int)}
+Constructor%
+\pdfdest name {scbmatrix.scbmatrix (int)} fit
+\begin{verbatim}
+explicit scbmatrix::scbmatrix (int nMN);
+\end{verbatim}
+creates  $n\times n$ \verb"scbmatrix" object where $n$ is passed in
+\verb"nMN" parameter. The matrix created is diagonal, i.e. $k_l=k_u=0$.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed or memory allocation failure.
+See also \GOT{scbmat\-rix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+scbmatrix m(4);
+std::cout << m.msize() << " " << m.nsize() << " " << m.size() ;
+std::cout << " " << m.lsize() << " " << m.usize() << std::endl;
+m.set(std::complex<double>(1.,2.));
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+4 4 4 0 0
+(1,2) (0,0) (0,0) (0,0)
+(0,0) (1,2) (0,0) (0,0)
+(0,0) (0,0) (1,2) (0,0)
+(0,0) (0,0) (0,0) (1,2)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{scbmatrix (int,int,int)}
+Constructor%
+\pdfdest name {scbmatrix.scbmatrix (int,int,int)} fit
+\begin{verbatim}
+scbmatrix::scbmatrix (int nMN, int nKL, int nKU);
+\end{verbatim}
+creates  $n\times n$ \verb"scbmatrix" object where $n$ is passed in
+\verb"nMN" parameter. The matrix created has \verb"nKL" 
+sub-diagonals and \verb"nKU" super-diagonals.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size or negative number 
+of sub-diagonals or super-diagonals
+passed or in case of memory allocation failure.
+See also \GOT{scbmat\-rix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+scbmatrix m(4,1,1);
+m.set(std::complex<double>(1.,2.));
+std::cout << m << std::endl
+          << m.msize() << " " << m.nsize() << " " << m.size()
+          << " " << m.lsize() << " " << m.usize() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (1,2) (0,0) (0,0)
+(1,2) (1,2) (1,2) (0,0)
+(0,0) (1,2) (1,2) (1,2)
+(0,0) (0,0) (1,2) (1,2)
+
+4 4 12 1 1
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{scbmatrix (TC*,int,int,int)}
+Constructor%
+\pdfdest name {scbmatrix.scbmatrix (TC*,int,int,int)} fit
+\begin{verbatim}
+scbmatrix::scbmatrix (TC* pD, int nMN, int nKL, int nKU);
+\end{verbatim}
+creates  $n\times n$ \verb"scbmatrix" object where $n$ is passed in
+\verb"nMN" parameter. The matrix created has $k_l$=\verb"nKL" 
+sub-diagonals and $k_u$=\verb"nKU" super-diagonals.
+Unlike others, this constructor \textit{does not allocate  memory}.
+It just shares  memory with  array pointed to by \verb"pD".
+Please note that this array must contain at least $(k_l + k_u + 1)*n$ elements.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size or negative number of sub- or super-diagonals 
+passed.
+See also \GOT{scbmat\-rix}{scbmatrix},
+\GOT{scbmatrix (const TC*,int,int,int)}{scbmatrix.scbmatrix (const TC*,int,int,int)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+double a[] = {1., 1., 1., 1., 1., 1., 1., 1., 
+              1., 1., 1., 1., 1., 1., 1., 1.};
+scbmatrix ml ((std::complex<double>*)a,4,1,0);
+scbmatrix mu ((std::complex<double>*)a,4,0,1);
+ml(2,1) = std::complex<double>(5.,5.);
+std::cout << ml << std::endl << mu << std::endl;
+std::cout << a[0] << " " << a[1] << " " << a[2] << " "
+          << a[3] << " " << a[4] << " " << a[5] << " " << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,1) (0,0) (0,0) (0,0)
+(5,5) (1,1) (0,0) (0,0)
+(0,0) (1,1) (1,1) (0,0)
+(0,0) (0,0) (1,1) (1,1)
+
+(5,5) (1,1) (0,0) (0,0)
+(0,0) (1,1) (1,1) (0,0)
+(0,0) (0,0) (1,1) (1,1)
+(0,0) (0,0) (0,0) (1,1)
+
+1 1 5 5 1 1
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{scbmatrix (const TC*,int,int,int)}
+Constructor%
+\pdfdest name {scbmatrix.scbmatrix (const TC*,int,int,int)} fit
+\begin{verbatim}
+scbmatrix::scbmatrix (const TC* pD, int nMN, int nKL, int nKU);
+\end{verbatim}
+creates  $n\times n$ \verb"scbmatrix" object where $n$ is passed in
+\verb"nMN" parameter. The matrix created has $k_l$=\verb"nKL" 
+sub-diagonals and $k_u$=\verb"nKU" super-diagonals.
+Then constructor copies $(k_l + k_u + 1)*n$ elements of array \verb"pD" to the 
+matrix according to \GOT{band storage}{SubSubSectionStorage}.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size or negative number of sub- or super-diagonals 
+passed.
+See also \GOT{scbmat\-rix}{scbmatrix},
+\GOT{scbmatrix (TC*,int,int,int)}{scbmatrix.scbmatrix (TC*,int,int,int)}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+const double a[] = {1., 1., 1., 1., 1., 1., 1., 1., 
+                    1., 1., 1., 1., 1., 1., 1., 1.};
+scbmatrix ml ((const std::complex<double>*)a,4,1,0);
+scbmatrix mu ((const std::complex<double>*)a,4,0,1);
+ml(2,1) = std::complex<double>(5.,5.);
+std::cout << ml << std::endl << mu << std::endl;
+std::cout << a[0] << " " << a[1] << " " << a[2] << " "
+          << a[3] << " " << a[4] << " " << a[5] << " " << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,1) (0,0) (0,0) (0,0)
+(5,5) (1,1) (0,0) (0,0)
+(0,0) (1,1) (1,1) (0,0)
+(0,0) (0,0) (1,1) (1,1)
+
+(1,1) (1,1) (0,0) (0,0)
+(0,0) (1,1) (1,1) (0,0)
+(0,0) (0,0) (1,1) (1,1)
+(0,0) (0,0) (0,0) (1,1)
+
+1 1 1 1 1 1
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{scbmatrix (const scbmatrix\&)}
+Copy constructor%
+\pdfdest name {scbmatrix.scbmatrix (const scbmatrix&)} fit
+\begin{verbatim}
+scbmatrix::scbmatrix (const scbmatrix& m);
+\end{verbatim}
+creates  \verb"scbmatrix" object as a copy of \verb"m".
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12., 13., 14., 15., 16.};
+scbmatrix m ((std::complex<double>*)a,4,1,0);
+scbmatrix mc(m);
+m(1,1) = 7.77;
+std::cout << m << std::endl << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(7.77,0) (0,0) (0,0) (0,0)
+(3,4) (5,6) (0,0) (0,0)
+(0,0) (7,8) (9,10) (0,0)
+(0,0) (0,0) (11,12) (13,14)
+
+(1,2) (0,0) (0,0) (0,0)
+(3,4) (5,6) (0,0) (0,0)
+(0,0) (7,8) (9,10) (0,0)
+(0,0) (0,0) (11,12) (13,14)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{scbmatrix (const cmatrix\&,int,int)}
+Constructor%
+\pdfdest name {scbmatrix.scbmatrix (const cmatrix&,int,int)} fit
+\begin{verbatim}
+scbmatrix::scbmatrix (const cmatrix& m, int nKL, int nKU);
+\end{verbatim}
+creates  \verb"scbmatrix" object as a copy of ``sliced'' 
+matrix \verb"m", i.e. it copies main diagonal, \verb"nKL" 
+sub-diagonals and \verb"nKU" super-diagonals of  matrix \verb"m".
+It's assumed that $m\times n$ matrix \verb"m" must have equal
+sizes, i.e. $m = n$ is satisfied.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+if this is not true or in case of memory allocation failure.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12., 13., 14., 15., 16., 17., 18.};
+scmatrix m((std::complex<double>*)a,3);
+scbmatrix mb(m,1,0);
+std::cout << m << std::endl << mb;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (7,8) (13,14)
+(3,4) (9,10) (15,16)
+(5,6) (11,12) (17,18)
+
+(1,2) (0,0) (0,0)
+(3,4) (9,10) (0,0)
+(0,0) (11,12) (17,18)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{scbmatrix (const cvector\&)}
+Constructor%
+\pdfdest name {scbmatrix.scbmatrix (const cvector&)} fit
+\begin{verbatim}
+explicit scbmatrix::scbmatrix (const cvector& v);
+\end{verbatim}
+creates  \verb"scbmatrix" object
+of size \verb"v.size()" by \verb"v.size()"
+and assigns vector \verb"v" to its main diagonal.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{scbmatrix}{scbmatrix}, \GOT{cvector}{cvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6.};
+cvector v((std::complex<double>*)a,3);
+scbmatrix m(v);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0)
+(0,0) (3,4) (0,0)
+(0,0) (0,0) (5,6)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{scbmatrix (const srbmatrix\&,bool)}
+Constructor%
+\pdfdest name {scbmatrix.scbmatrix (const srbmatrix&,bool)} fit
+\begin{verbatim}
+explicit scbmatrix::scbmatrix (const srbmatrix& m, bool bRealPart = true);
+\end{verbatim}
+creates  \verb"scbmatrix" object
+having the same dimension and the same numbers
+of sub- and super-diagonals as real matrix \verb"m"
+and copies the matrix \verb"m" to its real part if
+\verb"bRealPart" is \verb"true" or
+to its imaginary part otherwise.
+See also \GOT{scbmatrix}{scbmatrix}, \GOT{srbmatrix}{srbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
+const srbmatrix m(a,4,1,0);
+scbmatrix mr(m), mi(m, false);
+std::cout << mr << std::endl << mi;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (0,0) (0,0) (0,0)
+(2,0) (3,0) (0,0) (0,0)
+(0,0) (4,0) (5,0) (0,0)
+(0,0) (0,0) (6,0) (7,0)
+
+(0,1) (0,0) (0,0) (0,0)
+(0,2) (0,3) (0,0) (0,0)
+(0,0) (0,4) (0,5) (0,0)
+(0,0) (0,0) (0,6) (0,7)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{scbmatrix (const srbmatrix\&, const srbmatrix\&)}
+Constructor%
+\pdfdest name {scbmatrix.scbmatrix (const srbmatrix&, const srbmatrix&)} fit
+\begin{verbatim}
+scbmatrix::scbmatrix (const srbmatrix& mRe, const srbmatrix& mIm);
+\end{verbatim}
+creates  \verb"scbmatrix" object
+of the same size as \verb"mRe" and \verb"mIm" has
+(it throws \GOT{cvmexception}{cvmexception}
+if \verb"mRe" and
+\verb"mIm" have different sizes or different numbers
+of sub- or super-diagonals)
+and copies matrices \verb"mRe" and \verb"mIm"
+to  real and imaginary part of the matrix created respectively.
+Constructor throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{scbmatrix}{scbmatrix}, \GOT{srbmatrix}{srbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srbmatrix mr(4,1,0), mi(4,1,0);
+mr.set(1.);
+mi.set(2.);
+const scbmatrix m(mr,mi);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0) (0,0)
+(1,2) (1,2) (0,0) (0,0)
+(0,0) (1,2) (1,2) (0,0)
+(0,0) (0,0) (1,2) (1,2)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator (,)}
+Indexing operators%
+\pdfdest name {scbmatrix.operator (,)} fit
+\begin{verbatim}
+TC& scbmatrix::operator () (int im, int in) throw (cvmexception);
+TC scbmatrix::operator () (int im, int in) const throw (cvmexception);
+\end{verbatim}
+provide access to a particular element of calling band matrix. The first version
+of operator is applicable to non-constant object.
+This version returns  \emph{l-value}
+in order to make possible write access to an element.
+Only elements located on main diagonal or on non-zero
+sub- or super-diagonals are l-values. All other values
+located outside this area are not writable.
+Both operators are \Based.
+Operators throw \GOT{cvmexception}{cvmexception}
+if some of parameters passed
+is outside of \verb"[1,msize()]" range or
+in case of attempt to write to  non-writable element%
+\footnote{Here I use \verb"type_proxy<T>" class originally
+described in \GO{\cite{Meyers}}{biblio}, p.~217.}.
+See also \GOT{scbmatrix}{scbmatrix},
+\GOT{BandMatrix::lsize()}{BandMatrix.lsize} and
+\GOT{BandMatrix::usize()}{BandMatrix.usize}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+try {
+    double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
+    srbmatrix m (a,3,1,0);
+
+    m(2,1) = 7.77;
+    std::cout << m << std::endl;
+    std::cout << m(3,2) << " " << m(1,3) << std::endl;
+
+    m(1,3) = 7.77;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+1.00e+00 0.00e+00 0.00e+00
+7.77e+00 3.00e+00 0.00e+00
+0.00e+00 4.00e+00 5.00e+00
+
+4.00e+00 0.00e+00
+Exception: Attempt to change a read-only element
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator ()}
+Indexing operator%
+\pdfdest name {scbmatrix.operator ()} fit
+\begin{verbatim}
+const cvector scbmatrix::operator () (int i) const throw (cvmexception);
+\end{verbatim}
+provides access to \hbox{$i$-th} column of calling band matrix.
+Unlike \GO{scmatrix::operator~()}{scmatrix.operator ()},
+this operator creates only  \emph{copy} of a column and therefore 
+it returns
+\emph{not  l-value}.
+Operator is \Based.
+It throws \GOT{cvmexception}{cvmexception}
+if  parameter \verb"i" is outside of \verb"[1,nsize()]" range.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
+scbmatrix m ((std::complex<double>*)a,3,1,0);
+std::cout << m << std::endl;
+std::cout << m(2);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
+
+(0,0) (5,6) (7,8)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator []}
+Indexing operator%
+\pdfdest name {scbmatrix.operator []} fit
+\begin{verbatim}
+const cvector scbmatrix::operator [] (int i) const throw (cvmexception);
+\end{verbatim}
+provides access to  \hbox{$i$-th} row of calling band matrix.
+Unlike \GO{scmatrix::operator~[]}{scmatrix.operator []},
+this operator creates only  \emph{copy} of a column and therefore 
+it returns
+\emph{not  l-value}.
+Operator is \Based.
+It throws \GOT{cvmexception}{cvmexception}
+if parameter \verb"i" is outside of \verb"[1,nsize()]" range.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
+scbmatrix m ((std::complex<double>*)a,3,1,0);
+std::cout << m << std::endl;
+std::cout << m[3];
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
+
+(0,0) (7,8) (9,10)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{real}
+Function%
+\pdfdest name {scbmatrix.real} fit
+\begin{verbatim}
+const srbmatrix scbmatrix::real () const;
+\end{verbatim}
+creates  object of type \verb"const srbmatrix"
+as  real part
+of  calling band matrix.
+Please note that, unlike
+\GO{cvector::real}{cvector.real}, this
+function creates new object \emph{not sharing}  memory
+with  real part of calling matrix, i.e.
+the matrix returned is \emph{not  l-value}.
+See also
+\GOT{srbmatrix}{srbmatrix},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
+scbmatrix m ((std::complex<double>*)a,3,1,0);
+std::cout << m << std::endl;
+std::cout << m.real();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
+
+1 0 0
+3 5 0
+0 7 9
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{imag}
+Function%
+\pdfdest name {scbmatrix.imag} fit
+\begin{verbatim}
+const srbmatrix scbmatrix::imag () const;
+\end{verbatim}
+creates  object of type \verb"const srbmatrix"
+as imaginary part
+of  calling band matrix.
+Please note that, unlike
+\GO{cvector::imag}{cvector.imag}, this
+function creates new object \emph{not sharing}  memory
+with  imaginary part of calling matrix, i.e.
+the matrix returned is \emph{not  l-value}.
+See also
+\GOT{srbmatrix}{srbmatrix},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
+scbmatrix m ((std::complex<double>*)a,3,1,0);
+std::cout << m << std::endl;
+std::cout << m.imag();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
+
+2 0 0
+4 6 0
+0 8 10
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator = (const scbmatrix\&)}
+Operator%
+\pdfdest name {scbmatrix.operator = (const scbmatrix&)} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::operator = (const scbmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+sets every element of  calling band matrix to value of
+appropriate element of  band matrix \verb"m"
+and returns  reference to
+the matrix changed.
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of different matrix sizes or in case of different numbers
+of sub- or super-diagonals.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+try {
+    double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
+    scbmatrix m1((std::complex<double>*)a,3,1,0);
+    scbmatrix m2(3,1,0);
+
+    m2 = m1;
+    std::cout << m2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.00e+00,2.00e+00) (0.00e+00,0.00e+00) (0.00e+00,0.00e+00)
+(3.00e+00,4.00e+00) (5.00e+00,6.00e+00) (0.00e+00,0.00e+00)
+(0.00e+00,0.00e+00) (7.00e+00,8.00e+00) (9.00e+00,1.00e+01)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{assign (const TC*)}
+Function%
+\pdfdest name {scbmatrix.assign} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::assign (const cvector& v) throw (cvmexception);
+scbmatrix& scbmatrix::assign (const TC* pD);
+\end{verbatim}
+sets every element of  calling band matrix to  value of
+appropriate element of  vector~\verb'v'
+or array pointed to by~\verb"pD"
+and returns  reference to
+the matrix changed.
+In first version it's assumed that vector passed is long
+enough to fill calling matrix. Function throws \GOT{cvmexception}{cvmexception} 
+otherwise.
+In other words this array must contain at least $(k_l + k_u + 1)n$ elements.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+const double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
+scbmatrix m(3,0,1);
+m.assign((const std::complex<double>*)a);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
+(0,0) (0,0) (11,12)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{set (TC)}
+Function%
+\pdfdest name {scbmatrix.set} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::set (TC z);
+\end{verbatim}
+sets every element of  calling band matrix to  value of
+parameter \verb"z" and returns  reference to
+the matrix changed.
+Use \GOT{vanish}{scbmatrix.vanish} to set every element
+of  calling matrix to be equal to zero.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+scbmatrix m(4,1,0);
+m.set(std::complex<double>(1.,2.));
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0) (0,0)
+(1,2) (1,2) (0,0) (0,0)
+(0,0) (1,2) (1,2) (0,0)
+(0,0) (0,0) (1,2) (1,2)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign\_real}
+Function%
+\pdfdest name {scbmatrix.assignreal} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::assign_real (const srbmatrix& mRe)
+throw (cvmexception);
+\end{verbatim}
+sets real part of every element of  calling band matrix to  value of
+appropriate element of  band matrix \verb"mRe"
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{scbmatrix}{scbmatrix} and \GOT{srbmatrix}{srbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+srbmatrix m (3,0,1);
+scbmatrix mc(3,0,1);
+m.randomize (0., 1.);
+
+mc.assign_real(m);
+std::cout << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(5.44e-01,0.00e+00) (5.48e-02,0.00e+00) (0.00e+00,0.00e+00)
+(0.00e+00,0.00e+00) (3.66e-01,0.00e+00) (3.49e-01,0.00e+00)
+(0.00e+00,0.00e+00) (0.00e+00,0.00e+00) (8.00e-01,0.00e+00)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{assign\_imag}
+Function%
+\pdfdest name {scbmatrix.assignimag} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::assign_imag (const srbmatrix& mIm)
+throw (cvmexception);
+\end{verbatim}
+sets imaginary part of every element of  calling band matrix to  value of
+appropriate element of  bandmatrix \verb"mIm"
+and returns  reference to
+the matrix changed.
+Function throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes of the operands.
+See also \GOT{scbmatrix}{scbmatrix} and \GOT{srbmatrix}{srbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+srbmatrix m (3,0,1);
+scbmatrix mc(3,0,1);
+m.randomize (0., 1.);
+
+mc.assign_imag(m);
+std::cout << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.00e+00,5.53e-01) (0.00e+00,2.16e-01) (0.00e+00,0.00e+00)
+(0.00e+00,0.00e+00) (0.00e+00,1.57e-01) (0.00e+00,1.12e-01)
+(0.00e+00,0.00e+00) (0.00e+00,0.00e+00) (0.00e+00,7.03e-01)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{set\_real}
+Function%
+\pdfdest name {scbmatrix.setreal} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::set_real (TR d);
+\end{verbatim}
+sets real part of every element of  calling band matrix to  value of
+parameter \verb"d"
+and returns  reference to the matrix changed.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+scbmatrix m(4,0,1);
+m.set_real(1.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,0) (1,0) (0,0) (0,0)
+(0,0) (1,0) (1,0) (0,0)
+(0,0) (0,0) (1,0) (1,0)
+(0,0) (0,0) (0,0) (1,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{set\_imag}
+Function%
+\pdfdest name {scbmatrix.setimag} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::set_imag (TR d);
+\end{verbatim}
+sets imaginary part of every element of  calling band matrix to  value of
+parameter \verb"d"
+and returns  reference to the matrix changed.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+scbmatrix m(4,0,1);
+m.set_imag(1.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,1) (0,1) (0,0) (0,0)
+(0,0) (0,1) (0,1) (0,0)
+(0,0) (0,0) (0,1) (0,1)
+(0,0) (0,0) (0,0) (0,1)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{resize}
+Function%
+\pdfdest name {scbmatrix.resize} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::resize (int nNewMN) throw (cvmexception);
+\end{verbatim}
+changes  size of  calling band matrix to \verb"nNewMN" by \verb"nNewMN"
+and returns  reference to
+the matrix changed. In case of increasing of its size, calling matrix
+is filled up with zeroes. This function doesn't change
+ number of sub- ore super-diagonals. Like any band matrix 
+class member function, this function doesn't change 
+\GO{non-referred elements}{SubSubSectionStorage}. 
+See number \verb"(11,12)" appearing after
+resize in example below.
+Function throws  \GOT{cvmexception}{cvmexception}
+in case of non-positive size passed or memory allocation failure.
+See also \GOT{scbmatrix.resize\_lu}{scbmatrix.resizelu},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
+    scbmatrix m((std::complex<double>*)a,3,1,0);
+    std::cout << m << std::endl;
+    m.resize (4);
+    std::cout << m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
+
+(1,2) (0,0) (0,0) (0,0)
+(3,4) (5,6) (0,0) (0,0)
+(0,0) (7,8) (9,10) (0,0)
+(0,0) (0,0) (11,12) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{resize\_lu}
+Function%
+\pdfdest name {scbmatrix.resizelu} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::resize_lu (int nNewKL, int nNewKU) 
+throw (cvmexception);
+\end{verbatim}
+changes  number of sub- and super-diagonals 
+of  calling band matrix to \verb"nNewKL" by \verb"nNewKU" respectively
+and returns  reference to
+the matrix changed. In case of increasing of the numbers, calling matrix
+is filled up with zeroes. 
+Function throws  \GOT{cvmexception}{cvmexception}
+in case of negative number passed or memory allocation failure.
+See also \GOT{scbmatrix::resize}{scbmatrix.resize},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
+    scbmatrix m((std::complex<double>*)a,3,1,0);
+    std::cout << m << std::endl;
+    m.resize_lu (0,1);
+    m.diag(1).set(std::complex<double>(9.,9.));
+    std::cout << m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
+
+(1,2) (9,9) (0,0)
+(0,0) (5,6) (9,9)
+(0,0) (0,0) (9,10)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{operator ==}
+Operator%
+\pdfdest name {scbmatrix.operator ==} fit
+\begin{verbatim}
+bool scbmatrix::operator == (const scbmatrix& m) const;
+\end{verbatim}
+compares  calling band matrix with  band matrix \verb"m"
+and returns \verb"true" if they have the same sizes, the same
+numbers of sub- and super-diagonals 
+and their appropriate elements differ by not more than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Returns \verb"false" otherwise.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
+scbmatrix m1((std::complex<double>*)a,2,1,0);
+scbmatrix m2(2,1,0);
+std::cout << m1 << std::endl;
+
+m2(1,1) = std::complex<double>(1.,2.); 
+m2(2,1) = std::complex<double>(3.,4.); 
+m2(2,2) = std::complex<double>(5.,6.);
+
+std::cout << (m1 == m2) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0)
+(3,4) (5,6)
+
+1
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator !=}
+Operator%
+\pdfdest name {scbmatrix.operator !=} fit
+\begin{verbatim}
+bool scbmatrix::operator != (const scbmatrix& m) const;
+\end{verbatim}
+compares  calling band matrix with  band matrix \verb"m"
+and returns \verb"true" if they have different sizes,
+different numbers of sub- or super-diagonals
+or at least one of their appropriate elements
+differs by more than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+Returns \verb"false" otherwise.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
+scbmatrix m1((std::complex<double>*)a,2,1,0);
+scbmatrix m2(2,1,0);
+std::cout << m1 << std::endl;
+
+m2(1,1) = std::complex<double>(1.,2.); 
+m2(2,1) = std::complex<double>(3.,4.); 
+m2(2,2) = std::complex<double>(5.,6.00001);
+
+std::cout << (m1 != m2) << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0)
+(3,4) (5,6)
+
+1
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator <{}<}
+Operator%
+\pdfdest name {scbmatrix.operator <<} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::operator << (const scbmatrix& m)
+throw (cvmexception);
+\end{verbatim}
+destroys  calling band matrix, creates  new one as a copy of \verb"m"
+and returns  reference to
+the matrix changed.
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of memory allocation failure.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    scbmatrix m(3,1,0);
+    scbmatrix mc(1);
+    m(2,1) = std::complex<double>(1.,2.);
+    m(2,2) = std::complex<double>(3.,4.);
+    std::cout << m << std::endl << mc << std::endl;
+
+    mc << m;
+    std::cout << mc;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,0) (0,0) (0,0)
+(1,2) (3,4) (0,0)
+(0,0) (0,0) (0,0)
+
+(0,0)
+
+(0,0) (0,0) (0,0)
+(1,2) (3,4) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator +}
+Operator%
+\pdfdest name {scbmatrix.operator +} fit
+\begin{verbatim}
+scbmatrix scbmatrix::operator + (const scbmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"scbmatrix" as  sum of
+ calling band matrix and  band matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes or different numbers of sub- or super-diagonals
+of the operands.
+See also \GOT{scbmatrix::sum}{scbmatrix.sum}, \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
+                  9., 10., 11., 12.};
+    double b[] = {10., 20., 30., 40., 50., 60., 
+                  70., 80., 90., 100., 110., 120.};
+    scbmatrix m1((std::complex<double>*)a,3,0,1);
+    scbmatrix m2((std::complex<double>*)b,3,0,1);
+
+    std::cout << m1 << std::endl << m2 << std::endl;
+    std::cout << m1 + m2 << std::endl << m1 + m1;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
+(0,0) (0,0) (11,12)
+
+(30,40) (50,60) (0,0)
+(0,0) (70,80) (90,100)
+(0,0) (0,0) (110,120)
+
+(33,44) (55,66) (0,0)
+(0,0) (77,88) (99,110)
+(0,0) (0,0) (121,132)
+
+(6,8) (10,12) (0,0)
+(0,0) (14,16) (18,20)
+(0,0) (0,0) (22,24)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator -}
+Operator%
+\pdfdest name {scbmatrix.operator -} fit
+\begin{verbatim}
+scbmatrix scbmatrix::operator - (const scbmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"scbmatrix" as  difference of
+ calling band matrix and  band matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes or different numbers of sub- or super-diagonals
+of the operands.
+See also \GOT{scbmatrix::diff}{scbmatrix.diff}, \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
+                  9., 10., 11., 12.};
+    double b[] = {10., 20., 30., 40., 50., 60., 
+                  70., 80., 90., 100., 110., 120.};
+    scbmatrix m1((std::complex<double>*)a,3,0,1);
+    scbmatrix m2((std::complex<double>*)b,3,0,1);
+
+    std::cout << m1 << std::endl << m2 << std::endl;
+    std::cout << m1 - m2 << std::endl << m1 - m1;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
+(0,0) (0,0) (11,12)
+
+(30,40) (50,60) (0,0)
+(0,0) (70,80) (90,100)
+(0,0) (0,0) (110,120)
+
+(-27,-36) (-45,-54) (0,0)
+(0,0) (-63,-72) (-81,-90)
+(0,0) (0,0) (-99,-108)
+
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{sum}
+Function%
+\pdfdest name {scbmatrix.sum} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::sum (const scbmatrix& m1, const scbmatrix& m2)
+throw (cvmexception);
+\end{verbatim}
+assigns  result of addition of
+band matrices \verb"m1" and \verb"m2"  to  calling band matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes or different numbers of sub- or super-diagonals
+of the operands.
+See also \GOT{scbmatrix::operator +~}{scbmatrix.operator +},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
+              9., 10., 11., 12.};
+const scbmatrix m1((std::complex<double>*)a,3,1,0);
+scbmatrix m2(3,1,0);
+scbmatrix m(3,1,0);
+m2.set(std::complex<double>(1.,1.));
+std::cout << m1 << std::endl << m2 << std::endl;
+std::cout << m.sum(m1, m2) << std::endl;
+std::cout << m.sum(m, m2);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
+
+(1,1) (0,0) (0,0)
+(1,1) (1,1) (0,0)
+(0,0) (1,1) (1,1)
+
+(2,3) (0,0) (0,0)
+(4,5) (6,7) (0,0)
+(0,0) (8,9) (10,11)
+
+(3,4) (0,0) (0,0)
+(5,6) (7,8) (0,0)
+(0,0) (9,10) (11,12)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{diff}
+Function%
+\pdfdest name {scbmatrix.diff} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::diff (const scbmatrix& m1, const scbmatrix& m2)
+throw (cvmexception);
+\end{verbatim}
+assigns  result of subtraction of
+band matrices \verb"m1" and \verb"m2" to  calling band matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes or different numbers of sub- or super-diagonals
+of the operands.
+See also \GOT{scbmatrix::operator -~}{scbmatrix.operator -},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
+              9., 10., 11., 12.};
+const scbmatrix m1((std::complex<double>*)a,3,1,0);
+scbmatrix m2(3,1,0);
+scbmatrix m(3,1,0);
+m2.set(std::complex<double>(1.,1.));
+std::cout << m1 << std::endl << m2 << std::endl;
+std::cout << m.diff(m1, m2) << std::endl;
+std::cout << m.diff(m, m2);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
+
+(1,1) (0,0) (0,0)
+(1,1) (1,1) (0,0)
+(0,0) (1,1) (1,1)
+
+(0,1) (0,0) (0,0)
+(2,3) (4,5) (0,0)
+(0,0) (6,7) (8,9)
+
+(-1,0) (0,0) (0,0)
+(1,2) (3,4) (0,0)
+(0,0) (5,6) (7,8)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator +=}
+Operator%
+\pdfdest name {scbmatrix.operator +=} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::operator += (const scbmatrix& m) 
+throw (cvmexception);
+\end{verbatim}
+adds  band matrix \verb"m" to  calling band matrix 
+and returns  reference to
+the matrix changed.
+Operator throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes or different numbers of sub- or super-diagonals
+of the operands.
+See also \GOT{scbmatrix::ope\-ra\-tor +~}{scbmatrix.operator +},
+\GOT{scbmatrix::sum}{scbmatrix.sum},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    scbmatrix m1(4,0,1);
+    scbmatrix m2(4,0,1);
+    m1.set(std::complex<double>(1.,2.));
+    m2.set(std::complex<double>(3.,4.));
+
+    m1 += m2;
+    std::cout << m1 << std::endl;
+
+    // well, you can do this too, but temporary object would be created
+    m2 += m2; 
+    std::cout << m2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(4,6) (4,6) (0,0) (0,0)
+(0,0) (4,6) (4,6) (0,0)
+(0,0) (0,0) (4,6) (4,6)
+(0,0) (0,0) (0,0) (4,6)
+
+(6,8) (6,8) (0,0) (0,0)
+(0,0) (6,8) (6,8) (0,0)
+(0,0) (0,0) (6,8) (6,8)
+(0,0) (0,0) (0,0) (6,8)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator -=}
+Operator%
+\pdfdest name {scbmatrix.operator -=} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::operator -= (const scbmatrix& m) 
+throw (cvmexception);
+\end{verbatim}
+subtracts  band matrix \verb"m" from  calling band matrix
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+in case of different sizes or different numbers of sub- or super-diagonals
+of the operands.
+See also \GOT{scbmatrix::ope\-ra\-tor -~}{scbmatrix.operator -},
+\GOT{scbmatrix::diff}{scbmatrix.diff},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    scbmatrix m1(4,0,1);
+    scbmatrix m2(4,0,1);
+    m1.set(std::complex<double>(1.,2.));
+    m2.set(std::complex<double>(3.,4.));
+
+    m1 -= m2;
+    std::cout << m1 << std::endl;
+
+    // well, you can do this too, but temporary object would be created
+    m2 -= m2; 
+    std::cout << m2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(-2,-2) (-2,-2) (0,0) (0,0)
+(0,0) (-2,-2) (-2,-2) (0,0)
+(0,0) (0,0) (-2,-2) (-2,-2)
+(0,0) (0,0) (0,0) (-2,-2)
+
+(0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator - ()}
+Operator%
+\pdfdest name {scbmatrix.operator - ()} fit
+\begin{verbatim}
+scbmatrix scbmatrix::operator - () const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"scbmatrix" as
+ calling band matrix multiplied by $-1$.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | 
+                std::ios::left | 
+                std::ios::showpos); 
+std::cout.precision (2);
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
+              9., 10., 11., 12.};
+scbmatrix m((std::complex<double>*)a,3,1,0);
+
+std::cout << -m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(-1.00e+000,-2.00e+000) (+0.00e+000,+0.00e+000) (+0.00e+000,+0.00e+000)
+(-3.00e+000,-4.00e+000) (-5.00e+000,-6.00e+000) (+0.00e+000,+0.00e+000)
+(+0.00e+000,+0.00e+000) (-7.00e+000,-8.00e+000) (-9.00e+000,-1.00e+001)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator ++}
+Operator%
+\pdfdest name {scbmatrix.operator ++} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::operator ++ ();
+scbmatrix& scbmatrix::operator ++ (int);
+\end{verbatim}
+adds identity matrix to  calling band matrix
+and returns  reference to
+the matrix changed.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+scbmatrix m(4,1,0);
+m.set(std::complex<double>(1.,1.));
+
+m++;
+std::cout << m << std::endl;
+std::cout << ++m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(2,1) (0,0) (0,0) (0,0)
+(1,1) (2,1) (0,0) (0,0)
+(0,0) (1,1) (2,1) (0,0)
+(0,0) (0,0) (1,1) (2,1)
+
+(3,1) (0,0) (0,0) (0,0)
+(1,1) (3,1) (0,0) (0,0)
+(0,0) (1,1) (3,1) (0,0)
+(0,0) (0,0) (1,1) (3,1)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator -{}-}
+Operator%
+\pdfdest name {scbmatrix.operator --} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::operator -- ();
+scbmatrix& scbmatrix::operator -- (int);
+\end{verbatim}
+subtracts identity matrix from  calling band matrix
+and returns  reference to
+the matrix changed.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+scbmatrix m(4,1,0);
+m.set(std::complex<double>(1.,1.));
+
+m--;
+std::cout << m << std::endl;
+std::cout << --m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,1) (0,0) (0,0) (0,0)
+(1,1) (0,1) (0,0) (0,0)
+(0,0) (1,1) (0,1) (0,0)
+(0,0) (0,0) (1,1) (0,1)
+
+(-1,1) (0,0) (0,0) (0,0)
+(1,1) (-1,1) (0,0) (0,0)
+(0,0) (1,1) (-1,1) (0,0)
+(0,0) (0,0) (1,1) (-1,1)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator * (TR)}
+Operator%
+\pdfdest name {scbmatrix.operator * (TR)} fit
+\begin{verbatim}
+scbmatrix scbmatrix::operator * (TR d) const;
+\end{verbatim}
+creates  object of type \verb"scbmatrix" as  product of
+ calling band matrix and  real number~\verb"d".
+See also \GOT{scbmatrix::ope\-ra\-tor *=~}{scbmatrix.operator *= (TR)},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12.};
+scbmatrix m((std::complex<double>*)a,3,0,1);
+std::cout << m * 5.;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(15,20) (25,30) (0,0)
+(0,0) (35,40) (45,50)
+(0,0) (0,0) (55,60)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator / (TR)}
+Operator%
+\pdfdest name {scbmatrix.operator / (TR)} fit
+\begin{verbatim}
+scbmatrix scbmatrix::operator / (TR d) const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"scbmatrix" as  quotient of
+ calling band matrix and  real number~\verb"d". It throws
+ \GOT{cvmexception}{cvmexception}
+if \verb"d" has  absolute value equal or less than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+See also \GOT{scbmatrix::operator /=~}{scbmatrix.operator /= (TR)},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12.};
+scbmatrix m((std::complex<double>*)a,3,0,1);
+std::cout << m / 2.;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.5,2) (2.5,3) (0,0)
+(0,0) (3.5,4) (4.5,5)
+(0,0) (0,0) (5.5,6)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator * (TC)}
+Operator%
+\pdfdest name {scbmatrix.operator * (TC)} fit
+\begin{verbatim}
+scbmatrix scbmatrix::operator * (TC z) const;
+\end{verbatim}
+creates  object of type \verb"scbmatrix" as  product of
+ calling band matrix and  complex number~\verb"z".
+See also \GOT{scbmatrix::operator *=~}
+{scbmatrix.operator *= (TC)},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12.};
+scbmatrix m((std::complex<double>*)a,3,0,1);
+std::cout << m * std::complex<double>(1.,1.);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(-1,7) (-1,11) (0,0)
+(0,0) (-1,15) (-1,19)
+(0,0) (0,0) (-1,23)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator / (TC)}
+Operator%
+\pdfdest name {scbmatrix.operator / (TC)} fit
+\begin{verbatim}
+scbmatrix scbmatrix::operator / (TC z) const throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"scbmatrix" as  quotient of
+ calling band matrix and  complex number~\verb"z". 
+It throws
+ \GOT{cvmexception}{cvmexception}
+if \verb"z" has  absolute value equal or less than the
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+See also \GOT{scbmatrix::operator /=~}
+{scbmatrix.operator /= (TC)},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12.};
+scbmatrix m((std::complex<double>*)a,3,0,1);
+std::cout << m / std::complex<double>(1.,1.);
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(3.5,0.5) (5.5,0.5) (0,0)
+(0,0) (7.5,0.5) (9.5,0.5)
+(0,0) (0,0) (11.5,0.5)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator *= (TR)}
+Operator%
+\pdfdest name {scbmatrix.operator *= (TR)} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::operator *= (TR d);
+\end{verbatim}
+multiplies  calling band matrix by  real number~\verb"d"
+and returns  reference to
+the matrix changed.
+See also \GOT{scbmatrix::operator *~}{scbmatrix.operator * (TR)},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12.};
+scbmatrix m((std::complex<double>*)a,3,0,1);
+m *= 5.;
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(15,20) (25,30) (0,0)
+(0,0) (35,40) (45,50)
+(0,0) (0,0) (55,60)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator /= (TR)}
+Operator%
+\pdfdest name {scbmatrix.operator /= (TR)} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::operator /= (TR d) throw (cvmexception);
+\end{verbatim}
+divides  calling band matrix by  real number~\verb"d"
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+if \verb"d" has  absolute value equal or less
+than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+See also \GOT{scbmatrix::operator /~}{scbmatrix.operator / (TR)},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12.};
+scbmatrix m((std::complex<double>*)a,3,0,1);
+m /= 2.;
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.5,2) (2.5,3) (0,0)
+(0,0) (3.5,4) (4.5,5)
+(0,0) (0,0) (5.5,6)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator *= (TC)}
+Operator%
+\pdfdest name {scbmatrix.operator *= (TC)} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::operator *= (TC z);
+\end{verbatim}
+multiplies  calling band matrix by  complex number~\verb"z"
+and returns  reference to
+the matrix changed.
+See also \GOT{scbmatrix::operator *~}{scbmatrix.operator * (TC)},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12.};
+scbmatrix m((std::complex<double>*)a,3,0,1);
+m *= std::complex<double>(1.,1.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(-1,7) (-1,11) (0,0)
+(0,0) (-1,15) (-1,19)
+(0,0) (0,0) (-1,23)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator /= (TC)}
+Operator%
+\pdfdest name {scbmatrix.operator /= (TC)} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::operator /= (TC z) throw (cvmexception);
+\end{verbatim}
+divides  calling band matrix by  complex number~\verb"z"
+and returns  reference to
+the matrix changed.
+It throws  \GOT{cvmexception}{cvmexception}
+if \verb"z" has  absolute value equal or less
+than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}.
+See also \GOT{scbmatrix::operator /~}{scbmatrix.operator / (TC)},
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12.};
+scbmatrix m((std::complex<double>*)a,3,0,1);
+m /= std::complex<double>(1.,1.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(3.5,0.5) (5.5,0.5) (0,0)
+(0,0) (7.5,0.5) (9.5,0.5)
+(0,0) (0,0) (11.5,0.5)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{normalize}
+Function%
+\pdfdest name {scbmatrix.normalize} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::normalize ();
+\end{verbatim}
+normalizes  calling band matrix so its \GO{Euclidean norm}{Array.norm}
+becomes equal to $1$ if it was greater than the 
+\GO{smallest normalized positive number}{Utilities.cvmMachMin}
+before the call (otherwise function does nothing).
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12.};
+scbmatrix m((std::complex<double>*)a,3,0,1);
+
+m.normalize();
+std::cout << m << m.norm() << std::endl;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.18e-001,1.57e-001) (1.97e-001,2.36e-001) (0.00e+000,0.00e+000)
+(0.00e+000,0.00e+000) (2.76e-001,3.15e-001) (3.54e-001,3.94e-001)
+(0.00e+000,0.00e+000) (0.00e+000,0.00e+000) (4.33e-001,4.72e-001)
+1.00e+000
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{conjugation}
+Operator and functions%
+\pdfdest name {scbmatrix.conj} fit
+\begin{verbatim}
+scbmatrix scbmatrix::operator ~ () const throw(cvmexception);
+scbmatrix& scbmatrix::conj (const scbmatrix& m) throw(cvmexception);
+scbmatrix& scbmatrix::conj () throw(cvmexception);
+\end{verbatim}
+implement complex band matrix conjugation.
+First operator creates \verb"scbmatrix" object as
+ conjugated calling band matrix
+(it throws  
+\GOT{cvmexcep\-tion}{cvmexception}
+in case of memory allocation failure). 
+Second function sets  calling matrix to be equal to  matrix
+\verb"m" conjugated
+(it throws  
+\GOT{cvmexception}{cvmexception}
+in case of not appropriate sizes or numbers of sub- or
+super-diagonals of the operands), 
+third one makes it to be equal to
+conjugated itself (it also throws  
+\GOT{cvmexception}{cvmexception}
+in case of memory allocation failure). 
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12., 13., 14., 15., 16.};
+scbmatrix m((std::complex<double>*)a,4,1,0);
+scbmatrix mc(4,0,1);
+std::cout << m << std::endl << ~m << std::endl ;
+mc.conj(m);
+std::cout << mc << std::endl;
+mc.conj();
+std::cout << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0) (0,0)
+(3,4) (5,6) (0,0) (0,0)
+(0,0) (7,8) (9,10) (0,0)
+(0,0) (0,0) (11,12) (13,14)
+
+(1,-2) (3,-4) (0,0) (0,0)
+(0,0) (5,-6) (7,-8) (0,0)
+(0,0) (0,0) (9,-10) (11,-12)
+(0,0) (0,0) (0,0) (13,-14)
+
+(1,-2) (3,-4) (0,0) (0,0)
+(0,0) (5,-6) (7,-8) (0,0)
+(0,0) (0,0) (9,-10) (11,-12)
+(0,0) (0,0) (0,0) (13,-14)
+
+(1,2) (0,0) (0,0) (0,0)
+(3,4) (5,6) (0,0) (0,0)
+(0,0) (7,8) (9,10) (0,0)
+(0,0) (0,0) (11,12) (13,14)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{transposition}
+Operator and functions%
+\pdfdest name {scbmatrix.transpose} fit
+\begin{verbatim}
+scbmatrix scbmatrix::operator ! () const throw (cvmexception);
+scbmatrix& scbmatrix::transpose (const scbmatrix& m) throw (cvmexception);
+scbmatrix& scbmatrix::transpose () throw (cvmexception);
+\end{verbatim}
+implement complex band matrix transposition (\emph{not} conjugation).
+First operator creates  object of type \verb"scbmatrix" as
+ transposed calling matrix
+(it throws  
+\GOT{cvmexception}{cvmexception}
+in case of memory allocation failure). 
+Second function sets  calling matrix to be equal to  matrix
+\verb"m" transposed
+(it throws  
+\GOT{cvmexception}{cvmexception}
+in case of not appropriate sizes of the operands), 
+third one makes it to be equal to
+transposed itself (it also throws  
+\GOT{cvmexception}{cvmexception}
+in case of memory allocation failure). 
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+              10., 11., 12., 13., 14., 15., 16.};
+scbmatrix m((std::complex<double>*)a,4,1,0);
+scbmatrix mc(4,0,1);
+std::cout << m << std::endl << !m << std::endl ;
+mc.transpose(m);
+std::cout << mc << std::endl;
+mc.transpose();
+std::cout << mc;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1,2) (0,0) (0,0) (0,0)
+(3,4) (5,6) (0,0) (0,0)
+(0,0) (7,8) (9,10) (0,0)
+(0,0) (0,0) (11,12) (13,14)
+
+(1,2) (3,4) (0,0) (0,0)
+(0,0) (5,6) (7,8) (0,0)
+(0,0) (0,0) (9,10) (11,12)
+(0,0) (0,0) (0,0) (13,14)
+
+(1,2) (3,4) (0,0) (0,0)
+(0,0) (5,6) (7,8) (0,0)
+(0,0) (0,0) (9,10) (11,12)
+(0,0) (0,0) (0,0) (13,14)
+
+(1,2) (0,0) (0,0) (0,0)
+(3,4) (5,6) (0,0) (0,0)
+(0,0) (7,8) (9,10) (0,0)
+(0,0) (0,0) (11,12) (13,14)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+
+
+
+
+\subsubsection{operator * (const cvector\&)}
+Operator%
+\pdfdest name {scbmatrix.operator * (const cvector&)} fit
+\begin{verbatim}
+cvector scbmatrix::operator * (const cvector& v) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"cvector"
+as  product of  calling band matrix and  vector \verb"v".
+It throws  \GOT{cvmexception}{cvmexception}
+if  number of columns of  calling matrix
+differs from  size of  vector \verb"v".
+Use \GOT{cvector::mult}{cvector.mult (const cmatrix&, const cvector&)}
+in order to avoid new object creation.
+See also
+\GOT{scbmatrix}{scbmatrix} and \GOT{cvector}{cvector}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    scbmatrix m (4,1,0);
+    cvector v(4);
+    m.set(std::complex<double>(1.,1.));
+    v.set(std::complex<double>(1.,1.));
+
+    std::cout << m * v;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,2) (0,4) (0,4) (0,4)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator * (const cmatrix\&)}
+Operator%
+\pdfdest name {scbmatrix.operator * (const cmatrix&)} fit
+\begin{verbatim}
+cmatrix scbmatrix::operator * (const cmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"cmatrix"
+as  product of  calling band matrix and  matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+if  number of columns of  calling matrix
+differs from  number of rows of  matrix \verb"m".
+Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
+ new object creation.
+See also
+\GOT{cmatrix}{cmatrix} and \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    scbmatrix mb(4,1,0);
+    cmatrix m(4,2);
+    mb.set(std::complex<double>(1.,1.));
+    m.set(std::complex<double>(1.,1.));
+
+    std::cout << mb * m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,2) (0,2)
+(0,4) (0,4)
+(0,4) (0,4)
+(0,4) (0,4)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator * (const scmatrix\&)}
+Operator%
+\pdfdest name {scbmatrix.operator * (const scmatrix&)} fit
+\begin{verbatim}
+scmatrix scbmatrix::operator * (const scmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"scmatrix"
+as  product of  calling band matrix and  matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+if the operands have different sizes.
+Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
+ new object creation.
+See also
+\GOT{scmatrix}{scmatrix} and \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    scbmatrix mb(4,1,0);
+    scmatrix m(4);
+    mb.set(std::complex<double>(1.,1.));
+    m.set(std::complex<double>(1.,1.));
+
+    std::cout << mb * m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,2) (0,2) (0,2) (0,2)
+(0,4) (0,4) (0,4) (0,4)
+(0,4) (0,4) (0,4) (0,4)
+(0,4) (0,4) (0,4) (0,4)
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{operator * (const scbmatrix\&)}
+Operator%
+\pdfdest name {scbmatrix.operator * (const scbmatrix&)} fit
+\begin{verbatim}
+scbmatrix scbmatrix::operator * (const scbmatrix& m) const
+throw (cvmexception);
+\end{verbatim}
+creates  object of type \verb"scbmatrix"
+as  product of  calling band matrix and  band matrix \verb"m".
+It throws  \GOT{cvmexception}{cvmexception}
+if the operands have different sizes.
+Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
+ new object creation.
+See also
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    scbmatrix m1(5,1,0);
+    scbmatrix m2(5,1,1);
+    m1.set(std::complex<double>(1.,1.));
+    m2.set(std::complex<double>(1.,1.));
+
+    std::cout << m1 * m2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0,2) (0,2) (0,0) (0,0) (0,0)
+(0,4) (0,4) (0,2) (0,0) (0,0)
+(0,2) (0,4) (0,4) (0,2) (0,0)
+(0,0) (0,2) (0,4) (0,4) (0,2)
+(0,0) (0,0) (0,2) (0,4) (0,4)
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{low\_up}
+Functions%
+\pdfdest name {scbmatrix.low_up} fit
+\begin{verbatim}
+scbmatrix& 
+scbmatrix::low_up (const scbmatrix& m, int* nPivots) throw (cvmexception);
+scbmatrix
+scbmatrix::low_up (int* nPivots) const throw (cvmexception);
+\end{verbatim}
+compute  $LU$ factorization of  calling band matrix as
+\begin{equation*}
+A=PLU
+\end{equation*}
+where $P$ is  permutation matrix, $L$ is  lower
+triangular matrix with unit diagonal
+elements and $U$ is  upper triangular matrix.
+All  functions store the result as  matrix $L$ without
+main diagonal combined with $U$. All  functions
+return pivot indices as  array of integers
+(it should support at least \verb"msize()" elements)
+pointed to by \verb"nPivots" so \hbox{$i$-th} row
+was interchanged with \hbox{\verb"nPivots["$i$\verb"]"-th} row.
+The first version sets  calling matrix to be equal to matrix
+\verb"m"'s $LU$ factorization and the second one
+creates  object of type \verb"scbmatrix" as calling matrix's
+$LU$ factorization.
+Functions throw \GOT{cvmexception}{cvmexception}
+in case of inappropriate
+sizes of the operands or when  matrix to be factorized is close to
+singular. 
+The first version also changes numbers of 
+super-diagonals to be equal to $k_l+k_u$
+in order to keep  result of factorization.
+It is recommended to use \GOT{iarray}{iarray}
+for pivot values.
+This function is provided mostly for solving multiple
+systems of linear equations using 
+\GOT{scmatrix::solve\_lu}{scmatrix.solvelu} function,
+See also
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+try {
+    double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
+                  10., 11., 12.};
+    scbmatrix ma((std::complex<double>*)a,3,1,0);
+    scbmatrix mLU(3,1,0);
+    cmatrix  mb1(3,2); cvector vb1(3);
+    cmatrix  mb2(3,2); cvector vb2(3);
+    cmatrix  mx1(3,2); cvector vx1(3);
+    cmatrix  mx2(3,2); cvector vx2(3);
+    iarray   nPivots(3);
+    double   dErr = 0.;
+    mb1.randomize_real(-1.,3.); mb1.randomize_imag(1.,5.);
+    mb2.randomize_real(-2.,5.); mb2.randomize_imag(-3.,0.);
+    vb1.randomize_real(-2.,4.); vb1.randomize_imag(-4.,1.);
+    vb2.randomize_real(-3.,1.); vb2.randomize_imag(4.,5.);
+
+    mLU.low_up(ma, nPivots);
+    mx1 = ma.solve_lu (mLU, nPivots, mb1, dErr);
+    std::cout << mx1 << dErr << std::endl << std::endl;
+    mx2 = ma.solve_lu (mLU, nPivots, mb2);
+    std::cout << mx2 << std::endl;;
+    std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
+
+    vx1 = ma.solve_lu (mLU, nPivots, vb1, dErr);
+    std::cout << vx1 << dErr << std::endl;
+    vx2 = ma.solve_lu (mLU, nPivots, vb2);
+    std::cout << vx2 << std::endl;;
+    std::cout << ma * vx1 - vb1 << std::endl << ma * vx2 - vb2;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.20e+000,4.02e-002) (1.82e+000,1.23e+000)
+(-6.55e-001,1.37e-001) (-6.41e-001,-8.72e-001)
+(7.75e-001,4.70e-002) (5.35e-001,8.11e-001)
+1.45e-015
+
+(-4.52e-001,-2.68e-002) (-1.09e+000,2.01e-001)
+(6.08e-001,-4.76e-001) (5.48e-001,-1.95e-001)
+(-3.46e-001,1.57e-001) (-3.38e-001,-7.54e-002)
+
+(0.00e+000,4.44e-016) (-2.22e-016,8.88e-016)
+(-2.22e-016,2.22e-016) (0.00e+000,0.00e+000)
+(-1.11e-016,0.00e+000) (-3.33e-016,-6.66e-016)
+
+(0.00e+000,0.00e+000) (2.22e-016,2.22e-016)
+(0.00e+000,0.00e+000) (4.44e-016,-2.22e-016)
+(8.88e-016,5.55e-016) (0.00e+000,0.00e+000)
+(-1.28e+000,-5.12e-001) (8.22e-001,1.59e-001) (-6.45e-001,-3.74e-001)
+1.31e-015
+(1.26e+000,1.50e+000) (-5.13e-001,-4.66e-001) (5.97e-001,7.01e-001)
+
+(0.00e+000,8.88e-016) (-4.44e-016,4.44e-016) (-8.88e-016,0.00e+000)
+
+(2.22e-016,-8.88e-016) (4.44e-016,-8.88e-016) (-2.22e-016,8.88e-016)
+\end{Verbatim}
+\newpage
+
+
+
+
+\subsubsection{operator / (const cvector\&)}
+Operator%
+\pdfdest name {scbmatrix.operator / (cvector)} fit
+\begin{verbatim}
+cvector operator / (const cvector& vB) const throw (cvmexception);
+\end{verbatim}
+returns solution $x$ of linear equation
+$A*x=b$ where calling matrix is square band matrix $A$
+and vector $b$ is passed in parameter \verb"vB".
+This operator throws exception 
+of type \GOT{cvmexception}{cvmexception}
+in case of inappropriate sizes
+of the objects or when  matrix $A$ is close to singular.
+See also \GOT{cvector::solve}{cvector.solve}, 
+\GOT{scmatrix::solve}{scmatrix.solve}, 
+\GOT{cvector.operator~\%}{cvector.operator percent (scmatrix)}, 
+\GOT{cvector}{cvector}, \GOT{scmatrix}{scmatrix}, \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+std::cout.setf (std::ios::scientific | std::ios::showpos);
+std::cout.precision (12);
+
+try {
+    scbmatrix ma(4,2,1);
+    cvector  vb(4);
+    cvector  vx(4);
+    ma.randomize_real(-1.,1.);
+    ma.randomize_imag(-1.,1.);
+    vb.randomize_real(-2.,2.);
+    vb.randomize_imag(-2.,2.);
+
+    vx = ma / vb;
+
+    std::cout << (ma * vx - vb).norm() << std::endl;
+}
+catch (std::exception& e) {
+    std::cout << "Exception " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
++8.082545620881e-016
+\end{Verbatim}
+\newpage
+
+
+
+
+
+
+\subsubsection{identity}
+Function%
+\pdfdest name {scbmatrix.identity} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::identity();
+\end{verbatim}
+sets  calling band matrix to be equal to identity matrix
+and returns  reference to
+the matrix changed. Function doesn't change
+numbers of sub- and super-diagonals.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+srbmatrix m(4);
+m.randomize(0.,1.);
+std::cout << m << std::endl;
+std::cout << m.identity();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.576128,1.42595) (0,0) (0,0) (0,0)
+(0.956359,-0.919523) (0.869716,-0.704093) (0,0) (0,0)
+(0,0) (0.0959807,0.0616779) (0.632618,1.1793) (0,0)
+(0,0) (0,0) (0.532182,-0.870724) (0.338023,1.22892)
+
+(1,0) (0,0) (0,0) (0,0)
+(0,0) (1,0) (0,0) (0,0)
+(0,0) (0,0) (1,0) (0,0)
+(0,0) (0,0) (0,0) (1,0)
+\end{Verbatim}
+\newpage
+
+
+
+
+
+\subsubsection{vanish}
+Function%
+\pdfdest name {scbmatrix.vanish} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::vanish();
+\end{verbatim}
+sets every element of  calling band matrix to be equal to zero
+and returns  reference to
+the matrix changed. This function is faster
+than
+\GOT{scbmatrix::set(TR)}{scbmatrix.set}
+with zero operand passed.
+See also \GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+scbmatrix m(4,1,0);
+m.randomize_real(0.,1.);
+m.randomize_imag(-1.,2.);
+std::cout << m << std::endl;
+std::cout << m.vanish();
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.584094,0.985931) (0,0) (0,0) (0,0)
+(0.197546,0.0150761) (0.483413,-0.733848) (0,0) (0,0)
+(0,0) (0.844356,1.97848) (0.814692,1.50194) (0,0)
+(0,0) (0,0) (0.118931,-0.720756) (0.936796,-0.582232)
+
+(0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+(0,0) (0,0) (0,0) (0,0)
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{randomize\_real}
+Function%
+\pdfdest name {scbmatrix.randomizereal} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::randomize_real (TR dFrom, TR dTo);
+\end{verbatim}
+fills  real part of  calling band matrix with 
+pseudo-random numbers distributed between
+\verb"dFrom" and \verb"dTo".
+Function
+returns  reference to the matrix changed.
+See also
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left); 
+std::cout.precision (2);
+scbmatrix m(3,0,1);
+m.randomize_real(0.,3.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(1.78e+000,0.00e+000) (1.17e+000,0.00e+000) (0.00e+000,0.00e+000)
+(0.00e+000,0.00e+000) (1.09e-002,0.00e+000) (6.05e-001,0.00e+000)
+(0.00e+000,0.00e+000) (0.00e+000,0.00e+000) (2.49e+000,0.00e+000)
+\end{Verbatim}
+\newpage
+
+
+\subsubsection{randomize\_imag}
+Function%
+\pdfdest name {scbmatrix.randomizeimag} fit
+\begin{verbatim}
+scbmatrix& scbmatrix::randomize_imag (TR dFrom, TR dTo);
+\end{verbatim}
+fills  imaginary part of  calling band matrix with 
+pseudo-random numbers distributed between
+\verb"dFrom" and \verb"dTo".
+Function
+returns  reference to the matrix changed.
+See also
+\GOT{scbmatrix}{scbmatrix}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+std::cout.setf (std::ios::scientific | std::ios::left);
+std::cout.precision (2);
+scbmatrix m(3,0,1);
+m.randomize_imag(0.,3.);
+std::cout << m;
+\end{Verbatim}
+prints
+\begin{Verbatim}
+(0.00e+000,1.80e+000) (0.00e+000,1.68e-001) (0.00e+000,0.00e+000)
+(0.00e+000,0.00e+000) (0.00e+000,1.05e+000) (0.00e+000,1.40e+000)
+(0.00e+000,0.00e+000) (0.00e+000,0.00e+000) (0.00e+000,1.98e+000)
+\end{Verbatim}
+\newpage
+
+

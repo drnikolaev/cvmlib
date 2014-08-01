@@ -1,0 +1,119 @@
+\bigskip
+\noindent
+\verb"class cvmexception : public std::exception"\\
+\verb"{"\\
+\verb"public:"\\
+\verb"    explicit "\GOT{cvmexception}{cvmexception.custom}\verb" (int nCause, ...);"\\
+\verb"    int "\GOT{cause}{cvmexception.cause}\verb" () const;"\\
+\verb"    virtual const char* "\GOT{what}{cvmexception.what}\verb" () const;"\\
+\verb"    static int "\GOT{getNextCause}{cvmexception.custom}\verb" ();"\\
+\verb"    static bool "\GOT{add}{cvmexception.custom}\verb" (int nNewCause, const char* szNewMessage);"\\
+\verb"};"
+\newpage
+
+
+
+\subsubsection{cause}
+Function%
+\pdfdest name {cvmexception.cause} fit
+\begin{verbatim}
+int cvmexception::cause () const;
+\end{verbatim}
+returns a numeric code of an exception thrown.
+Possible codes can be found in \verb"cvm.h" file.
+See also \GOT{cvmexception}{cvmexception}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    rvector v(10);
+    v[11] = 1.;
+}
+catch (cvmexception& e) {
+    std::cout << "Exception " << e.cause () << ": " 
+              << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+Exception 2: Out of range
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{what}
+Function%
+\pdfdest name {cvmexception.what} fit
+\begin{verbatim}
+virtual const char* cvmexception::what () const throw();
+\end{verbatim}
+returns a string describing an exception happened.
+This function overrides \Code{std::ex\-cep\-ti\-on::what()}.
+This allows you to catch just one type of exception
+in your application.
+See also \GOT{cvmexception}{cvmexception}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+try {
+    double a[] = {1., 2., 1., 2.};
+    const srsmatrix m(a, 2);
+    std::cout << m;
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+Exception: The matrix passed doesn't appear to be symmetric
+\end{Verbatim}
+\newpage
+
+
+
+\subsubsection{Customization}
+Constructor and functions%
+\pdfdest name {cvmexception.custom} fit
+\begin{verbatim}
+explicit cvmexception (int nCause, ...);
+static bool cvmexception::add (int nNewCause, const char* szNewMessage);
+static int cvmexception::getNextCause ();
+\end{verbatim}
+allow to add and use customized exception codes and messages.
+See also \GOT{cvmex\-cep\-tion}{cvmexception}.
+Example:
+\begin{Verbatim}
+using namespace cvm;
+
+const int nNextCause = cvmexception::getNextCause();
+cvmexception::add (nNextCause, 
+                   "My first exception with %d parameter");
+cvmexception::add (nNextCause + 1, 
+                   "My second exception with %s parameter");
+
+try {
+    throw cvmexception (nNextCause, 1234);
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+
+try {
+    throw cvmexception (nNextCause + 1, "Hi!");
+}
+catch (std::exception& e) {
+    std::cout << "Exception: " << e.what () << std::endl;
+}
+\end{Verbatim}
+prints
+\begin{Verbatim}
+Exception: My first exception with 1234 parameter
+Exception: My second exception with Hi! parameter
+\end{Verbatim}
+\newpage
+
+
