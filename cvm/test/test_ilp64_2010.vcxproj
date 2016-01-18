@@ -190,10 +190,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="test.cpp" />
+    <ClInclude Include="StdAfx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StdAfx.h" />
+    <ClCompile Include="testcvm.cpp" />
+    <ClCompile Include="testfun.cpp" />
+    <ClCompile Include="testmain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

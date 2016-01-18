@@ -1,14 +1,14 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2014
+//          Copyright Sergei Nikolaev 1992-2016
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 /**
  * @mainpage CVM Class Library Documentation
- * @version 8.1
- * @author Sergei Nikolaev (c) 1992-2014
+ * @version 8.2
+ * @author Sergei Nikolaev (c) 1992-2016
  * @date July 17th, 2014
  *
  * This C++ class library encapsulates concepts of vector and different matrices
@@ -31,6 +31,14 @@
 
 #ifndef _CVM_H
 #define _CVM_H
+
+#include <array>
+#include <vector>
+#include <map>
+#include <iostream>
+
+
+
 
 // 5.7 ILP64 support
 #if defined (CVM_ILP64)
@@ -102,7 +110,7 @@
 #   if defined (SRC_EXPORTS) && !defined (CVM_EXPORTS)
 #       define CVM_EXPORTS
 #   endif
-#   include <unordered_map>
+///#   include <unordered_map>
 #   define CVM_BLOCKS_MAP std::unordered_map
 #   ifdef CVM_STATIC
 #       define CVM_API
@@ -114,7 +122,6 @@
 #       endif
 #   endif
 
-#   include <limits>
 typedef __int64 CVM_LONGEST_INT; //!< Longest integer possible on this platform
 
 #   if defined(_WIN64)
@@ -211,11 +218,11 @@ typedef unsigned long CVM_PTR_WRAPPER;
 #include <math.h>
 #include <float.h>
 #include <time.h>
-#include <iostream>
-#include <list>
-#include <map>
-#include <string>
-#include <limits>
+//#include <iostream>
+//#include <list>
+//#include <map>
+//#include <string>
+//#include <limits>
 
 // fix for missing __builtin_clog functions
 #if defined (__INTEL_COMPILER)
@@ -226,10 +233,10 @@ typedef unsigned long CVM_PTR_WRAPPER;
 #endif
 
 #include <complex>
-#include <algorithm>
-#include <exception>
-#include <utility>
-#include <new>
+//#include <algorithm>
+//#include <exception>
+//#include <utility>
+//#include <new>
 
 #if !defined(CVM_NO_DEFAULT_RANDOM_ENGINE_SUPPORTED)
 #   include <random>
