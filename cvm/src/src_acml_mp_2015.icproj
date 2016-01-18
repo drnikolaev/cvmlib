@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<VisualStudioProject
+	ProjectType="Intel C++ Project"
+	Version="11.1"
+	Name="src_acml_mp_2015"
+	ProjectGUID="{ED3E05EC-ADD2-406C-BFB7-77309E8F3EC6}"
+	VCNestedProjectGUID="{79324D7B-C8CA-4501-BC11-8F409D9409A7}"
+	VCNestedProjectFileName="src_acml_mp_2015.vcxproj">
+	<Configurations/>
+	<Files/>
+</VisualStudioProject>
