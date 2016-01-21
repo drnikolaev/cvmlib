@@ -32,14 +32,6 @@
 #ifndef _CVM_H
 #define _CVM_H
 
-#include <array>
-#include <vector>
-#include <map>
-#include <iostream>
-
-
-
-
 // 5.7 ILP64 support
 #if defined (CVM_ILP64)
     typedef long long int tint; //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
@@ -67,6 +59,11 @@
 #   endif
 #endif
 
+#include <array>
+#include <vector>
+#include <map>
+#include <iostream>
+
 // MSVC++ 6.0 and higher settings
 #if defined (_MSC_VER)
 #   pragma once
@@ -91,7 +88,6 @@
 #       define CVM_USE_VARIADIC_TEMPLATES
 #       define CVM_USE_INITIALIZER_LISTS
 #       define CVM_USE_DELEGATING_CONSTRUCTORS
-
 #       include <initializer_list>
 #   endif
 #   if (!defined(__INTEL_COMPILER) || !defined(_WIN64)) && !defined(CVM_ACML) && !(_MSC_VER >= 1500 && defined(_WIN64))
@@ -100,9 +96,9 @@
 #   if defined(CVM_ACML)
 #       define CVM_COMPLEX_NUMBER_RETURNED
 #   endif
-//#   if (_MSC_VER <= 1800)
+#   if (_MSC_VER <= 1800)
 #       define noexcept throw()
-//#   endif
+#   endif
 #   pragma warning(disable:4290)
 #   if defined (CVM_FLOAT)
 #       pragma warning(disable:4244)
@@ -110,7 +106,11 @@
 #   if defined (SRC_EXPORTS) && !defined (CVM_EXPORTS)
 #       define CVM_EXPORTS
 #   endif
-///#   include <unordered_map>
+
+#   if (_MSC_VER >= 1700)
+#       include <unordered_map>
+#   endif
+
 #   define CVM_BLOCKS_MAP std::unordered_map
 #   ifdef CVM_STATIC
 #       define CVM_API
@@ -790,7 +790,7 @@ void _check_lt_ge(int err_code, T idx, T low_limit, T up_limit) throw(cvmexcepti
 #ifdef CVM_USE_POOL_MANAGER
 
 //! Internal class of memory blocks
-class CVM_API MemoryBlocks
+class MemoryBlocks
 {
     struct BlockProperty
     {
@@ -828,7 +828,7 @@ public:
 
 
 //! Internal memory pool class
-class CVM_API MemoryPool
+class MemoryPool
 {
     typedef std::list<tbyte*> list_blocks;
 
@@ -3396,7 +3396,11 @@ prints
       : BaseArray(static_cast<tint>(list.size()))
     {
         tint i = 0;
+#ifdef CVM_USE_POOL_MANAGER
+        TR* p = this->mpd;
+#else
         TR* p = this->mp.get();
+#endif
         for (auto it = list.begin(); it != list.end(); ++it) {
             p[i++] = *it;
         }
@@ -6250,7 +6254,11 @@ cvector v = { 1.2+3.4_i, 3.4+5.6_i, 99.99 };
       : BaseArray(static_cast<tint>(list.size()))
     {
         tint i = 0;
+#ifdef CVM_USE_POOL_MANAGER
+        TC* p = this->mpd;
+#else
         TC* p = this->mp.get();
+#endif
         for (auto it = list.begin(); it != list.end(); ++it) {
             p[i++] = *it;
         }
@@ -37185,7 +37193,7 @@ inline treal cvmMachSp() {
 
 
 //! @cond INTERNAL
-#if !defined (CVM_STD_MUTEX)
+#if !defined(CVM_STD_MUTEX) || defined(CVM_USE_POOL_MANAGER)
 
 class CriticalSection
 {

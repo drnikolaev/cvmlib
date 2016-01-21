@@ -51,7 +51,7 @@ BOOL APIENTRY DllMain (HANDLE /*hModule*/,
 
 CVM_NAMESPACE_BEG
 
-#if !defined (CVM_STD_MUTEX)
+#if !defined(CVM_STD_MUTEX) || defined(CVM_USE_POOL_MANAGER)
 
 //! @cond INTERNAL
 CriticalSection::CriticalSection()
