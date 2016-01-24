@@ -244,21 +244,13 @@ extern TestCriticalSection gCS2;
     #if defined (_MSC_VER)
         #define FILE_OUT "testout_win32_float.txt"
     #else
-        #if defined (__BORLANDC__)
-            #define FILE_OUT "testout_win32_borland_float.txt"
-        #else
-            #define FILE_OUT "testout_linux_float.txt"
-        #endif
+        #define FILE_OUT "testout_linux_float.txt"
     #endif
 #else
     #if defined (_MSC_VER)
         #define FILE_OUT "testout_win32.txt"
     #else
-        #if defined (__BORLANDC__)
-            #define FILE_OUT "testout_win32_borland.txt"
-        #else
-            #define FILE_OUT "testout_linux.txt"
-        #endif
+        #define FILE_OUT "testout_linux.txt"
     #endif
 #endif
 

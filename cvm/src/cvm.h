@@ -59,6 +59,10 @@
 #   endif
 #endif
 
+#if (_MSC_VER >= 1800) && defined(__INTEL_COMPILER)
+#   pragma warning(disable:4267)
+#endif
+
 #include <array>
 #include <vector>
 #include <map>
@@ -659,21 +663,21 @@ protected:
     static char mchars[15];
 
 public:
-    static const char* pT() {return mchars;}
-    static const char* pN() {return mchars + 1;}
-    static const char* pU() {return mchars + 2;}
-    static const char* pL() {return mchars + 3;}
-    static const char* pP() {return mchars + 4;}
-    static const char* pQ() {return mchars + 5;}
-    static const char* pB() {return mchars + 6;}
-    static const char* pE() {return mchars + 7;}
-    static const char* pR() {return mchars + 8;}
-    static const char* pA() {return mchars + 9;}
-    static const char* pS() {return mchars + 10;}
-    static const char* pV() {return mchars + 11;}
-    static const char* pO() {return mchars + 12;}
-    static const char* pI() {return mchars + 13;}
-    static const char* pC() {return mchars + 14;}
+    static const char* pT() { return mchars;}
+    static const char* pN() { return mchars + 1;}
+    static const char* pU() { return mchars + 2;}
+    static const char* pL() { return mchars + 3;}
+    static const char* pP() { return mchars + 4;}
+    static const char* pQ() { return mchars + 5;}
+    static const char* pB() { return mchars + 6;}
+    static const char* pE() { return mchars + 7;}
+    static const char* pR() { return mchars + 8;}
+    static const char* pA() { return mchars + 9;}
+    static const char* pS() { return mchars + 10;}
+    static const char* pV() { return mchars + 11;}
+    static const char* pO() { return mchars + 12;}
+    static const char* pI() { return mchars + 13;}
+    static const char* pC() { return mchars + 14;}
 };
 
 template<class TR>
@@ -702,7 +706,7 @@ inline TR basic_cvmLogMachMax() {
 
 // range and index checkers
 template<typename T>
-void _check_negative(int err_code, T val) throw(cvmexception)
+inline void _check_negative(int err_code, T val) throw(cvmexception)
 {
     static T zero = T(0);
     if (val < zero) {
@@ -711,7 +715,7 @@ void _check_negative(int err_code, T val) throw(cvmexception)
 }
 
 template<typename T>
-void _check_positive(int err_code, T val) throw(cvmexception)
+inline void _check_positive(int err_code, T val) throw(cvmexception)
 {
     static T zero = T(0);
     if (val > zero) {
@@ -720,7 +724,7 @@ void _check_positive(int err_code, T val) throw(cvmexception)
 }
 
 template<typename T>
-void _check_positive(int err_code, T val, const char* func,  const char* file,  int line) throw(cvmexception)
+inline void _check_positive(int err_code, T val, const char* func,  const char* file,  int line) throw(cvmexception)
 {
     static T zero = T(0);
     if (val > zero) {
@@ -729,7 +733,7 @@ void _check_positive(int err_code, T val, const char* func,  const char* file,  
 }
 
 template<typename T>
-void _check_lt(int err_code, T idx, T limit) throw(cvmexception)
+inline void _check_lt(int err_code, T idx, T limit) throw(cvmexception)
 {
     if (idx < limit) {
         throw cvmexception(err_code, idx, limit);
@@ -737,7 +741,7 @@ void _check_lt(int err_code, T idx, T limit) throw(cvmexception)
 }
 
 template<typename T>
-void _check_le(int err_code, T idx, T limit) throw(cvmexception)
+inline void _check_le(int err_code, T idx, T limit) throw(cvmexception)
 {
     if (idx <= limit) {
         throw cvmexception(err_code, idx, limit);
@@ -745,7 +749,7 @@ void _check_le(int err_code, T idx, T limit) throw(cvmexception)
 }
 
 template<typename T>
-void _check_ge(int err_code, T idx, T limit) throw(cvmexception)
+inline void _check_ge(int err_code, T idx, T limit) throw(cvmexception)
 {
     if (idx >= limit) {
         throw cvmexception(err_code, idx, limit);
@@ -753,7 +757,7 @@ void _check_ge(int err_code, T idx, T limit) throw(cvmexception)
 }
 
 template<typename T>
-void _check_gt(int err_code, T idx, T limit) throw(cvmexception)
+inline void _check_gt(int err_code, T idx, T limit) throw(cvmexception)
 {
     if (idx > limit) {
         throw cvmexception(err_code, idx, limit);
@@ -761,7 +765,7 @@ void _check_gt(int err_code, T idx, T limit) throw(cvmexception)
 }
 
 template<typename T>
-void _check_ne(int err_code, T idx, T limit) throw(cvmexception)
+inline void _check_ne(int err_code, T idx, T limit) throw(cvmexception)
 {
     if (idx != limit) {
         throw cvmexception(err_code, idx, limit);
@@ -769,7 +773,7 @@ void _check_ne(int err_code, T idx, T limit) throw(cvmexception)
 }
 
 template<typename T>
-void _check_lt_gt(int err_code, T idx, T low_limit, T up_limit) throw(cvmexception)
+inline void _check_lt_gt(int err_code, T idx, T low_limit, T up_limit) throw(cvmexception)
 {
     if (idx < low_limit || idx > up_limit) {
         throw cvmexception(err_code, idx, low_limit, up_limit);
@@ -777,7 +781,7 @@ void _check_lt_gt(int err_code, T idx, T low_limit, T up_limit) throw(cvmexcepti
 }
 
 template<typename T>
-void _check_lt_ge(int err_code, T idx, T low_limit, T up_limit) throw(cvmexception)
+inline void _check_lt_ge(int err_code, T idx, T low_limit, T up_limit) throw(cvmexception)
 {
     if (idx < low_limit || idx >= up_limit) {
         throw cvmexception(err_code, idx, low_limit, up_limit);
@@ -810,9 +814,7 @@ class MemoryBlocks
 
     map_FreeBs mFreeBs;                                                         //!< currently free blocks by sizes
     map_FreeIt mFreeIt;                                                         //!< currently free blocks iterators by pointers
-
     map_Blocks mBlocks;                                                         //!< currently occupied or freed blocks by pointers
-
 
 public:
     void    AddBlock(tbyte* pBlock, size_t nBytes, bool bOccupied);
@@ -3104,8 +3106,10 @@ protected:
     void _move(basic_array&& a) noexcept
     {
 #ifdef CVM_USE_POOL_MANAGER
-        mpd = a.mpd;
-        a.mpd = nullptr;
+        this->_resize(a.size());
+        this->_assign(a.mpd, a.incr());
+//        mpd = a.mpd;
+//        a.mpd = nullptr;
 #else
         if (a.mpf == nullptr) {
             if (mpf == nullptr) {
@@ -10373,8 +10377,10 @@ protected:
     {
         // no size checks here
 #ifdef CVM_USE_POOL_MANAGER
-        mpd = m.mpd;
-        m.mpd = nullptr;
+        this->_resize2(m.msize(), m.nsize());
+        this->_massign(m);
+//        mpd = m.mpd;
+//        m.mpd = nullptr;
 #else
         if (m.mpf == nullptr) {
             if (this->mpf == nullptr && this->_continuous() && m._continuous()) {
@@ -18230,8 +18236,8 @@ prints
         __solve<TR,TR, basic_srmatrix>(*this, mB.nsize(), mB, mB.ld(), mX, mX.ld(), dErr, pLU, pPivots, transp_mode);
     }
 
-    const TR* _pv() const override {return this->get();}
-    TR*       _pv()       override {return this->get();}
+    const TR* _pv() const override { return this->get();}
+    TR*       _pv()       override { return this->get();}
 
 protected:
     // protected constructors for inherited stuff
@@ -18257,10 +18263,10 @@ protected:
     {
     }
 
-    tint _size() const override {return this->size();}
-    tint _msize() const override {return this->msize();}
-    tint _nsize() const override {return this->nsize();}
-    tint _ld() const override {return this->ld();}
+    tint _size() const override { return this->size();}
+    tint _msize() const override { return this->msize();}
+    tint _nsize() const override { return this->nsize();}
+    tint _ld() const override { return this->ld();}
 
     // returns diagonal which IS l-value (shares memory)
     // 0 - main, negative - low, positive - up
@@ -27629,8 +27635,8 @@ prints
         __solve<TR,TC, basic_scmatrix>(*this, mB.nsize(), mB, mB.ld(), mX, mX.ld(), dErr, pLU, pPivots, transp_mode);
     }
 
-    virtual const TC* _pv() const override {return this->get(); }
-    virtual TC*       _pv()       override {return this->get(); }
+    virtual const TC* _pv() const override { return this->get(); }
+    virtual TC*       _pv()       override { return this->get(); }
 
 protected:
     // protected constructors for inherited stuff
@@ -27656,10 +27662,10 @@ protected:
     {
     }
 
-    tint _size() const override {return this->size();}
-    tint _msize() const override {return this->msize();}
-    tint _nsize() const override {return this->nsize();}
-    tint _ld() const override {return this->ld();}
+    tint _size() const override { return this->size();}
+    tint _msize() const override { return this->msize();}
+    tint _nsize() const override { return this->nsize();}
+    tint _ld() const override { return this->ld();}
 
     // returns diagonal which IS l-value (shares memory)
     // 0 - main, negative - low, positive - up
@@ -27855,6 +27861,7 @@ protected:
     virtual tint _ld() const = 0;
     virtual void _set_p(TC* pf) = 0;
     virtual void _set(TC* pf, tint nSize, tint nM, tint nN, tint nIncr, tint nLD) = 0;
+    virtual bool _is_empty_b() const = 0;
 
     // it's the same as get, but let's keep get not virtual for performance sake
     virtual const TC* _pb() const = 0;
@@ -27868,16 +27875,17 @@ protected:
     {
         const tint mm = this->_msize();
         const tint nSize = this->_size();
-        if (nNewM != mm) {
+        const bool is_empty = this->_is_empty_b();
+        if (nNewM != mm || is_empty) {
             _check_lt(CVM_WRONGSIZE_LT, nNewM, TINT_ZERO);
             const tint nNewSize = nNewM * (1 + this->lsize() + this->usize());
             TC* pd = cvmMalloc<TC>(nNewSize);
             if (nNewSize > nSize) cvmZeroMemory<TC>(pd, nNewSize);
             const tint nMinSize = _cvm_min<tint>(nSize, nNewSize);
-            if (nMinSize > 0) {
+            if (nMinSize > 0 && !is_empty) {
                 __copy<TC>(nMinSize, this->_pb(), 1, pd, 1);
-                CVM_ASSERT(pd, nNewSize * sizeof(TC))
             }
+            CVM_ASSERT(pd, nNewSize * sizeof(TC))
 #ifdef CVM_USE_POOL_MANAGER
             TC* pB = this->_pb();
             cvmFree<TC>(pB);
@@ -29864,10 +29872,11 @@ protected:
         _copy_b_matrix<TR,TR, BaseSRMatrix, basic_srbmatrix>(mSM, *const_cast<basic_srbmatrix*>(this), false);
     }
 
-    tint _size() const override {return this->size(); }
-    tint _msize() const override {return this->msize(); }
-    tint _nsize() const override {return this->nsize(); }
-    tint _ld() const override {return this->ld(); }
+    tint _size() const override { return this->size(); }
+    tint _msize() const override { return this->msize(); }
+    tint _nsize() const override { return this->nsize(); }
+    tint _ld() const override { return this->ld(); }
+    bool _is_empty_b() const override { return this->_is_empty(); }
 
     void _set_p(TR* pf) override
     {
@@ -31811,10 +31820,11 @@ protected:
         _copy_b_matrix<TR,TC, BaseSCMatrix, basic_scbmatrix>(mSM, *const_cast<basic_scbmatrix*>(this), false);
     }
 
-    tint _size() const override {return this->size(); }
-    tint _msize() const override {return this->msize(); }
-    tint _nsize() const override {return this->nsize(); }
-    tint _ld() const override {return this->ld(); }
+    tint _size() const override { return this->size(); }
+    tint _msize() const override { return this->msize(); }
+    tint _nsize() const override { return this->nsize(); }
+    tint _ld() const override { return this->ld(); }
+    bool _is_empty_b() const override { return this->_is_empty(); }
 
     void _set_p(TC* pf) override
     {

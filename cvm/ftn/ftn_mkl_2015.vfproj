@@ -24,7 +24,7 @@
 				<Tool Name="VFPreBuildEventTool"/>
 				<Tool Name="VFPostBuildEventTool"/>
 				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
-		<Configuration Name="Debug|x64" OutputDirectory="..\..\lib64" IntermediateDirectory="Debug_em64t" DeleteExtensionsOnClean="*.obj;*.mod;*.pdb;*.asm;*.map;*.dyn;*.dpi;*.tmp;*.log;*.lib;$(TargetPath)" ConfigurationType="typeStaticLibrary">
+		<Configuration Name="Debug|x64" OutputDirectory="..\..\lib64" IntermediateDirectory="Debug_em64t" TargetName="ftn_mkl_em64t_debug" DeleteExtensionsOnClean="*.obj;*.mod;*.pdb;*.asm;*.map;*.dyn;*.dpi;*.tmp;*.log;*.lib;$(TargetPath)" ConfigurationType="typeStaticLibrary">
 				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" Parallelization="true" ReentrantCode="reentrancyThreaded" OpenMP="OpenMPParallelCode" Diagnostics="diagnosticsShowAll" ModulePath="$(INTDIR)/" ObjectFile="$(INTDIR)/" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebugDLL"/>
 				<Tool Name="VFLibrarianTool" OutputFile="$(OUTDIR)/ftn_mkl_em64t_debug.lib" IgnoreAllDefaultLibraries="true"/>
 				<Tool Name="VFResourceCompilerTool"/>
@@ -34,7 +34,7 @@
 				<Tool Name="VFPreBuildEventTool"/>
 				<Tool Name="VFPostBuildEventTool"/>
 				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
-		<Configuration Name="Release|x64" OutputDirectory="..\..\lib64" IntermediateDirectory="Release_em64t" DeleteExtensionsOnClean="*.obj;*.mod;*.pdb;*.asm;*.map;*.dyn;*.dpi;*.tmp;*.log;*.lib;$(TargetPath)" ConfigurationType="typeStaticLibrary">
+		<Configuration Name="Release|x64" OutputDirectory="..\..\lib64" IntermediateDirectory="Release_em64t" TargetName="ftn_mkl_em64t" DeleteExtensionsOnClean="*.obj;*.mod;*.pdb;*.asm;*.map;*.dyn;*.dpi;*.tmp;*.log;*.lib;$(TargetPath)" ConfigurationType="typeStaticLibrary">
 				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" Parallelization="true" ReentrantCode="reentrancyThreaded" OpenMP="OpenMPParallelCode" ModulePath="$(INTDIR)/" ObjectFile="$(INTDIR)/" RuntimeLibrary="rtMultiThreadedDLL" DisableDefaultLibSearch="true"/>
 				<Tool Name="VFLibrarianTool" OutputFile="$(OUTDIR)/ftn_mkl_em64t.lib"/>
 				<Tool Name="VFResourceCompilerTool"/>

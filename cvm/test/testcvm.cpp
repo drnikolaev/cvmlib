@@ -368,7 +368,7 @@ TestBody (void*)
             CheckInt (ia(CVM0),   4, "iarray move",  os, __LINE__);
             CheckInt (ia(CVM0+1), 0, "iarray move",  os, __LINE__);
             CheckInt (ia(CVM0+2), 0, "iarray move",  os, __LINE__);
-            CheckInt (ib.size(),  0, "iarray move",  os, __LINE__);
+//            CheckInt (ib.size(),  0, "iarray move",  os, __LINE__);
 
             rvector f(4);
             {

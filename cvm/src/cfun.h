@@ -515,7 +515,10 @@ inline bool __parse_num(const std::string& s, T& result)
     bool ret = true;
     char* stop;
     result = T(::strtod(s.c_str(), &stop));
-    if ((result == CFUN_M_ZERO && s[0] != '0') || result == HUGE_VAL || result == -HUGE_VAL || *stop != '\0') {
+    if ((result == CFUN_M_ZERO && s[0] != '0') ||
+        result == std::numeric_limits<T>::infinity() ||
+        result == std::numeric_limits<T>::lowest() ||
+        *stop != '\0') {
         ret = false;
     }
     return ret;
