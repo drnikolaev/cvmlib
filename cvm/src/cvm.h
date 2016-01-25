@@ -315,9 +315,10 @@ CVM_NAMESPACE_BEG
 template<typename T>
 class ArrayDeleter {
 public:
-    void operator () (T* d) const {
-        if (d != nullptr) {
-            ::delete[] d;
+    void operator () (T* p) const {
+        if (p != nullptr) {
+            //::delete[] p; TODO
+            free(p);
         }
     }
 };
@@ -911,7 +912,11 @@ template<typename T>
 inline T* cvmMalloc(tint nEls) throw(cvmexception)
 {
     _check_lt(CVM_WRONGSIZE_LT, nEls, TINT_ZERO);
-    return nEls > 0 ? ::new T[nEls] : nullptr;
+//    return nEls > 0 ? ::new T[nEls] : nullptr; TODO
+    if (nEls > 0) {
+        return static_cast<T*>(malloc(nEls * sizeof(T)));
+    }
+    return nullptr;
 }
 
 /**
@@ -924,7 +929,8 @@ template<typename T>
 inline tint cvmFree(T*& pd)
 {
     if (pd != nullptr) {
-        ::delete[] pd;
+//        ::delete[] pd;  TODO
+        free(pd);
         pd = nullptr;
     }
     return 0;
@@ -37311,4 +37317,3 @@ extern "C"
 }
 
 #endif                  // _CVM_H
-
