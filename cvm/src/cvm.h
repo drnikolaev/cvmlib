@@ -97,6 +97,9 @@
 #   if (!defined(__INTEL_COMPILER) || !defined(_WIN64)) && !defined(CVM_ACML) && !(_MSC_VER >= 1500 && defined(_WIN64))
 #       define CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES
 #   endif
+#   if (defined(__INTEL_COMPILER) && (_MSC_VER == 1900))
+#       define CVM_USE_MALLOC
+#   endif
 #   if defined(CVM_ACML)
 #       define CVM_COMPLEX_NUMBER_RETURNED
 #   endif
@@ -317,8 +320,11 @@ class ArrayDeleter {
 public:
     void operator () (T* p) const {
         if (p != nullptr) {
-            //::delete[] p; TODO
+#if defined(CVM_USE_MALLOC)
             free(p);
+#else
+            ::delete[] p;
+#endif
         }
     }
 };
@@ -912,9 +918,12 @@ template<typename T>
 inline T* cvmMalloc(tint nEls) throw(cvmexception)
 {
     _check_lt(CVM_WRONGSIZE_LT, nEls, TINT_ZERO);
-//    return nEls > 0 ? ::new T[nEls] : nullptr; TODO
     if (nEls > 0) {
+#if defined(CVM_USE_MALLOC)
         return static_cast<T*>(malloc(nEls * sizeof(T)));
+#else
+        return ::new T[nEls];
+#endif
     }
     return nullptr;
 }
@@ -929,8 +938,11 @@ template<typename T>
 inline tint cvmFree(T*& pd)
 {
     if (pd != nullptr) {
-//        ::delete[] pd;  TODO
+#if defined(CVM_USE_MALLOC)
         free(pd);
+#else
+        ::delete[] pd;
+#endif
         pd = nullptr;
     }
     return 0;

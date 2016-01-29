@@ -1,5 +1,5 @@
-lapack 3.5.0
-/Qvc12
+lapack 3.6.0
+/Qvc14
 
-C:\lapack-3.5.0>ifort
-Intel(R) Visual Fortran Compiler XE for applications running on IA-32, Version 14.0.3.202 Build 20140422
+C:\lapack-3.6.0>ifort
+Intel(R) Visual Fortran Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 16.0.1.146 Build 20151021
