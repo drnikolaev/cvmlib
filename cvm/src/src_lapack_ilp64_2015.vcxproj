@@ -107,7 +107,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\lib\ftn_lapack_ia32_debug.lib;..\..\lib\blas_ia32.lib;..\..\lib\lapack_ia32.lib;libifcoremt.lib;libmmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib\ftn_lapack_ia32_debug.lib;..\..\lib\winifort\blas_ia32.lib;..\..\lib\winifort\lapack_ia32.lib;libifcoremt.lib;libmmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>$(OutDir)cvm_ia32_debug.dll</OutputFile>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -140,11 +140,11 @@
       <Cpp0xSupport>true</Cpp0xSupport>
       <UseMSVC>false</UseMSVC>
       <C99Support>false</C99Support>
-      <BrowseInformation>true</BrowseInformation>
+      <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>..\..\lib64\ftn_lapack_em64t_ilp64_debug.lib;..\..\lib64\blas_em64t_ilp64.lib;..\..\lib64\lapack_em64t_ilp64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib64\ftn_lapack_em64t_ilp64_debug.lib;..\..\lib64\winifort\blas_em64t_ilp64.lib;..\..\lib64\winifort\lapack_em64t_ilp64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)cvm_em64t_ilp64_debug.dll</OutputFile>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries);LIBCMT.LIB</IgnoreSpecificDefaultLibraries>
@@ -171,7 +171,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\lib\ftn_lapack_ia32.lib;..\..\lib\blas_ia32.lib;..\..\lib\lapack_ia32.lib;libmmt.lib;libifcoremt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib\ftn_lapack_ia32.lib;..\..\lib\winifort\blas_ia32.lib;..\..\lib\winifort\lapack_ia32.lib;libmmt.lib;libifcoremt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)cvm_ia32.dll</OutputFile>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -203,7 +203,7 @@
       <C99Support>false</C99Support>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\lib64\ftn_lapack_em64t_ilp64.lib;..\..\lib64\blas_em64t_ilp64.lib;..\..\lib64\lapack_em64t_ilp64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib64\ftn_lapack_em64t_ilp64.lib;..\..\lib64\winifort\blas_em64t_ilp64.lib;..\..\lib64\winifort\lapack_em64t_ilp64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)cvm_em64t_ilp64.dll</OutputFile>
       <IgnoreSpecificDefaultLibraries>libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>false</GenerateDebugInformation>

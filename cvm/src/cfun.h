@@ -517,6 +517,7 @@ inline bool __parse_num(const std::string& s, T& result)
     result = T(::strtod(s.c_str(), &stop));
     if ((result == CFUN_M_ZERO && s[0] != '0') ||
         result == std::numeric_limits<T>::infinity() ||
+        result == - std::numeric_limits<T>::infinity() ||
         result == std::numeric_limits<T>::lowest() ||
         *stop != '\0') {
         ret = false;

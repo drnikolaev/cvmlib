@@ -165,10 +165,8 @@ TestFunBody (void*)
         CheckString  (rfi.drv().format(), "(INF)", "rfunction inf - drv() - format()", os, __LINE__);
 
         rfunction rfmi("-INF");
-        CheckString  (rfmi.format(), "(-inf)", "rfunction minus inf - format()", os, __LINE__);
-//        CheckString(rfmi.format(), "-(INF)", "rfunction minus inf - format()", os, __LINE__);
-        CheckString  (rfmi.simp().format(), "(-inf)", "rfunction minus inf - format()", os, __LINE__);
-//        CheckString(rfmi.simp().format(), "(-INF)", "rfunction minus inf - format()", os, __LINE__);
+        CheckString(rfmi.format(), "-(INF)", "rfunction minus inf - format()", os, __LINE__);
+        CheckString(rfmi.simp().format(), "(-INF)", "rfunction minus inf - format()", os, __LINE__);
         CheckBool    (rfmi() < (treal)-1.e38, true, "rfunction minus inf - value", os, __LINE__);
         CheckBool    (rfmi.value(NULL) < (treal)-1.e38, true, "rfunction minus inf - value", os, __LINE__);
         CheckBool    (rfmi() < (treal)-1.e38, true, "rfunction minus inf - value", os, __LINE__);

@@ -102,7 +102,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;CVM_ILP64;CVM_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__builtin_nansf=nanf;__builtin_nans=nan;__builtin_nanf=nanf;__builtin_nan=nan;__builtin_huge_valf()=HUGE_VALF;__builtin_huge_val()=HUGE_VAL;WIN32;_DEBUG;_WINDOWS;_USRDLL;CVM_ILP64;CVM_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -126,7 +126,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;CVM_EXPORTS;CVM_ILP64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__builtin_nansf=nanf;__builtin_nans=nan;__builtin_nanf=nanf;__builtin_nan=nan;__builtin_huge_valf()=HUGE_VALF;__builtin_huge_val()=HUGE_VAL;WIN32;_DEBUG;_WINDOWS;_USRDLL;CVM_EXPORTS;CVM_ILP64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -152,7 +152,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;CVM_ILP64;CVM_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__builtin_nansf=nanf;__builtin_nans=nan;__builtin_nanf=nanf;__builtin_nan=nan;__builtin_huge_valf()=HUGE_VALF;__builtin_huge_val()=HUGE_VAL;WIN32;NDEBUG;_WINDOWS;_USRDLL;CVM_ILP64;CVM_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
@@ -178,7 +178,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;CVM_EXPORTS;CVM_ILP64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__builtin_nansf=nanf;__builtin_nans=nan;__builtin_nanf=nanf;__builtin_nan=nan;__builtin_huge_valf()=HUGE_VALF;__builtin_huge_val()=HUGE_VAL;WIN32;NDEBUG;_WINDOWS;_USRDLL;CVM_EXPORTS;CVM_ILP64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
