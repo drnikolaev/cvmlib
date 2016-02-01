@@ -531,13 +531,10 @@ inline bool __parse_num(const std::string& s, T& result)
 
 inline std::string::const_iterator __trim_beg(const std::string& s, size_t nEdge = 0)
 {
-    static const char szSpaces[] = CFUN_SPACES;
     std::string::const_iterator it = s.end();
     size_t nLen = s.length();
-
     if (nLen > nEdge * 2) {       // both sides
-        nLen = s.find_first_not_of(szSpaces, nEdge);
-
+        nLen = s.find_first_not_of(CFUN_SPACES, nEdge);
         if (nLen != CFUN_NOT_FOUND) {
             it = s.begin() + nLen;
         }
@@ -547,13 +544,10 @@ inline std::string::const_iterator __trim_beg(const std::string& s, size_t nEdge
 
 inline std::string::const_iterator __trim_end(const std::string& s, size_t nEdge = 0)
 {
-    static const char szSpaces[] = CFUN_SPACES;
     std::string::const_iterator it = s.end();
     size_t nLen = s.length();
-
     if (nLen > nEdge * 2) {       // both sides
-        nLen = s.find_last_not_of(szSpaces, nLen - nEdge - 1);
-
+        nLen = s.find_last_not_of(CFUN_SPACES, nLen - nEdge - 1);
         if (nLen != CFUN_NOT_FOUND) {
             it = s.begin() + (nLen + 1);
         }
@@ -668,18 +662,6 @@ inline int __separate(const std::string& sBody, size_t nFirst, size_t nLast,
     return 0;
 }
 
-inline void __push_back_unique(string_array& a, const std::string& v)
-{
-    string_array::const_iterator it = a.begin();
-    string_array::const_iterator end = a.end();
-    while (it != end) {
-        if ((*it) == v)
-            return;
-        ++it;
-    }
-    a.push_back(v);
-}
-
 inline bool __arrays_equal(const string_array& a1, const string_array& a2)
 {
     bool ret = a1.size() == a2.size();
@@ -783,8 +765,6 @@ inline bool __subst_parameter(std::string& sBody, const string_array& saParamete
                     size_t nEnd = nBeg + sBody.length();
                     if ((nBeg <= 0 || !is_alpha(sMeaning.at(nBeg - 1))) &&  // p -> {p+p}  ||  p -> {2*p-x}  ||  p -> {22-p}
                         (nEnd >= sMeaning.length() || !is_alpha(sMeaning.at(nEnd)))) {
-//                  if ((nBeg <= 0 || !isalpha(sMeaning.at(nBeg - 1))) &&  // p -> {p+p}  ||  p -> {2*p-x}  ||  p -> {22-p}
-//                      (nEnd >= sMeaning.length() || !isalpha(sMeaning.at(nEnd)))) {
                         throw cvmexception(CFUN_PARAMETER_RECURSION, sBody.c_str(), sMeaning.c_str());
                     }
                 }

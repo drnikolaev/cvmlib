@@ -134,7 +134,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <BrowseInformation>true</BrowseInformation>
+      <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>..\..\lib64\ftn_mkl_em64t_ilp64_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
