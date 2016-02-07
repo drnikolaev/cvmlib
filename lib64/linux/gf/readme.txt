@@ -1,3 +1,3 @@
-lapack 3.5.0
-gfortran 4.8.2 (ubuntu)
+lapack 3.6.0
+gfortran 5.2.1 (ubuntu)
 

@@ -91,8 +91,23 @@ ifndef COMSPEC
   SOCFLAGSD += -fPIC
 endif
 
-LFLAGS  += $(COMMON_LD_FLAGS) -L$(OUTDIR) -shared
-LFLAGSD += $(COMMON_LD_FLAGS) -L$(OUTDIR) -shared
+LFLAGS  += $(COMMON_LD_FLAGS) -L$(OUTDIR)
+LFLAGSD += $(COMMON_LD_FLAGS) -L$(OUTDIR)
+
+ifdef MKL
+
+else
+ifdef IFORT
+  LFLAGS  += -L$(OUTDIR)/linux/ifort
+  LFLAGSD += -L$(OUTDIR)/linux/ifort
+else
+  LFLAGS  += -L$(OUTDIR)/linux/gf
+  LFLAGSD += -L$(OUTDIR)/linux/gf
+endif
+endif
+LFLAGS  += -shared
+LFLAGSD += -shared
+
 
 ifdef PROF
   CFLAGSD += -pg
