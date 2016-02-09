@@ -97,8 +97,8 @@ goto name{#2}%
 \newcommand{\pinv}{\operatorname{pinv}}
 \newcommand{\CVMVERSION}{8.1\xspace}
 \newcommand{\MKLVERSION}{11.1 Update~1\xspace}
-\newcommand{\ACMLVERSION}{4.4.0\xspace}
-\newcommand{\ACMLVERSIONSIXFOUR}{5.3.0\xspace}
+%\newcommand{\ACMLVERSION}{4.4.0\xspace}
+%\newcommand{\ACMLVERSIONSIXFOUR}{5.3.0\xspace}
 \newcommand{\Based}{\GO{$\ell$-based}{SubSubSectionIndexing}\xspace}
 
 
@@ -199,10 +199,10 @@ Intel MKL library at the moment of writing of this document for Win32 and
 Linux is \MKLVERSION. Version~\CVMVERSION of the CVM library was 
 built and tested with that MKL library implementation.
 
-Besides that \URL{AMD ACML library}{http://developer.amd.com/cpu/Libraries/acml/Pages/default.aspx}
-is supported as well. Current CVM Library was 
-built and tested with AMD ACML~\ACMLVERSION for 32 bit plaforms 
-and ACML~\ACMLVERSIONSIXFOUR for 64~bit.
+%Besides that \URL{AMD ACML library}{http://developer.amd.com/cpu/Libraries/acml/Pages/default.aspx}
+%is supported as well. Current CVM Library was 
+%built and tested with AMD ACML~\ACMLVERSION for 32 bit plaforms 
+%and ACML~\ACMLVERSIONSIXFOUR for 64~bit.
 
 Finally, \URL{native BLAS and LAPACK}{http://www.netlib.org/lapack/} libraries
 are supported and starting from CVM 5.7 they are part of binary packages as well.
@@ -312,10 +312,7 @@ are definitions and data types used in the library.\\
 \Code{CVM\_ZERO\_BASED} & define this macro to build the library with \GO{$0$-based indexing}{SubSubSectionIndexing}
 \\ %tabularnewline
 \hline
-\Code{CVM\_ACML} & define this macro to link against AMD ACML and/or ACML MP library
-\\ %tabularnewline
-\hline
-\Code{CVM\_FLOAT} & define this macro in order to build a float version
+\Code{CVM\_FLOAT} & \textbf{(deprecated)} define this macro in order to build a float version
 \\ %tabularnewline
 \hline
 \Code{CVM\_NO\_NAMESPACE} & define this macro
@@ -380,45 +377,34 @@ Use%
 the Makefile provided in the root directory:
 \begin{Verbatim}
 make [release|debug] [IFORT=1] [ICC=1] [MKL=1] [MKL_PATH=/opt/...] 
-     [ACML=1] [ACML_MP=1] [ACML_PATH=/opt/...] [EM64T=1] [ILP64=1]
-     [CVM_FLOAT=1] [ICCT=1] [STATIC_ONLY=1] [IFORT_PATH=/opt/...] 
-     [MAC=1]
+     [EM64T=1] [ILP64=1] [CVM_FLOAT=1] [ICCT=1] [STATIC_ONLY=1]
+     [IFORT_PATH=/opt/...] [MAC=1]
 \end{Verbatim}
 Here
 \begin{compactitem}
 \item \verb'release|debug' is a target (by default it builds both)
 \item \verb'IFORT=1' instructs to use \verb"ifort"
-%Intel~Fortran 
-compiler (by default it's \verb'gfortran')
+compiler (\verb'gfortran' is the default)
 \item \verb'ICC=1' instructs to use \verb"icpc"
-%Intel~C++ compiler 
-(by default it's \verb'g++')
-\item \verb'MKL=1' instructs to use Intel~MKL library (by default it uses
-  native BLAS and LAPACK libraries)
+(\verb'g++' is the default)
+\item \verb'MKL=1' instructs to use Intel~MKL library (it uses
+  native BLAS and LAPACK libraries by default)
 \item \verb'MKL_PATH=path' specifies the directory where the~MKL is installed to.
-By default it's equal to \verb'/opt/intel/composerxe/mkl/lib'.
-%(please make sure that this path contains \verb'32' and \verb'em64t' subdirectories inside).
-\item \verb'ACML=1' instructs to use AMD ACML library (overrides \verb'MKL=1' and \verb'ACML_MP=1').
-\item \verb'ACML_MP=1' instructs to use AMD ACML MP library (overrides \verb'MKL=1').
-\item \verb'ACML_PATH=path' specifies the directory where the ACML is 
-installed to.
-(overrides \verb'MKL_PATH=path').
+It's set to \verb'/opt/intel/composerxe/mkl/lib' by default.
 \item \verb'EM64T=1' instructs to build EM64T version of the library.
 \item \verb'ILP64=1' instructs to build INT64-based version of the library (EM64T must be turned on).
-\item \verb'CVM_FLOAT=1' instructs to build \verb'float' version of the
-  library.
+\item \verb'CVM_FLOAT=1' \textbf{(deprecated)} instructs to build \verb'float' version of the library.
 \item \verb'ICCT=1' instructs to use Intel~C++ compiler for building the
-regression test utility (by default it's \verb'g++')
+regression test utility (\verb'g++' is the default)
 \item \verb'STATIC_ONLY=1' instructs to build static libraries only.
 Both .so and .a will be built otherwise.
 \item \verb'IFORT_PATH=path' specifies the directory where the Intel Fortran is installed to. 
-It's required only when you build ACML version within Intel Fortran and
-Intel C++ compilers.
+It's set to \verb"/opt/intel/composerxe/bin" by default.
 \item \verb'MAC=1' instructs to build Mac OS X version of the library.
 \end{compactitem}
-On Unix platforms Intel~MKL, AMD ACML and native BLAS/LAPACK libraries as well
+On Unix platforms Intel~MKL and native BLAS/LAPACK libraries as well
 as both Intel's and GNU compilers are supported. On MinGW platform the native libraries and
-compilers are only supported.
+compilers only supported.
 
 
 \subsection{Storage}

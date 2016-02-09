@@ -13,12 +13,6 @@ endif
 ifdef MKL
   MAKECMD += MKL=1
 endif
-ifdef ACML
-  MAKECMD += ACML=1
-endif
-ifdef ACML_MP
-  MAKECMD += ACML_MP=1
-endif
 ifdef CVM_FLOAT
   MAKECMD += CVM_FLOAT=1
 endif

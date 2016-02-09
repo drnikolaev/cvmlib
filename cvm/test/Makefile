@@ -9,6 +9,11 @@ include $(INC_PATH)/defines.inc
 # override ICC
 ifdef ICCT
   CC=icpc
+ifndef DEBUG
+  COMMON_FLAGS += -O0 #intel's glitch
+endif
+else
+  CC=g++
 endif
 
 COMMON_FLAGS += -Wall -D_REENTRANT
@@ -53,10 +58,6 @@ COMMON_FLAGS += -std=c++0x
 COMMON_LD_FLAGS=-L$(OUTDIR) -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
 
 include $(INC_PATH)/suffixes.inc
-
-ifdef STATIC_ONLY
-endif
-
 
 ifdef STATIC_ONLY
   LIBS  +=$(call concat,-lftn,$(NF),$(NM),$(NE),$(NI))

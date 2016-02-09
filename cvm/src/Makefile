@@ -94,9 +94,7 @@ endif
 LFLAGS  += $(COMMON_LD_FLAGS) -L$(OUTDIR)
 LFLAGSD += $(COMMON_LD_FLAGS) -L$(OUTDIR)
 
-ifdef MKL
-
-else
+ifndef MKL
 ifdef IFORT
   LFLAGS  += -L$(OUTDIR)/linux/ifort
   LFLAGSD += -L$(OUTDIR)/linux/ifort

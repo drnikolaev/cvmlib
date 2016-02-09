@@ -94,14 +94,11 @@
 #       define CVM_USE_DELEGATING_CONSTRUCTORS
 #       include <initializer_list>
 #   endif
-#   if (!defined(__INTEL_COMPILER) || !defined(_WIN64)) && !defined(CVM_ACML) && !(_MSC_VER >= 1500 && defined(_WIN64))
+#   if (!defined(__INTEL_COMPILER) || !defined(_WIN64)) && !(_MSC_VER >= 1500 && defined(_WIN64))
 #       define CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES
 #   endif
-#   if (defined(__INTEL_COMPILER) && (_MSC_VER == 1900))
+#   if (defined(__INTEL_COMPILER) && (_MSC_VER == 1900)) // Intel's glitch
 #       define CVM_USE_MALLOC
-#   endif
-#   if defined(CVM_ACML)
-#       define CVM_COMPLEX_NUMBER_RETURNED
 #   endif
 #   if (_MSC_VER <= 1800)
 #       define noexcept throw()
@@ -183,7 +180,6 @@ typedef unsigned long CVM_PTR_WRAPPER;
 #   include <memory>
 
 #   define CVM_API
-#   define CVM_STDEXT stdext
 #   define CVM_BLOCKS_MAP std::map
 
 typedef long long CVM_LONGEST_INT;
@@ -360,7 +356,11 @@ private:
     CVM_API ErrMessages();
 
 public:
-    CVM_API const std::string& _get(int nException);
+    const std::string& _get(int nException) {
+        citr_Msg i = mmMsg.find(nException);
+        return i == mmMsg.end() ? msUnknown : i->second;
+    }
+
     CVM_API bool _add(int nNewCause, const char* szNewMessage);
 
     static CVM_API ErrMessages& ErrMessagesInstance();

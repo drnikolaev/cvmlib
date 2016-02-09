@@ -89,17 +89,6 @@ CVM_API ErrMessages::ErrMessages()
     mmMsg.insert(pair_Msg(CFUN_PARAMETER_RECURSION, "Parameter \'%s\' can\'t be a part of its own meaning \'%s\'"));
 }
 
-CVM_API const std::string& ErrMessages::_get(int nException)
-{
-#if defined (CVM_STD_MUTEX)
-    std::unique_lock<std::mutex> l(cvm_mutex);
-#else
-    Lock l(emCS);
-#endif
-    citr_Msg i = mmMsg.size() > 0 ? mmMsg.find(nException) : mmMsg.end();
-    return i == mmMsg.end() ? msUnknown : (*i).second;
-}
-
 CVM_API bool ErrMessages::_add(int nNewCause, const char* szNewMessage)
 {
 #if defined (CVM_STD_MUTEX)
@@ -110,11 +99,11 @@ CVM_API bool ErrMessages::_add(int nNewCause, const char* szNewMessage)
     bool bRes = true;
     itr_Msg i = mmMsg.find(nNewCause);
     if (i != mmMsg.end()) {
-        (*i).second = (*i).second + " | " + szNewMessage;       // Defenition is overlapped. This is not a good idea
-        bRes = false;                                           // to do so, use CVM_THE_LAST_ERROR_CODE + 1 as an error code.
+        i->second = i->second + " | " + szNewMessage;      // Defenition is overlapped. This is not a good idea
+        bRes = false;                                      // to do so, use CVM_THE_LAST_ERROR_CODE + 1 as an error code.
     }
     else {
-        mmMsg.insert(pair_Msg(nNewCause, szNewMessage));      // new error definition
+        mmMsg.insert(pair_Msg(nNewCause, szNewMessage));   // new error definition
     }
     return bRes;
 }
