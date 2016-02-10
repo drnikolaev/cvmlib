@@ -18,355 +18,355 @@ extern "C" {
 #    define CVM_FTN_CALL __stdcall
 #    define CVM_STD_CALL __stdcall
 #else
-#        define  CVM_FTN_CALL
-#        define  CVM_STD_CALL
+#    define CVM_FTN_CALL
+#    define CVM_STD_CALL
 
 // my fortran stuff
 
-#        define DPOLY   dpoly_
-#        define SPOLY   spoly_
-#        define CPOLY   cpoly_
-#        define ZPOLY   zpoly_
+#    define DPOLY   dpoly_
+#    define SPOLY   spoly_
+#    define CPOLY   cpoly_
+#    define ZPOLY   zpoly_
 
-#        define NPOLY   npoly_
+#    define NPOLY   npoly_
 
-#        define SMEXP   smexp_
-#        define DMEXP   dmexp_
-#        define CMEXP   cmexp_
-#        define ZMEXP   zmexp_
+#    define SMEXP   smexp_
+#    define DMEXP   dmexp_
+#    define CMEXP   cmexp_
+#    define ZMEXP   zmexp_
 
-#        define SMEXPC  smexpc_
-#        define DMEXPC  dmexpc_
-#        define CMEXPC  cmexpc_
-#        define ZMEXPC  zmexpc_
+#    define SMEXPC  smexpc_
+#    define DMEXPC  dmexpc_
+#    define CMEXPC  cmexpc_
+#    define ZMEXPC  zmexpc_
 
 // blas & lapack stuff
 
-#        define ISAMAX  isamax_
-#        define IDAMAX  idamax_
-#        define ISAMIN  isamin_
-#        define IDAMIN  idamin_
+#    define ISAMAX  isamax_
+#    define IDAMAX  idamax_
+#    define ISAMIN  isamin_
+#    define IDAMIN  idamin_
 
-#        define ICAMAX  icamax_
-#        define IZAMAX  izamax_
-#        define ICAMIN  icamin_
-#        define IZAMIN  izamin_
+#    define ICAMAX  icamax_
+#    define IZAMAX  izamax_
+#    define ICAMIN  icamin_
+#    define IZAMIN  izamin_
 
-#        define SNRM2   snrm2_
-#        define DNRM2   dnrm2_
-#        define SCNRM2  scnrm2_
-#        define DZNRM2  dznrm2_
+#    define SNRM2   snrm2_
+#    define DNRM2   dnrm2_
+#    define SCNRM2  scnrm2_
+#    define DZNRM2  dznrm2_
 
-#        define SSWAP   sswap_
-#        define DSWAP   dswap_
-#        define CSWAP   cswap_
-#        define ZSWAP   zswap_
+#    define SSWAP   sswap_
+#    define DSWAP   dswap_
+#    define CSWAP   cswap_
+#    define ZSWAP   zswap_
 
-#        define SDOT    sdot_
-#        define DDOT    ddot_
+#    define SDOT    sdot_
+#    define DDOT    ddot_
 
 // complex dot wrappers
 
 #    if defined (CVM_COMPLEX_NUMBER_RETURNED)
-#        define VCDOTU  cdotu_
-#        define VZDOTU  zdotu_
-#        define VCDOTC  cdotc_
-#        define VZDOTC  zdotc_
+#    define VCDOTU  cdotu_
+#    define VZDOTU  zdotu_
+#    define VCDOTC  cdotc_
+#    define VZDOTC  zdotc_
 #    else
-#        define VCDOTU  vcdotu_
-#        define VZDOTU  vzdotu_
-#        define VCDOTC  vcdotc_
-#        define VZDOTC  vzdotc_
+#    define VCDOTU  vcdotu_
+#    define VZDOTU  vzdotu_
+#    define VCDOTC  vcdotc_
+#    define VZDOTC  vzdotc_
 #    endif
 
-#        define SAXPY   saxpy_
-#        define DAXPY   daxpy_
-#        define CAXPY   caxpy_
-#        define ZAXPY   zaxpy_
+#    define SAXPY   saxpy_
+#    define DAXPY   daxpy_
+#    define CAXPY   caxpy_
+#    define ZAXPY   zaxpy_
 
-#        define SCOPY   scopy_
-#        define DCOPY   dcopy_
-#        define CCOPY   ccopy_
-#        define ZCOPY   zcopy_
+#    define SCOPY   scopy_
+#    define DCOPY   dcopy_
+#    define CCOPY   ccopy_
+#    define ZCOPY   zcopy_
 
-#        define SSCAL   sscal_
-#        define DSCAL   dscal_
-#        define CSCAL   cscal_
-#        define ZSCAL   zscal_
+#    define SSCAL   sscal_
+#    define DSCAL   dscal_
+#    define CSCAL   cscal_
+#    define ZSCAL   zscal_
 
-#        define CLACGV  clacgv_
-#        define ZLACGV  zlacgv_
+#    define CLACGV  clacgv_
+#    define ZLACGV  zlacgv_
 
-#        define CSSCAL  csscal_
-#        define ZDSCAL  zdscal_
+#    define CSSCAL  csscal_
+#    define ZDSCAL  zdscal_
 
-#        define SGER    sger_
-#        define DGER    dger_
+#    define SGER    sger_
+#    define DGER    dger_
 
-#        define CGERU   cgeru_
-#        define ZGERU   zgeru_
+#    define CGERU   cgeru_
+#    define ZGERU   zgeru_
 
-#        define CGERC   cgerc_
-#        define ZGERC   zgerc_
+#    define CGERC   cgerc_
+#    define ZGERC   zgerc_
 
-#        define SGEMV   sgemv_
-#        define DGEMV   dgemv_
-#        define CGEMV   cgemv_
-#        define ZGEMV   zgemv_
+#    define SGEMV   sgemv_
+#    define DGEMV   dgemv_
+#    define CGEMV   cgemv_
+#    define ZGEMV   zgemv_
 
-#        define SGBMV   sgbmv_
-#        define DGBMV   dgbmv_
-#        define CGBMV   cgbmv_
-#        define ZGBMV   zgbmv_
+#    define SGBMV   sgbmv_
+#    define DGBMV   dgbmv_
+#    define CGBMV   cgbmv_
+#    define ZGBMV   zgbmv_
 
-#        define SGEMM   sgemm_
-#        define DGEMM   dgemm_
-#        define CGEMM   cgemm_
-#        define ZGEMM   zgemm_
+#    define SGEMM   sgemm_
+#    define DGEMM   dgemm_
+#    define CGEMM   cgemm_
+#    define ZGEMM   zgemm_
 
-#        define SGETRF  sgetrf_
-#        define DGETRF  dgetrf_
-#        define CGETRF  cgetrf_
-#        define ZGETRF  zgetrf_
+#    define SGETRF  sgetrf_
+#    define DGETRF  dgetrf_
+#    define CGETRF  cgetrf_
+#    define ZGETRF  zgetrf_
 
-#        define SGBTRF  sgbtrf_
-#        define DGBTRF  dgbtrf_
-#        define CGBTRF  cgbtrf_
-#        define ZGBTRF  zgbtrf_
+#    define SGBTRF  sgbtrf_
+#    define DGBTRF  dgbtrf_
+#    define CGBTRF  cgbtrf_
+#    define ZGBTRF  zgbtrf_
 
-#        define SGETRS  sgetrs_
-#        define DGETRS  dgetrs_
-#        define CGETRS  cgetrs_
-#        define ZGETRS  zgetrs_
+#    define SGETRS  sgetrs_
+#    define DGETRS  dgetrs_
+#    define CGETRS  cgetrs_
+#    define ZGETRS  zgetrs_
 
-#        define SGBTRS  sgbtrs_
-#        define DGBTRS  dgbtrs_
-#        define CGBTRS  cgbtrs_
-#        define ZGBTRS  zgbtrs_
+#    define SGBTRS  sgbtrs_
+#    define DGBTRS  dgbtrs_
+#    define CGBTRS  cgbtrs_
+#    define ZGBTRS  zgbtrs_
 
-#        define SGERFS  sgerfs_
-#        define DGERFS  dgerfs_
-#        define CGERFS  cgerfs_
-#        define ZGERFS  zgerfs_
+#    define SGERFS  sgerfs_
+#    define DGERFS  dgerfs_
+#    define CGERFS  cgerfs_
+#    define ZGERFS  zgerfs_
 
-#        define SGBRFS  sgbrfs_
-#        define DGBRFS  dgbrfs_
-#        define CGBRFS  cgbrfs_
-#        define ZGBRFS  zgbrfs_
+#    define SGBRFS  sgbrfs_
+#    define DGBRFS  dgbrfs_
+#    define CGBRFS  cgbrfs_
+#    define ZGBRFS  zgbrfs_
 
-#        define SGETRI  sgetri_
-#        define DGETRI  dgetri_
-#        define CGETRI  cgetri_
-#        define ZGETRI  zgetri_
+#    define SGETRI  sgetri_
+#    define DGETRI  dgetri_
+#    define CGETRI  cgetri_
+#    define ZGETRI  zgetri_
 
-#        define SGEBRD  sgebrd_
-#        define DGEBRD  dgebrd_
-#        define CGEBRD  cgebrd_
-#        define ZGEBRD  zgebrd_
+#    define SGEBRD  sgebrd_
+#    define DGEBRD  dgebrd_
+#    define CGEBRD  cgebrd_
+#    define ZGEBRD  zgebrd_
 
-#        define SGBBRD  sgbbrd_
-#        define DGBBRD  dgbbrd_
-#        define CGBBRD  cgbbrd_
-#        define ZGBBRD  zgbbrd_
+#    define SGBBRD  sgbbrd_
+#    define DGBBRD  dgbbrd_
+#    define CGBBRD  cgbbrd_
+#    define ZGBBRD  zgbbrd_
 
-#        define SORGBR  sorgbr_
-#        define DORGBR  dorgbr_
+#    define SORGBR  sorgbr_
+#    define DORGBR  dorgbr_
 
-#        define CUNGBR  cungbr_
-#        define ZUNGBR  zungbr_
+#    define CUNGBR  cungbr_
+#    define ZUNGBR  zungbr_
 
-#        define SBDSQR  sbdsqr_
-#        define DBDSQR  dbdsqr_
-#        define CBDSQR  cbdsqr_
-#        define ZBDSQR  zbdsqr_
+#    define SBDSQR  sbdsqr_
+#    define DBDSQR  dbdsqr_
+#    define CBDSQR  cbdsqr_
+#    define ZBDSQR  zbdsqr_
 
-#        define SGEBAL  sgebal_
-#        define DGEBAL  dgebal_
-#        define CGEBAL  cgebal_
-#        define ZGEBAL  zgebal_
+#    define SGEBAL  sgebal_
+#    define DGEBAL  dgebal_
+#    define CGEBAL  cgebal_
+#    define ZGEBAL  zgebal_
 
-#        define SGEHRD  sgehrd_
-#        define DGEHRD  dgehrd_
-#        define CGEHRD  cgehrd_
-#        define ZGEHRD  zgehrd_
+#    define SGEHRD  sgehrd_
+#    define DGEHRD  dgehrd_
+#    define CGEHRD  cgehrd_
+#    define ZGEHRD  zgehrd_
 
-#        define SORGHR  sorghr_
-#        define DORGHR  dorghr_
+#    define SORGHR  sorghr_
+#    define DORGHR  dorghr_
 
-#        define CUNGHR  cunghr_
-#        define ZUNGHR  zunghr_
+#    define CUNGHR  cunghr_
+#    define ZUNGHR  zunghr_
 
-#        define SHSEQR  shseqr_
-#        define DHSEQR  dhseqr_
-#        define CHSEQR  chseqr_
-#        define ZHSEQR  zhseqr_
+#    define SHSEQR  shseqr_
+#    define DHSEQR  dhseqr_
+#    define CHSEQR  chseqr_
+#    define ZHSEQR  zhseqr_
 
-#        define STREVC  strevc_
-#        define DTREVC  dtrevc_
-#        define CTREVC  ctrevc_
-#        define ZTREVC  ztrevc_
+#    define STREVC  strevc_
+#    define DTREVC  dtrevc_
+#    define CTREVC  ctrevc_
+#    define ZTREVC  ztrevc_
 
-#        define SGEBAK  sgebak_
-#        define DGEBAK  dgebak_
-#        define CGEBAK  cgebak_
-#        define ZGEBAK  zgebak_
+#    define SGEBAK  sgebak_
+#    define DGEBAK  dgebak_
+#    define CGEBAK  cgebak_
+#    define ZGEBAK  zgebak_
 
-#        define SGECON  sgecon_
-#        define DGECON  dgecon_
-#        define CGECON  cgecon_
-#        define ZGECON  zgecon_
+#    define SGECON  sgecon_
+#    define DGECON  dgecon_
+#    define CGECON  cgecon_
+#    define ZGECON  zgecon_
 
-#        define SSPMV   sspmv_
-#        define DSPMV   dspmv_
+#    define SSPMV   sspmv_
+#    define DSPMV   dspmv_
 
-#        define SSYMM   ssymm_
-#        define DSYMM   dsymm_
-#        define CSYMM   csymm_
-#        define ZSYMM   zsymm_
-#        define CHEMM   chemm_
-#        define ZHEMM   zhemm_
+#    define SSYMM   ssymm_
+#    define DSYMM   dsymm_
+#    define CSYMM   csymm_
+#    define ZSYMM   zsymm_
+#    define CHEMM   chemm_
+#    define ZHEMM   zhemm_
 
-#        define SPOTRF  spotrf_
-#        define DPOTRF  dpotrf_
-#        define CPOTRF  cpotrf_
-#        define ZPOTRF  zpotrf_
+#    define SPOTRF  spotrf_
+#    define DPOTRF  dpotrf_
+#    define CPOTRF  cpotrf_
+#    define ZPOTRF  zpotrf_
 
-#        define SSYTRF  ssytrf_
-#        define DSYTRF  dsytrf_
-#        define CSYTRF  csytrf_
-#        define ZSYTRF  zsytrf_
-#        define CHETRF  chetrf_
-#        define ZHETRF  zhetrf_
+#    define SSYTRF  ssytrf_
+#    define DSYTRF  dsytrf_
+#    define CSYTRF  csytrf_
+#    define ZSYTRF  zsytrf_
+#    define CHETRF  chetrf_
+#    define ZHETRF  zhetrf_
 
-#        define SPOTRS  spotrs_
-#        define DPOTRS  dpotrs_
-#        define CPOTRS  cpotrs_
-#        define ZPOTRS  zpotrs_
+#    define SPOTRS  spotrs_
+#    define DPOTRS  dpotrs_
+#    define CPOTRS  cpotrs_
+#    define ZPOTRS  zpotrs_
 
-#        define SPORFS  sporfs_
-#        define DPORFS  dporfs_
-#        define CPORFS  cporfs_
-#        define ZPORFS  zporfs_
+#    define SPORFS  sporfs_
+#    define DPORFS  dporfs_
+#    define CPORFS  cporfs_
+#    define ZPORFS  zporfs_
 
-#        define SSYTRS  ssytrs_
-#        define DSYTRS  dsytrs_
-#        define CSYTRS  csytrs_
-#        define ZSYTRS  zsytrs_
-#        define CHETRS  chetrs_
-#        define ZHETRS  zhetrs_
+#    define SSYTRS  ssytrs_
+#    define DSYTRS  dsytrs_
+#    define CSYTRS  csytrs_
+#    define ZSYTRS  zsytrs_
+#    define CHETRS  chetrs_
+#    define ZHETRS  zhetrs_
 
-#        define SSYRFS  ssyrfs_
-#        define DSYRFS  dsyrfs_
-#        define CSYRFS  csyrfs_
-#        define ZSYRFS  zsyrfs_
-#        define CHERFS  cherfs_
-#        define ZHERFS  zherfs_
+#    define SSYRFS  ssyrfs_
+#    define DSYRFS  dsyrfs_
+#    define CSYRFS  csyrfs_
+#    define ZSYRFS  zsyrfs_
+#    define CHERFS  cherfs_
+#    define ZHERFS  zherfs_
 
-#        define SPOTRI  spotri_
-#        define DPOTRI  dpotri_
-#        define CPOTRI  cpotri_
-#        define ZPOTRI  zpotri_
+#    define SPOTRI  spotri_
+#    define DPOTRI  dpotri_
+#    define CPOTRI  cpotri_
+#    define ZPOTRI  zpotri_
 
-#        define SSYTRI  ssytri_
-#        define DSYTRI  dsytri_
-#        define CSYTRI  csytri_
-#        define ZSYTRI  zsytri_
-#        define CHETRI  chetri_
-#        define ZHETRI  zhetri_
+#    define SSYTRI  ssytri_
+#    define DSYTRI  dsytri_
+#    define CSYTRI  csytri_
+#    define ZSYTRI  zsytri_
+#    define CHETRI  chetri_
+#    define ZHETRI  zhetri_
 
-#        define SSYEVD  ssyevd_
-#        define DSYEVD  dsyevd_
-#        define CHEEVD  cheevd_
-#        define ZHEEVD  zheevd_
+#    define SSYEVD  ssyevd_
+#    define DSYEVD  dsyevd_
+#    define CHEEVD  cheevd_
+#    define ZHEEVD  zheevd_
 
-#        define SPOEQU  spoequ_
-#        define DPOEQU  dpoequ_
-#        define CPOEQU  cpoequ_
-#        define ZPOEQU  zpoequ_
+#    define SPOEQU  spoequ_
+#    define DPOEQU  dpoequ_
+#    define CPOEQU  cpoequ_
+#    define ZPOEQU  zpoequ_
 
-#        define SSYMV   ssymv_
-#        define DSYMV   dsymv_
-#        define CHEMV   chemv_
-#        define ZHEMV   zhemv_
+#    define SSYMV   ssymv_
+#    define DSYMV   dsymv_
+#    define CHEMV   chemv_
+#    define ZHEMV   zhemv_
 
-#        define SSYRK   ssyrk_
-#        define DSYRK   dsyrk_
-#        define CSYRK   csyrk_
-#        define ZSYRK   zsyrk_
-#        define CHERK   cherk_
-#        define ZHERK   zherk_
+#    define SSYRK   ssyrk_
+#    define DSYRK   dsyrk_
+#    define CSYRK   csyrk_
+#    define ZSYRK   zsyrk_
+#    define CHERK   cherk_
+#    define ZHERK   zherk_
 
-#        define SSYR2K  ssyr2k_
-#        define DSYR2K  dsyr2k_
-#        define CSYR2K  csyr2k_
-#        define ZSYR2K  zsyr2k_
-#        define CHER2K  cher2k_
-#        define ZHER2K  zher2k_
+#    define SSYR2K  ssyr2k_
+#    define DSYR2K  dsyr2k_
+#    define CSYR2K  csyr2k_
+#    define ZSYR2K  zsyr2k_
+#    define CHER2K  cher2k_
+#    define ZHER2K  zher2k_
 
-#        define SGEQRF  sgeqrf_
-#        define DGEQRF  dgeqrf_
-#        define CGEQRF  cgeqrf_
-#        define ZGEQRF  zgeqrf_
+#    define SGEQRF  sgeqrf_
+#    define DGEQRF  dgeqrf_
+#    define CGEQRF  cgeqrf_
+#    define ZGEQRF  zgeqrf_
 
-#        define SORGQR  sorgqr_
-#        define DORGQR  dorgqr_
-#        define CUNGQR  cungqr_
-#        define ZUNGQR  zungqr_
+#    define SORGQR  sorgqr_
+#    define DORGQR  dorgqr_
+#    define CUNGQR  cungqr_
+#    define ZUNGQR  zungqr_
 
-#        define SGERQF  sgerqf_
-#        define DGERQF  dgerqf_
-#        define CGERQF  cgerqf_
-#        define ZGERQF  zgerqf_
+#    define SGERQF  sgerqf_
+#    define DGERQF  dgerqf_
+#    define CGERQF  cgerqf_
+#    define ZGERQF  zgerqf_
 
-#        define SORGRQ  sorgrq_
-#        define DORGRQ  dorgrq_
-#        define CUNGRQ  cungrq_
-#        define ZUNGRQ  zungrq_
+#    define SORGRQ  sorgrq_
+#    define DORGRQ  dorgrq_
+#    define CUNGRQ  cungrq_
+#    define ZUNGRQ  zungrq_
 
-#        define SGELQF  sgelqf_
-#        define DGELQF  dgelqf_
-#        define CGELQF  cgelqf_
-#        define ZGELQF  zgelqf_
+#    define SGELQF  sgelqf_
+#    define DGELQF  dgelqf_
+#    define CGELQF  cgelqf_
+#    define ZGELQF  zgelqf_
 
-#        define SORGLQ  sorglq_
-#        define DORGLQ  dorglq_
-#        define CUNGLQ  cunglq_
-#        define ZUNGLQ  zunglq_
+#    define SORGLQ  sorglq_
+#    define DORGLQ  dorglq_
+#    define CUNGLQ  cunglq_
+#    define ZUNGLQ  zunglq_
 
-#        define SGEQLF  sgeqlf_
-#        define DGEQLF  dgeqlf_
-#        define CGEQLF  cgeqlf_
-#        define ZGEQLF  zgeqlf_
+#    define SGEQLF  sgeqlf_
+#    define DGEQLF  dgeqlf_
+#    define CGEQLF  cgeqlf_
+#    define ZGEQLF  zgeqlf_
 
-#        define SORGQL  sorgql_
-#        define DORGQL  dorgql_
-#        define CUNGQL  cungql_
-#        define ZUNGQL  zungql_
+#    define SORGQL  sorgql_
+#    define DORGQL  dorgql_
+#    define CUNGQL  cungql_
+#    define ZUNGQL  zungql_
 
-#        define SGELS   sgels_
-#        define DGELS   dgels_
-#        define CGELS   cgels_
-#        define ZGELS   zgels_
+#    define SGELS   sgels_
+#    define DGELS   dgels_
+#    define CGELS   cgels_
+#    define ZGELS   zgels_
 
-#        define SGELSY  sgelsy_
-#        define DGELSY  dgelsy_
-#        define CGELSY  cgelsy_
-#        define ZGELSY  zgelsy_
+#    define SGELSY  sgelsy_
+#    define DGELSY  dgelsy_
+#    define CGELSY  cgelsy_
+#    define ZGELSY  zgelsy_
 
-#        define SGELSS  sgelss_
-#        define DGELSS  dgelss_
-#        define CGELSS  cgelss_
-#        define ZGELSS  zgelss_
+#    define SGELSS  sgelss_
+#    define DGELSS  dgelss_
+#    define CGELSS  cgelss_
+#    define ZGELSS  zgelss_
 
-#        define SGELSD  sgelsd_
-#        define DGELSD  dgelsd_
-#        define CGELSD  cgelsd_
-#        define ZGELSD  zgelsd_
+#    define SGELSD  sgelsd_
+#    define DGELSD  dgelsd_
+#    define CGELSD  cgelsd_
+#    define ZGELSD  zgelsd_
 
-#        define SGGEV   sggev_
-#        define DGGEV   dggev_
-#        define CGGEV   cggev_
-#        define ZGGEV   zggev_
+#    define SGGEV   sggev_
+#    define DGGEV   dggev_
+#    define CGGEV   cggev_
+#    define ZGGEV   zggev_
 
 #endif      // !_MSC_VER
 
