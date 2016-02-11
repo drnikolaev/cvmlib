@@ -93,6 +93,18 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">regtest_cvm_em64t</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">regtest_cvm_em64t_debug</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(IncludePath);C:\cvmlib\cvm\src;..\..\gtest\googletest\include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(IncludePath);C:\cvmlib\cvm\src;..\..\gtest\googletest\include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(IncludePath);C:\cvmlib\cvm\src;..\..\gtest\googletest\include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(IncludePath);C:\cvmlib\cvm\src;..\..\gtest\googletest\include</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -106,7 +118,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\lib\cvm_ia32_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib\gtest\gtestd.lib;..\..\lib\cvm_ia32_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)regtest_cvm_ia32_debug.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)regtest_cvm_ia32_debug.pdb</ProgramDatabaseFile>
@@ -133,7 +145,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\lib64\cvm_em64t_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib64\gtest\gtestd.lib;..\..\lib64\cvm_em64t_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)regtest_cvm_em64t_debug.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)regtest_cvm_em64t_debug.pdb</ProgramDatabaseFile>
@@ -156,7 +168,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\lib\cvm_ia32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib\gtest\gtest.lib;..\..\lib\cvm_ia32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)regtest_cvm_ia32.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -183,7 +195,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\lib64\cvm_em64t.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib64\gtest\gtest.lib;..\..\lib64\cvm_em64t.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)regtest_cvm_em64t.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>

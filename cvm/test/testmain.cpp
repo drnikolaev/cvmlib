@@ -7,24 +7,45 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "StdAfx.h"
+
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable:4018)
+#endif
+
 #include <gtest/gtest.h>
 
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
+
+#include "../src/cvm.h"
+#include "../src/cfun.h"
+
+using namespace std;
+using namespace cvm;
 
 typedef ::testing::Types<float,double> TestTypes;
 
-template <typename Type>
+template <typename T>
 class SimpleTest : public ::testing::Test {
-    typedef typename Type::TypeParam T;
 protected:
     SimpleTest() {}
     virtual ~SimpleTest() {}
+
+    basic_rvector<T> rv;
+    basic_cvector<T,complex<T>> cv;
 };
 
 TYPED_TEST_CASE(SimpleTest, TestTypes);
 
 TYPED_TEST(SimpleTest, TestInitialization) {
   EXPECT_TRUE(true);
-  EXPECT_GT(sizeof(T), 4);
+  EXPECT_GT(sizeof(TypeParam), 4);
+  EXPECT_EQ(rv.size(), 0);
+  EXPECT_EQ(cv.size(), 0);
+
+  basic_rvector<TypeParam> rv2;
 }
 
 
