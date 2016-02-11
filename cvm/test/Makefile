@@ -16,7 +16,7 @@ else
   CC=g++
 endif
 
-COMMON_FLAGS += -Wall -D_REENTRANT
+COMMON_FLAGS += -Wall -D_REENTRANT -I../../gtest/googletest/include
 
 ifdef CVM_FLOAT
   COMMON_FLAGS += -DCVM_FLOAT
@@ -54,8 +54,11 @@ else
   DLIBS += -lgfortran
 endif
 
+LIBS  += -lgtest
+DLIBS += -lgtest
+
 COMMON_FLAGS += -std=c++0x
-COMMON_LD_FLAGS=-L$(OUTDIR) -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
+COMMON_LD_FLAGS=-L$(OUTDIR) -L../../gtest/googletest -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
 
 include $(INC_PATH)/suffixes.inc
 

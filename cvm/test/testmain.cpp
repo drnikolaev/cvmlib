@@ -7,6 +7,42 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "StdAfx.h"
+#include <gtest/gtest.h>
+
+
+typedef ::testing::Types<float,double> TestTypes;
+
+template <typename Type>
+class SimpleTest : public ::testing::Test {
+    typedef typename Type::TypeParam T;
+protected:
+    SimpleTest() {}
+    virtual ~SimpleTest() {}
+};
+
+TYPED_TEST_CASE(SimpleTest, TestTypes);
+
+TYPED_TEST(SimpleTest, TestInitialization) {
+  EXPECT_TRUE(true);
+  EXPECT_GT(sizeof(T), 4);
+}
+
+
+int main(int argc, char* argv[])
+{
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
+
+
+
+
+
+
+
+
+
+#if 0
 #include "test.h"
 
 int main(int argc, char* argv[])
@@ -127,4 +163,4 @@ int main(int argc, char* argv[])
     return exit_code;
 }
 
-
+#endif
