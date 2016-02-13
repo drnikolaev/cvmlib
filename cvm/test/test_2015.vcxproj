@@ -94,16 +94,20 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">regtest_cvm_em64t_debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(IncludePath);C:\cvmlib\cvm\src;..\..\gtest\googletest\include</IncludePath>
+    <IncludePath>$(IncludePath);..\..\gtest\googletest\include</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath);C:\cvmlib\cvm\src;..\..\gtest\googletest\include</IncludePath>
+    <IncludePath>$(IncludePath);..\..\gtest\googletest\include</IncludePath>
+    <LibraryPath>$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(IncludePath);C:\cvmlib\cvm\src;..\..\gtest\googletest\include</IncludePath>
+    <IncludePath>$(IncludePath);..\..\gtest\googletest\include</IncludePath>
+    <LibraryPath>$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(IncludePath);C:\cvmlib\cvm\src;..\..\gtest\googletest\include</IncludePath>
+    <IncludePath>$(IncludePath);..\..\gtest\googletest\include</IncludePath>
+    <LibraryPath>$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

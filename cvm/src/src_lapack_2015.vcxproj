@@ -96,10 +96,16 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cvm_em64t_debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(LibraryPath);C:\cvmlib\lib;C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\compiler\lib\ia32</LibraryPath>
+    <LibraryPath>$(LibraryPath);C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\compiler\lib\ia32</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>$(LibraryPath);C:\cvmlib\lib;C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\compiler\lib\ia32</LibraryPath>
+    <LibraryPath>$(LibraryPath);C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\compiler\lib\ia32</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LibraryPath>$(LibraryPath);C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\compiler\lib\intel64</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LibraryPath>$(LibraryPath);C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\compiler\lib\intel64</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
