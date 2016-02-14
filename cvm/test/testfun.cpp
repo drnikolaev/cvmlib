@@ -6,7 +6,11 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+
 #include "StdAfx.h"
+
+#if 0
+
 #include "test.h"
 
 #if defined (CVM_TEST_WIN_THREADS)
@@ -2243,4 +2247,4 @@ TestFunBody (void*)
 #endif
 }
 
-
+#endif

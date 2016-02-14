@@ -94,6 +94,10 @@
 #       define CVM_USE_DELEGATING_CONSTRUCTORS
 #       include <initializer_list>
 #   endif
+#   if (_MSC_VER >= 1900)             // since VC14 aka MS Visual Studio 2015
+#       define CVM_USE_USER_LITERALS
+#   endif
+
 #   if (!defined(__INTEL_COMPILER) || !defined(_WIN64)) && !(_MSC_VER >= 1500 && defined(_WIN64))
 #       define CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES
 #   endif
@@ -37130,7 +37134,7 @@ typedef float  treal; //!< Either \c double (default) of \c float (when \c CVM_F
 typedef double treal; //!< Either \c double (default) of \c float (when \c CVM_FLOAT is defined)
 #endif
 
-typedef std::complex<treal> tcomplex; //!< Complex nymber type defined as \c std::complex<treal> (see also \ref treal)
+typedef std::complex<treal> tcomplex; //!< Complex number  defined as \c std::complex<treal> (see also \ref treal)
 
 typedef basic_array<tint,tint>           iarray;     //!< End-user class: array of integers, see \ref basic_array
 typedef basic_rvector<treal>             rvector;    //!< End-user class: vector of real numbers, see \ref basic_rvector
@@ -37144,6 +37148,16 @@ typedef basic_scbmatrix<treal, tcomplex> scbmatrix;  //!< End-user class: square
 typedef basic_srsmatrix<treal>           srsmatrix;  //!< End-user class: square symmetric matrix of real numbers, see \ref basic_srsmatrix
 typedef basic_schmatrix<treal, tcomplex> schmatrix;  //!< End-user class: square hermitian matrix of complex numbers, see \ref basic_schmatrix
 
+typedef basic_rvector<float>                        rvector32;    //!< End-user class: vector of 32-bit float numbers, see \ref basic_rvector
+typedef basic_rmatrix<float>                        rmatrix32;    //!< End-user class: matrix of 32-bit float numbers, see \ref basic_rmatrix
+typedef basic_srmatrix<float>                       srmatrix32;   //!< End-user class: square matrix of 32-bit float numbers, see \ref basic_srmatrix
+typedef basic_cvector<float, std::complex<float>>   cvector32;    //!< End-user class: vector of 32-bit float complex numbers, see \ref basic_cvector
+typedef basic_cmatrix<float, std::complex<float>>   cmatrix32;    //!< End-user class: matrix of 32-bit float complex numbers, see \ref basic_cmatrix
+typedef basic_scmatrix<float, std::complex<float>>  scmatrix32;   //!< End-user class: square matrix of 32-bit float complex numbers, see \ref basic_scmatrix
+typedef basic_srbmatrix<float>                      srbmatrix32;  //!< End-user class: square band matrix of 32-bit float numbers, see \ref basic_srbmatrix
+typedef basic_scbmatrix<float, std::complex<float>> scbmatrix32;  //!< End-user class: square band matrix of 32-bit float complex numbers, see \ref basic_scbmatrix
+typedef basic_srsmatrix<float>                      srsmatrix32;  //!< End-user class: square symmetric matrix of 32-bit float numbers, see \ref basic_srsmatrix
+typedef basic_schmatrix<float, std::complex<float>> schmatrix32;  //!< End-user class: square hermitian matrix of 32-bit float complex numbers, see \ref basic_schmatrix
 
 //! Real identity matrix creation
 template<typename TR>

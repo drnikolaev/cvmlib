@@ -7,6 +7,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "StdAfx.h"
+
+#if 0
+
 #include "test.h"
 
 static time_t last_check = 0;
@@ -278,43 +281,10 @@ TestBody (void*)
 
         last_check = time(NULL);
 
-        // 8.1 features
-#if defined(CVM_USE_INITIALIZER_LISTS)
-        {
-#ifdef CVM_FLOAT
-            std::cout.setf(std::ios::scientific | std::ios::left);
-            std::cout.precision(3);
 
-            cvector v = { tcomplex(1.2F, 3.4F), tcomplex(3.4F, 5.6F), 99.99F };
-            rvector rv = { 1, -2, 3.456F, 99.99F };
-            rvector rv0 = {};
-            cvector cv = { tcomplex(1.2F, 3.4F), tcomplex(3.4F, 5.6F), 99.99F };
-            rvector cv0 = {};
 
-            CheckInt (rv0.size(),  0, "rvector initializer list",  os, __LINE__);
-            CheckInt (cv0.size(),  0, "cvector initializer list",  os, __LINE__);
-            CheckReal (rv(CVM0), (treal) 1.,  "rvector initializer list", os, __LINE__);
-            CheckReal (rv(CVM0+2), (treal) 3.456,  "rvector initializer list", os, __LINE__);
-            CheckComplex (cv(CVM0),   tcomplex(1.2, 3.4), "cvector initializer list",  os, __LINE__);
-            CheckComplex (cv(CVM0+2),   tcomplex(99.99, 0.), "cvector initializer list",  os, __LINE__);
 
-#else
-            std::cout.setf(std::ios::scientific | std::ios::left);
-            std::cout.precision(3);
 
-            cvector v = { tcomplex(1.2, 3.4), tcomplex(3.4, 5.6), 99.99 };
-            rvector rv = { 1, -2, 3.456, 99.99 };
-            rvector rv0 = {};
-            cvector cv = { tcomplex(1.2, 3.4), tcomplex(3.4, 5.6), 99.99 };
-            rvector cv0 = {};
-
-            CheckInt (rv0.size(),  0, "rvector initializer list",  os, __LINE__);
-            CheckInt (cv0.size(),  0, "cvector initializer list",  os, __LINE__);
-            CheckReal (rv(CVM0), (treal) 1.,  "rvector initializer list", os, __LINE__);
-            CheckReal (rv(CVM0+2), (treal) 3.456,  "rvector initializer list", os, __LINE__);
-            CheckComplex (cv(CVM0),   tcomplex(1.2, 3.4), "cvector initializer list",  os, __LINE__);
-            CheckComplex (cv(CVM0+2),   tcomplex(99.99, 0.), "cvector initializer list",  os, __LINE__);
-#endif
 #if defined(CVM_USE_USER_LITERALS)
             tcomplex c = 3.4 + 5.6_i;
             CheckComplex    (c,  tcomplex(3.4, 5.6),  "complex user literal ", os, __LINE__);
@@ -327,7 +297,6 @@ TestBody (void*)
             CheckReal    (vc.norm(),  (treal) 1.4972641717479251e+01,  "cvector user literal in init list", os, __LINE__, dPessimisticSp);
 #endif
         }
-#endif
 
         // move
         {
@@ -6362,3 +6331,5 @@ det (m)
     return NULL;
 #endif
 }
+
+#endif
