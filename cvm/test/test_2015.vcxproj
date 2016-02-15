@@ -215,7 +215,9 @@
     <ClCompile Include="testcvm.cpp" />
     <ClCompile Include="testfun.cpp" />
     <ClCompile Include="testInitialization.cpp" />
+    <ClCompile Include="testLapack1.cpp" />
     <ClCompile Include="testmain.cpp" />
+    <ClCompile Include="testMisc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h" />
