@@ -1691,6 +1691,52 @@ public:
     }
 
     /**
+     * @brief Equality operator
+     * @return bool
+     *
+     * Returns true if value is equal to t, false otherwise.
+     * @param[in] u Value to compare with.
+     */
+    template<typename U>
+    bool operator == (const U& u) const {
+        return mT == u;
+    }
+
+    /**
+     * @brief Nonequality operator
+     * @return bool
+     *
+     * Returns true if value is not equal to t, false otherwise.
+     * @param[in] u Value to compare with.
+     */
+    template<typename U>
+    bool operator != (const U& u) const {
+        return mT != u;
+    }
+
+    /**
+     * @brief Equality operator
+     * @return bool
+     *
+     * Returns true if value is equal to t, false otherwise.
+     * @param[in] t Value to compare with.
+     */
+    bool operator == (const type_proxy<T,TR>& t) const {
+        return mT == t.mT;
+    }
+
+    /**
+     * @brief Nonequality operator
+     * @return bool
+     *
+     * Returns true if value is not equal to t, false otherwise.
+     * @param[in] t Value to compare with.
+     */
+    bool operator != (const type_proxy<T,TR>& t) const {
+        return mT != t.mT;
+    }
+
+    /**
      * @brief Real part
      * @return TR
      *
@@ -1712,6 +1758,18 @@ public:
         return _imag<T,TR>(mT);
     }
 };
+
+//! Prefix version for proxy
+template<typename U, typename T, typename TR>
+bool operator == (const U& u, const type_proxy<T,TR>& t) {
+    return u == t.val();
+}
+
+//! Prefix version for proxy
+template<typename U, typename T, typename TR>
+bool operator != (const U& u, const type_proxy<T,TR>& t) {
+    return u != t.val();
+}
 
 //! Prefix version for proxy
 template<typename T, typename TR>
@@ -37137,16 +37195,16 @@ typedef double treal; //!< Either \c double (default) of \c float (when \c CVM_F
 typedef std::complex<treal> tcomplex; //!< Complex number  defined as \c std::complex<treal> (see also \ref treal)
 
 typedef basic_array<tint,tint>           iarray;     //!< End-user class: array of integers, see \ref basic_array
-typedef basic_rvector<treal>             rvector;    //!< End-user class: vector of real numbers, see \ref basic_rvector
-typedef basic_rmatrix<treal>             rmatrix;    //!< End-user class: matrix of real numbers, see \ref basic_rmatrix
-typedef basic_srmatrix<treal>            srmatrix;   //!< End-user class: square matrix of real numbers, see \ref basic_srmatrix
-typedef basic_cvector<treal, tcomplex>   cvector;    //!< End-user class: vector of complex numbers, see \ref basic_cvector
-typedef basic_cmatrix<treal, tcomplex>   cmatrix;    //!< End-user class: matrix of complex numbers, see \ref basic_cmatrix
-typedef basic_scmatrix<treal, tcomplex>  scmatrix;   //!< End-user class: square matrix of complex numbers, see \ref basic_scmatrix
-typedef basic_srbmatrix<treal>           srbmatrix;  //!< End-user class: square band matrix of real numbers, see \ref basic_srbmatrix
-typedef basic_scbmatrix<treal, tcomplex> scbmatrix;  //!< End-user class: square band matrix of complex numbers, see \ref basic_scbmatrix
-typedef basic_srsmatrix<treal>           srsmatrix;  //!< End-user class: square symmetric matrix of real numbers, see \ref basic_srsmatrix
-typedef basic_schmatrix<treal, tcomplex> schmatrix;  //!< End-user class: square hermitian matrix of complex numbers, see \ref basic_schmatrix
+typedef basic_rvector<treal>             rvector;    //!< End-user class: vector of \ref treal numbers, see \ref basic_rvector
+typedef basic_rmatrix<treal>             rmatrix;    //!< End-user class: matrix of \ref treal numbers, see \ref basic_rmatrix
+typedef basic_srmatrix<treal>            srmatrix;   //!< End-user class: square matrix of \ref treal numbers, see \ref basic_srmatrix
+typedef basic_cvector<treal, tcomplex>   cvector;    //!< End-user class: vector of \ref treal complex numbers, see \ref basic_cvector
+typedef basic_cmatrix<treal, tcomplex>   cmatrix;    //!< End-user class: matrix of \ref treal complex numbers, see \ref basic_cmatrix
+typedef basic_scmatrix<treal, tcomplex>  scmatrix;   //!< End-user class: square matrix of \ref treal complex numbers, see \ref basic_scmatrix
+typedef basic_srbmatrix<treal>           srbmatrix;  //!< End-user class: square band matrix of \ref treal numbers, see \ref basic_srbmatrix
+typedef basic_scbmatrix<treal, tcomplex> scbmatrix;  //!< End-user class: square band matrix of \ref treal complex numbers, see \ref basic_scbmatrix
+typedef basic_srsmatrix<treal>           srsmatrix;  //!< End-user class: square symmetric matrix of \ref treal numbers, see \ref basic_srsmatrix
+typedef basic_schmatrix<treal, tcomplex> schmatrix;  //!< End-user class: square hermitian matrix of \ref treal complex numbers, see \ref basic_schmatrix
 
 typedef basic_rvector<float>                        rvector32;    //!< End-user class: vector of 32-bit float numbers, see \ref basic_rvector
 typedef basic_rmatrix<float>                        rmatrix32;    //!< End-user class: matrix of 32-bit float numbers, see \ref basic_rmatrix
@@ -37158,6 +37216,17 @@ typedef basic_srbmatrix<float>                      srbmatrix32;  //!< End-user 
 typedef basic_scbmatrix<float, std::complex<float>> scbmatrix32;  //!< End-user class: square band matrix of 32-bit float complex numbers, see \ref basic_scbmatrix
 typedef basic_srsmatrix<float>                      srsmatrix32;  //!< End-user class: square symmetric matrix of 32-bit float numbers, see \ref basic_srsmatrix
 typedef basic_schmatrix<float, std::complex<float>> schmatrix32;  //!< End-user class: square hermitian matrix of 32-bit float complex numbers, see \ref basic_schmatrix
+
+typedef basic_rvector<double>                         rvector64;    //!< End-user class: vector of 64-bit double numbers, see \ref basic_rvector
+typedef basic_rmatrix<double>                         rmatrix64;    //!< End-user class: matrix of 64-bit double numbers, see \ref basic_rmatrix
+typedef basic_srmatrix<double>                        srmatrix64;   //!< End-user class: square matrix of 64-bit double numbers, see \ref basic_srmatrix
+typedef basic_cvector<double, std::complex<double>>   cvector64;    //!< End-user class: vector of 64-bit double complex numbers, see \ref basic_cvector
+typedef basic_cmatrix<double, std::complex<double>>   cmatrix64;    //!< End-user class: matrix of 64-bit double complex numbers, see \ref basic_cmatrix
+typedef basic_scmatrix<double, std::complex<double>>  scmatrix64;   //!< End-user class: square matrix of 64-bit double complex numbers, see \ref basic_scmatrix
+typedef basic_srbmatrix<double>                       srbmatrix64;  //!< End-user class: square band matrix of 64-bit double numbers, see \ref basic_srbmatrix
+typedef basic_scbmatrix<double, std::complex<double>> scbmatrix64;  //!< End-user class: square band matrix of 64-bit double complex numbers, see \ref basic_scbmatrix
+typedef basic_srsmatrix<double>                       srsmatrix64;  //!< End-user class: square symmetric matrix of 64-bit double numbers, see \ref basic_srsmatrix
+typedef basic_schmatrix<double, std::complex<double>> schmatrix64;  //!< End-user class: square hermitian matrix of 64-bit double complex numbers, see \ref basic_schmatrix
 
 //! Real identity matrix creation
 template<typename TR>
@@ -37292,15 +37361,15 @@ private:
 
 #if defined(CVM_USE_USER_LITERALS)
 
-constexpr std::complex<treal> operator "" _i(long double im)
-{
-    return { 0., static_cast<treal>(im) };
-}
-
-constexpr std::complex<treal> operator "" _i(unsigned long long int im)
-{
-    return { 0., static_cast<treal>(im) };
-}
+constexpr std::complex<double> operator "" _i(long double im)           
+{                                                                      
+    return { 0., static_cast<double>(im) };                             
+}                                                                      
+                                                                       
+constexpr std::complex<double> operator "" _i(unsigned long long int im)
+{                                                                      
+    return { 0., static_cast<double>(im) };                             
+}                                                                      
 
 template<typename T, typename TR>
 inline std::complex<TR> operator + (T re, const std::complex<TR>& c) {

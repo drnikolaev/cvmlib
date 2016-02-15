@@ -58,7 +58,7 @@ LIBS  += -lgtest
 DLIBS += -lgtest
 
 COMMON_FLAGS += -std=c++0x
-COMMON_LD_FLAGS=-L$(OUTDIR) -L../../gtest/googletest -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
+COMMON_LD_FLAGS=-L$(OUTDIR) -L$(OUTDIR)/gtest -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
 
 include $(INC_PATH)/suffixes.inc
 
