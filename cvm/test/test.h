@@ -30,17 +30,17 @@ typedef ::testing::Types<float, double> TestTypes;
 #define TPC std::complex<TypeParam>
 
 template<typename T>
-inline T s() {
+constexpr inline T s() {
     return sizeof(T) >= 8 ? T(1.e-14) : T(1.e-7);
 }
 
 template<typename T>
-inline T sp() {
+constexpr inline T sp() {
     return sizeof(T) >= 8 ? T(1.e-10) : T(5.e-4);
 }
 
 template<typename T>
-inline T spp() {
-    return sizeof(T) >= 8 ? T(1.e-5) : T(1.e-2);
+constexpr inline T spp(double fine, double coarse) {
+    return sizeof(T) >= 8 ? T(fine) : T(coarse);
 }
 

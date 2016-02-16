@@ -39,9 +39,35 @@ TYPED_TEST(MiscTest, TestLUCrash) {
     mLU.low_up(ma, nPivots);
 }
 
+TYPED_TEST(MiscTest, TestMKL81Crash) {
+    int i, j;
+    const int n = 1000;
+    const int p = 100;
+
+    basic_rmatrix<TP> A(n, p);
+    for (j = 0 ; j < p; ++j) {
+       for (i = 0 ; i < n; ++i) {
+           A(i+CVM0, j+CVM0) = (treal)(i + j * p);
+       }
+    }
+    basic_rvector<TP> v(_cvm_min(n,p)) ;
+    basic_srmatrix<TP> mU(n);
+    basic_srmatrix<TP> mVH(p);
+
+    v.svd(A, mU, mVH);
+    basic_rmatrix<TP> mv(n,p);
+    mv.diag(0) = v;
+
+    EXPECT_NEAR(0., (A * ~mVH - mU * mv).norm(), spp<TP>(1.e-7,2.0));
+    EXPECT_NEAR(0., (~A * mU - ~(mv * mVH)).norm(), spp<TP>(1.e-7,2.0));
+}
+
 TYPED_TEST(MiscTest, TestZeroResize) {
     TP r[16] = {0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.};
     basic_rmatrix<TP> m(r,4,4);
     m.resize(3,0);
     EXPECT_EQ(0, m.size());
+}
+
+TYPED_TEST(MiscTest, TestMatrixInOut) {
 }

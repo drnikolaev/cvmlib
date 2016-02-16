@@ -37361,12 +37361,12 @@ private:
 
 #if defined(CVM_USE_USER_LITERALS)
 
-constexpr std::complex<double> operator "" _i(long double im)           
+constexpr inline std::complex<double> operator "" _i(long double im)           
 {                                                                      
     return { 0., static_cast<double>(im) };                             
 }                                                                      
                                                                        
-constexpr std::complex<double> operator "" _i(unsigned long long int im)
+constexpr inline std::complex<double> operator "" _i(unsigned long long int im)
 {                                                                      
     return { 0., static_cast<double>(im) };                             
 }                                                                      

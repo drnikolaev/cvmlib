@@ -93,7 +93,7 @@ TYPED_TEST(InitializationTest, TestInitList) {
     EXPECT_EQ(0,rv0.size());
     EXPECT_EQ(0,cv0.size());
     EXPECT_EQ(1.,rv[CVM0]);
-    EXPECT_NEAR(rv(CVM0 + 2), 3.456, s<TP>());
+    EXPECT_EQ(TP(3.456), rv(CVM0 + 2));
     EXPECT_EQ(TPC(1.2, 3.4),cv(CVM0));
     EXPECT_EQ(TPC(99.99, 0.),cv(CVM0 + 2));
 }
@@ -583,5 +583,83 @@ TYPED_TEST(InitializationTest, TestHermitianSubmatrixMoveComplex) {
     EXPECT_EQ(TPC(5.,0.),m7(CVM0+2,CVM0+2));
     EXPECT_EQ(TPC(5.,0.),m7(CVM0+3,CVM0+2));
     EXPECT_EQ(TPC(7.,0.),m7(CVM0+4,CVM0+2));
+}
+
+
+TYPED_TEST(InitializationTest, TestConstVsNonconstforeignArray) {
+    TP r[16] = {0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.};
+    const TP rc[16] = {0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.};
+    TPC c[16];
+    const TPC cc[16];
+
+    basic_srsmatrix<TP> ssr(r, 4);
+    basic_srsmatrix<TP> ssrc(rc, 4);
+    ssr.set(CVM0+3,CVM0+3,5.11);
+    ssrc.set(CVM0+3,CVM0+3,5.11);
+    EXPECT_EQ(TP(5.11), r[15]) << "srsmatrix: non-const foreign array";
+    EXPECT_EQ(TP(0.00), rc[15]) << "srsmatrix: const foreign array";
+
+    basic_schmatrix<TP,TPC> shc(c, 4);
+    basic_schmatrix<TP,TPC> shcc(cc, 4);
+    shc.set(CVM0+1,CVM0+1,TPC(6.11,0.));
+    shcc.set(CVM0+1,CVM0+1,TPC(6.11,0.));
+    EXPECT_EQ(TPC(6.11,0.), c[5]) << "schmatrix: non-const foreign array";
+    EXPECT_EQ(TPC(0.0,0.0), cc[5]) << "schmatrix: const foreign array";
+
+    basic_rvector<TP> vr(r, 16);
+    basic_rvector<TP> vrc(rc, 16);
+    vr[CVM0+7]=3.33;
+    vrc[CVM0+7]=3.33;
+    EXPECT_EQ(TP(3.33), r[7]) << "rvector: non-const foreign array";
+    EXPECT_EQ(TP(0.00), rc[7]) << "rvector: const foreign array";
+
+    basic_cvector<TP,TPC> vc(c, 16);
+    basic_cvector<TP,TPC> vcc(cc, 16);
+    vc[CVM0+7]=TPC(3.33,4.44);
+    vcc[CVM0+7]=TPC(3.33,4.44);
+    EXPECT_EQ(TPC(3.33,4.44), c[7]) << "cvector: non-const foreign array";
+    EXPECT_EQ(TPC(0.0,0.0), cc[7]) << "cvector: const foreign array";
+
+    basic_rmatrix<TP> mr(r, 3, 4);
+    basic_rmatrix<TP> mrc(rc, 3, 4);
+    mr(CVM0+1,CVM0+1)=3.22;
+    mrc(CVM0+1,CVM0+1)=3.22;
+    EXPECT_EQ(TP(3.22), r[4]) << "rmatrix: non-const foreign array";
+    EXPECT_EQ(TP(0.00), rc[4]) << "rmatrix: const foreign array";
+
+    basic_cmatrix<TP,TPC> mc(c, 3, 4);
+    basic_cmatrix<TP,TPC> mcc(cc, 3, 4);
+    mc(CVM0+1,CVM0+1)=TPC(3.33,4.22);
+    mcc(CVM0+1,CVM0+1)=TPC(3.33,4.22);
+    EXPECT_EQ(TPC(3.33,4.22), c[4]) << "cmatrix: non-const foreign array";
+    EXPECT_EQ(TPC(0.0,0.0), cc[4]) << "cmatrix: const foreign array";
+
+    basic_srmatrix<TP> sr(r, 4);
+    basic_srmatrix<TP> src(rc, 4);
+    sr(CVM0+1,CVM0+1)=3.11;
+    src(CVM0+1,CVM0+1)=3.11;
+    EXPECT_EQ(TP(3.11), r[5]) << "srmatrix: non-const foreign array";
+    EXPECT_EQ(TP(0.00), rc[5]) << "srmatrix: const foreign array";
+
+    basic_scmatrix<TP,TPC> sc(c, 4);
+    basic_scmatrix<TP,TPC> scc(cc, 4);
+    sc(CVM0+1,CVM0+1)=TPC(3.11,4.22);
+    scc(CVM0+1,CVM0+1)=TPC(3.11,4.22);
+    EXPECT_EQ(TPC(3.11,4.22), c[5]) << "scmatrix: non-const foreign array";
+    EXPECT_EQ(TPC(0.0,0.0), cc[5]) << "scmatrix: const foreign array";
+
+    basic_srbmatrix<TP> br(r, 8, 1, 0);
+    basic_srbmatrix<TP> brc(rc, 8, 1, 0);
+    br(CVM0+1,CVM0)=3.01;
+    brc(CVM0+1,CVM0)=3.01;
+    EXPECT_EQ(TP(3.01), r[1]) << "srbmatrix: non-const foreign array";
+    EXPECT_EQ(TP(0.00), rc[1]) << "srbmatrix: const foreign array";
+
+    basic_scbmatrix<TP,TPC> bc(c, 8, 1, 0);
+    basic_scbmatrix<TP,TPC> bcc(cc, 8, 1, 0);
+    bc(CVM0+1,CVM0)=TPC(3.11,2.11);
+    bcc(CVM0+1,CVM0)=TPC(3.11,2.11);
+    EXPECT_EQ(TPC(3.11,2.11), c[1]) << "scbmatrix: non-const foreign array";
+    EXPECT_EQ(TPC(0.0,0.0), cc[1]) << "scbmatrix: const foreign array";
 }
 
