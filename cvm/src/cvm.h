@@ -304,10 +304,12 @@ typedef unsigned long CVM_PTR_WRAPPER;
 typedef unsigned char tbyte; //!< memory allocation quantum
 
 #ifdef CVM_NO_NAMESPACE
+#   define CVM_NAMESPACE
 #   define CVM_NAMESPACE_BEG
 #   define CVM_NAMESPACE_END
 #else
-#   define CVM_NAMESPACE_BEG namespace cvm {
+#   define CVM_NAMESPACE cvm
+#   define CVM_NAMESPACE_BEG namespace CVM_NAMESPACE {
 #   define CVM_NAMESPACE_END }
 #endif
 
@@ -1375,7 +1377,8 @@ void _set_imag(TC* pDm, tint mnSize, tint mnIncr, TR d)
 /**
  * @brief Read-write access for a particular value
  *
- * This class is used to resctict access to elements of specific matrices like symmetric, hermitian and band ones.
+ * This class is used to resctict access to elements of specific matrices
+ * like symmetric, hermitian and band ones.
  */
 template<typename T, typename TR>
 class type_proxy
@@ -37396,6 +37399,15 @@ inline std::complex<TR> operator - (const std::complex<TR>& c, const T& re) {
 
 CVM_NAMESPACE_END
 
+namespace std {
+
+template<typename T, typename TR>
+inline TR abs (const CVM_NAMESPACE::type_proxy<T,TR>& p) {
+    return abs(p.val());
+}
+
+}
+
 
 //! BLAS callback error handler, don't use
 #if !defined (_MSC_VER)
@@ -37412,3 +37424,4 @@ extern "C"
 }
 
 #endif                  // _CVM_H
+
