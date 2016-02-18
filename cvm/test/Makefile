@@ -37,8 +37,8 @@ ifdef COMSPEC
   STATIC_ONLY=1
 else
   COMMON_FLAGS += -pthread -fPIC
-  LIBS+=-lpthread
-  DLIBS+=-lpthread
+#  LIBS+=-lpthread
+#  DLIBS+=-lpthread
 endif
 
 ifdef CVM_STLPORT
@@ -58,7 +58,7 @@ LIBS  += -lgtest
 DLIBS += -lgtest
 
 COMMON_FLAGS += -std=c++0x
-COMMON_LD_FLAGS=-L$(OUTDIR) -L$(OUTDIR)/gtest -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
+COMMON_LD_FLAGS=-L$(OUTDIR) -L$(OUTDIR)/../gtest -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
 
 include $(INC_PATH)/suffixes.inc
 
@@ -95,6 +95,11 @@ ifdef PROF
   CFLAGSD += -pg
   LFLAGSD += -pg
 endif
+
+
+LIBS  += -lpthread
+DLIBS += -lpthread
+
 
 all: debug release
 release : $(OUTDIR)/$(OUTNAME_RELEASE)
