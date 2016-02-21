@@ -1222,3 +1222,62 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ(this->c1[9], scbm(CVM0+1,CVM0+2));
 }
 
+TYPED_TEST(InitializationTest, TestSubAssignment) {
+    basic_rvector<TP> rv(10), rv2(4);
+    rv2.randomize(-3., 2.);
+    rv.assign(CVM0+2, rv2);
+    EXPECT_EQ(rv[CVM0+2], rv2[CVM0]) << "rvector subvector assignment";
+    EXPECT_EQ(rv[CVM0+5], rv2[CVM0+3]) << "rvector subvector assignment";
+
+    basic_cvector<TP,TPC> cv(10), cv2(4);
+    cv2.randomize_real(-3., 2.);
+    cv2.randomize_imag(-3., 2.);
+    cv.assign(CVM0+2, cv2);
+    EXPECT_EQ(cv[CVM0+2], cv2[CVM0]) << "cvector subvector assignment";
+    EXPECT_EQ(cv[CVM0+5], cv2[CVM0+3]) << "cvector subvector assignment";
+
+    basic_rmatrix<TP> rm(5,5), rm2(6,6);
+    rm.randomize(-3., 2.);
+    rm2.assign(CVM0+1, CVM0+1, rm);
+    EXPECT_EQ(rm(CVM0,CVM0), rm2(CVM0+1,CVM0+1)) <<  "rmatrix submatrix assignment";
+    EXPECT_EQ(rm(CVM0+1,CVM0+2), rm2(CVM0+2,CVM0+3)) <<  "rmatrix submatrix assignment";
+
+    basic_srmatrix<TP> srm(6);
+    srm.randomize(-3., 2.);
+    srm.assign(CVM0+1, CVM0+1, rm);
+    EXPECT_EQ(rm(CVM0,CVM0), srm(CVM0+1,CVM0+1)) <<  "srmatrix submatrix assignment";
+    EXPECT_EQ(rm(CVM0+1,CVM0+2), srm(CVM0+2,CVM0+3)) <<  "srmatrix submatrix assignment";
+
+    basic_cmatrix<TP,TPC> cm(5,5), cm2(6,6);
+    cm.randomize_real(-3., 2.);
+    cm.randomize_imag(-3., 2.);
+    cm2.assign(CVM0+1, CVM0+1, cm);
+    EXPECT_EQ(cm(CVM0,CVM0), cm2(CVM0+1,CVM0+1)) <<  "cmatrix submatrix assignment";
+    EXPECT_EQ(cm(CVM0+1,CVM0+2), cm2(CVM0+2,CVM0+3)) <<  "cmatrix submatrix assignment";
+
+    basic_scmatrix<TP,TPC> scm(6);
+    scm.randomize_real(-3., 2.);
+    scm.randomize_imag(-3., 2.);
+    scm.assign(CVM0+1, CVM0+1, cm);
+    EXPECT_EQ(cm(CVM0,CVM0), scm(CVM0+1,CVM0+1)) <<  "scmatrix submatrix assignment";
+    EXPECT_EQ(cm(CVM0+1,CVM0+2), scm(CVM0+2,CVM0+3)) <<  "scmatrix submatrix assignment";
+
+    basic_srsmatrix<TP> srs1(5), srs2(3);
+    tint ns = srs1.msize();
+    srs1.resize(5);
+    srs2.randomize(-3., 2.);
+    srs1.assign(CVM0+2,srs2);
+    EXPECT_EQ(srs2(CVM0,CVM0), srs1(CVM0+2,CVM0+2)) <<  "srsmatrix submatrix assignment";
+    EXPECT_EQ(srs2(CVM0+1,CVM0+2), srs1(CVM0+3,CVM0+4)) <<  "srsmatrix submatrix assignment";
+    srs1.resize(ns);
+
+    basic_schmatrix<TP,TPC> sch1(1), sch2(3);
+    ns = sch1.msize();
+    sch1.resize(5);
+    sch2.randomize_real(-3., 2.);
+    sch2.randomize_imag(-3., 2.);
+    sch1.assign(CVM0+2,sch2);
+    EXPECT_EQ(sch2(CVM0,CVM0), sch1(CVM0+2,CVM0+2)) <<  "schmatrix submatrix assignment";
+    EXPECT_EQ(sch2(CVM0+1,CVM0+2), sch1(CVM0+3,CVM0+4)) <<  "schmatrix submatrix assignment";
+    sch1.resize(ns);
+}

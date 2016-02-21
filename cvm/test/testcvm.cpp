@@ -23,62 +23,6 @@
 
 
 
-        {   // sub-assignment
-            rvector rv2(4);
-            rv2.randomize((treal) -3., (treal) 2.);
-            rv.assign(CVM0+2, rv2);
-            CheckReal (rv[CVM0+2], rv2[CVM0], "rvector subvector assignment",    os, __LINE__);
-            CheckReal (rv[CVM0+5], rv2[CVM0+3], "rvector subvector assignment",    os, __LINE__);
-
-            cvector cv2(4);
-            cv2.randomize_real((treal) -3., (treal) 2.);
-            cv2.randomize_imag((treal) -3., (treal) 2.);
-            cv.assign(CVM0+2, cv2);
-            CheckComplex (cv[CVM0+2], cv2[CVM0], "cvector subvector assignment",    os, __LINE__);
-            CheckComplex (cv[CVM0+5], cv2[CVM0+3], "cvector subvector assignment",    os, __LINE__);
-
-            rm.randomize((treal) -3., (treal) 2.);
-            rm2.assign(CVM0+1, CVM0+1, rm);
-            CheckReal (rm2(CVM0+1,CVM0+1), rm(CVM0,CVM0), "rmatrix submatrix assignment",    os, __LINE__);
-            CheckReal (rm2(CVM0+2,CVM0+3), rm(CVM0+1,CVM0+2), "rmatrix submatrix assignment",    os, __LINE__);
-
-            srmatrix srm (5);
-            srm.randomize((treal) -3., (treal) 2.);
-            srm.assign(CVM0+1, CVM0+1, rm);
-            CheckReal (srm(CVM0+1,CVM0+1), rm(CVM0,CVM0), "srmatrix submatrix assignment",    os, __LINE__);
-            CheckReal (srm(CVM0+2,CVM0+3), rm(CVM0+1,CVM0+2), "srmatrix submatrix assignment",    os, __LINE__);
-
-            cm.randomize_real((treal) -3., (treal) 2.);
-            cm.randomize_imag((treal) -3., (treal) 2.);
-            cm2.assign(CVM0+1, CVM0+1, cm);
-            CheckComplex (cm2(CVM0+1,CVM0+1), cm(CVM0,CVM0), "cmatrix submatrix assignment",    os, __LINE__);
-            CheckComplex (cm2(CVM0+2,CVM0+3), cm(CVM0+1,CVM0+2), "cmatrix submatrix assignment",    os, __LINE__);
-
-            scmatrix scm (5);
-            scm.randomize_real((treal) -3., (treal) 2.);
-            scm.randomize_imag((treal) -3., (treal) 2.);
-            scm.assign(CVM0+1, CVM0+1, cm);
-            CheckComplex (scm(CVM0+1,CVM0+1), cm(CVM0,CVM0), "scmatrix submatrix assignment",    os, __LINE__);
-            CheckComplex (scm(CVM0+2,CVM0+3), cm(CVM0+1,CVM0+2), "scmatrix submatrix assignment",    os, __LINE__);
-
-            tint ns = srs1.msize();
-            srs1.resize(5);
-            srs2.randomize((treal) -3., (treal) 2.);
-            srs1.assign(CVM0+2,srs2);
-            CheckReal (srs1(CVM0+2,CVM0+2), srs2(CVM0,CVM0), "srsmatrix submatrix assignment",    os, __LINE__);
-            CheckReal (srs1(CVM0+3,CVM0+4), srs2(CVM0+1,CVM0+2), "srsmatrix submatrix assignment",    os, __LINE__);
-            srs1.resize(ns);
-
-            ns = sch1.msize();
-            sch1.resize(5);
-            sch2.randomize_real((treal) -3., (treal) 2.);
-            sch2.randomize_imag((treal) -3., (treal) 2.);
-            sch1.assign(CVM0+2,sch2);
-            CheckComplex (sch1(CVM0+2,CVM0+2), sch2(CVM0,CVM0), "schmatrix submatrix assignment",    os, __LINE__);
-            CheckComplex (sch1(CVM0+3,CVM0+4), sch2(CVM0+1,CVM0+2), "schmatrix submatrix assignment",    os, __LINE__);
-            sch1.resize(ns);
-        }
-
         srs2 = srs1;
         CheckBool (srs1 == srs2, true,            "srsmatrix ==",   os, __LINE__);
         srs2.set(CVM0+1,CVM0+2,srs2(CVM0+1,CVM0+2) + (treal)0.000001);
@@ -651,6 +595,29 @@
         srm1 << srmatrix (rv1);
         CheckReal    ((srbm2 * ~rmVH - rmU * srm1).norm(),  (treal) 0.,  "srbmatrix svd", os, __LINE__, dPessimisticSp);
         CheckReal    ((~srbm2 * rmU - ~(srm1 * rmVH)).norm(),  (treal) 0.,  "srbmatrix svd", os, __LINE__, dPessimisticSp);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         // test case from Martin
