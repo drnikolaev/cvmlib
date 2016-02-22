@@ -1,27 +1,3 @@
-//                  CVM Class Library
-//                  http://cvmlib.com
-//
-//          Copyright Sergei Nikolaev 1992-2014
-// Distributed under the Boost Software License, Version 1.0.
-//    (See accompanying file LICENSE_1_0.txt or copy at
-//          http://www.boost.org/LICENSE_1_0.txt)
-
-#include "StdAfx.h"
-
-#if 0
-
-
-#ifdef CVM_FLOAT
-        os.precision (7);
-        std::cout.precision (5);
-#else
-        os.precision (5);
-        std::cout.precision (16);
-#endif
-        os.setf(std::ios::scientific | std::ios::showpoint | std::ios::left);
-        std::cout.setf(std::ios::scientific | std::ios::showpoint | std::ios::left);
-
-
 
         srs2 = srs1;
         CheckBool (srs1 == srs2, true,            "srsmatrix ==",   os, __LINE__);
