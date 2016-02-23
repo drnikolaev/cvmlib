@@ -1,4 +1,4 @@
-
+#if 0
         srs2 = srs1;
         CheckBool (srs1 == srs2, true,            "srsmatrix ==",   os, __LINE__);
         srs2.set(CVM0+1,CVM0+2,srs2(CVM0+1,CVM0+2) + (treal)0.000001);
@@ -4702,3 +4702,4 @@ det (m)
 }
 
 #endif
+
