@@ -1220,6 +1220,593 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     scbm.assign(this->c1);
     EXPECT_EQ(this->c1[2], scbm(CVM0,CVM0));
     EXPECT_EQ(this->c1[9], scbm(CVM0+1,CVM0+2));
+
+
+
+
+
+
+
+
+
+
+
+
+        srs2 = srs1;
+        EXPECT_TRUE(srs1 == srs2) << "srsmatrix ==";
+        srs2.set(CVM0+1, CVM0+2, srs2(CVM0+1,CVM0+2) + 0.000001);
+        EXPECT_FALSE(srs1 == srs2) << "srsmatrix ==";
+        EXPECT_TRUE(srs1 != srs2) << "srsmatrix !=";
+
+        sch2 = sch1;
+        EXPECT_TRUE(sch1 == sch2) << "schmatrix ==";
+        sch2.set(CVM0+1, CVM0+2, sch2(CVM0+1,CVM0+2) + TPC(0.000001,0.00001));
+        EXPECT_FALSE(sch1 == sch2) << "schmatrix ==";
+        EXPECT_TRUE(sch1 != sch2) << "schmatrix !=";
+
+
+
+        rv1 = rv;
+        EXPECT_EQ(rv(CVM0+2), rv1[CVM0+2]) << "rvector = rvector";
+        EXPECT_TRUE(rv1 == rv) << "rvector ==";
+        EXPECT_FALSE(rv1 != rv) << "rvector !=";
+        rm1 = rm;
+        EXPECT_EQ(rm(CVM0+1,CVM0+2), rm1[CVM0+1][CVM0+2]) << "rmatrix = rmatrix";
+        EXPECT_TRUE(rm1 == rm) << "rmatrix ==";
+        EXPECT_FALSE(rm1 != rm) << "rmatrix !=";
+        EXPECT_TRUE(rm1[CVM0] == rm[CVM0]) << "rmatrix = rmatrix, rm1[1] == rm[1]";
+        EXPECT_FALSE(rm1(CVM0+1) != rm(CVM0+1)) << "rmatrix = rmatrix,rm1(2) != rm(2)";
+        srm1 = srm;
+        EXPECT_EQ(srm(CVM0+1,CVM0+2), srm1[CVM0+1][CVM0+2]) << "srmatrix = srmatrix";
+        EXPECT_TRUE(srm1 == srm) << "srmatrix ==";
+        EXPECT_FALSE(srm1 != srm) << "srmatrix !=";
+        EXPECT_TRUE(srm1[CVM0] == srm[CVM0]) << "srmatrix = srmatrix, srm1[1] == srm[1]";
+        EXPECT_FALSE(srm1(CVM0+1) != srm(CVM0+1)) << "srmatrix = srmatrix,srm1(2) != srm(2)";
+        srbm1 = srbm;
+        EXPECT_EQ(srbm(CVM0+1,CVM0), srbm1[CVM0+1][CVM0]) << "srbmatrix = srbmatrix";
+        EXPECT_TRUE(srbm1 == srbm) << "srbmatrix ==";
+        EXPECT_FALSE(srbm1 != srbm) << "srbmatrix !=";
+        EXPECT_TRUE(srbm1[CVM0] == srbm[CVM0]) << "srbmatrix = srbmatrix, srbm1[1] == srbm[1]";
+        EXPECT_FALSE(srbm1(CVM0+1) != srbm(CVM0+1)) << "srbmatrix = srbmatrix,srbm1(2) != srbm(2)";
+
+        cv1 = cv;
+        EXPECT_EQ(cv(CVM0+3), cv1[CVM0+3]) << "cvector = cvector";
+        EXPECT_TRUE(cv1 == cv) << "cvector ==";
+        EXPECT_FALSE(cv1 != cv) << "cvector !=";
+        cm1 = cm;
+        EXPECT_EQ(cm(CVM0+1,CVM0), cm1[CVM0+1][CVM0]) << "cmatrix = cmatrix";
+        EXPECT_TRUE(cm1 == cm) << "cmatrix ==";
+        EXPECT_FALSE(cm1 != cm) << "cmatrix !=";
+        EXPECT_TRUE(cm1[CVM0] == cm[CVM0]) << "cmatrix = cmatrix, cm1[1] == cm[1]";
+        EXPECT_FALSE(cm1(CVM0+1) != cm(CVM0+1)) << "cmatrix = cmatrix,cm1(2) != cm(2)";
+        scm1 = scm;
+        EXPECT_EQ(scm(CVM0+1,CVM0), scm1[CVM0+1][CVM0]) << "scmatrix = scmatrix";
+        EXPECT_TRUE(scm1 == scm) << "scmatrix ==";
+        EXPECT_FALSE(scm1 != scm) << "scmatrix !=";
+        EXPECT_TRUE(scm1[CVM0] == scm[CVM0]) << "scmatrix = scmatrix, scm1[1] == scm[1]";
+        EXPECT_FALSE(scm1(CVM0+1) != scm(CVM0+1)) << "scmatrix = scmatrix,scm1(2) != scm(2)";
+        scbm1 = scbm;
+        EXPECT_EQ(scbm(CVM0+1,CVM0), scbm1[CVM0+1][CVM0]) << "scbmatrix = scbmatrix";
+        EXPECT_TRUE(scbm1 == scbm) << "scbmatrix ==";
+        EXPECT_FALSE(scbm1 != scbm) << "scbmatrix !=";
+        EXPECT_TRUE(scbm1[CVM0] == scbm[CVM0]) << "scbmatrix = scbmatrix, scbm1[1] == scbm[1]";
+        EXPECT_FALSE(scbm1(CVM0+1) != scbm(CVM0+1)) << "scbmatrix = scbmatrix,scbm1(2) != scbm(2)";
+
+//        rv2 = rv + rv1;   // wouldn't work because rv and rv1 share the same array!
+        rv3.resize(10);
+        rv3 = rv + rv1;
+        EXPECT_EQ(rv(CVM0) + rv1[CVM0], rv3[CVM0]) << "rvector + rvector";
+        EXPECT_EQ(rv(CVM0+9) + rv1[CVM0+9], rv3[CVM0+9]) << "rvector + rvector";
+        rv3 = rv - rv1;
+        EXPECT_EQ(rv(CVM0) - rv1[CVM0], rv3[CVM0]) << "rvector - rvector";
+        EXPECT_EQ(rv(CVM0+9) - rv1[CVM0+9], rv3[CVM0+9]) << "rvector - rvector";
+        cv3 = cv + cv1;
+        EXPECT_EQ(cv(CVM0) + cv1[CVM0], cv3[CVM0]) << "cvector + cvector";
+        EXPECT_EQ(cv(CVM0+9) + cv1[CVM0+9], cv3[CVM0+9]) << "cvector + cvector";
+        cv3 = cv - cv1;
+        EXPECT_EQ(cv(CVM0) - cv1[CVM0], cv3[CVM0]) << "cvector - cvector";
+        EXPECT_EQ(cv(CVM0+9) - cv1[CVM0+9], cv3[CVM0+9]) << "cvector - cvector";
+        rm2.resize(2, 3);
+        rm = rm1 + rm2;
+        EXPECT_EQ(rm1(CVM0,CVM0) + rm2(CVM0, CVM0), rm[CVM0][CVM0]) << "rmatrix + rmatrix";
+        EXPECT_EQ((rm1[CVM0+1] + rm2[CVM0+1]).norm(),rm[CVM0+1].norm()) << "rmatrix + rmatrix";
+        rm = rm1 - rm2;
+        EXPECT_EQ(rm1(CVM0,CVM0) - rm2(CVM0, CVM0), rm[CVM0][CVM0]) << "rmatrix - rmatrix";
+        EXPECT_EQ((rm1(CVM0+2) - rm2(CVM0+2)).norm(),rm(CVM0+2).norm()) << "rmatrix - rmatrix";
+        cm2.resize(2, 3);
+        cm = cm1 + cm2;
+        EXPECT_EQ(cm1(CVM0,CVM0) + cm2(CVM0, CVM0), cm[CVM0][CVM0]) << "cmatrix + cmatrix";
+        EXPECT_EQ((cm1[CVM0+1] + cm2[CVM0+1]).norm(),cm[CVM0+1].norm()) << "cmatrix + cmatrix";
+        cm = cm1 - cm2;
+        EXPECT_EQ(cm1(CVM0,CVM0) - cm2(CVM0, CVM0), cm[CVM0][CVM0]) << "cmatrix - cmatrix";
+        EXPECT_EQ((cm1(CVM0+2) - cm2(CVM0+2)).norm(),cm(CVM0+2).norm()) << "cmatrix - cmatrix";
+        srm = srm1 + srm2;
+        EXPECT_EQ(srm1(CVM0,CVM0) + srm2(CVM0, CVM0), srm[CVM0][CVM0]) << "srmatrix + srmatrix";
+        EXPECT_EQ((srm1[CVM0+2] + srm2[CVM0+2]).norm(),srm[CVM0+2].norm()) << "srmatrix + srmatrix";
+        srm = srm1 - srm2;
+        EXPECT_EQ(srm1(CVM0,CVM0) - srm2(CVM0, CVM0), srm[CVM0][CVM0]) << "srmatrix - srmatrix";
+        EXPECT_EQ((srm1(CVM0+2) - srm2(CVM0+2)).norm(),srm(CVM0+2).norm()) << "srmatrix - srmatrix";
+        scm = scm1 + scm2;
+        EXPECT_EQ(scm1(CVM0,CVM0) + scm2(CVM0, CVM0), scm[CVM0][CVM0]) << "scmatrix + scmatrix";
+        EXPECT_EQ((scm1(CVM0+2) + scm2(CVM0+2)).norm(),scm(CVM0+2).norm()) << "scmatrix + scmatrix";
+        scm = scm1 - scm2;
+        EXPECT_EQ(scm1(CVM0,CVM0) - scm2(CVM0, CVM0), scm[CVM0][CVM0]) << "scmatrix - scmatrix";
+        EXPECT_EQ((scm1(CVM0+2) - scm2(CVM0+2)).norm(),scm(CVM0+2).norm()) << "scmatrix - scmatrix";
+
+        basic_srbmatrix<TP> srbm2 (this->a2, 4, 1, 2);
+        srbm = srbm1 + srbm2;
+        EXPECT_EQ(srbm1(CVM0,CVM0) + srbm2(CVM0, CVM0), srbm[CVM0][CVM0]) << "srbmatrix + srbmatrix";
+        EXPECT_EQ((srbm1(CVM0+2) + srbm2(CVM0+2)).norm(),srbm(CVM0+2).norm()) << "srbmatrix + srbmatrix";
+        srbm = srbm1 - srbm2;
+        EXPECT_EQ(srbm1(CVM0,CVM0) - srbm2(CVM0, CVM0), srbm[CVM0][CVM0]) << "srbmatrix - srbmatrix";
+        EXPECT_EQ((srbm1(CVM0+2) - srbm2(CVM0+2)).norm(),srbm(CVM0+2).norm()) << "srbmatrix - srbmatrix";
+
+        scbmatrix scbm2 (this->c1, 4, 1, 2);
+        scbm = scbm1 + scbm2;
+        EXPECT_EQ(scbm1(CVM0,CVM0) + scbm2(CVM0, CVM0), scbm[CVM0][CVM0]) << "scbmatrix + scbmatrix";
+        EXPECT_EQ((scbm1(CVM0+2) + scbm2(CVM0+2)).norm(),scbm(CVM0+2).norm()) << "scbmatrix + scbmatrix";
+        scbm = scbm1 - scbm2;
+        EXPECT_EQ(scbm1(CVM0,CVM0) - scbm2(CVM0, CVM0), scbm[CVM0][CVM0]) << "scbmatrix - scbmatrix";
+        EXPECT_EQ((scbm1(CVM0+2) - scbm2(CVM0+2)).norm(),scbm(CVM0+2).norm()) << "scbmatrix - scbmatrix";
+
+        srs2 = srs1;
+        rs1 = srs1(CVM0, CVM0+1);
+        EXPECT_EQ(rs1 + rs1,(srs1 + srs2)(CVM0,CVM0+1)) << "srsmatrix + srsmatrix";
+        EXPECT_EQ(0.,(srs1 - srs2).norm()) << "srsmatrix - srsmatrix";
+
+        sch2 = sch1;
+        cs1 = sch1(CVM0, CVM0+1);
+        EXPECT_EQ(cs1 + cs1,(sch1 + sch2)(CVM0,CVM0+1)) << "schmatrix + schmatrix";
+        EXPECT_EQ(0.,(sch1 - sch2).norm()) << "schmatrix - schmatrix";
+
+
+        int n1 = -2;
+        r1     = -2.;
+        rv1 = rv * r1;
+        rv3 = n1 * rv;
+        EXPECT_EQ(rv1[CVM0+2], rv3[CVM0+2]) << "rvector * number";
+        rv3 = r1 * rv;
+        EXPECT_EQ(rv1[CVM0+2], rv3[CVM0+2]) << "rvector * number";
+        cv1 = cv * r1;
+        cv3 = n1 * cv;
+        EXPECT_EQ(cv1[CVM0+2], cv3[CVM0+2]) << "cvector * number";
+        cv3 = r1 * cv;
+        EXPECT_EQ(cv1[CVM0+2], cv3[CVM0+2]) << "cvector * number";
+        rm1 = rm * r1;
+        rm2 = n1 * rm;
+        EXPECT_EQ(rm2(CVM0+1,CVM0+2), rm1(CVM0+1,CVM0+2)) << "rmatrix * number";
+        rm2 = r1 * rm;
+        EXPECT_EQ(rm2(CVM0+1,CVM0+2), rm1(CVM0+1,CVM0+2)) << "rmatrix * number";
+        cm1 = cm * r1;
+        cm2 = n1 * cm;
+        EXPECT_EQ(cm1(CVM0+1,CVM0+2), cm2(CVM0+1,CVM0+2)) << "cmatrix * number";
+        cm2 = r1 * cm;
+        EXPECT_EQ(cm1(CVM0+1,CVM0+2), cm2(CVM0+1,CVM0+2)) << "cmatrix * number";
+        srm1 = srm * r1;
+        srm2 = n1 * srm;
+        EXPECT_EQ(srm2(CVM0+1,CVM0+2), srm1(CVM0+1,CVM0+2)) << "srmatrix * number";
+        srm2 = r1 * srm;
+        EXPECT_EQ(srm2(CVM0+1,CVM0+2), srm1(CVM0+1,CVM0+2)) << "srmatrix * number";
+        scm.assign(this->c1);
+        scm1 = scm * r1;
+        scm2 = n1 * scm;
+        EXPECT_EQ(scm1(CVM0+1,CVM0+2), scm2(CVM0+1,CVM0+2)) << "scmatrix * number";
+        scm2 = r1 * scm;
+        EXPECT_EQ(scm1(CVM0+1,CVM0+2), scm2(CVM0+1,CVM0+2)) << "scmatrix * number";
+        srbm1 = srbm * r1;
+        srbm2 = n1 * srbm;
+        EXPECT_EQ(srbm2(CVM0+1,CVM0+2), srbm1(CVM0+1,CVM0+2)) << "srbmatrix * number";
+        srbm2 = r1 * srbm;
+        EXPECT_EQ(srbm2(CVM0+1,CVM0+2), srbm1(CVM0+1,CVM0+2)) << "srbmatrix * number";
+        scbm1 = scbm * r1;
+        scbm2 = n1 * scbm;
+        EXPECT_EQ(scbm2(CVM0+1,CVM0+2), scbm1(CVM0+1,CVM0+2)) << "scbmatrix * number";
+        scbm2 = r1 * scbm;
+        EXPECT_EQ(scbm2(CVM0+1,CVM0+2), scbm1(CVM0+1,CVM0+2)) << "scbmatrix * number";
+        cr1 = r1;
+        scbm2 = cr1 * scbm;
+        EXPECT_EQ(scbm2(CVM0+1,CVM0+2), scbm1(CVM0+1,CVM0+2)) << "scbmatrix * number";
+
+        rv1 = rv / r1;
+        EXPECT_EQ(rv[CVM0+9] / r1, rv1[CVM0+9]) << "rvector / number";
+        cv1 = cv / r1;
+        EXPECT_EQ(cv[CVM0+9] / r1, cv1[CVM0+9]) << "cvector / number";
+        rm1 = rm / r1;
+        EXPECT_EQ(rm(CVM0+1,CVM0+2) / r1, rm1(CVM0+1,CVM0+2)) << "rmatrix / number";
+        cm1 = cm / r1;
+        EXPECT_EQ(cm(CVM0+1,CVM0+2) / r1, cm1(CVM0+1,CVM0+2)) << "cmatrix / number";
+
+        srm1 = srm / r1;
+        EXPECT_EQ(srm(CVM0+1,CVM0+2) / r1, srm1(CVM0+1,CVM0+2)) << "srmatrix / number";
+        scm1 = scm / r1;
+        EXPECT_EQ(scm(CVM0+1,CVM0+2) / r1, scm1(CVM0+1,CVM0+2)) << "scmatrix / number";
+        srbm1 = srbm / r1;
+        EXPECT_EQ(srbm(CVM0+1,CVM0+2) / r1, srbm1(CVM0+1,CVM0+2)) << "srbmatrix / number";
+        scbm1 = scbm / r1;
+        EXPECT_EQ(scbm(CVM0+1,CVM0+2) / r1, scbm1(CVM0+1,CVM0+2)) << "scbmatrix / number";
+        scbm1 = scbm / cr1;
+        EXPECT_EQ(scbm(CVM0+1,CVM0+2) / cr1, scbm1(CVM0+1,CVM0+2)) << "scbmatrix / number";
+
+        cv1 = cv  * cr2;
+        cv3 = cr2 * cv;
+        EXPECT_EQ(cv1[CVM0+2], cv3[CVM0+2]) << "cvector * cmplx number";
+        cm1 = cm * cr2;
+        cm2 = cr2 * cm;
+        EXPECT_EQ(cm1(CVM0+1,CVM0+2), cm2(CVM0+1,CVM0+2)) << "cmatrix * cmplx number";
+        scm1 = scm * cr2;
+        scm2 = cr2 * scm;
+        EXPECT_EQ(scm1(CVM0+1,CVM0+2), scm2(CVM0+1,CVM0+2)) << "scmatrix * cmplx number";
+        scbm1 = scbm * cr2;
+        scbm2 = cr2 * scbm;
+        EXPECT_EQ(scbm1(CVM0+1,CVM0+2), scbm2(CVM0+1,CVM0+2)) << "scbmatrix * cmplx number";
+
+        rv1 = - rv;
+        EXPECT_EQ(- rv[CVM0+9], rv1[CVM0+9]) << "- rvector";
+        cv1 = - cv;
+        EXPECT_EQ(- cv[CVM0+9], cv1[CVM0+9]) << "- cvector";
+        rm1 = - rm;
+        EXPECT_EQ(- rm(CVM0+1,CVM0+2), rm1(CVM0+1,CVM0+2)) << "- rmatrix";
+        cm1 = - cm;
+        EXPECT_EQ(- cm(CVM0+1,CVM0+2), cm1(CVM0+1,CVM0+2)) << "- cmatrix";
+        srm1 = - srm;
+        EXPECT_EQ(- srm(CVM0+1,CVM0+2), srm1(CVM0+1,CVM0+2)) << "- srmatrix";
+        scm1 = - scm;
+        EXPECT_EQ(- scm(CVM0+1,CVM0+2), scm1(CVM0+1,CVM0+2)) << "- scmatrix";
+        srbm.assign(this->a2);
+        srbm1 = - srbm;
+        EXPECT_EQ(- srbm(CVM0+1,CVM0+2), srbm1(CVM0+1,CVM0+2)) << "- srbmatrix";
+        scbm.assign(this->c1);
+        scbm1 = - scbm;
+        EXPECT_EQ(- scbm(CVM0+1,CVM0+2), scbm1(CVM0+1,CVM0+2)) << "- scbmatrix";
+
+
+        rv1.set(1.17);
+        rv2.set(-0.31);
+        rm2.set(9.01);
+        srbm1.set(13.1);
+        srbm2.set(5.51);
+        cv1.set(TPC(2,1));
+        cv2.set(TPC(-1,3));
+        cm2.set(TPC(-4,3));
+        rv1.resize (2);
+        rv2.resize (3);
+        rv2.mult (rv1, rm2);
+
+        EXPECT_EQ(rv1 * rm2(CVM0), rv2[CVM0]) << "mult";
+        rv1.mult (rm2, rv2);
+        EXPECT_EQ(rv2 * rm2[CVM0], rv1[CVM0]) << "mult";
+
+        cv1.resize (2);
+        cv2.resize (3);
+        cv2.mult (cv1, cm2);
+
+        EXPECT_EQ(cv1 * cm2(CVM0), cv2[CVM0]) << "mult";
+        cv1.mult (cm2, cv2);
+        EXPECT_EQ(cv2 * cm2[CVM0], cv1[CVM0]) << "mult";
+
+        rv1.resize (3);
+        rv1.mult (srm2, rv2);
+        EXPECT_EQ(rv2 * srm2[CVM0], rv1[CVM0]) << "mult";
+        rv2.mult (rv1, srm2);
+
+        EXPECT_EQ(rv1 * srm2(CVM0), rv2[CVM0]) << "mult";
+
+        cv1.resize (3);
+        cv1.mult (scm2, cv2);
+        EXPECT_EQ(cv2 * scm2[CVM0], cv1[CVM0]) << "mult";
+        cv2.mult (cv1, scm2);
+        EXPECT_EQ(cv1 * scm2(CVM0), cv2[CVM0]) << "mult";
+
+        rv1.resize (4);
+        rv2.resize (4);
+        rv2.mult (rv1, srbm2);
+        EXPECT_EQ(rv1 * srbm2(CVM0), rv2[CVM0]) << "mult";
+        rv1.mult (srbm2, rv2);
+        EXPECT_EQ(rv2 * srbm2[CVM0], rv1[CVM0]) << "mult";
+
+        cv1.resize (4);
+        cv2.resize (4);
+        cv2.mult (cv1, scbm2);
+        EXPECT_EQ(cv1 * scbm2(CVM0), cv2[CVM0]) << "mult";
+        cv1.mult (scbm2, cv2);
+        EXPECT_EQ(cv2 * scbm2[CVM0], cv1[CVM0]) << "mult";
+
+        rm1.resize (3, 2);
+        rm1[CVM0+2].assign(this->a1);
+        rm3.resize (2, 2);
+        rm4.resize (3, 3);
+        rm3.mult (rm2, rm1);
+        EXPECT_EQ(rm2[CVM0+1] * rm1(CVM0+1),rm3(CVM0+1,CVM0+1)) << "mult";
+        rm4.mult (rm1, rm2);
+        EXPECT_EQ(rm1[CVM0+2] * rm2(CVM0+2),rm4(CVM0+2,CVM0+2)) << "mult";
+        srm4.resize(3);
+        srm4.mult (rm1, rm2);
+
+        EXPECT_EQ(rm1[CVM0+2] * rm2(CVM0+2),srm4(CVM0+2,CVM0+2)) << "mult";
+        rm4.resize (3, 2);
+        rm1.mult (srm4, rm4);
+        EXPECT_EQ(srm4[CVM0+2] * rm4(CVM0+1),rm1(CVM0+2,CVM0+1)) << "mult";
+        srbm1.resize(3);
+        rm1.mult (srbm1, rm4);
+        EXPECT_EQ(srbm1[CVM0+2] * rm4(CVM0+1),rm1(CVM0+2,CVM0+1)) << "mult";
+        rm1.mult (~srbm1, rm4);
+        EXPECT_EQ(srbm1(CVM0+2) * rm4(CVM0+1),rm1(CVM0+2,CVM0+1)) << "mult";
+        srbm1.mult (rm1, rm2);
+        EXPECT_EQ(rm1[CVM0+1] * rm2(CVM0+1),srbm1(CVM0+1,CVM0+1)) << "mult";
+
+        r1 = -0.031;
+        r2 = 0.319;
+        rm1.randomize(1., 2.);
+        rm2.randomize(0., 1.);
+        rm3.randomize(0., 1.);
+        rmatrix rm3_dub = rm3;
+
+        rm3.gemm (rm2, false, rm1, false, r1, r2);
+        EXPECT_EQ(0.,(rm3 - (rm2 * rm1 * r1 + rm3_dub * r2)).norm2()) << "gemm";
+        rm3_dub = rm3;
+        rm3 << ~rm3;
+        rm3.gemm (rm1, true, rm2, true, r1, r2);
+        EXPECT_EQ(0.,(~rm3 - (rm2 * rm1 * r1 + rm3_dub * r2)).norm2()) << "gemm";
+
+        srbm1.randomize(-1., 3.);
+        rmatrix rm1_dub = rm1;
+        rm1.gemm (srbm1, false, rm4, false, r1, r2);
+        EXPECT_EQ(0.,(rm1 - (srbm1 * rm4 * r1 + rm1_dub * r2)).norm2()) << "gemm";
+
+
+
+
+        cm1.resize (3, 2);
+        cm1[CVM0+2].assign(this->c1);
+        cmatrix cm3 (2, 2), cm4 (3, 3);
+        cm3.assign(this->c2);
+        cm3.mult (cm2, cm1);
+        EXPECT_EQ(cm2[CVM0+1] * cm1(CVM0+1),cm3(CVM0+1,CVM0+1)) << "mult";
+        cm4.mult (cm1, cm2);
+        EXPECT_EQ(cm1[CVM0+2] * cm2(CVM0+2),cm4(CVM0+2,CVM0+2)) << "mult";
+        scm4.resize(3);
+        scm4.mult (cm1, cm2);
+        EXPECT_EQ(cm1[CVM0+2] * cm2(CVM0+2),scm4(CVM0+2,CVM0+2)) << "mult";
+        cm4.resize (3, 2);
+        cm1.mult (scm4, cm4);
+        EXPECT_EQ(scm4[CVM0+2] * cm4(CVM0+1),cm1(CVM0+2,CVM0+1)) << "mult";
+        scbm.resize(3);
+        scbm.set(TPC(1.23,-0.912));
+        cm1.mult (scbm, cm4);
+        EXPECT_EQ(scbm[CVM0+2] * cm4(CVM0+1),cm1(CVM0+2,CVM0+1)) << "mult";
+        cm1.mult (~scbm, cm4);
+        EXPECT_EQ(~(scbm(CVM0+2)) * cm4(CVM0+1),cm1(CVM0+2,CVM0+1)) << "mult";
+        scbm1.resize(3);
+        scbm1.mult (cm1, cm2);
+        EXPECT_EQ(cm1[CVM0+1] * cm2(CVM0+1),scbm1(CVM0+1,CVM0+1)) << "mult";
+
+
+        cm1.randomize_real(0., 1.);
+        cm2.randomize_real(0., 1.);
+        cm3.randomize_real(0., 1.);
+        scbm.randomize_real(0., 1.);
+        cmatrix cm3_dub = cm3;
+        cm3.gemm (cm2, false, cm1, false, cr1, cr2);
+        EXPECT_EQ(0.,(cm3 - (cm2 * cm1 * cr1 + cm3_dub * cr2)).norm()) << "gemm";
+        cmatrix cm1_dub = cm1;
+        cm1.gemm (scbm, false, cm4, false, cr1, cr2);
+        EXPECT_EQ(0.,(cm1 - (scbm * cm4 * cr1 + cm1_dub * cr2)).norm()) << "gemm";
+
+        cr1 = TPC(-1.14,3.22);
+        cr2 = TPC(2.04,-4.2);
+        cm1_dub << cm1;
+        cm1.conj();
+        cm1.gemm (cm4, true, scbm, true, cr1, cr2);
+        EXPECT_EQ(0.,(~cm1 - (scbm * cm4 * conj(cr1) + cm1_dub * conj(cr2))).norm2()) << "gemm";
+        cm1.conj();
+
+        rv1.randomize(0., 1.);
+        rv2.randomize(0., 1.);
+        EXPECT_EQ(rv1[CVM0]*rv2[CVM0]+rv1[CVM0+1]*rv2[CVM0+1]+rv1[CVM0+2]*rv2[CVM0+2]+rv1[CVM0+3]*rv2[CVM0+3], rv1 * rv2) << "scalar product";
+        cv1.randomize_real(0., 1.);
+
+        cv1.randomize_imag(0., 1.);
+        cv2.randomize_real(0., 1.);
+        cv2.randomize_imag(0., 1.);
+        EXPECT_EQ(cv1[CVM0]*cv2[CVM0]+cv1[CVM0+1]*cv2[CVM0+1]+cv1[CVM0+2]*cv2[CVM0+2]+cv1[CVM0+3]*cv2[CVM0+3], cv1 * cv2) << "scalar product";
+        EXPECT_EQ(conj(cv1[CVM0])*cv2[CVM0]+conj(cv1[CVM0+1])*cv2[CVM0+1]+conj(cv1[CVM0+2])*cv2[CVM0+2]+conj(cv1[CVM0+3])*cv2[CVM0+3], cv1 % cv2) << "scalar product, conj";
+
+        EXPECT_EQ(0.,(rm1[CVM0+1] - (~rm1)(CVM0+1)).norm()) << "~";
+
+        cvector cm1_2_conj (cm1[CVM0+1].size());
+        cm1_2_conj = cm1[CVM0+1];
+        cm1_2_conj.conj();
+        EXPECT_EQ(0.,(cm1_2_conj - (~cm1)(CVM0+1)).norm()) << "~";
+        EXPECT_EQ(0.,(srbm1[CVM0+1] - (~srbm1)(CVM0+1)).norm()) << "~";
+        EXPECT_EQ(0.,(~(scbm1[CVM0+1]) - (~scbm1)(CVM0+1)).norm()) << "~";
+
+        rv1.resize (3);
+        rv2.resize (2);
+        rv1 = rm1 * rv2;
+        EXPECT_EQ(rv2 * rm1[CVM0+2], rv1[CVM0+2]) << "rmatrix * rvector";
+        rv2 = rv1 * rm1;
+        EXPECT_EQ(rv1 * rm1(CVM0+1), rv2[CVM0+1]) << "rvector * rmatrix";
+        cv1.resize (3);
+        cv2.resize (2);
+        cv1 = cm1 * cv2;
+        EXPECT_EQ(cv2 * cm1[CVM0+2], cv1[CVM0+2]) << "cmatrix * cvector";
+        cv2 = cv1 * cm1;
+        EXPECT_EQ(cv1 * cm1(CVM0+1), cv2[CVM0+1]) << "cvector * cmatrix";
+
+        rv2.resize (3);
+        rv2 = srm4 * rv1;
+        EXPECT_EQ(rv1 * srm4[CVM0+2], rv2[CVM0+2]) << "srmatrix * rvector";
+        rv2 = rv1 * srm4;
+        EXPECT_EQ(rv1 * srm4(CVM0+2), rv2[CVM0+2]) << "rvector * srmatrix";
+        cv2.resize (3);
+        cv2 = scm4 * cv1;
+        EXPECT_EQ(cv1 * scm4[CVM0+2], cv2[CVM0+2]) << "scmatrix * cvector";
+        cv2 = cv1 * scm4;
+        EXPECT_EQ(cv1 * scm4(CVM0+2), cv2[CVM0+2]) << "cvector * scmatrix";
+
+        srbm1.normalize();
+        rv1.normalize();
+        rv2 = srbm1 * rv1;
+        EXPECT_EQ(rv1 * srbm1[CVM0+2], rv2[CVM0+2]) << "srbmatrix * rvector";
+        rv2 = rv1 * srbm1;
+        EXPECT_EQ(rv1 * srbm1(CVM0+2), rv2[CVM0+2]) << "rvector * srbmatrix";
+
+        scbm1.normalize();
+        cv1.normalize();
+        cv2 = scbm1 * cv1;
+        EXPECT_EQ(cv1 * scbm1[CVM0+2], cv2[CVM0+2]) << "scbmatrix * cvector";
+        cv2 = cv1 * scbm1;
+        EXPECT_EQ(cv1 * scbm1(CVM0+2), cv2[CVM0+2]) << "cvector * scbmatrix";
+
+        rv2.resize (2);
+        rm1 = rv1.rank1update (rv2);
+        EXPECT_EQ(rv1[CVM0+2] * rv2[CVM0],rm1(CVM0+2,CVM0)) << "rank1update";
+        rm1.rank1update (rv1, rv2);
+        EXPECT_EQ(rv1[CVM0+2] * rv2[CVM0+1],rm1(CVM0+2,CVM0+1)) << "rank1update";
+
+        cv2.resize (2);
+        cv1.normalize();
+        cv2.normalize();
+        cm1 = cv1.rank1update_u (cv2);
+        EXPECT_EQ(cv1[CVM0+2] * cv2[CVM0],cm1(CVM0+2,CVM0)) << "rank1update_u";
+        cm1.rank1update_u (cv1, cv2);
+        EXPECT_EQ(cv1[CVM0+2] * cv2[CVM0+1],cm1(CVM0+2,CVM0+1)) << "rank1update_u";
+        cm1 = cv1.rank1update_c (cv2);
+        EXPECT_EQ(cv1[CVM0+2] * conj (cv2[CVM0]),cm1(CVM0+2,CVM0)) << "rank1update_c";
+        cm1.rank1update_c (cv1, cv2);
+        EXPECT_EQ(cv1[CVM0+2] * conj (cv2[CVM0+1]),cm1(CVM0+2,CVM0+1)) << "rank1update_c";
+
+        srm4.assign(this->a3);
+        srm4(CVM0+2, CVM0+2) = -1.;
+        srm4.normalize();
+        EXPECT_EQ(1. / (srm4.norminf() * srm4.inv().norminf()),srm4.cond()) << "cond";
+        TP dt = srm4.det();
+        EXPECT_EQ(srm4(CVM0,CVM0) * srm4(CVM0+1, CVM0+1) * srm4(CVM0+2, CVM0+2) -
+                  srm4(CVM0, CVM0) * srm4(CVM0+1,CVM0+2) * srm4(CVM0+2, CVM0+1) -
+                  srm4(CVM0, CVM0+1) * srm4(CVM0+1,CVM0) * srm4(CVM0+2, CVM0+2) +
+                  srm4(CVM0, CVM0+1) * srm4(CVM0+1,CVM0+2) * srm4(CVM0+2, CVM0) +
+                  srm4(CVM0, CVM0+2) * srm4(CVM0+1,CVM0) * srm4(CVM0+2, CVM0+1) -
+                  srm4(CVM0, CVM0+2) * srm4(CVM0+1,CVM0+1) * srm4(CVM0+2, CVM0), dt) << "det";
+
+        scm4.assign(this->c2);
+        scm4.normalize();
+        EXPECT_EQ(1. / (scm4.norminf() * scm4.inv().norminf()),scm4.cond()) << "cond";
+        TPC dtc = scm4.det();
+        EXPECT_EQ(scm4(CVM0,CVM0) * scm4(CVM0+1, CVM0+1) * scm4(CVM0+2, CVM0+2) -
+                                  scm4(CVM0, CVM0) * scm4(CVM0+1,CVM0+2) * scm4(CVM0+2, CVM0+1) -
+                                  scm4(CVM0, CVM0+1) * scm4(CVM0+1,CVM0) * scm4(CVM0+2, CVM0+2) +
+                                  scm4(CVM0, CVM0+1) * scm4(CVM0+1,CVM0+2) * scm4(CVM0+2, CVM0) +
+                                  scm4(CVM0, CVM0+2) * scm4(CVM0+1,CVM0) * scm4(CVM0+2, CVM0+1) -
+                                  scm4(CVM0, CVM0+2) * scm4(CVM0+1,CVM0+1) * scm4(CVM0+2, CVM0), dtc) << "complex det";
+
+
+        r1 = 2.;
+        rv1.resize (4);
+        rm1.resize (4, 4);
+        srbm1.resize (4);
+        rv1.set(1.);
+        rm1 << eye_real(4);
+        srm4 << eye_real(4);
+        srbm1 << srbmatrix (eye_real(4), 0, 0);
+
+        EXPECT_EQ(r1,rv1.norm()) << "rvector norm";
+        EXPECT_EQ(r1,rm1.norm()) << "rmatrix norm";
+        EXPECT_EQ(r1,srm4.norm()) << "srmatrix norm";
+        EXPECT_EQ(r1,srbm1.norm()) << "srbmatrix norm";
+
+        r1 = 2. * sqrt (2.);
+        cv1.resize (4);
+
+
+        cm1.resize (4, 4);
+        scm1.resize (4);
+        cv1.set(TPC(1,1));
+        cm1 << scmatrix (cv1);
+        scm1 = cm1;
+        scbm2 = scbmatrix(cm1,scbm2.lsize(),scbm2.usize());
+
+        EXPECT_EQ(r1,cv1.norm()) << "cvector norm";
+        EXPECT_EQ(r1,cm1.norm()) << "cmatrix norm";
+        EXPECT_EQ(r1,scm1.norm()) << "scmatrix norm";
+        EXPECT_EQ(r1,scbm2.norm()) << "scbmatrix norm";
+
+        // mix
+        scbm2.set(TPC(1.23,-0.977));
+
+        cm1 = scbm2;
+        EXPECT_EQ(scbm2(CVM0+1,CVM0+2), cm1(CVM0+1,CVM0+2)) << "mix cmatrix  scbm";
+        EXPECT_EQ(scbm2(CVM0+3,CVM0), cm1(CVM0+3,CVM0)) << "mix cmatrix  scbm";
+
+        cm1 = cm1 + scbm2;
+        cm1 += scbm2;
+        EXPECT_EQ(scbm2(CVM0+1,CVM0+2) * 3, cm1(CVM0+1,CVM0+2)) << "mix cmatrix  scbm";
+        EXPECT_EQ(scbm2(CVM0+3,CVM0) * 3., cm1(CVM0+3,CVM0)) << "mix cmatrix  scbm";
+        EXPECT_EQ(3 * scbm2(CVM0+1,CVM0+2), cm1(CVM0,CVM0+1)) << "mix cmatrix  scbm";
+        EXPECT_EQ(3. * scbm2(CVM0+1,CVM0), cm1(CVM0+1,CVM0)) << "mix cmatrix  scbm";
+
+        rm1 = srbm2;
+        EXPECT_EQ(srbm2(CVM0+1,CVM0+2), rm1(CVM0+1,CVM0+2)) << "mix rmatrix  srbm";
+        EXPECT_EQ(srbm2(CVM0+3,CVM0), rm1(CVM0+3,CVM0)) << "mix rmatrix  srbm";
+
+        rm1 = rm1 + srbm2;
+        rm1 += srbm2;
+        EXPECT_EQ(srbm2(CVM0+1,CVM0+2) * 3., rm1(CVM0+1,CVM0+2)) << "mix rmatrix  srbm";
+        EXPECT_EQ(3. * srbm2(CVM0+3,CVM0), rm1(CVM0+3,CVM0)) << "mix matrix  srbm";
+        EXPECT_EQ(3 * srbm2(CVM0+3,CVM0), rm1(CVM0+3,CVM0)) << "mix rmatrix  srbm";
+        EXPECT_EQ(srbm2(CVM0+1,CVM0+2) * 3, rm1(CVM0+1,CVM0+2)) << "mix rmatrix  srbm";
+
+        scbm1.resize(4);
+        for (int j = CVM0; j <= CVM0+3; j++) {
+            for (int i = CVM0; i <= CVM0+3; i++) {
+                rm1(i,j)  = - ((j - CVM0) * 4 + i + (1 - CVM0));
+                srm4(i,j) = - ((j - CVM0) * 4 + i + (1 - CVM0));
+                cm1(i,j)  = - ((j - CVM0) * 4 + i + (1 - CVM0));
+                scm1(i,j) = - ((j - CVM0) * 4 + i + (1 - CVM0));
+            }
+            srbm1(j,j) = TP(j + (1 - CVM0));
+            scbm1(j,j) = TPC(j + (1 - CVM0));
+        }
+
+        EXPECT_EQ((13 + 14 + 15 + 16),rm1.norm1()) << "rmatrix norm1";
+        EXPECT_EQ((13 + 14 + 15 + 16),srm4.norm1()) << "srmatrix norm1";
+        EXPECT_EQ(4,srbm1.norm1()) << "srbmatrix norm1";
+        EXPECT_EQ((13 + 14 + 15 + 16),cm1.norm1()) << "cmatrix norm1";
+        EXPECT_EQ((13 + 14 + 15 + 16),scm1.norm1()) << "scmatrix norm1";
+        EXPECT_EQ(4,scbm1.norm1()) << "scbmatrix norm1";
+
+        EXPECT_EQ((4 + 8 + 12 + 16),rm1.norminf()) << "rmatrix norminf";
+        EXPECT_EQ((4 + 8 + 12 + 16),srm4.norminf()) << "srmatrix norminf";
+        EXPECT_EQ(4,srbm1.norminf()) << "srbmatrix norminf";
+        EXPECT_EQ((4 + 8 + 12 + 16),cm1.norminf()) << "cmatrix norminf";
+        EXPECT_EQ((4 + 8 + 12 + 16),scm1.norminf()) << "scmatrix norminf";
+        EXPECT_EQ(4,scbm1.norminf()) << "scbmatrix norminf";
+
+        EXPECT_EQ(1.,eye_real(6)(CVM0+5,CVM0+5)) << "eye_real";
+        EXPECT_EQ(TPC(1,0),eye_complex(6)(CVM0+5,CVM0+5)) << "eye_complex";
+
+        rv2.resize (4);
+        srmatrix rmU(4), rmVH(4);
+        rv1 = srm4.svd (rmU, rmVH);
+        rv2.svd (srm4, rmU, rmVH);
+//        EXPECT_TRUE(rv1 == rv2) << "srmatrix svd";
+        EXPECT_EQ(0.,(rv1 - rv2).norm()) << "srmatrix svd";
+        srm1 << srmatrix (rv1);
+        EXPECT_EQ(0.,(srm4 * ~rmVH - rmU * srm1).norm()) << "srmatrix svd";
+        EXPECT_EQ(0.,(~srm4 * rmU - ~(srm1 * rmVH)).norm()) << "srmatrix svd";
+
+        rv1 = srbm2.svd (rmU, rmVH);
+        rv2.svd (srbm2);
+
+        EXPECT_EQ(0.,(rv1 - rv2).norm()) << "srbmatrix svd";
+        rv2.svd (srbm2, rmU, rmVH);
+        srm1 << srmatrix (rv1);
+        EXPECT_EQ(0.,(srbm2 * ~rmVH - rmU * srm1).norm()) << "srbmatrix svd";
+        EXPECT_EQ(0.,(~srbm2 * rmU - ~(srm1 * rmVH)).norm()) << "srbmatrix svd";
+
+
+
+
+
 }
 
 TYPED_TEST(InitializationTest, TestSubAssignment) {
