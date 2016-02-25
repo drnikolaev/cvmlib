@@ -37257,6 +37257,25 @@ inline const scmatrix eye_complex(tint nM) {
     return basic_eye_complex<treal, tcomplex>(nM);
 }
 
+//! Float 32-bit identity matrix creation
+inline const srmatrix32 eye_real32(tint nM) {
+    return basic_eye_real<float>(nM);
+}
+//! Complex float 32-bit identity matrix creation
+inline const scmatrix32 eye_complex32(tint nM) {
+    return basic_eye_complex<float, std::complex<float>>(nM);
+}
+
+//! Float 64-bit identity matrix creation
+inline const srmatrix64 eye_real64(tint nM) {
+    return basic_eye_real<double>(nM);
+}
+//! Complex float 64-bit identity matrix creation
+inline const scmatrix64 eye_complex64(tint nM) {
+    return basic_eye_complex<double, std::complex<double>>(nM);
+}
+
+
 /**
 @brief The smallest normalized positive number
 
@@ -37404,6 +37423,16 @@ namespace std {
 template<typename T, typename TR>
 inline TR abs (const CVM_NAMESPACE::type_proxy<T,TR>& p) {
     return abs(p.val());
+}
+
+template<typename T, typename TR>
+inline TR norm (const CVM_NAMESPACE::type_proxy<T,TR>& p) {
+    return norm(p.val());
+}
+
+template<typename T, typename TR>
+inline T conj (const CVM_NAMESPACE::type_proxy<T,TR>& p) {
+    return conj(p.val());
 }
 
 }

@@ -3,7 +3,7 @@ import re
 
 i = 0
 ibeg = 0
-iend = 100000
+iend = 1000
 with open("../testcvm.cpp") as f:
     for line in f:
         i = i + 1
@@ -17,6 +17,18 @@ with open("../testcvm.cpp") as f:
         line = re.sub('(\s*)CheckBool\s*\((\S+?)\s*==\s*(\S+?),\s*false\s*,\s*(\".+\"),.+', r"\1EXPECT_FALSE(\2 == \3) << \4;", line)
         line = re.sub('(\s*)CheckBool\s*\((\S+?)\s*!=\s*(\S+?),\s*true\s*,\s*(\".+\"),.+', r"\1EXPECT_TRUE(\2 != \3) << \4;", line)
         line = re.sub('(\s*)CheckBool\s*\((\S+?)\s*!=\s*(\S+?),\s*false\s*,\s*(\".+\"),.+', r"\1EXPECT_FALSE(\2 != \3) << \4;", line)
+
+#
+        line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)[^,]+),\s*(\".+\"),.+?Pessimistic.+',
+                      r'\1EXPECT_NEAR(\3, \2, s<TP>()) << \4;', line)
+        line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)),\s*(\".+\"),.+?Pessimistic.+',
+                      r'\1EXPECT_NEAR(\3, \2, s<TP>()) << \4;', line)
+        line = re.sub('(\s*)Check.+?\s*\((.+?),\s*(.+?\(.+?,.+?\)),\s*(\".+\"),.+?Pessimistic.+',
+                      r'\1EXPECT_NEAR(\3, \2, s<TP>()) << \4;', line)
+        line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?),\s*(\".+\"),.+?Pessimistic.+',
+                      r'\1EXPECT_NEAR(\3, \2, s<TP>()) << \4;', line)
+        line = re.sub('(\s*)Check.+?\s*\((.+?),\s*(.+?),\s*(\".+\"),.+?Pessimistic.+',
+                      r'\1EXPECT_NEAR(\3, \2, s<TP>()) << \4;', line)
 
         line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)[^,]+),\s*(\".+\"),.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
         line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)),\s*(\".+\"),.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
@@ -32,7 +44,41 @@ with open("../testcvm.cpp") as f:
         line = re.sub('([\(|\s])(a\d)', r'\1this->\2', line)
         line = re.sub('([\(|\s])(c\d)', r'\1this->\2', line)
 
+        line = re.sub('^(\s*)rvector', r'\1basic_rvector<TP>', line)
+        line = re.sub('^(\s*)rmatrix', r'\1basic_rmatrix<TP>', line)
+        line = re.sub('^(\s*)srmatrix', r'\1basic_srmatrix<TP>', line)
+        line = re.sub('^(\s*)srsmatrix', r'\1basic_srsmatrix<TP>', line)
         line = re.sub('^(\s*)srbmatrix', r'\1basic_srbmatrix<TP>', line)
+        line = re.sub('^(\s*)cvector', r'\1basic_cvector<TP,TPC>', line)
+        line = re.sub('^(\s*)cmatrix', r'\1basic_cmatrix<TP,TPC>', line)
+        line = re.sub('^(\s*)scmatrix', r'\1basic_scmatrix<TP,TPC>', line)
+        line = re.sub('^(\s*)schmatrix', r'\1basic_schmatrix<TP,TPC>', line)
+        line = re.sub('^(\s*)scbmatrix', r'\1basic_scbmatrix<TP,TPC>', line)
+
+        line = re.sub('^(\s*const\s+)rvector', r'\1basic_rvector<TP>', line)
+        line = re.sub('^(\s*const\s+)rmatrix', r'\1basic_rmatrix<TP>', line)
+        line = re.sub('^(\s*const\s+)srmatrix', r'\1basic_srmatrix<TP>', line)
+        line = re.sub('^(\s*const\s+)srsmatrix', r'\1basic_srsmatrix<TP>', line)
+        line = re.sub('^(\s*const\s+)srbmatrix', r'\1basic_srbmatrix<TP>', line)
+        line = re.sub('^(\s*const\s+)cvector', r'\1basic_cvector<TP,TPC>', line)
+        line = re.sub('^(\s*const\s+)cmatrix', r'\1basic_cmatrix<TP,TPC>', line)
+        line = re.sub('^(\s*const\s+)scmatrix', r'\1basic_scmatrix<TP,TPC>', line)
+        line = re.sub('^(\s*const\s+)schmatrix', r'\1basic_schmatrix<TP,TPC>', line)
+        line = re.sub('^(\s*const\s+)scbmatrix', r'\1basic_scbmatrix<TP,TPC>', line)
+
+        line = re.sub('rvector\s*\(', r'basic_rvector<TP>(', line)
+        line = re.sub('[^s]+rmatrix\s*\(', r'basic_rmatrix<TP>(', line)
+        line = re.sub('srmatrix\s*\(', r'basic_srmatrix<TP>(', line)
+        line = re.sub('srsmatrix\s*\(', r'basic_srsmatrix<TP>(', line)
+        line = re.sub('srbmatrix\s*\(', r'basic_srbmatrix<TP>(', line)
+        line = re.sub('cvector\s*\(', r'basic_cvector<TP,TPC>(', line)
+        line = re.sub('[^s]+cmatrix\s*\(', r'basic_cmatrix<TP,TPC>(', line)
+        line = re.sub('scmatrix\s*\(', r'basic_scmatrix<TP,TPC>(', line)
+        line = re.sub('schmatrix\s*\(', r'basic_schmatrix<TP,TPC>(', line)
+        line = re.sub('scbmatrix\s*\(', r'basic_scbmatrix<TP,TPC>(', line)
+
+        line = re.sub('eye_real', r'basic_eye_real<TP>', line)
+        line = re.sub('eye_complex', r'basic_eye_complex<TP,TPC>', line)
 
         if i > ibeg:
             sys.stdout.write(line)
