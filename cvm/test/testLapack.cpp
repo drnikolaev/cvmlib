@@ -10,16 +10,16 @@
 #include "test.h"
 
 template <typename T>
-class Lapack1Test : public ::testing::Test {
+class LapackTest : public ::testing::Test {
 protected:
-    Lapack1Test() {}
-    virtual ~Lapack1Test() {}
+    LapackTest() {}
+    virtual ~LapackTest() {}
 };
 
-TYPED_TEST_CASE(Lapack1Test, TestTypes);
+TYPED_TEST_CASE(LapackTest, TestTypes);
 
 // Fixed syrk bug reported by Markus Jochmann.
-TYPED_TEST(Lapack1Test, TestSyrkReal) {
+TYPED_TEST(LapackTest, TestSyrkReal) {
     basic_srsmatrix<TP> mat1(2), mat2(2);
     basic_rmatrix<TP> v(2,2);
     v(CVM0,CVM0) = 1;
@@ -40,7 +40,7 @@ TYPED_TEST(Lapack1Test, TestSyrkReal) {
 }
 
 // Fixed syrk bug reported by Markus Jochmann.
-TYPED_TEST(Lapack1Test, TestSyrkComplex) {
+TYPED_TEST(LapackTest, TestSyrkComplex) {
     basic_schmatrix<TP,TPC> mat1(2), mat2(2);
     basic_cmatrix<TP,TPC> v(2,2);
     v(CVM0,CVM0) = TPC(1.,1.);
@@ -65,7 +65,7 @@ TYPED_TEST(Lapack1Test, TestSyrkComplex) {
 
 // MATLAB-style operator B/A returning solution of X*A=B equation which is actually A'*X'=B'
 // 6.1
-TYPED_TEST(Lapack1Test, TestSlashReal) {
+TYPED_TEST(LapackTest, TestSlashReal) {
     basic_srmatrix<TP> srm(7);
     basic_srbmatrix<TP> srbm(7, 1, 3);
     basic_srsmatrix<TP> srsm(7);
@@ -107,7 +107,7 @@ TYPED_TEST(Lapack1Test, TestSlashReal) {
 }
 
 // 6.1
-TYPED_TEST(Lapack1Test, TestSlashComplex) {
+TYPED_TEST(LapackTest, TestSlashComplex) {
     basic_scmatrix<TP,TPC> scm(7);
     basic_scbmatrix<TP,TPC> scbm(7, 1, 3);
     basic_schmatrix<TP,TPC> schm(7);

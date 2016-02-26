@@ -11,14 +11,18 @@ with open("../testcvm.cpp") as f:
 #        if i > ibeg:
 #            sys.stdout.write(str(i) + ' >>>>' + line)
 
+        line = re.sub('^(\s*)treal', r'\1TP', line)
+        line = re.sub('std::complex<treal>', r'TPC', line)
         line = re.sub('\(treal\)\s*', '', line)
         line = re.sub('tcomplex\s*', 'TPC', line)
+
+
         line = re.sub('(\s*)CheckBool\s*\((\S+?)\s*==\s*(\S+?),\s*true\s*,\s*(\".+\"),.+', r"\1EXPECT_TRUE(\2 == \3) << \4;", line)
         line = re.sub('(\s*)CheckBool\s*\((\S+?)\s*==\s*(\S+?),\s*false\s*,\s*(\".+\"),.+', r"\1EXPECT_FALSE(\2 == \3) << \4;", line)
         line = re.sub('(\s*)CheckBool\s*\((\S+?)\s*!=\s*(\S+?),\s*true\s*,\s*(\".+\"),.+', r"\1EXPECT_TRUE(\2 != \3) << \4;", line)
         line = re.sub('(\s*)CheckBool\s*\((\S+?)\s*!=\s*(\S+?),\s*false\s*,\s*(\".+\"),.+', r"\1EXPECT_FALSE(\2 != \3) << \4;", line)
 
-#
+
         line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)[^,]+),\s*(\".+\"),.+?Pessimistic.+',
                       r'\1EXPECT_NEAR(\3, \2, s<TP>()) << \4;', line)
         line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)),\s*(\".+\"),.+?Pessimistic.+',
@@ -30,6 +34,7 @@ with open("../testcvm.cpp") as f:
         line = re.sub('(\s*)Check.+?\s*\((.+?),\s*(.+?),\s*(\".+\"),.+?Pessimistic.+',
                       r'\1EXPECT_NEAR(\3, \2, s<TP>()) << \4;', line)
 
+        line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)\s*\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)),\s*(\".+\")\s*,.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
         line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)[^,]+),\s*(\".+\"),.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
         line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)),\s*(\".+\"),.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
         line = re.sub('(\s*)Check.+?\s*\((.+?),\s*(.+?\(.+?,.+?\)),\s*(\".+\"),.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
@@ -79,6 +84,9 @@ with open("../testcvm.cpp") as f:
 
         line = re.sub('eye_real', r'basic_eye_real<TP>', line)
         line = re.sub('eye_complex', r'basic_eye_complex<TP,TPC>', line)
+
+        line = re.sub('^(\s*)EXPECT_EQ\(([\d|\.]+?),\s*', r'\1EXPECT_EQ(TP(\2), ', line)
+
 
         if i > ibeg:
             sys.stdout.write(line)
