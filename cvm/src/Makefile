@@ -4,7 +4,12 @@ ROOT_PATH=../..
 INC_PATH=$(ROOT_PATH)/makes
 include $(INC_PATH)/defines.inc
 
+ifdef MAC
+COMMON_LD_FLAGS = -L/usr/local/lib
+else
 COMMON_LD_FLAGS = -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
+endif
+
 ifdef CVM_USE_POOL_MANAGER
   COMMON_FLAGS += -DCVM_USE_POOL_MANAGER
 endif

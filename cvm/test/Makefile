@@ -13,7 +13,11 @@ ifndef DEBUG
   COMMON_FLAGS += -O0 #intel's glitch
 endif
 else
+ifdef MAC
+  CC=clang++
+else
   CC=g++
+endif
 endif
 
 COMMON_FLAGS += -Wall -D_REENTRANT -I../../gtest/googletest/include
@@ -58,7 +62,11 @@ LIBS  += -lgtest
 DLIBS += -lgtest
 
 COMMON_FLAGS += -std=c++0x
+ifdef MAC
+COMMON_LD_FLAGS=-L$(OUTDIR) -L$(OUTDIR)/../gtest -L/usr/local/lib
+else
 COMMON_LD_FLAGS=-L$(OUTDIR) -L$(OUTDIR)/../gtest -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
+endif
 
 include $(INC_PATH)/suffixes.inc
 

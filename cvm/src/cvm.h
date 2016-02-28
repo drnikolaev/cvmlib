@@ -989,7 +989,7 @@ inline double _abs(const double& v) {
 }
 
 inline long double _abs(const long double& v) {
-    return fabs(v);
+    return static_cast<double>(v);
 }
 
 inline float _abs(const std::complex<float>& v) {
