@@ -3,13 +3,13 @@ import re
 
 i = 0
 ibeg = 0
-iend = 1000
+iend = 10
 with open("../testcvm.cpp") as f:
     for line in f:
         i = i + 1
 
-#        if i > ibeg:
-#            sys.stdout.write(str(i) + ' >>>>' + line)
+        if i > ibeg:
+            sys.stdout.write(str(i) + ' >>>>' + line)
 
         line = re.sub('^(\s*)treal', r'\1TP', line)
         line = re.sub('std::complex<treal>', r'TPC', line)

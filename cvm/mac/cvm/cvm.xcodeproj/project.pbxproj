@@ -187,7 +187,7 @@
 					"-lftn_em64t_debug",
 				);
 				SDKROOT = macosx;
-				SYMROOT = /Users/sam/cvmlib/lib64;
+				SYMROOT = "";
 			};
 			name = Debug;
 		};
@@ -231,17 +231,16 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				EXECUTABLE_PREFIX = lib;
 				GCC_VERSION = "";
-				INSTALL_PATH = /Users/sam/cvmlib/lib64;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../lib64\"",
-					/usr/local/lib,
-				);
+				INSTALL_PATH = "";
+				LD_DYLIB_INSTALL_NAME = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				"OTHER_LDFLAGS[arch=*]" = (
 					"-lgfortran",
 					"-lftn_em64t_debug",
 					"-llapack_em64t_debug",
 					"-lblas_em64t_debug",
+					"-L../../../lib64",
+					"-L/usr/local/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -259,17 +258,16 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				EXECUTABLE_PREFIX = lib;
 				GCC_VERSION = "";
-				INSTALL_PATH = /Users/sam/cvmlib/lib64;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../lib64\"",
-					/usr/local/lib,
-				);
+				INSTALL_PATH = "";
+				LD_DYLIB_INSTALL_NAME = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				"OTHER_LDFLAGS[arch=*]" = (
 					"-lgfortran",
 					"-lftn_em64t",
 					"-llapack_em64t",
 					"-lblas_em64t",
+					"-L../../../lib64",
+					"-L/usr/local/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;

@@ -1063,8 +1063,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     srs2 /= r2;
     sch2 /= r2;
     EXPECT_EQ(rs1, srs2(CVM0+1,CVM0+2));
-    EXPECT_EQ(cs1, sch2(CVM0+1,CVM0+2));
-    EXPECT_EQ(cs1 * cr2, (sch2 * cr2)(CVM0+1,CVM0+2));
+    EXPECT_NEAR(std::abs(cs1), std::abs(sch2(CVM0+1,CVM0+2)), sf<TP>());
+    EXPECT_NEAR(std::abs(cs1 * cr2), std::abs((sch2 * cr2)(CVM0+1,CVM0+2)), sf<TP>());
 
     basic_rvector<TP> vrs1(3);
     vrs1.randomize(3., 7.);
@@ -1122,16 +1122,16 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ(cr1 * r2, scbm1(CVM0,CVM0+1));
     cr1 = cv1(CVM0+8);
     cv1 /= r2;
-    EXPECT_NEAR(std::abs(cr1 / r2), std::abs(cv1(CVM0+8)), s<TP>());
+    EXPECT_NEAR(std::abs(cr1 / r2), std::abs(cv1(CVM0+8)), sf<TP>());
     cr1 = cm1(CVM0+1,CVM0+1);
     cm1 /= r2;
-    EXPECT_NEAR(std::abs(cr1 / r2), std::abs(cm1(CVM0+1,CVM0+1)), s<TP>());
+    EXPECT_NEAR(std::abs(cr1 / r2), std::abs(cm1(CVM0+1,CVM0+1)), sf<TP>());
     cr1 = scm1(CVM0+1,CVM0+1);
     scm1 /= r2;
-    EXPECT_EQ(cr1 / r2, scm1(CVM0+1,CVM0+1));
+    EXPECT_NEAR(std::abs(cr1 / r2), std::abs(scm1(CVM0+1,CVM0+1)), sf<TP>());
     cr1 = scbm1(CVM0+1,CVM0);
     scbm1 /= r2;
-    EXPECT_NEAR(std::abs(cr1 / r2), std::abs(scbm1(CVM0+1,CVM0)), s<TP>());
+    EXPECT_NEAR(std::abs(cr1 / r2), std::abs(scbm1(CVM0+1,CVM0)), sf<TP>());
 
 
     cr2 = TPC(1.03, -0.79);
