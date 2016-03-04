@@ -3,13 +3,13 @@ import re
 
 i = 0
 ibeg = 0
-iend = 10
+iend = 1000
 with open("../testcvm.cpp") as f:
     for line in f:
         i = i + 1
 
-        if i > ibeg:
-            sys.stdout.write(str(i) + ' >>>>' + line)
+#        if i > ibeg:
+#            sys.stdout.write(str(i) + ' >>>>' + line)
 
         line = re.sub('^(\s*)treal', r'\1TP', line)
         line = re.sub('std::complex<treal>', r'TPC', line)
@@ -35,8 +35,8 @@ with open("../testcvm.cpp") as f:
                       r'\1EXPECT_NEAR(\3, \2, s<TP>()) << \4;', line)
 
         line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)\s*\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)),\s*(\".+\")\s*,.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
-        line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)[^,]+),\s*(\".+\"),.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
-        line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)),\s*(\".+\"),.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
+        line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)[^,]+),\s*(\".+\")\s*,.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
+        line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?\(.+?,.+?\)),\s*(\".+\")\s*,.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
         line = re.sub('(\s*)Check.+?\s*\((.+?),\s*(.+?\(.+?,.+?\)),\s*(\".+\"),.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
         line = re.sub('(\s*)Check.+?\s*\((.+?\(.+?,.+?\)),\s*(.+?),\s*(\".+\"),.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)
         line = re.sub('(\s*)Check.+?\s*\((.+?),\s*(.+?),\s*(\".+\"),.+', r'\1EXPECT_EQ(\3, \2) << \4;', line)

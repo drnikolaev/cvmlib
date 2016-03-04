@@ -152,3 +152,10 @@ TYPED_TEST(LapackTest, TestSlashComplex) {
     EXPECT_NEAR(0,(schm * vX - vB).norm(),sp<TP>()) << "schmatrix / cvector";
 }
 
+TYPED_TEST(LapackTest, TestCholeskyComplex) {
+    TP a[] = {3., 0., 2., 1., -1., 2., 2., -1., 3., 0.,
+              0., 3., -1., -2., 0., -3., 5., 0.};
+    const basic_schmatrix<TP,TPC> m{(TPC*)a, 3};
+    basic_scmatrix<TP,TPC> h = m.cholesky();
+    EXPECT_NEAR(0., (~h * h - m).norm(), sp<TP>()) << "schmatrix::cholesky";
+}
