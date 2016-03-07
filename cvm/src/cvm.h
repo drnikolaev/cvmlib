@@ -34,12 +34,12 @@
 
 // 5.7 ILP64 support
 #if defined (CVM_ILP64)
-    typedef long long int tint; //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
+    using tint = long long int; //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
 #   define TINT_ZERO (0LL)
 #   define TINT_ONE  (1LL)
 #   define CVM_TINT_FORMAT "%lld"
 #else
-    typedef int tint;           //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
+    using tint = int;           //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
 #   define TINT_ZERO (0)
 #   define TINT_ONE  (1)
 #   define CVM_TINT_FORMAT "%d"
@@ -130,15 +130,15 @@
 #       endif
 #   endif
 
-typedef __int64 CVM_LONGEST_INT; //!< Longest integer possible on this platform
+using CVM_LONGEST_INT = __int64; //!< Longest integer possible on this platform
 
 #   if defined(_WIN64)
-typedef unsigned long long CVM_PTR_WRAPPER;
+using CVM_PTR_WRAPPER = unsigned long long;
 #   else
 #       if defined (CVM_ILP64)
 #           error "CVM_ILP64 is incompatible with 32 bit mode"
 #       endif
-typedef unsigned long CVM_PTR_WRAPPER;
+using CVM_PTR_WRAPPER = unsigned long;
 #   endif
 
 #   define CVM_VSNPRINTF vsnprintf_s
@@ -186,15 +186,15 @@ typedef unsigned long CVM_PTR_WRAPPER;
 #   define CVM_API
 #   define CVM_BLOCKS_MAP std::map
 
-typedef long long CVM_LONGEST_INT;
+using CVM_LONGEST_INT = long long;
 
 #   if defined(__AMD64__) || defined(_WIN64) || defined(__x86_64__)
-typedef unsigned long long CVM_PTR_WRAPPER;
+using CVM_PTR_WRAPPER = unsigned long long;
 #   else
 #       if defined (CVM_ILP64)
 #           error "CVM_ILP64 is incompatible with 32 bit mode"
 #       endif
-typedef unsigned long CVM_PTR_WRAPPER;
+using CVM_PTR_WRAPPER = unsigned long;
 #   endif
 
 #   define CVM_VSNPRINTF vsnprintf
@@ -301,7 +301,7 @@ typedef unsigned long CVM_PTR_WRAPPER;
 #define CVM_MATRIX_ELEMENT_SEPARATOR     " "
 #define CVM_EOL                          std::endl
 
-typedef unsigned char tbyte; //!< memory allocation quantum
+using tbyte = unsigned char; //!< memory allocation quantum
 
 #ifdef CVM_NO_NAMESPACE
 #   define CVM_NAMESPACE
@@ -351,10 +351,10 @@ template<typename T,  typename TR> class type_proxy;
 class ErrMessages
 {
     // message string maps
-    typedef std::map<int, std::string, std::less<int> > map_Msg;
-    typedef map_Msg::iterator                           itr_Msg;
-    typedef map_Msg::const_iterator                     citr_Msg;
-    typedef std::pair<int, std::string>                 pair_Msg;
+    using map_Msg = std::map<int,std::string,std::less<int>>;
+    using itr_Msg = map_Msg::iterator;
+    using citr_Msg = map_Msg::const_iterator;
+    using pair_Msg = std::pair<int,std::string>;
 
 private:
     std::string msUnknown;
@@ -816,14 +816,14 @@ class MemoryBlocks
         BlockProperty(size_t nSize, tint nRefCount) : mnSize(nSize), mnRefCount(nRefCount) { }
     };
 
-    typedef std::map<tbyte*, BlockProperty, std::less<tbyte*> > map_Blocks;     //!< pointer -> {size, refcount}
-    typedef map_Blocks::iterator itr_Blocks;
+    using map_Blocks = std::map<tbyte*,BlockProperty,std::less<tbyte*>>;     //!< pointer -> {size, refcount}
+    using itr_Blocks = map_Blocks::iterator;
 
-    typedef std::multimap<size_t, tbyte*> map_FreeBs;                           //!< size -> pointer
-    typedef map_FreeBs::iterator itr_FreeBs;
+    using map_FreeBs = std::multimap<size_t,tbyte*>;                           //!< size -> pointer
+    using itr_FreeBs = map_FreeBs::iterator;
 
-    typedef std::map<tbyte*, itr_FreeBs, std::less<tbyte*> > map_FreeIt;        //!< pointer -> iterator to FreeBs
-    typedef map_FreeIt::iterator itr_FreeIt;
+    using map_FreeIt = std::map<tbyte*,itr_FreeBs,std::less<tbyte*>>;        //!< pointer -> iterator to FreeBs
+    using itr_FreeIt = map_FreeIt::iterator;
 
     map_FreeBs mFreeBs;                                                         //!< currently free blocks by sizes
     map_FreeIt mFreeIt;                                                         //!< currently free blocks iterators by pointers
@@ -845,7 +845,7 @@ public:
 //! Internal memory pool class
 class MemoryPool
 {
-    typedef std::list<tbyte*> list_blocks;
+    using list_blocks = std::list<tbyte*>;
 
     struct DeletePtr {
         template<class T>
@@ -1921,22 +1921,17 @@ protected:
 #endif
 
 public:
-    //typedef TC value_type; //!< STL-specific value type definition
-    using value_type = TC;
-    
-    typedef value_type* pointer; //!< STL-specific value pointer definition
-    
-    //typedef value_type* iterator; //!< STL-specific iterator definition
-    using iterator = value_type*;
-    
-    typedef const value_type* const_iterator; //!< STL-specific const iterator definition
-    typedef const value_type* const_pointer; //!< STL-specific const pointer definition
-    typedef value_type& reference; //!< STL-specific reference definition
-    typedef const value_type& const_reference; //!< STL-specific const reference definition
-    typedef size_t size_type; //!< STL-specific size type definition
-    typedef ptrdiff_t difference_type; //!< STL-specific difference type definition
-    typedef std::reverse_iterator<const_iterator> const_reverse_iterator; //!< STL-specific const reverse iterator definition
-    typedef std::reverse_iterator<iterator> reverse_iterator; //!< STL-specific reverse iterator definition
+    using value_type = TC; //!< STL-specific value type definition
+    using iterator = value_type*; //!< STL-specific iterator definition
+    using pointer = value_type*; //!< STL-specific value pointer definition
+    using const_iterator = const value_type*; //!< STL-specific const iterator definition
+    using const_pointer = const value_type*; //!< STL-specific const pointer definition
+    using reference = value_type&; //!< STL-specific reference definition
+    using const_reference = const value_type&; //!< STL-specific const reference definition
+    using size_type = size_t; //!< STL-specific size type definition
+    using difference_type = ptrdiff_t; //!< STL-specific difference type definition
+    using const_reverse_iterator = std::reverse_iterator<const_iterator>; //!< STL-specific const reverse iterator definition
+    using reverse_iterator = std::reverse_iterator<iterator>; //!< STL-specific reverse iterator definition
 
 /**
 @brief Default constructor
@@ -3405,8 +3400,8 @@ prints
 template<typename TR>
 class basic_rvector : public basic_array<TR,TR>
 {
-    typedef std::complex<TR> TC; //!< complex number type
-    typedef basic_array<TR,TR> BaseArray; //!< base class
+    using TC = std::complex<TR>; //!< complex number type
+    using BaseArray = basic_array<TR,TR>; //!< base class
 
 public:
     
@@ -6258,7 +6253,7 @@ private:
 template<typename TR, typename TC>
 class basic_cvector : public basic_array<TR,TC>
 {
-    typedef basic_array<TR,TC> BaseArray; //!< base class
+    using BaseArray = basic_array<TR,TC>; //!< base class
 
 public:
 /**
@@ -10034,7 +10029,7 @@ This one provides some member functions which are common for all matrices.
 template<typename TR, typename TC>
 class Matrix : public basic_array<TR,TC>
 {
-    typedef basic_array<TR,TC> BaseArray;
+    using BaseArray = basic_array<TR,TC>;
 
 protected:
     tint mm;   //!< Number of rows
@@ -10732,7 +10727,7 @@ This one provides some member functions which are common for all square matrices
 template<typename TR, typename TC>
 class SqMatrix
 {
-    typedef Matrix<TR,TC> BaseMatrix;
+    using BaseMatrix = Matrix<TR,TC>;
 
 protected:
     //! internal constructor
@@ -10826,10 +10821,10 @@ public:
 template<typename TR>
 class basic_rmatrix : public Matrix<TR,TR>
 {
-    typedef std::complex<TR> TC;           //!< complex number type
-    typedef basic_array<TR,TR> BaseArray; //!< Base basic_array class
-    typedef Matrix<TR,TR> BaseMatrix;     //!< Base Matrix class
-    typedef basic_rvector<TR> RVector;     //!< \ref rvector class
+    using TC = std::complex<TR>;           //!< complex number type
+    using BaseArray = basic_array<TR,TR>; //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TR>;     //!< Base Matrix class
+    using RVector = basic_rvector<TR>;     //!< \ref rvector class
 
     friend class basic_rvector<TR>; // _multiply
 
@@ -15049,13 +15044,13 @@ private:
 template<typename TR>
 class basic_srmatrix : public basic_rmatrix<TR>, public SqMatrix<TR,TR>
 {
-    typedef std::complex<TR> TC;            //!< complex number type
-    typedef basic_rvector<TR> RVector;      //!< \ref rvector
-    typedef basic_cvector<TR,TC> CVector;  //!< \ref cvector
-    typedef basic_array<TR,TR> BaseArray;  //!< Base basic_array class
-    typedef Matrix<TR,TR> BaseMatrix;      //!< Base Matrix class
-    typedef SqMatrix<TR,TR> BaseSqMatrix;  //!< Base SqMatrix class
-    typedef basic_rmatrix<TR> BaseRMatrix;  //!< \ref rmatrix class
+    using TC = std::complex<TR>;            //!< complex number type
+    using RVector = basic_rvector<TR>;      //!< \ref rvector
+    using CVector = basic_cvector<TR,TC>;  //!< \ref cvector
+    using BaseArray = basic_array<TR,TR>;  //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TR>;      //!< Base Matrix class
+    using BaseSqMatrix = SqMatrix<TR,TR>;  //!< Base SqMatrix class
+    using BaseRMatrix = basic_rmatrix<TR>;  //!< \ref rmatrix class
 
 public:
 /**
@@ -18498,10 +18493,10 @@ private:
 template<typename TR, typename TC>
 class basic_cmatrix : public Matrix<TR,TC>
 {
-    typedef basic_rvector<TR> RVector;       //!< \ref rvector class
-    typedef basic_cvector<TR,TC> CVector;   //!< \ref cvector class
-    typedef basic_array<TR,TC> BaseArray;   //!< Base basic_array class
-    typedef Matrix<TR,TC> BaseMatrix;       //!< Base Matrix class
+    using RVector = basic_rvector<TR>;       //!< \ref rvector class
+    using CVector = basic_cvector<TR,TC>;   //!< \ref cvector class
+    using BaseArray = basic_array<TR,TC>;   //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TC>;       //!< Base Matrix class
 
     friend class basic_cvector<TR,TC>;      // for _multiply
 
@@ -23569,11 +23564,11 @@ private:
 template<typename TR, typename TC>
 class basic_scmatrix : public basic_cmatrix<TR,TC>, public SqMatrix<TR,TC>
 {
-    typedef basic_cvector<TR,TC> CVector;       //!< \ref cvector
-    typedef basic_array<TR,TC> BaseArray;       //!< Base basic_array class
-    typedef Matrix<TR,TC> BaseMatrix;           //!< Base Matrix class
-    typedef SqMatrix<TR,TC> BaseSqMatrix;       //!< Base SqMatrix class
-    typedef basic_cmatrix<TR,TC> BaseCMatrix;   //!< \ref cmatrix
+    using CVector = basic_cvector<TR,TC>;       //!< \ref cvector
+    using BaseArray = basic_array<TR,TC>;       //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TC>;           //!< Base Matrix class
+    using BaseSqMatrix = SqMatrix<TR,TC>;       //!< Base SqMatrix class
+    using BaseCMatrix = basic_cmatrix<TR,TC>;   //!< \ref cmatrix
 
 public:
 /**
@@ -28420,14 +28415,14 @@ CVM library implements square band matrices only, therefore \f$m=n\f$ is satisfi
 template<typename TR>
 class basic_srbmatrix : public basic_srmatrix<TR>, public BandMatrix<TR,TR>
 {
-    typedef std::complex<TR> TC;                //!< complex number type
-    typedef basic_rvector<TR> RVector;          //!< \ref rvector
-    typedef basic_cvector<TR,TC> CVector;      //!< \ref cvector
-    typedef basic_array<TR,TR> BaseArray;      //!< Base basic_array class
-    typedef Matrix<TR,TR> BaseMatrix;          //!< Base Matrix class
-    typedef basic_rmatrix<TR> BaseRMatrix;      //!< Base \ref rmatrix class
-    typedef basic_srmatrix<TR> BaseSRMatrix;    //!< Base \ref srmatrix class
-    typedef BandMatrix<TR,TR> BaseBandMatrix;  //!< Base BandMatrix class
+    using TC = std::complex<TR>;                //!< complex number type
+    using RVector = basic_rvector<TR>;          //!< \ref rvector
+    using CVector = basic_cvector<TR,TC>;      //!< \ref cvector
+    using BaseArray = basic_array<TR,TR>;      //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TR>;          //!< Base Matrix class
+    using BaseRMatrix = basic_rmatrix<TR>;      //!< Base \ref rmatrix class
+    using BaseSRMatrix = basic_srmatrix<TR>;    //!< Base \ref srmatrix class
+    using BaseBandMatrix = BandMatrix<TR,TR>;  //!< Base BandMatrix class
 
     friend class basic_scbmatrix<TR,TC>;  // basic_scbmatrix constructor
 
@@ -30222,12 +30217,12 @@ CVM library implements square band matrices only, therefore \f$m=n\f$ is satisfi
 template<typename TR, typename TC>
 class basic_scbmatrix : public basic_scmatrix<TR,TC>, public BandMatrix<TR,TC>
 {
-    typedef basic_cvector<TR,TC> CVector;       //!< \ref cvector
-    typedef basic_array<TR,TC> BaseArray;       //!< Base basic_array class
-    typedef Matrix<TR,TC> BaseMatrix;           //!< Base Matrix class
-    typedef basic_cmatrix<TR,TC> BaseCMatrix;   //!< Base \ref cmatrix class
-    typedef basic_scmatrix<TR,TC> BaseSCMatrix; //!< Base \ref scmatrix class
-    typedef BandMatrix<TR,TC> BaseBandMatrix;   //!< Base BandMatrix class
+    using CVector = basic_cvector<TR,TC>;       //!< \ref cvector
+    using BaseArray = basic_array<TR,TC>;       //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TC>;           //!< Base Matrix class
+    using BaseCMatrix = basic_cmatrix<TR,TC>;   //!< Base \ref cmatrix class
+    using BaseSCMatrix = basic_scmatrix<TR,TC>; //!< Base \ref scmatrix class
+    using BaseBandMatrix = BandMatrix<TR,TC>;   //!< Base BandMatrix class
 
 protected:
     mutable BaseSCMatrix mSM;   //!< Temporary storage for square matrix enclosing band one (if needed)
@@ -32149,12 +32144,12 @@ protected:
 template<typename TR>
 class basic_srsmatrix : public basic_srmatrix<TR>
 {
-    typedef basic_rvector<TR> RVector;       //!< \ref rvector
-    typedef basic_array<TR,TR> BaseArray;   //!< Base basic_array class
-    typedef Matrix<TR,TR> BaseMatrix;       //!< Base Martrix class
-    typedef SqMatrix<TR,TR> BaseSqMatrix;   //!< Base SqMatrix class
-    typedef basic_rmatrix<TR> BaseRMatrix;   //!< \ref rmatrix class
-    typedef basic_srmatrix<TR> BaseSRMatrix; //!< \ref crmatrix class
+    using RVector = basic_rvector<TR>;       //!< \ref rvector
+    using BaseArray = basic_array<TR,TR>;   //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TR>;       //!< Base Martrix class
+    using BaseSqMatrix = SqMatrix<TR,TR>;   //!< Base SqMatrix class
+    using BaseRMatrix = basic_rmatrix<TR>;   //!< \ref rmatrix class
+    using BaseSRMatrix = basic_srmatrix<TR>; //!< \ref crmatrix class
 
 public:
 /**
@@ -34354,11 +34349,11 @@ Please use predefined \ref schmatrix class in your applications.
 template<typename TR, typename TC>
 class basic_schmatrix : public basic_scmatrix<TR,TC>
 {
-    typedef basic_rvector<TR> RVector;          //!< \ref rvector class
-    typedef basic_cvector<TR,TC> CVector;       //!< \ref cvector class
-    typedef Matrix<TR,TC> BaseMatrix;           //!< Base Matrix class
-    typedef basic_cmatrix<TR,TC> BaseCMatrix;   //!< \ref cmatrix class
-    typedef basic_scmatrix<TR,TC> BaseSCMatrix; //!< \ref scmatrix class
+    using RVector = basic_rvector<TR>;          //!< \ref rvector class
+    using CVector = basic_cvector<TR,TC>;       //!< \ref cvector class
+    using BaseMatrix = Matrix<TR,TC>;           //!< Base Matrix class
+    using BaseCMatrix = basic_cmatrix<TR,TC>;   //!< \ref cmatrix class
+    using BaseSCMatrix = basic_scmatrix<TR,TC>; //!< \ref scmatrix class
 
 public:
 /**
@@ -37196,46 +37191,46 @@ inline basic_schmatrix<TR,TC> operator * (CVM_LONGEST_INT d, const basic_schmatr
 
 
 #if defined (CVM_FLOAT)
-typedef float  treal; //!< Either \c double (default) of \c float (when \c CVM_FLOAT is defined)
+using treal = float; //!< Either \c double (default) of \c float (when \c CVM_FLOAT is defined)
 #else
-typedef double treal; //!< Either \c double (default) of \c float (when \c CVM_FLOAT is defined)
+using treal = double; //!< Either \c double (default) of \c float (when \c CVM_FLOAT is defined)
 #endif
 
-typedef std::complex<treal> tcomplex; //!< Complex number  defined as \c std::complex<treal> (see also \ref treal)
+using tcomplex = std::complex<treal>; //!< Complex number  defined as \c std::complex<treal> (see also \ref treal)
 
-typedef basic_array<tint,tint>           iarray;     //!< End-user class: array of integers, see \ref basic_array
-typedef basic_rvector<treal>             rvector;    //!< End-user class: vector of \ref treal numbers, see \ref basic_rvector
-typedef basic_rmatrix<treal>             rmatrix;    //!< End-user class: matrix of \ref treal numbers, see \ref basic_rmatrix
-typedef basic_srmatrix<treal>            srmatrix;   //!< End-user class: square matrix of \ref treal numbers, see \ref basic_srmatrix
-typedef basic_cvector<treal, tcomplex>   cvector;    //!< End-user class: vector of \ref treal complex numbers, see \ref basic_cvector
-typedef basic_cmatrix<treal, tcomplex>   cmatrix;    //!< End-user class: matrix of \ref treal complex numbers, see \ref basic_cmatrix
-typedef basic_scmatrix<treal, tcomplex>  scmatrix;   //!< End-user class: square matrix of \ref treal complex numbers, see \ref basic_scmatrix
-typedef basic_srbmatrix<treal>           srbmatrix;  //!< End-user class: square band matrix of \ref treal numbers, see \ref basic_srbmatrix
-typedef basic_scbmatrix<treal, tcomplex> scbmatrix;  //!< End-user class: square band matrix of \ref treal complex numbers, see \ref basic_scbmatrix
-typedef basic_srsmatrix<treal>           srsmatrix;  //!< End-user class: square symmetric matrix of \ref treal numbers, see \ref basic_srsmatrix
-typedef basic_schmatrix<treal, tcomplex> schmatrix;  //!< End-user class: square hermitian matrix of \ref treal complex numbers, see \ref basic_schmatrix
+using iarray = basic_array<tint,tint>;     //!< End-user class: array of integers, see \ref basic_array
+using rvector = basic_rvector<treal>;    //!< End-user class: vector of \ref treal numbers, see \ref basic_rvector
+using rmatrix = basic_rmatrix<treal>;    //!< End-user class: matrix of \ref treal numbers, see \ref basic_rmatrix
+using srmatrix = basic_srmatrix<treal>;   //!< End-user class: square matrix of \ref treal numbers, see \ref basic_srmatrix
+using cvector = basic_cvector<treal,tcomplex>;    //!< End-user class: vector of \ref treal complex numbers, see \ref basic_cvector
+using cmatrix = basic_cmatrix<treal,tcomplex>;    //!< End-user class: matrix of \ref treal complex numbers, see \ref basic_cmatrix
+using scmatrix = basic_scmatrix<treal,tcomplex>;   //!< End-user class: square matrix of \ref treal complex numbers, see \ref basic_scmatrix
+using srbmatrix = basic_srbmatrix<treal>;  //!< End-user class: square band matrix of \ref treal numbers, see \ref basic_srbmatrix
+using scbmatrix = basic_scbmatrix<treal,tcomplex>;  //!< End-user class: square band matrix of \ref treal complex numbers, see \ref basic_scbmatrix
+using srsmatrix = basic_srsmatrix<treal>;  //!< End-user class: square symmetric matrix of \ref treal numbers, see \ref basic_srsmatrix
+using schmatrix = basic_schmatrix<treal,tcomplex>;  //!< End-user class: square hermitian matrix of \ref treal complex numbers, see \ref basic_schmatrix
 
-typedef basic_rvector<float>                        rvector32;    //!< End-user class: vector of 32-bit float numbers, see \ref basic_rvector
-typedef basic_rmatrix<float>                        rmatrix32;    //!< End-user class: matrix of 32-bit float numbers, see \ref basic_rmatrix
-typedef basic_srmatrix<float>                       srmatrix32;   //!< End-user class: square matrix of 32-bit float numbers, see \ref basic_srmatrix
-typedef basic_cvector<float, std::complex<float>>   cvector32;    //!< End-user class: vector of 32-bit float complex numbers, see \ref basic_cvector
-typedef basic_cmatrix<float, std::complex<float>>   cmatrix32;    //!< End-user class: matrix of 32-bit float complex numbers, see \ref basic_cmatrix
-typedef basic_scmatrix<float, std::complex<float>>  scmatrix32;   //!< End-user class: square matrix of 32-bit float complex numbers, see \ref basic_scmatrix
-typedef basic_srbmatrix<float>                      srbmatrix32;  //!< End-user class: square band matrix of 32-bit float numbers, see \ref basic_srbmatrix
-typedef basic_scbmatrix<float, std::complex<float>> scbmatrix32;  //!< End-user class: square band matrix of 32-bit float complex numbers, see \ref basic_scbmatrix
-typedef basic_srsmatrix<float>                      srsmatrix32;  //!< End-user class: square symmetric matrix of 32-bit float numbers, see \ref basic_srsmatrix
-typedef basic_schmatrix<float, std::complex<float>> schmatrix32;  //!< End-user class: square hermitian matrix of 32-bit float complex numbers, see \ref basic_schmatrix
+using rvector32 = basic_rvector<float>;    //!< End-user class: vector of 32-bit float numbers, see \ref basic_rvector
+using rmatrix32 = basic_rmatrix<float>;    //!< End-user class: matrix of 32-bit float numbers, see \ref basic_rmatrix
+using srmatrix32 = basic_srmatrix<float>;   //!< End-user class: square matrix of 32-bit float numbers, see \ref basic_srmatrix
+using cvector32 = basic_cvector<float,std::complex<float>>;    //!< End-user class: vector of 32-bit float complex numbers, see \ref basic_cvector
+using cmatrix32 = basic_cmatrix<float,std::complex<float>>;    //!< End-user class: matrix of 32-bit float complex numbers, see \ref basic_cmatrix
+using scmatrix32 = basic_scmatrix<float,std::complex<float>>;   //!< End-user class: square matrix of 32-bit float complex numbers, see \ref basic_scmatrix
+using srbmatrix32 = basic_srbmatrix<float>;  //!< End-user class: square band matrix of 32-bit float numbers, see \ref basic_srbmatrix
+using scbmatrix32 = basic_scbmatrix<float,std::complex<float>>;  //!< End-user class: square band matrix of 32-bit float complex numbers, see \ref basic_scbmatrix
+using srsmatrix32 = basic_srsmatrix<float>;  //!< End-user class: square symmetric matrix of 32-bit float numbers, see \ref basic_srsmatrix
+using schmatrix32 = basic_schmatrix<float,std::complex<float>>;  //!< End-user class: square hermitian matrix of 32-bit float complex numbers, see \ref basic_schmatrix
 
-typedef basic_rvector<double>                         rvector64;    //!< End-user class: vector of 64-bit double numbers, see \ref basic_rvector
-typedef basic_rmatrix<double>                         rmatrix64;    //!< End-user class: matrix of 64-bit double numbers, see \ref basic_rmatrix
-typedef basic_srmatrix<double>                        srmatrix64;   //!< End-user class: square matrix of 64-bit double numbers, see \ref basic_srmatrix
-typedef basic_cvector<double, std::complex<double>>   cvector64;    //!< End-user class: vector of 64-bit double complex numbers, see \ref basic_cvector
-typedef basic_cmatrix<double, std::complex<double>>   cmatrix64;    //!< End-user class: matrix of 64-bit double complex numbers, see \ref basic_cmatrix
-typedef basic_scmatrix<double, std::complex<double>>  scmatrix64;   //!< End-user class: square matrix of 64-bit double complex numbers, see \ref basic_scmatrix
-typedef basic_srbmatrix<double>                       srbmatrix64;  //!< End-user class: square band matrix of 64-bit double numbers, see \ref basic_srbmatrix
-typedef basic_scbmatrix<double, std::complex<double>> scbmatrix64;  //!< End-user class: square band matrix of 64-bit double complex numbers, see \ref basic_scbmatrix
-typedef basic_srsmatrix<double>                       srsmatrix64;  //!< End-user class: square symmetric matrix of 64-bit double numbers, see \ref basic_srsmatrix
-typedef basic_schmatrix<double, std::complex<double>> schmatrix64;  //!< End-user class: square hermitian matrix of 64-bit double complex numbers, see \ref basic_schmatrix
+using rvector64 = basic_rvector<double>;    //!< End-user class: vector of 64-bit double numbers, see \ref basic_rvector
+using rmatrix64 = basic_rmatrix<double>;    //!< End-user class: matrix of 64-bit double numbers, see \ref basic_rmatrix
+using srmatrix64 = basic_srmatrix<double>;   //!< End-user class: square matrix of 64-bit double numbers, see \ref basic_srmatrix
+using cvector64 = basic_cvector<double,std::complex<double>>;    //!< End-user class: vector of 64-bit double complex numbers, see \ref basic_cvector
+using cmatrix64 = basic_cmatrix<double,std::complex<double>>;    //!< End-user class: matrix of 64-bit double complex numbers, see \ref basic_cmatrix
+using scmatrix64 = basic_scmatrix<double,std::complex<double>>;   //!< End-user class: square matrix of 64-bit double complex numbers, see \ref basic_scmatrix
+using srbmatrix64 = basic_srbmatrix<double>;  //!< End-user class: square band matrix of 64-bit double numbers, see \ref basic_srbmatrix
+using scbmatrix64 = basic_scbmatrix<double,std::complex<double>>;  //!< End-user class: square band matrix of 64-bit double complex numbers, see \ref basic_scbmatrix
+using srsmatrix64 = basic_srsmatrix<double>;  //!< End-user class: square symmetric matrix of 64-bit double numbers, see \ref basic_srsmatrix
+using schmatrix64 = basic_schmatrix<double,std::complex<double>>;  //!< End-user class: square hermitian matrix of 64-bit double complex numbers, see \ref basic_schmatrix
 
 //! Real identity matrix creation
 template<typename TR>

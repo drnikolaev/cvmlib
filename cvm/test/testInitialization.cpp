@@ -246,8 +246,8 @@ TYPED_TEST(InitializationTest, TestVectorItr) {
     basic_rvector<TP> vs1(5);
     vs1[CVM0] = 1.; vs1[CVM0+1] = 2.; vs1[CVM0+2] = 3.; vs1[CVM0+3] = 4.; vs1[CVM0+4] = 5.;
     
-    basic_rvector<TP>::iterator it = vs1.begin() + 1;
-    basic_rvector<TP>::iterator ite = vs1.erase(it);
+    typename basic_rvector<TP>::iterator it = vs1.begin() + 1;
+    typename basic_rvector<TP>::iterator ite = vs1.erase(it);
     
     EXPECT_EQ(1. , vs1[CVM0]) << "rvector.insert";
     EXPECT_EQ(3. , vs1[CVM0+1]) << "rvector.insert";
