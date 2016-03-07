@@ -36,6 +36,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "TestBody(void*)"
                   moduleName = "cvm_test"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sam/cvmlib/cvm/test/test.cpp"
                   timestampString = "413357750.931847"
                   startingColumnNumber = "9223372036854775807"
@@ -50,6 +51,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "TestBody(void*)"
                   moduleName = "cvm_test"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sam/cvmlib/cvm/test/test.cpp"
                   timestampString = "413357750.932123"
                   startingColumnNumber = "9223372036854775807"
@@ -64,6 +66,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "TestBody(void*)"
                   moduleName = "cvm_test"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sam/cvmlib/cvm/test/test.cpp"
                   timestampString = "413357750.9323"
                   startingColumnNumber = "9223372036854775807"
@@ -94,6 +97,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "TestBody(void*)"
                   moduleName = "cvm_test"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sam/cvmlib/cvm/test/test.cpp"
                   timestampString = "413357750.932576"
                   startingColumnNumber = "9223372036854775807"
@@ -108,6 +112,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "TestBody(void*)"
                   moduleName = "cvm_test"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sam/cvmlib/cvm/test/test.cpp"
                   timestampString = "413357750.932988"
                   startingColumnNumber = "9223372036854775807"
@@ -117,6 +122,70 @@
                   offsetFromSymbolStart = "1048">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../test/testLapack.cpp"
+            timestampString = "478926787.374913"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
+            landmarkName = "TYPED_TEST(LapackTest, TestHerkHermitianComplex1)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LapackTest_TestHerkHermitianComplex1_Test&lt;float&gt;::TestBody()"
+                  moduleName = "cvm_test"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sam/cvmlib/cvm/test/testLapack.cpp"
+                  timestampString = "478901723.453995"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "196"
+                  endingLineNumber = "196"
+                  offsetFromSymbolStart = "221">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LapackTest_TestHerkHermitianComplex1_Test&lt;double&gt;::TestBody()"
+                  moduleName = "cvm_test"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sam/cvmlib/cvm/test/testLapack.cpp"
+                  timestampString = "478901723.454164"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "196"
+                  endingLineNumber = "196"
+                  offsetFromSymbolStart = "221">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../test/testInitialization.cpp"
+            timestampString = "479005944.795029"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
+            landmarkName = "TYPED_TEST(InitializationTest, TestIarrayResize2)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

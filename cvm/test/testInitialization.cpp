@@ -129,6 +129,154 @@ TYPED_TEST(InitializationTest, TestLiterals) {
 }
 #endif
 
+TYPED_TEST(InitializationTest, TestIarrayInsertErase) {
+    iarray a(5);
+    iarray::iterator pos = a.begin() + 2;
+    a.insert(pos, 88);
+    EXPECT_EQ(88, a[CVM0+2]) << "iarray::begin, iarray::insert";
+    pos = a.begin() + 1;
+    a.erase(pos);
+    EXPECT_EQ(88, a[CVM0+1]) << "iarray::begin, iarray::erase";
+    EXPECT_EQ(0, a[CVM0+2]) << "iarray::begin, iarray::erase";
+}
+
+TYPED_TEST(InitializationTest, TestIarrayPushBack) {
+    iarray a(5);
+    a.push_back(88);
+    EXPECT_EQ(88, a[CVM0+5]) << "iarray::push_back";
+    a.pop_back();
+    EXPECT_EQ(0, a[CVM0+4]) << "iarray::pop_back";
+    EXPECT_EQ(5, a.size()) << "iarray::pop_back";
+}
+
+TYPED_TEST(InitializationTest, TestIarrayAt) {
+    iarray a(5);
+    a[CVM0] = 1;
+    a[CVM0+1] = 2;
+    a[CVM0+2] = 3;
+    a[CVM0+3] = 4;
+    a[CVM0+4] = 5;
+    EXPECT_EQ(1, a.at(0)) << "iarray::at";
+    EXPECT_EQ(5, a.at(4)) << "iarray::at";
+}
+
+TYPED_TEST(InitializationTest, TestIarrayReverseIteratorFrontBack) {
+    iarray a(5);
+    a[CVM0] = 1;
+    a[CVM0+1] = 2;
+    a[CVM0+2] = 3;
+    a[CVM0+3] = 4;
+    a[CVM0+4] = 5;
+    
+    int val = 5;
+    for (iarray::reverse_iterator it = a.rbegin(); it != a.rend(); ++it)
+    {
+        EXPECT_EQ(val, *it) << "iarray::reverse_iterator";
+        --val;
+    }
+    EXPECT_EQ(1, a.front()) << "iarray::front";
+    EXPECT_EQ(5, a.back()) << "iarray::back";
+}
+
+TYPED_TEST(InitializationTest, TestIarrayResize) {
+    const tint a[] = {1, 2, 3, 4};
+    iarray v (a, 3);
+    v.resize(2);
+    EXPECT_EQ(2, v[CVM0+1]) << "iarray.resize";
+    v.resize(4);
+    EXPECT_EQ(0, v[CVM0+3]) << "iarray.resize";
+}
+
+TYPED_TEST(InitializationTest, TestIarrayCopyCtr) {
+    iarray a(5);
+    a.set(3);
+    iarray b(a);
+    EXPECT_EQ(3, b[CVM0+3]) << "iarray copy ctr";
+}
+
+TYPED_TEST(InitializationTest, TestIarrayAssignment) {
+    iarray a(5), b(5);
+    a.set(3);
+    b = a;
+    EXPECT_EQ(3, b[CVM0+3]) << "iarray assignment";
+}
+
+TYPED_TEST(InitializationTest, TestIarraySet) {
+    iarray a(5);
+    a.set(3);
+    EXPECT_EQ(3, a[CVM0+3]) << "iarray.set";
+}
+
+TYPED_TEST(InitializationTest, TestIarrayResize2) {
+    iarray a;
+    a.resize(10);
+    EXPECT_EQ(10, a.size()) << "iarray.resize";
+}
+
+TYPED_TEST(InitializationTest, TestIarrayArrCtr) {
+    tint a[] = {1, 2, 3, 4};
+    iarray v (a, 3);
+    EXPECT_EQ(2, v[CVM0+1]) << "iarray (*, size)";
+    a[1] = 77;
+    EXPECT_EQ(77, v[CVM0+1]) << "iarray (*, size)";
+}
+
+TYPED_TEST(InitializationTest, TestIarrayItrCtr) {
+    const tint a[] = {1, 2, 3, 4};
+    const iarray v{a+1, a+3};
+    EXPECT_EQ(2, v.size()) << "iarray.size()";
+    EXPECT_EQ(3, v[CVM0+1]) << "iarray (*, *)";
+}
+
+TYPED_TEST(InitializationTest, TestIarrayGet) {
+    iarray a(10);
+    a[CVM0+1] = 1;
+    EXPECT_EQ(1, a.get()[1]) << "iarray.get";
+}
+
+TYPED_TEST(InitializationTest, TestVectorCopyCtrReal) {
+    basic_rvector<TP> a(5);
+    a.set(3.);
+    basic_rvector<TP> b(a);
+    EXPECT_EQ(TP(3.), b[CVM0+3]) << "rvector copy ctr";
+}
+
+/*
+TYPED_TEST(InitializationTest, TestVectorItr) {
+    basic_rvector<TP> vs1(5);
+    vs1[CVM0] = 1.; vs1[CVM0+1] = 2.; vs1[CVM0+2] = 3.; vs1[CVM0+3] = 4.; vs1[CVM0+4] = 5.;
+    
+    basic_rvector<TP>::iterator it;// = vs1.begin() + 1;
+    basic_rvector<TP>::iterator ite = vs1.erase(it);
+    
+    EXPECT_EQ(1. , vs1[CVM0]) << "rvector.insert";
+    EXPECT_EQ(3. , vs1[CVM0+1]) << "rvector.insert";
+    EXPECT_EQ(4. , vs1[CVM0+2]) << "rvector.insert";
+    
+    vs1.insert(ite, 10.);
+    
+    EXPECT_EQ(1. , vs1[CVM0]) << "rvector.insert";
+    EXPECT_EQ(10. , vs1[CVM0+1]) << "rvector.insert";
+    EXPECT_EQ(3. , vs1[CVM0+2]) << "rvector.insert";
+    
+    vs1.push_back(9.);
+    EXPECT_EQ(5. , vs1[CVM0+4]) << "rvector.push_back";
+    EXPECT_EQ(9. , vs1[CVM0+5]) << "rvector.push_back";
+    EXPECT_EQ(10. , *std::max_element(vs1.begin(), vs1.end())) << "rvector.max_element";
+    
+    std::sort(vs1.begin(), vs1.end());
+    EXPECT_EQ(10. , vs1[CVM0+5]) << "std::sort";
+    
+    std::reverse(vs1.begin(), vs1.end());
+    EXPECT_EQ(10. , vs1[CVM0]) << "std::reverse";
+    EXPECT_EQ(9. , vs1[CVM0+1]) << "std::reverse";
+    EXPECT_EQ(1. , vs1[CVM0+5]) << "std::reverse";
+}
+*/
+
+
+
+
 TYPED_TEST(InitializationTest, TestMoveReal) {
     basic_rmatrix<TP> rm{4,3};
     rm.set(2.);
@@ -2916,6 +3064,65 @@ TYPED_TEST(InitializationTest, TestSubAssignment) {
     sch1.resize(ns);
 }
 
+TYPED_TEST(InitializationTest, TestVectorSetReal) {
+    basic_rvector<TP> v(5);
+    v.set(3.);
+    EXPECT_EQ(TP(3.), v[CVM0+2]) << "rvector::set";
+}
+
+TYPED_TEST(InitializationTest, TestVectorAssignReal) {
+    const TP a[] = {1., 2., 3., 4., 5., 6., 7., };
+    basic_rvector<TP> v(5);
+    basic_rvector<TP> v2(4);
+    v.assign(a);
+    EXPECT_EQ(TP(3.), v[CVM0+2]) << "rvector::assign";
+    v2.assign(a, 2);
+    EXPECT_EQ(TP(5.), v2[CVM0+2]) << "rvector::assign";
+}
+
+TYPED_TEST(InitializationTest, TestVectorIntRealCtr) {
+    basic_rvector<TP> v (5, 1.5);
+    EXPECT_EQ(TP(1.5), v[CVM0+2]) << "rvector(int, treal)";
+}
+
+TYPED_TEST(InitializationTest, TestVectorImagComplex) {
+    basic_cvector<TP,TPC> vc(3);
+    vc.set(TPC(1.,1.));
+    vc.imag()(CVM0) = 7.77;
+    EXPECT_EQ(std::abs(TPC(1.,7.77)), std::abs(vc[CVM0])) << "cvector::imag";
+    EXPECT_EQ(std::abs(TPC(1.,1.)), std::abs(vc[CVM0+1])) << "cvector::imag";
+}
+
+TYPED_TEST(InitializationTest, TestVectorRealComplex) {
+    basic_cvector<TP,TPC> vc(3);
+    vc.set(TPC(1.,1.));
+    vc.real()(CVM0) = 7.77;
+    EXPECT_EQ(std::abs(TPC(7.77,1.)), std::abs(vc[CVM0])) << "cvector::real";
+    EXPECT_EQ(std::abs(TPC(1.,1.)), std::abs(vc[CVM0+1])) << "cvector::real";
+}
+
+TYPED_TEST(InitializationTest, TestVectorSetRealComplex) {
+    basic_cvector<TP,TPC> v(3);
+    v.set_real(1.);
+    EXPECT_EQ(std::abs(TPC(1.,0.)), std::abs(v[CVM0+1])) << "cvector::set_real";
+}
+
+TYPED_TEST(InitializationTest, TestVectorAssignImagComplex) {
+    basic_rvector<TP> v(3);
+    basic_cvector<TP,TPC> vc(3);
+    v(CVM0) = 1.;
+    v(CVM0+1) = 2.;
+    v(CVM0+2) = 3.;
+    vc.assign_imag(v);
+    EXPECT_EQ(std::abs(TPC(0.,2.)), std::abs(vc[CVM0+1])) << "cvector::assign_imag";
+}
+
+TYPED_TEST(InitializationTest, TestMatrixLdReal) {
+    basic_rmatrix<TP> m (100, 200);
+    basic_srmatrix<TP> ms (m, 30, 40, 5); // 5x5 submatrix
+    EXPECT_EQ(100, ms.ld()) << "srmatrix::ld";
+}
+
 TYPED_TEST(InitializationTest, TestTransposeReal) {
     basic_rmatrix<TP> rm{7, 6}, rm2{6, 7};
     rm.randomize(-3., 5.);
@@ -3023,4 +3230,92 @@ TYPED_TEST(InitializationTest, TestTransposeComplex) {
     EXPECT_NEAR(std::abs(schm(2,1)), std::abs(schmc(1,2)), s<TP>()) << "schmatrix transposed";
     schmc.transpose();
     EXPECT_NEAR(0.,(schmc - schm).norm(),s<TP>()) << "schmatrix transposed";
+}
+
+TYPED_TEST(InitializationTest, TestMainDiagHermitianComplex) {
+    TP a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+    basic_schmatrix<TP,TPC> m((TPC*)a, 3);
+    basic_rvector<TP> v(3);
+    v.set(7.7);
+    m.set_main_diag(v);
+    EXPECT_EQ(TPC(7.7,0.), m(CVM0, CVM0)) << "schmatrix::set_main_diag";
+    EXPECT_EQ(TPC(7.7,0.), m(CVM0+2, CVM0+2)) << "schmatrix::set_main_diag";
+    EXPECT_EQ(TPC(2.,-1.), m(CVM0, CVM0+1)) << "schmatrix::set_main_diag";
+    EXPECT_EQ(TPC(2.,1.), m(CVM0+1, CVM0)) << "schmatrix::set_main_diag";
+}
+
+TYPED_TEST(InitializationTest, TestDiagHermitianComplex) {
+    TP a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
+              0., 3., -1., -2., 0., -3., 3., 0.};
+    basic_schmatrix<TP,TPC> m((TPC*)a, 3);
+    basic_cvector<TP,TPC> v(2);
+    v.set(TPC(7.,7.));
+    m.set_diag(1, v);
+    EXPECT_EQ(TPC(7.,7.), m(CVM0, CVM0+1)) << "schmatrix::set_diag";
+    EXPECT_EQ(TPC(7.,-7.), m(CVM0+1, CVM0)) << "schmatrix::set_diag";
+    EXPECT_EQ(TPC(2.,0.), m(CVM0+1, CVM0+1)) << "schmatrix::set_diag";
+}
+
+TYPED_TEST(InitializationTest, TestResizeBandComplex) {
+    TP a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
+    basic_scbmatrix<TP,TPC> m((TPC*)a, 3, 1, 0);
+    m.resize_lu (0, 1);
+    m.diag(1).set(TPC(9.,9.));
+    EXPECT_EQ(TPC(9.,9.), m(CVM0, CVM0+1)) << "scbmatrix::resize_lu";
+    EXPECT_EQ(TPC(0.,0.), m(CVM0+1, CVM0)) << "scbmatrix::resize_lu";
+    EXPECT_EQ(TPC(9.,10.), m(CVM0+2, CVM0+2)) << "scbmatrix::resize_lu";
+}
+
+TYPED_TEST(InitializationTest, TestRealImagBandComplex) {
+    TP a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
+    basic_scbmatrix<TP,TPC> m ((TPC*)a, 3, 1, 0);
+    EXPECT_NEAR(TP(5.), m.real()(CVM0+1, CVM0+1), s<TP>()) << "scbmatrix::real";
+    EXPECT_NEAR(TP(6.), m.imag()(CVM0+1, CVM0+1), s<TP>()) << "scbmatrix::imag";
+}
+
+TYPED_TEST(InitializationTest, TestBoolCtrBandComplex) {
+    TP a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
+    const basic_srbmatrix<TP> m(a, 4, 1, 0);
+    basic_scbmatrix<TP,TPC> mr(m), mi(m, false);
+    EXPECT_EQ(TPC(6.,0.), mr(CVM0+3, CVM0+2)) << "basic_scbmatrix<TP,TPC>(srbmatrix, bool)";
+    EXPECT_EQ(TPC(0.,0.), mr(CVM0, CVM0+3)) << "basic_scbmatrix<TP,TPC>(srbmatrix, bool)";
+    EXPECT_EQ(TPC(0.,6.), mi(CVM0+3, CVM0+2)) << "basic_scbmatrix<TP,TPC>(srbmatrix, bool)";
+    EXPECT_EQ(TPC(0.,0.), mi(CVM0, CVM0+3)) << "basic_scbmatrix<TP,TPC>(srbmatrix, bool)";
+}
+
+TYPED_TEST(InitializationTest, TestRealRealCtrBandComplex) {
+    basic_srbmatrix<TP> mr(4, 1, 0), mi(4, 1, 0);
+    mr.set(1.);
+    mi.set(2.);
+    const basic_scbmatrix<TP,TPC> m(mr, mi);
+    EXPECT_EQ(TPC(1.,2.), m(CVM0+1, CVM0)) << "basic_scbmatrix<TP,TPC>(srbmatrix, srbmatrix)";
+    EXPECT_EQ(TPC(0.,0.), m(CVM0, CVM0+1)) << "basic_scbmatrix<TP,TPC>(srbmatrix, srbmatrix)";
+}
+
+TYPED_TEST(InitializationTest, TestDiagReal) {
+    TP a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
+    basic_rmatrix<TP>  m(2, 3);
+    const basic_srmatrix<TP> ms(a, 3);
+    m.diag(-1).set(1.);
+    m.diag(0).set(2.);
+    m.diag(1).set(3.);
+    m.diag(2).set(4.);
+    EXPECT_EQ(TP(3.), m(CVM0, CVM0+1)) << "rmatrix::diag";
+    EXPECT_EQ(TP(4.), m(CVM0, CVM0+2)) << "rmatrix::diag";
+    EXPECT_EQ(TP(1.), m(CVM0+1, CVM0)) << "rmatrix::diag";
+    EXPECT_EQ(TP(5.), ms.diag(0)(CVM0+1)) << "rmatrix::diag";
+}
+
+TYPED_TEST(InitializationTest, TestDiagComplex) {
+    TP a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16., 17., 18.};
+    basic_cmatrix<TP,TPC> m(2, 3);
+    const basic_scmatrix<TP,TPC> ms((TPC*)a, 3);
+    m.diag(-1).set(TPC(1.,1.));
+    m.diag(0).set(TPC(2.,2.));
+    m.diag(1).set(TPC(3.,3.));
+    m.diag(2).set(TPC(4.,4.));
+    EXPECT_EQ(TPC(3.,3.), m(CVM0, CVM0+1)) << "cmatrix::diag";
+    EXPECT_EQ(TPC(3.,3.), m(CVM0+1, CVM0+2)) << "cmatrix::diag";
+    EXPECT_EQ(TPC(9.,10.), ms.diag(0)[CVM0+1]) << "cmatrix::diag";
 }

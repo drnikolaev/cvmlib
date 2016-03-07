@@ -36,7 +36,7 @@ constexpr inline T s() {
 
 template<typename T>
 constexpr inline T sf() {
-    return sizeof(T) >= 8 ? T(1.e-14) : T(1.e-5);
+    return sizeof(T) >= 8 ? T(1.e-13) : T(1.e-5);
 }
 
 template<typename T>

@@ -1921,9 +1921,14 @@ protected:
 #endif
 
 public:
-    typedef TC value_type; //!< STL-specific value type definition
+    //typedef TC value_type; //!< STL-specific value type definition
+    using value_type = TC;
+    
     typedef value_type* pointer; //!< STL-specific value pointer definition
-    typedef value_type* iterator; //!< STL-specific iterator definition
+    
+    //typedef value_type* iterator; //!< STL-specific iterator definition
+    using iterator = value_type*;
+    
     typedef const value_type* const_iterator; //!< STL-specific const iterator definition
     typedef const value_type* const_pointer; //!< STL-specific const pointer definition
     typedef value_type& reference; //!< STL-specific reference definition
@@ -3404,6 +3409,7 @@ class basic_rvector : public basic_array<TR,TR>
     typedef basic_array<TR,TR> BaseArray; //!< base class
 
 public:
+    
 /**
 @brief Default constructor
 
