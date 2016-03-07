@@ -48,7 +48,7 @@ TYPED_TEST(MiscTest, TestMKL81Crash) {
     basic_rmatrix<TP> A(n, p);
     for (j = 0 ; j < p; ++j) {
        for (i = 0 ; i < n; ++i) {
-           A(i+CVM0, j+CVM0) = (treal)(i + j * p);
+           A(i+CVM0, j+CVM0) = TP(i + j * p);
        }
     }
     basic_rvector<TP> v(_cvm_min(n,p)) ;

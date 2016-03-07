@@ -15,10 +15,10 @@ protected:
     InitializationTest() {
         for (int i = 0; i < 100; ++i)
         {
-            a1[i] = i + 1;
-            a2[i] = (i + 1) / 10.;
-            a3[i] = (i + 1) * 10.;
-            a4[i] = (i + 1) / 100.;
+            a1[i] = T(i + 1);
+            a2[i] = T(i + 1) / T(10.);
+            a3[i] = T(i + 1) * T(10.);
+            a4[i] = T(i + 1) / T(100.);
             c1[i] = TC(a1[i], a2[i]);
             c2[i] = TC(a2[i], a4[i]);
         }
@@ -102,9 +102,9 @@ TYPED_TEST(InitializationTest, TestSizes) {
 
 #if defined(CVM_USE_INITIALIZER_LISTS)
 TYPED_TEST(InitializationTest, TestInitList) {
-    basic_rvector<TP> rv = { 1., -2., TP{3.456}, TP{99.99} };
+    basic_rvector<TP> rv = { TP(1.), TP(-2.), TP(3.456), TP(99.99) };
     basic_rvector<TP> rv0 = {};
-    basic_cvector<TP,TPC> cv = { TPC{1.2, 3.4}, TPC{3.4, 5.6}, TP{99.99} };
+    basic_cvector<TP,TPC> cv = { TPC(1.2, 3.4), TPC(3.4, 5.6), TP(99.99) };
     basic_rvector<TP> cv0 = {};
     EXPECT_EQ(0,rv0.size());
     EXPECT_EQ(0,cv0.size());
@@ -241,12 +241,12 @@ TYPED_TEST(InitializationTest, TestVectorCopyCtrReal) {
     EXPECT_EQ(TP(3.), b[CVM0+3]) << "rvector copy ctr";
 }
 
-/*
+
 TYPED_TEST(InitializationTest, TestVectorItr) {
     basic_rvector<TP> vs1(5);
     vs1[CVM0] = 1.; vs1[CVM0+1] = 2.; vs1[CVM0+2] = 3.; vs1[CVM0+3] = 4.; vs1[CVM0+4] = 5.;
     
-    basic_rvector<TP>::iterator it;// = vs1.begin() + 1;
+    basic_rvector<TP>::iterator it = vs1.begin() + 1;
     basic_rvector<TP>::iterator ite = vs1.erase(it);
     
     EXPECT_EQ(1. , vs1[CVM0]) << "rvector.insert";
@@ -272,7 +272,7 @@ TYPED_TEST(InitializationTest, TestVectorItr) {
     EXPECT_EQ(9. , vs1[CVM0+1]) << "std::reverse";
     EXPECT_EQ(1. , vs1[CVM0+5]) << "std::reverse";
 }
-*/
+
 
 
 
@@ -871,7 +871,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     basic_cvector<TP,TPC> cv1 {this->a1, this->a2, 10};         // note: this constructor copies memory
     basic_cvector<TP,TPC> cv2 {this->a1, this->a2, 10, 3};      // note: this constructor copies memory
     basic_cvector<TP,TPC> cv3 {this->c1, 10, 3};          // note: this constructor shares memory
-    basic_cvector<TP,TPC> cv4 (11, TPC{1.3, 2.4});
+    basic_cvector<TP,TPC> cv4 (11, TPC(1.3, 2.4));
     basic_cvector<TP,TPC> cv5 {cv3};
     basic_cvector<TP,TPC> cv6 {rv1, rv2};           // note: this constructor copies memory
     basic_cvector<TP,TPC> cv7 {this->a4, 10, true,  2};   // note: this constructor copies memory
@@ -1375,7 +1375,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     srs2 = srs1;
     EXPECT_TRUE(srs1 == srs2) << "srsmatrix ==";
-    srs2.set(CVM0+1, CVM0+2, srs2(CVM0+1,CVM0+2) + 0.000001);
+    srs2.set(CVM0+1, CVM0+2, srs2(CVM0+1,CVM0+2) + TP(0.000001));
     EXPECT_FALSE(srs1 == srs2) << "srsmatrix ==";
     EXPECT_TRUE(srs1 != srs2) << "srsmatrix !=";
 
@@ -1854,12 +1854,10 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ(r1,srm4.norm()) << "srmatrix norm";
     EXPECT_EQ(r1,srbm1.norm()) << "srbmatrix norm";
 
-    r1 = 2. * sqrt (2.);
-    cv1.resize (4);
-
-
-    cm1.resize (4, 4);
-    scm1.resize (4);
+    r1 = TP(2. * sqrt(2.));
+    cv1.resize(4);
+    cm1.resize(4, 4);
+    scm1.resize(4);
     cv1.set(TPC(1,1));
     cm1 << basic_scmatrix<TP,TPC>{cv1};
     scm1 = cm1;
@@ -1879,10 +1877,10 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     cm1 = cm1 + scbm2;
     cm1 += scbm2;
-    EXPECT_EQ(scbm2(CVM0+1,CVM0+2) * 3, cm1(CVM0+1,CVM0+2)) << "mix cmatrix  scbm";
-    EXPECT_EQ(scbm2(CVM0+3,CVM0) * 3., cm1(CVM0+3,CVM0)) << "mix cmatrix  scbm";
-    EXPECT_EQ(3 * scbm2(CVM0+1,CVM0+2), cm1(CVM0,CVM0+1)) << "mix cmatrix  scbm";
-    EXPECT_EQ(3. * scbm2(CVM0+1,CVM0), cm1(CVM0+1,CVM0)) << "mix cmatrix  scbm";
+    EXPECT_EQ(scbm2(CVM0+1,CVM0+2) * TP(3.), cm1(CVM0+1,CVM0+2)) << "mix cmatrix  scbm";
+    EXPECT_EQ(scbm2(CVM0+3,CVM0) * TP(3.), cm1(CVM0+3,CVM0)) << "mix cmatrix  scbm";
+    EXPECT_EQ(TP(3.) * scbm2(CVM0+1,CVM0+2), cm1(CVM0,CVM0+1)) << "mix cmatrix  scbm";
+    EXPECT_EQ(TP(3.) * scbm2(CVM0+1,CVM0), cm1(CVM0+1,CVM0)) << "mix cmatrix  scbm";
 
     rm1 = srbm2;
     EXPECT_EQ(srbm2(CVM0+1,CVM0+2), rm1(CVM0+1,CVM0+2)) << "mix rmatrix  srbm";
@@ -1898,13 +1896,13 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     scbm1.resize(4);
     for (int j = CVM0; j <= CVM0+3; j++) {
         for (int i = CVM0; i <= CVM0+3; i++) {
-            rm1(i,j)  = - ((j - CVM0) * 4 + i + (1 - CVM0));
-            srm4(i,j) = - ((j - CVM0) * 4 + i + (1 - CVM0));
-            cm1(i,j)  = - ((j - CVM0) * 4 + i + (1 - CVM0));
-            scm1(i,j) = - ((j - CVM0) * 4 + i + (1 - CVM0));
+            rm1(i,j)  = - TP((j - CVM0) * 4 + i + (1 - CVM0));
+            srm4(i,j) = - TP((j - CVM0) * 4 + i + (1 - CVM0));
+            cm1(i,j)  = - TP((j - CVM0) * 4 + i + (1 - CVM0));
+            scm1(i,j) = - TP((j - CVM0) * 4 + i + (1 - CVM0));
         }
-        srbm1(j,j) = treal (j + (1 - CVM0));
-        scbm1(j,j) = TPC(treal (j + (1 - CVM0)));
+        srbm1(j,j) = TP(j + (1 - CVM0));
+        scbm1(j,j) = TPC(TP(j + (1 - CVM0)));
     }
 
     EXPECT_EQ((13 + 14 + 15 + 16),rm1.norm1()) << "rmatrix norm1";
@@ -2046,7 +2044,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     basic_rmatrix<TP> rm6{3, 4};
     for (int j = CVM0; j <= CVM0+3; j++) {
         for (int i = CVM0; i <= CVM0+2; i++) {
-            rm6(i, j)  = - ((j - CVM0) * 4 + i);
+            rm6(i, j)  = - TP((j - CVM0) * 4 + i);
         }
     }
 
@@ -2487,9 +2485,9 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     srm1.swap_cols (CVM0, CVM0+1);
     EXPECT_EQ(TP(1.e-9),srm1(CVM0+1,CVM0)) << "srmatrix::swap_cols";
 
-    cm.set(TPC(1.,treal (1.)));
+    cm.set(TPC(1.,1.));
     cm.normalize();
-    cm(CVM0+1,CVM0+2) = TPC(1.1,treal (1.1));
+    cm(CVM0+1,CVM0+2) = TPC(1.1,1.1);
     cm(CVM0, CVM0+1) = TPC(1.e-9,0.);
     EXPECT_EQ(CVM0+1,cm.rowofmax ()) << "cmatrix::rowofmax";
     EXPECT_EQ(CVM0+2,cm.colofmax ()) << "cmatrix::colofmax";
@@ -2498,13 +2496,13 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ(2,cm.msize ()) << "cmatrix::msize";
     EXPECT_EQ(3,cm.nsize ()) << "cmatrix::nsize";
     cm1 << cm.swap_rows (CVM0, CVM0+1);
-    EXPECT_EQ(TPC(1.1,treal (1.1)),cm1(CVM0,CVM0+2)) << "cmatrix::swap_rows";
+    EXPECT_EQ(TPC(1.1,1.1),cm1(CVM0,CVM0+2)) << "cmatrix::swap_rows";
     cm1.swap_cols (CVM0, CVM0+1);
     EXPECT_EQ(TPC(1.e-9,0.),cm1(CVM0+1,CVM0)) << "cmatrix::swap_cols";
 
-    scm.set(TPC(1.,treal (1.)));
+    scm.set(TPC(1.,1.));
     scm.normalize();
-    scm(CVM0+1,CVM0+2) = TPC(1.1,treal (1.1));
+    scm(CVM0+1,CVM0+2) = TPC(1.1,1.1);
     scm(CVM0, CVM0+1) = TPC(1.e-9,0.);
     EXPECT_EQ(CVM0+1,scm.rowofmax ()) << "scmatrix::rowofmax";
     EXPECT_EQ(CVM0+2,scm.colofmax ()) << "scmatrix::colofmax";
@@ -2513,7 +2511,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ(3,scm.msize ()) << "scmatrix::msize";
     EXPECT_EQ(3,scm.nsize ()) << "scmatrix::nsize";
     scm1 << scm.swap_rows (CVM0, CVM0+1);
-    EXPECT_EQ(TPC(1.1,treal (1.1)),scm1(CVM0,CVM0+2)) << "scmatrix::swap_rows";
+    EXPECT_EQ(TPC(1.1,1.1),scm1(CVM0,CVM0+2)) << "scmatrix::swap_rows";
     scm1.swap_cols (CVM0, CVM0+1);
     EXPECT_EQ(TPC(1.e-9,0.),scm1(CVM0+1,CVM0)) << "scmatrix::swap_cols";
 
@@ -2529,10 +2527,10 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ(4,srbm.msize ()) << "srbmatrix::msize";
     EXPECT_EQ(4,srbm.nsize ()) << "srbmatrix::nsize";
 
-    scbm.diag(0).set(TPC(1.,treal (1.)));
+    scbm.diag(0).set(TPC(1.,1.));
     scbm.normalize();
-    scbm(CVM0+1,CVM0+2) = TPC(2.,treal (1.));
-    scbm(CVM0,CVM0+1) = TPC(-1.e-10,treal (-1.e-10));
+    scbm(CVM0+1,CVM0+2) = TPC(2.,1.);
+    scbm(CVM0,CVM0+1) = TPC(-1.e-10,-1.e-10);
     EXPECT_EQ(CVM0+1,scbm.rowofmax ()) << "scbmatrix::rowofmax";
     EXPECT_EQ(CVM0+2,scbm.colofmax ()) << "scbmatrix::colofmax";
     EXPECT_EQ(CVM0+3,scbm.rowofmin ()) << "scbmatrix::rowofmin";
@@ -2542,8 +2540,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
 
     for (int i = 0; i < 100; ++i) {
-        this->a1[i] = sqrt ((i + 1));
-        this->a2[i] = (i + 1) / 10.;
+        this->a1[i] = TP(sqrt(i + 1));
+        this->a2[i] = TP(i + 1) / TP(10.);
         this->c1[i] = TPC(this->a1[i],this->a2[i]);
     }
 
@@ -3082,7 +3080,7 @@ TYPED_TEST(InitializationTest, TestVectorAssignReal) {
 
 TYPED_TEST(InitializationTest, TestVectorIntRealCtr) {
     basic_rvector<TP> v (5, 1.5);
-    EXPECT_EQ(TP(1.5), v[CVM0+2]) << "rvector(int, treal)";
+    EXPECT_EQ(TP(1.5), v[CVM0+2]) << "rvector(int,real)";
 }
 
 TYPED_TEST(InitializationTest, TestVectorImagComplex) {

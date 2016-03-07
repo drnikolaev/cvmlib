@@ -132,9 +132,9 @@ TYPED_TEST(LapackTest, TestSlashComplex) {
     EXPECT_NEAR(0,(vX * scbm - vB).norm(),sp<TP>()) << "scbmatrix % cvector";
 
     vX = vB / schm;
-    EXPECT_NEAR(0,(vX * schm - vB).norm(),sp<TP>()) << "cvector / schmatrix";
+    EXPECT_NEAR(0,(vX * schm - vB).norm(),spp<TP>()) << "cvector / schmatrix";
     vX = schm % vB;
-    EXPECT_NEAR(0,(vX * schm - vB).norm(),sp<TP>()) << "schmatrix % cvector";
+    EXPECT_NEAR(0,(vX * schm - vB).norm(),spp<TP>()) << "schmatrix % cvector";
 
     vX = vB % scm;
     EXPECT_NEAR(0,(scm * vX - vB).norm(),sp<TP>()) << "scmatrix % cvector";
@@ -147,9 +147,9 @@ TYPED_TEST(LapackTest, TestSlashComplex) {
     EXPECT_NEAR(0,(scbm * vX - vB).norm(),sp<TP>()) << "scbmatrix / cvector";
 
     vX = vB % schm;
-    EXPECT_NEAR(0,(schm * vX - vB).norm(),sp<TP>()) << "cvector % schmatrix";
+    EXPECT_NEAR(0,(schm * vX - vB).norm(),spp<TP>()) << "cvector % schmatrix";
     vX = schm / vB;
-    EXPECT_NEAR(0,(schm * vX - vB).norm(),sp<TP>()) << "schmatrix / cvector";
+    EXPECT_NEAR(0,(schm * vX - vB).norm(),spp<TP>()) << "schmatrix / cvector";
 }
 
 TYPED_TEST(LapackTest, TestCholeskySymmetricReal) {
@@ -296,10 +296,10 @@ TYPED_TEST(LapackTest, TestSyrkSymmetricReal4) {
 }
 
 TYPED_TEST(LapackTest, TestHerkHermitianComplex1) {
-    const treal a[] = {1., -1., 2., 2., 3., -3.};
+    const TP a[] = {1., -1., 2., 2., 3., -3.};
     const basic_cvector<TP,TPC> v{(TPC*)a, 3};
-    const treal alpha = 2.12;
-    const treal beta = -3.07;
+    const TP alpha = 2.12;
+    const TP beta = -3.07;
     basic_schmatrix<TP,TPC> mh(3), mh2(3);
     mh.randomize_real(-1., 2.);
     mh.randomize_imag(-2., 3.);
@@ -311,8 +311,8 @@ TYPED_TEST(LapackTest, TestHerkHermitianComplex1) {
 
 TYPED_TEST(LapackTest, TestHerkHermitianComplex2) {
     basic_cmatrix<TP,TPC> m(3, 3);
-    const treal alpha = 2.12;
-    const treal beta = -3.07;
+    const TP alpha = 2.12;
+    const TP beta = -3.07;
     basic_schmatrix<TP,TPC> mh(3), mh2(3);
     m.randomize_real(-1., 2.);
     m.randomize_imag(-2., 3.);
@@ -326,8 +326,8 @@ TYPED_TEST(LapackTest, TestHerkHermitianComplex2) {
 
 TYPED_TEST(LapackTest, TestHerkHermitianComplex3) {
     basic_cmatrix<TP,TPC> m(3, 3);
-    const treal alpha = 2.12;
-    const treal beta = -3.07;
+    const TP alpha = 2.12;
+    const TP beta = -3.07;
     basic_schmatrix<TP,TPC> mh(3), mh2(3);
     m.randomize_real(-1., 2.);
     m.randomize_imag(-2., 3.);
@@ -410,7 +410,7 @@ TYPED_TEST(LapackTest, TestSyr2kSymmetricReal4) {
 TYPED_TEST(LapackTest, TestHer2kHermitianComplex1) {
     const TPC alpha = TPC(2.12, -0.14);
     const TPC alphac = TPC(2.12, 0.14);
-    const treal beta = -3.07;
+    const TP beta = -3.07;
     basic_cvector<TP,TPC> v1(3), v2(3);
     basic_schmatrix<TP,TPC> mh(3), mh2(3);
     v1.randomize_real(-1., 2.);
@@ -420,7 +420,7 @@ TYPED_TEST(LapackTest, TestHer2kHermitianComplex1) {
     mh.randomize_real(-1., 2.);
     mh.randomize_imag(-2., 3.);
     mh2 = mh;
-    mh.her2k (alpha, v1, v2, beta);
+    mh.her2k(alpha, v1, v2, beta);
     mh2 = basic_schmatrix<TP,TPC>(alpha * v1.rank1update_c(v2) +
                                   alphac * v2.rank1update_c(v1),
                                   spp<TP>(1.5e-14, 1.5e-5)) + beta * mh2;
@@ -430,7 +430,7 @@ TYPED_TEST(LapackTest, TestHer2kHermitianComplex1) {
 TYPED_TEST(LapackTest, TestHer2kHermitianComplex2) {
     const TPC alpha = TPC(2.12, -0.14);
     const TPC alphac = TPC(2.12, 0.14);
-    const treal beta = -3.07;
+    const TP beta = -3.07;
     basic_cmatrix<TP,TPC> m1(3, 3), m2(3, 3);
     basic_schmatrix<TP,TPC> mh(3), mh2(3);
     m1.randomize_real(-1., 2.);
@@ -450,7 +450,7 @@ TYPED_TEST(LapackTest, TestHer2kHermitianComplex2) {
 TYPED_TEST(LapackTest, TestHer2kHermitianComplex3) {
     const TPC alpha = TPC(2.12, -0.14);
     const TPC alphac = TPC(2.12, 0.14);
-    const treal beta = -3.07;
+    const TP beta = -3.07;
     basic_cmatrix<TP,TPC> m1(3, 3), m2(3, 3);
     basic_schmatrix<TP,TPC> mh(3), mh2(3);
     m1.randomize_real(-1., 2.);
@@ -460,7 +460,7 @@ TYPED_TEST(LapackTest, TestHer2kHermitianComplex3) {
     mh.randomize_real(-1., 2.);
     mh.randomize_imag(-2., 3.);
     mh2 = mh;
-    mh.her2k (true, alpha, m1, m2, beta);
+    mh.her2k(true, alpha, m1, m2, beta);
     mh2 = basic_schmatrix<TP,TPC>(alpha * ~m1 * m2 +
                                   alphac * ~m2 * m1,
                                   spp<TP>(1.5e-14, 1.5e-5)) + beta * mh2;
@@ -540,7 +540,7 @@ TYPED_TEST(LapackTest, TestSolveLUComplex) {
     
     mLU.low_up(ma, nPivots);
     mx1.solve_lu (ma, mLU, nPivots, mb1, dErr);
-    EXPECT_NEAR(TP(0.), dErr, sf<TP>()) << "cmatrix::solve_lu";
+    EXPECT_NEAR(TP(0.), dErr, sp<TP>()) << "cmatrix::solve_lu";
     mx2.solve_lu (ma, mLU, nPivots, mb2);
     EXPECT_NEAR(TP(0.), (ma * mx1 - mb1).norm(), sf<TP>()) << "cmatrix::solve_lu";
     EXPECT_NEAR(TP(0.), (ma * mx2 - mb2).norm(), sf<TP>()) << "cmatrix::solve_lu";

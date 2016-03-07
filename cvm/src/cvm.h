@@ -1620,7 +1620,7 @@ public:
      * @return T
      *
      * Returns result of mutliplication as value.
-     * @param[in] u Const reference to value to be multiplied.
+     * @param[in] u Const reference to value to be multiplied by.
      */
     template<typename U>
     T operator * (const U& u) const {
@@ -1632,7 +1632,7 @@ public:
      * @return T
      *
      * Returns result of division as value.
-     * @param[in] u Const reference to value to be divided.
+     * @param[in] u Const reference to value to be divided by.
      */
     template<typename U>
     T operator / (const U& u) const {
