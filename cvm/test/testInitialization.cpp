@@ -241,7 +241,6 @@ TYPED_TEST(InitializationTest, TestVectorCopyCtrReal) {
     EXPECT_EQ(TP(3.), b[CVM0+3]) << "rvector copy ctr";
 }
 
-
 TYPED_TEST(InitializationTest, TestVectorItr) {
     basic_rvector<TP> vs1(5);
     vs1[CVM0] = 1.; vs1[CVM0+1] = 2.; vs1[CVM0+2] = 3.; vs1[CVM0+3] = 4.; vs1[CVM0+4] = 5.;
@@ -273,9 +272,16 @@ TYPED_TEST(InitializationTest, TestVectorItr) {
     EXPECT_EQ(1. , vs1[CVM0+5]) << "std::reverse";
 }
 
-
-
-
+TYPED_TEST(InitializationTest, TestSVDbugfixNgt64M) {
+    // N > 64*M bug fixed
+    basic_rmatrix<TP> A(600, 4);
+    basic_srmatrix<TP> U(600), V(4);
+    const basic_rvector<TP> singVal = A.svd(U, V);
+    basic_rmatrix<TP> singValM{A.msize(), A.nsize()};
+    singValM.diag(0) = singVal;
+    EXPECT_NEAR(TP(0.), (A * ~V - U * singValM).norm(), sf<TP>()) << "rmatrix svd";
+    EXPECT_NEAR(TP(0.), (~A * U - ~(singValM * V)).norm(), sf<TP>()) << "rmatrix svd";
+}
 
 TYPED_TEST(InitializationTest, TestMoveReal) {
     basic_rmatrix<TP> rm{4,3};

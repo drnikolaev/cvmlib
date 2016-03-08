@@ -100,7 +100,7 @@
 // find* functions failure code
 #define CFUN_NOT_FOUND              size_t(~0)
 
-#if defined (CVM_FLOAT)
+#if defined(CVM_FLOAT)
 #   define             CFUN_M_ZERO                         0.F
 #   define             CFUN_M_ONE                          1.F
 #   define             CFUN_M_TWO                          2.F

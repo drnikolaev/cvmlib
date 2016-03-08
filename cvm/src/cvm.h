@@ -46,15 +46,15 @@
 #endif
 
 // 5.7 0-based indexing
-#if defined (CVM_ZERO_BASED)
+#if defined(CVM_ZERO_BASED)
 #   define CVM0 TINT_ZERO //!< Index base, 1  by default or 0 when \c CVM_ZERO_BASED is defined
 #else
 #   define CVM0 TINT_ONE  //!< Index base, 1  by default or 0 when \c CVM_ZERO_BASED is defined
 #endif
 
-#if !defined (CVM_NO_MT)        // as of 5.7 it's by default
+#if !defined(CVM_NO_MT)        // as of 5.7 it's by default
 #   define CVM_MT
-#   if !defined (_PTHREADS)
+#   if !defined(_PTHREADS)
 #       define _PTHREADS
 #   endif
 #endif
@@ -69,7 +69,7 @@
 #include <iostream>
 
 // MSVC++ 6.0 and higher settings
-#if defined (_MSC_VER)
+#if defined(_MSC_VER)
 #   pragma once
 #   define WIN32_LEAN_AND_MEAN        // Exclude rarely-used stuff from Windows headers
 #   ifndef _WIN32_WINNT
@@ -108,10 +108,10 @@
 #       define noexcept throw()
 #   endif
 #   pragma warning(disable:4290)
-#   if defined (CVM_FLOAT)
+#   if defined(CVM_FLOAT)
 #       pragma warning(disable:4244)
 #   endif
-#   if defined (SRC_EXPORTS) && !defined (CVM_EXPORTS)
+#   if defined(SRC_EXPORTS) && !defined(CVM_EXPORTS)
 #       define CVM_EXPORTS
 #   endif
 
@@ -135,7 +135,7 @@ using CVM_LONGEST_INT = __int64; //!< Longest integer possible on this platform
 #   if defined(_WIN64)
 using CVM_PTR_WRAPPER = unsigned long long;
 #   else
-#       if defined (CVM_ILP64)
+#       if defined(CVM_ILP64)
 #           error "CVM_ILP64 is incompatible with 32 bit mode"
 #       endif
 using CVM_PTR_WRAPPER = unsigned long;
@@ -146,8 +146,8 @@ using CVM_PTR_WRAPPER = unsigned long;
 #   define CVM_STRCPY_S_DEFINED
 
 // GCC settings
-#elif defined (__GNUC__)
-#   if defined (__MINGW32__)
+#elif defined(__GNUC__)
+#   if defined(__MINGW32__)
 #       define WIN32_LEAN_AND_MEAN
 #       include <windows.h>
 #       include <process.h>
@@ -163,7 +163,7 @@ using CVM_PTR_WRAPPER = unsigned long;
 #   endif
 
 // 8.0 - since 4.7.0 we use new std::mutex features
-#   if !defined(__INTEL_COMPILER) && !defined (__MINGW32__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 7)
+#   if !defined(__INTEL_COMPILER) && !defined(__MINGW32__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 7)
 #       define CVM_USE_DELEGATING_CONSTRUCTORS
 #       define CVM_USE_USER_LITERALS
 #       define CVM_STD_MUTEX
@@ -174,7 +174,7 @@ using CVM_PTR_WRAPPER = unsigned long;
 #   endif
 
 // 8.1 - more C++11 features, see also http://gcc.gnu.org/projects/cxx0x.html
-#   if !defined (__MINGW32__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 4)
+#   if !defined(__MINGW32__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 4)
 #       define CVM_USE_VARIADIC_TEMPLATES
 #       define CVM_USE_INITIALIZER_LISTS
 #       include <initializer_list>
@@ -191,7 +191,7 @@ using CVM_LONGEST_INT = long long;
 #   if defined(__AMD64__) || defined(_WIN64) || defined(__x86_64__)
 using CVM_PTR_WRAPPER = unsigned long long;
 #   else
-#       if defined (CVM_ILP64)
+#       if defined(CVM_ILP64)
 #           error "CVM_ILP64 is incompatible with 32 bit mode"
 #       endif
 using CVM_PTR_WRAPPER = unsigned long;
@@ -225,14 +225,9 @@ using CVM_PTR_WRAPPER = unsigned long;
 #include <math.h>
 #include <float.h>
 #include <time.h>
-//#include <iostream>
-//#include <list>
-//#include <map>
-//#include <string>
-//#include <limits>
 
 // fix for missing __builtin_clog functions
-#if defined (__INTEL_COMPILER)
+#if defined(__INTEL_COMPILER)
 #   if defined (_GLIBCXX_USE_C99_COMPLEX)
 #       undef _GLIBCXX_USE_C99_COMPLEX
 #       define _GLIBCXX_USE_C99_COMPLEX 0
@@ -240,20 +235,16 @@ using CVM_PTR_WRAPPER = unsigned long;
 #endif
 
 #include <complex>
-//#include <algorithm>
-//#include <exception>
-//#include <utility>
-//#include <new>
 
 #if !defined(CVM_NO_DEFAULT_RANDOM_ENGINE_SUPPORTED)
 #   include <random>
 #endif
 
-#if defined (STLPORT)
+#if defined(STLPORT)
 #   define CVM_USES_STLPORT
 #endif
 
-#if defined (_DEBUG) || defined (DEBUG)
+#if defined(_DEBUG) || defined(DEBUG)
 #   define CVM_DEBUG
 #   include <assert.h>
 #   define CVM_ASSERT(p,n) _cvm_assert(p,n);
@@ -627,7 +618,7 @@ inline const T& _cvm_max(const T& x, const T& y) {
 template<class TR>
 inline const TR* __get_real_p(const std::complex<TR>* c)
 {
-#if defined (CVM_USES_STLPORT)
+#if defined(CVM_USES_STLPORT)
     return &c->_M_re;
 #else
     return reinterpret_cast<const TR*>(c);
@@ -637,7 +628,7 @@ inline const TR* __get_real_p(const std::complex<TR>* c)
 template<class TR>
 inline const TR* __get_imag_p(const std::complex<TR>* c)
 {
-#if defined (CVM_USES_STLPORT)
+#if defined(CVM_USES_STLPORT)
     return &c->_M_im;
 #else
     return reinterpret_cast<const TR*>(c) + 1;
@@ -647,7 +638,7 @@ inline const TR* __get_imag_p(const std::complex<TR>* c)
 template<class TR>
 inline TR* __get_real_p(std::complex<TR>* c)
 {
-#if defined (CVM_USES_STLPORT)
+#if defined(CVM_USES_STLPORT)
     return &c->_M_re;
 #else
     return reinterpret_cast<TR*>(c);
@@ -657,7 +648,7 @@ inline TR* __get_real_p(std::complex<TR>* c)
 template<class TR>
 inline TR* __get_imag_p(std::complex<TR>* c)
 {
-#if defined (CVM_USES_STLPORT)
+#if defined(CVM_USES_STLPORT)
     return &c->_M_im;
 #else
     return reinterpret_cast<TR*>(c) + 1;
@@ -1037,7 +1028,7 @@ inline bool _conjugated(const std::complex<TR>& v1, const std::complex<TR>& v2, 
 template<typename T, typename TR>
 inline std::ostream& operator << (std::ostream& os, const type_proxy<T,TR>& mOut)
 {
-#if defined (_MSC_VER) && !defined (CVM_USES_STLPORT)
+#if defined(_MSC_VER) && !defined(CVM_USES_STLPORT)
     os.imbue(std::locale::empty());
 #endif
     os << static_cast<T>(mOut);
@@ -1048,7 +1039,7 @@ inline std::ostream& operator << (std::ostream& os, const type_proxy<T,TR>& mOut
 template<typename T, typename TR>
 inline std::istream& operator >> (std::istream& is, type_proxy<T,TR>& v)
 {
-#if defined (_MSC_VER) && !defined (CVM_USES_STLPORT)
+#if defined(_MSC_VER) && !defined(CVM_USES_STLPORT)
     is.imbue(std::locale::empty());
 #endif
     T t;
@@ -1063,14 +1054,14 @@ inline std::istream& operator >> (std::istream& is, type_proxy<T,TR>& v)
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
 std::ofstream os;
-os.open ("in.txt");
+os.open("in.txt");
 os << 1.2 << " " << 2.3 << std::endl << 3.4;
-os.close ();
+os.close();
 
 std::ifstream is("in.txt");
 rvector v(5);
@@ -1078,8 +1069,8 @@ is >> v;
 
 std::cout << v;
 }
-catch (std::exception& e) {
-std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -1093,7 +1084,7 @@ prints
 template<typename TR, typename TC>
 std::istream& operator >> (std::istream& is, basic_array<TR,TC>& aIn)
 {
-#if !defined (CVM_USES_STLPORT) && defined (_MSC_VER)
+#if !defined(CVM_USES_STLPORT) && defined(_MSC_VER)
     is.imbue(std::locale::empty());
 #endif
     const tint nSize = aIn.size() * aIn.incr();
@@ -1110,12 +1101,12 @@ std::istream& operator >> (std::istream& is, basic_array<TR,TC>& aIn)
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector v(3);
-v(1) = tcomplex (1., 2.);
-v(2) = tcomplex (3., 4.);
+v(1) = tcomplex(1., 2.);
+v(2) = tcomplex(3., 4.);
 
 std::cout << v;
 \endcode
@@ -1130,7 +1121,7 @@ prints
 template<typename TR, typename TC>
 std::ostream& operator << (std::ostream& os, const basic_array<TR,TC>& aOut)
 {
-#if !defined (CVM_USES_STLPORT) && defined (_MSC_VER)
+#if !defined(CVM_USES_STLPORT) && defined(_MSC_VER)
     os.imbue(std::locale::empty());
 #endif
     const tint nSize = aOut.size() * aOut.incr();
@@ -1151,14 +1142,14 @@ Operator fills calling Matrix (row by row) referenced by parameter \c mIn with n
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     std::ofstream os;
-    os.open ("in.txt");
+    os.open("in.txt");
     os << 1.2 << " " << 2.3 << std::endl << 3.4;
-    os.close ();
+    os.close();
 
     std::ifstream is("in.txt");
     rmatrix m(3,2);
@@ -1167,7 +1158,7 @@ try {
     std::cout << m;
 }
 catch (std::exception& e) {
- std::cout << "Exception " << e.what () << std::endl;
+ std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -1183,7 +1174,7 @@ prints
 template<typename TR, typename TC>
 std::istream& operator >> (std::istream& is, Matrix<TR,TC>& mIn)
 {
-#if defined (_MSC_VER) && !defined (CVM_USES_STLPORT)
+#if defined(_MSC_VER) && !defined(CVM_USES_STLPORT)
     is.imbue(std::locale::empty());
 #endif
     TC v;
@@ -1204,8 +1195,8 @@ Operator writes matrix (row by row) referenced by parameter \c mOut into
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 srmatrix m(3);
 m(1,1) = 1.;
@@ -1226,7 +1217,7 @@ prints
 template<typename TR, typename TC>
 std::ostream& operator << (std::ostream& os, const Matrix<TR,TC>& mOut)
 {
-#if defined (_MSC_VER) && !defined (CVM_USES_STLPORT)
+#if defined(_MSC_VER) && !defined(CVM_USES_STLPORT)
     os.imbue(std::locale::empty());
 #endif
     for (tint i = 0; i < mOut.msize(); ++i) {
@@ -1445,7 +1436,7 @@ public:
 
     operator T& ()
     {
-        if (mbReadOnly) throw cvmexception (CVM_READ_ONLY_ACCESS);
+        if (mbReadOnly) throw cvmexception(CVM_READ_ONLY_ACCESS);
         return mT;
     }
 */
@@ -1916,6 +1907,11 @@ protected:
 #ifdef CVM_USE_POOL_MANAGER
     TC* mpd; //!< Data pointer
 #else
+    // In his book "Effective Modern C++" Scott Meyers claims on pages 133-134 that
+    // it's not a good idea to sore array pointers in shared_ptr in the way of shared_ptr<T[]>.
+    // Well, it's not going on here. And I don't need operator[] to be defined in shared_ptr.
+    // Think of mp as a pointer to chunk (or blob) of memory. Sure, this would be nice to use
+    // std::vector here but I need to align mp usage with foreign pointer mpf.
     std::shared_ptr<TC> mp; //!< native data pointer
     TC* mpf; //!< Foreign data pointer
 #endif
@@ -2011,7 +2007,7 @@ cvmexception in case of non-positive size passed.
 using namespace cvm;
 
 int a[] = {1, 2, 3, 4};
-iarray v (a, 3);
+iarray v(a, 3);
 std::cout << v;
 a[0] = 77;
 std::cout << v;
@@ -2051,7 +2047,7 @@ in case of non-positive size passed or memory allocation failure.
 using namespace cvm;
 
 const int a[] = {1, 2, 3, 4};
-iarray v (a, 3);
+iarray v(a, 3);
 std::cout << v;
 \endcode
 prints
@@ -2089,7 +2085,7 @@ in case of wrong range passed or memory allocation failure.
 using namespace cvm;
 
 const int a[] = {1, 2, 3, 4};
-const iarray v (a+1, a+3);
+const iarray v(a+1, a+3);
 std::cout << v << std::endl;
 \endcode
 prints
@@ -2264,10 +2260,10 @@ Returns pointer to internal data array.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
-void cprint (const std::complex<double>* p, int size)
+void cprint(const std::complex<double>* p, int size)
 {
     for (int i = 0; i < size; ++i)
         std::cout << p[i] << " ";
@@ -2306,10 +2302,10 @@ Returns pointer to internal data array.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
-void cprint (const std::complex<double>* p, int size)
+void cprint(const std::complex<double>* p, int size)
 {
     for (int i = 0; i < size; ++i)
         std::cout << p[i] << " ";
@@ -2349,10 +2345,10 @@ Returns pointer to internal data array.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
-void cprint (const std::complex<double>* p, int size)
+void cprint(const std::complex<double>* p, int size)
 {
     for (int i = 0; i < size; ++i)
         std::cout << p[i] << " ";
@@ -2386,10 +2382,10 @@ Returns constant pointer to internal data array.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
-void cprint (const std::complex<double>* p, int size)
+void cprint(const std::complex<double>* p, int size)
 {
     for (int i = 0; i < size; ++i)
         std::cout << p[i] << " ";
@@ -2424,17 +2420,17 @@ Returns reference to array's element by its index (\ref CVM0 based).
 using namespace cvm;
 
 try {
-    rvector v (10);
+    rvector v(10);
     v[1] = 1.;
     v(2) = 2.;
     std::cout << v;
 
     double a[] = {1., 2., 3., 4.};
-    const rvector vc (a, 4);
+    const rvector vc(a, 4);
     std::cout << vc(1) << " " << vc[2] << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -2458,17 +2454,17 @@ Returns value of array's element by its index (\ref CVM0 based).
 using namespace cvm;
 
 try {
-    rvector v (10);
+    rvector v(10);
     v[1] = 1.;
     v(2) = 2.;
     std::cout << v;
 
     double a[] = {1., 2., 3., 4.};
-    const rvector vc (a, 4);
+    const rvector vc(a, 4);
     std::cout << vc(1) << " " << vc[2] << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -2492,17 +2488,17 @@ Returns reference to array's element by its index (\ref CVM0 based).
 using namespace cvm;
 
 try {
-    rvector v (10);
+    rvector v(10);
     v[1] = 1.;
     v(2) = 2.;
     std::cout << v;
 
     double a[] = {1., 2., 3., 4.};
-    const rvector vc (a, 4);
+    const rvector vc(a, 4);
     std::cout << vc(1) << " " << vc[2] << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -2526,17 +2522,17 @@ Returns value of array's element by its index (\ref CVM0 based).
 using namespace cvm;
 
 try {
-    rvector v (10);
+    rvector v(10);
     v[1] = 1.;
     v(2) = 2.;
     std::cout << v;
 
     double a[] = {1., 2., 3., 4.};
-    const rvector vc (a, 4);
+    const rvector vc(a, 4);
     std::cout << vc(1) << " " << vc[2] << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -2560,7 +2556,7 @@ Assigns \ref size() elements of external array to array.
 using namespace cvm;
 
 const int a[] = {1, 2, 3, 4, 5, 6, 7};
-iarray v (5);
+iarray v(5);
 
 v.assign(a);
 std::cout << v;
@@ -2614,7 +2610,7 @@ using namespace cvm;
 
 try {
     const int a[] = {1, 2, 3, 4};
-    iarray v (a, 3);
+    iarray v(a, 3);
     std::cout << v;
     v.resize(2);
     std::cout << v;
@@ -2622,7 +2618,7 @@ try {
     std::cout << v;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -2653,8 +2649,8 @@ double a[] = {1., 2., 3., 4., 5., 6.};
 rvector v1 (a, 3, 2);
 rvector v2(10);
 
-std::cout << v1 << v1.incr () << std::endl;
-std::cout << v2.incr () << std::endl;
+std::cout << v1 << v1.incr() << std::endl;
+std::cout << v2.incr() << std::endl;
 \endcode
 prints
 \code
@@ -2677,11 +2673,11 @@ Index of element with maximum module. \ref CVM0 based. Doesn't make much sense f
 using namespace cvm;
 
 double a[] = {3., 2., -5., -4., 5., -6.};
-const rvector v (a, 4);
-const rmatrix m (a, 2, 3);
+const rvector v(a, 4);
+const rmatrix m(a, 2, 3);
 
-std::cout << v << v.indofmax () << std::endl << std::endl;
-std::cout << m << m.indofmax () << std::endl;
+std::cout << v << v.indofmax() << std::endl << std::endl;
+std::cout << m << m.indofmax() << std::endl;
 \endcode
 prints
 \code
@@ -2707,11 +2703,11 @@ Index of element with minimum module. \ref CVM0 based. Doesn't make much sense f
 using namespace cvm;
 
 double a[] = {3., 2., -5., 0., 0., -6.};
-const rvector v (a, 4);
-const rmatrix m (a, 2, 3);
+const rvector v(a, 4);
+const rmatrix m(a, 2, 3);
 
-std::cout << v << v.indofmin () << std::endl << std::endl;
-std::cout << m << m.indofmin () << std::endl;
+std::cout << v << v.indofmin() << std::endl << std::endl;
+std::cout << m << m.indofmin() << std::endl;
 \endcode
 prints
 \code
@@ -2742,15 +2738,15 @@ and for matrices as
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (ios::scientific | ios::showpos);
-std::cout.precision (12);
+std::cout.setf(ios::scientific | ios::showpos);
+std::cout.precision(12);
 
 double a[] = {1., 2., 3., -4., 5., -6.};
-const rvector v (a, 3);
-const rmatrix m (a, 2, 3);
+const rvector v(a, 3);
+const rmatrix m(a, 2, 3);
 
-std::cout << v << v.norm () << std::endl << std::endl;
-std::cout << m << m.norm () << std::endl;
+std::cout << v << v.norm() << std::endl << std::endl;
+std::cout << m << m.norm() << std::endl;
 \endcode
 prints
 \code
@@ -2783,11 +2779,11 @@ and for matrices as
 using namespace cvm;
 
 double a[] = {1., 2., 3., -4., 5., -6.};
-const rvector v (a, 3);
-const rmatrix m (a, 2, 3);
+const rvector v(a, 3);
+const rmatrix m(a, 2, 3);
 
-std::cout << v << v.norminf () << std::endl;
-std::cout << m << m.norminf () << std::endl;
+std::cout << v << v.norminf() << std::endl;
+std::cout << m << m.norminf() << std::endl;
 \endcode
 prints
 \code
@@ -2820,12 +2816,12 @@ and for matrices as
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 double a[] = {1., 2., 3., -4., 5., -6.};
-const rvector v (a, 3);
-const rmatrix m (a, 2, 3);
+const rvector v(a, 3);
+const rmatrix m(a, 2, 3);
 
 std::cout << v << v.norm1 () << std::endl << std::endl;
 std::cout << m << m.norm1 () << std::endl;
@@ -2869,12 +2865,12 @@ of \f$m\times n\f$ matrix \f$A,\ i=1,\dots,\min(m,n)\f$.
 \code
 using namespace cvm;
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 double a[] = {1., 2., 3., -4., 5., -6.};
-const rvector v (a, 3);
-const rmatrix m (a, 2, 3);
+const rvector v(a, 3);
+const rmatrix m(a, 2, 3);
 
 std::cout << v << v.norm2 () << std::endl << std::endl;
 std::cout << m << m.norm2 () << std::endl;
@@ -2961,7 +2957,7 @@ prints
 
 //    deprecated since 5.4.2 due to its incosistency with STL counterpart
 //
-//    void reserve (size_type n) throw (cvmexception)
+//    void reserve(size_type n) throw (cvmexception)
 //    {
 //        this->_resize(tint(n));
 //    }
@@ -3335,14 +3331,14 @@ protected:
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     std::ofstream os;
-    os.open ("in.txt");
+    os.open("in.txt");
     os << 1.2 << " " << 2.3 << std::endl << 3.4;
-    os.close ();
+    os.close();
 
     std::ifstream is("in.txt");
     rvector v(5);
@@ -3351,7 +3347,7 @@ try {
     std::cout << v;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -3370,12 +3366,12 @@ prints
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector v(3);
-v(1) = tcomplex (1., 2.);
-v(2) = tcomplex (3., 4.);
+v(1) = tcomplex(1., 2.);
+v(2) = tcomplex(3., 4.);
 
 std::cout << v;
 \endcode
@@ -3412,13 +3408,13 @@ Creates zero size \ref rvector. No memory gets allocated.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 rvector v;
 std::cout << v.size() << std::endl;
 
-v.resize (5);
+v.resize(5);
 v(1) = 1.5;
 std::cout << v;
 \endcode
@@ -3441,10 +3437,10 @@ It throws \ref cvmexception in case of non-positive size passed or memory alloca
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
-rvector v (5);
+rvector v(5);
 std::cout << v;
 \endcode
 prints
@@ -3503,10 +3499,10 @@ It throws \ref cvmexception in case of non-positive size passed or memory alloca
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
-rvector v (5, 1.5);
+rvector v(5, 1.5);
 std::cout << v;
 \endcode
 prints
@@ -3532,30 +3528,30 @@ It just shares memory with array pointed to by \c pd using
 distance between elements equal to \c nIncr.
 It is intented to make possible the following syntax:
 \code
-rmatrix m (10, 20);
-rvector v (20);
+rmatrix m(10, 20);
+rvector v(20);
 
 m[1] = v;       // assigns v to the 1st row of m
 \endcode
      And for example this code...
 \code
-rmatrix m (10,20);
+rmatrix m(10,20);
 rvector vRow = m[1];
 \endcode
 will also call this constructor and <em>memory will be shared</em>.
 
 If you need the code like this with memory allocation, use the following:
 \code
-rmatrix m (10,20);
-rvector vRow (m.msize());
+rmatrix m(10,20);
+rvector vRow(m.msize());
 vRow = m[1];
 \endcode
 
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {7., 7., 7., 7., 7., 7., 7.,};
 
@@ -3600,8 +3596,8 @@ It copies \c nSize elements total.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 const double a[] = {7., 7., 7., 7., 7., 7., 7.,};
 
@@ -3648,12 +3644,12 @@ Constructor throws  \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4., 5., 6., 7.,};
-const rvector v (a, 4, 2);
-rvector vc (v);
+const rvector v(a, 4, 2);
+rvector vc(v);
 
 vc(1) = 77.;
 std::cout << vc;
@@ -3690,19 +3686,19 @@ Operator throws \ref cvmexception in case of different vector sizes.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     double a[] = {1., 2., 3., 4., 5.};
-    const rvector v (a, 5);
+    const rvector v(a, 5);
     rvector vc(5);
 
     vc = v;
     std::cout << vc;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -3739,11 +3735,11 @@ enough to fill calling vector.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 const double a[] = {1., 2., 3., 4., 5., 6., 7.,};
-rvector v (5);
+rvector v(5);
 rvector v2 (4);
 
 v.assign(a);
@@ -3775,11 +3771,11 @@ and returns  reference to the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 const double a[] = {1., 2., 3., 4., 5.};
-rvector v (5);
+rvector v(5);
 rvector v2 (5);
 
 v.assign(2, a);
@@ -3816,11 +3812,11 @@ If \c n+nSize goes beyond \ref rvector boundaries assignment stops at the last e
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 const double a[] = {1., 2., 3., 4., 5., 6., 7.};
-rvector v (5);
+rvector v(5);
 
 v.assign(2, a, 5, 2);
 std::cout << v;
@@ -3858,8 +3854,8 @@ calling vector's size.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 rvector v1(5);
 rvector v2(2);
@@ -3891,8 +3887,8 @@ and returns reference to the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 rvector v(5);
 v.set(3.);
@@ -3923,20 +3919,20 @@ in case of negative size passed or memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     double a[] = {1., 2., 3., 4.};
-    rvector v (a, 3);
+    rvector v(a, 3);
     std::cout << v;
     v.resize(2);
     std::cout << v;
     v.resize(4);
     std::cout << v;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4029,12 +4025,12 @@ in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
-    rvector v (5);
-    rvector vc (3);
+    rvector v(5);
+    rvector vc(3);
     v(1) = 1.;
     v(2) = 2.;
     std::cout << v << vc << std::endl;
@@ -4043,7 +4039,7 @@ try {
     std::cout << vc;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4075,21 +4071,21 @@ or memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     double a[] = {1., 2., 3., 4.};
     const double b[] = {3., 5., 7., 9.};
-    const rvector va (a, 4);
-    rvector vb (4);
+    const rvector va(a, 4);
+    rvector vb(4);
     vb.assign(b);
 
     std::cout << va + vb;
     std::cout << va + va;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4119,21 +4115,21 @@ or memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     double a[] = {1., 2., 3., 4.};
     const double b[] = {3., 5., 7., 9.};
-    const rvector va (a, 4);
-    rvector vb (4);
+    const rvector va(a, 4);
+    rvector vb(4);
     vb.assign(b);
 
     std::cout << va - vb;
     std::cout << va - va;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4163,21 +4159,21 @@ It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     double a[] = {1., 2., 3., 4.};
     double b[] = {2., 3., 4., 5.};
-    rvector va (a, 4);
-    rvector vb (b, 4);
-    rvector v (4);
+    rvector va(a, 4);
+    rvector vb(b, 4);
+    rvector v(4);
 
     std::cout << v.sum(va, vb);
     std::cout << v.sum(v, va);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4208,21 +4204,21 @@ It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     double a[] = {1., 2., 3., 4.};
     double b[] = {2., 3., 4., 5.};
-    rvector va (a, 4);
-    rvector vb (b, 4);
-    rvector v (4);
+    rvector va(a, 4);
+    rvector vb(b, 4);
+    rvector v(4);
 
     std::cout << v.diff(va, vb);
     std::cout << v.diff(v, va);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4252,8 +4248,8 @@ It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     rvector v1 (4);
@@ -4269,7 +4265,7 @@ try {
     std::cout << v2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4298,8 +4294,8 @@ It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     rvector v1 (4);
@@ -4315,7 +4311,7 @@ try {
     std::cout << v2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4344,11 +4340,11 @@ It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-const rvector v (a, 4);
+const rvector v(a, 4);
 
 std::cout << - v;
 \endcode
@@ -4375,11 +4371,11 @@ It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-const rvector v (a, 4);
+const rvector v(a, 4);
 
 std::cout << v * 5.;
 \endcode
@@ -4409,17 +4405,17 @@ It also throws exception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     double a[] = {1., 2., 3., 4.};
-    const rvector v (a, 4);
+    const rvector v(a, 4);
 
     std::cout << v / 2.;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4445,10 +4441,10 @@ the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
-rvector v (4);
+rvector v(4);
 v.set(2.);
 v *= 2.
 std::cout << v;
@@ -4477,17 +4473,17 @@ smallest normalized positive number).
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
-    rvector v (4);
+    rvector v(4);
     v.set(3.);
     v /= 2.;
     std::cout << v;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4514,8 +4510,8 @@ Does nothing otherwise.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 rvector v(4);
 v(1) = 1.;
@@ -4546,8 +4542,8 @@ It throws \ref cvmexception if the operands have different sizes.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     double a[] = {1., 2., 3., 4.};
@@ -4559,7 +4555,7 @@ try {
     std::cout << v1 * v2 << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4586,8 +4582,8 @@ differs from number of rows in matrix \c m.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     rvector v(2);
@@ -4598,7 +4594,7 @@ try {
     std::cout << v * m;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4624,8 +4620,8 @@ Sets calling vector to be equal to product of vector
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     rvector v2(2), v3(3);
@@ -4636,7 +4632,7 @@ try {
     std::cout << v3.mult(v2, m);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4663,8 +4659,8 @@ Sets calling vector to be equal to product of matrix \c m by vector
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     rvector v2(2), v3(3);
@@ -4674,8 +4670,8 @@ try {
 
     std::cout << v2.mult(m, v3);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4719,14 +4715,14 @@ y_1 & y_2 & \cdots & y_n
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 rvector v1(3);
 rvector v2(2);
 v1.set(2.);
 v2.set(2.);
-std::cout << v1.rank1update (v2);
+std::cout << v1.rank1update(v2);
 \endcode
 prints
 \code
@@ -4759,8 +4755,8 @@ of the objects or when  matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
@@ -4770,13 +4766,13 @@ try {
     rvector  vx(3);
     double   dErr = 0.;
 
-    std::cout << vx.solve (ma, vb, dErr);
+    std::cout << vx.solve(ma, vb, dErr);
     std::cout << dErr << std::endl;
 
     std::cout << ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4810,8 +4806,8 @@ of the objects or when matrix \f$A\f$ is close to ingular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
@@ -4821,13 +4817,13 @@ try {
     rvector  vx(3);
     double   dErr = 0.;
 
-    std::cout << vx.solve_tran (ma, vb, dErr);
+    std::cout << vx.solve_tran(ma, vb, dErr);
     std::cout << dErr << std::endl;
 
     std::cout << vx * ma - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4859,8 +4855,8 @@ of the objects or when  matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
@@ -4869,11 +4865,11 @@ try {
     rvector  vb(b, 3);
     rvector  vx(3);
 
-    std::cout << vx.solve (ma, vb);
+    std::cout << vx.solve(ma, vb);
     std::cout << ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4908,8 +4904,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
@@ -4918,11 +4914,11 @@ try {
     rvector  vb(b, 3);
     rvector  vx(3);
 
-    std::cout << vx.solve_tran (ma, vb);
+    std::cout << vx.solve_tran(ma, vb);
     std::cout << vx * ma - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4955,8 +4951,8 @@ of the objects or when  matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
@@ -4970,7 +4966,7 @@ try {
     std::cout << vx * ma - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -4995,8 +4991,8 @@ of the objects or when  matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
@@ -5010,7 +5006,7 @@ try {
     std::cout << ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -5043,8 +5039,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
@@ -5060,14 +5056,14 @@ try {
     double   dErr = 0.;
 
     mLU.low_up(ma, nPivots);
-    std::cout << vx1.solve_lu (ma, mLU, nPivots, vb1, dErr);
+    std::cout << vx1.solve_lu(ma, mLU, nPivots, vb1, dErr);
     std::cout << dErr << std::endl;
-    std::cout << vx2.solve_lu (ma, mLU, nPivots, vb2, dErr);
+    std::cout << vx2.solve_lu(ma, mLU, nPivots, vb2, dErr);
     std::cout << dErr << std::endl;
     std::cout << ma * vx1 - vb1 << ma * vx2 - vb2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -5114,8 +5110,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
@@ -5130,12 +5126,12 @@ try {
     iarray   nPivots(3);
 
     mLU.low_up(ma, nPivots);
-    std::cout << vx1.solve_lu (ma, mLU, nPivots, vb1);
-    std::cout << vx2.solve_lu (ma, mLU, nPivots, vb2);
+    std::cout << vx1.solve_lu(ma, mLU, nPivots, vb1);
+    std::cout << vx2.solve_lu(ma, mLU, nPivots, vb2);
     std::cout << ma * vx1 - vb1 << ma * vx2 - vb2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -5431,8 +5427,8 @@ in case of inappropriate calling object size (it must be equal to \f$\min(m,n)\f
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (10);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(10);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1.,
@@ -5453,7 +5449,7 @@ try {
     std::cout << (~mA * mU - ~(mSigma * mVH)).norm() << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -5509,8 +5505,8 @@ in case of inappropriate calling object size (it must be equal to \f$\min(m,n)\f
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (10);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(10);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1.,
@@ -5531,7 +5527,7 @@ try {
     std::cout << (~mA * mU - ~(mSigma * mVH)).norm() << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -5590,8 +5586,8 @@ in case of inappropriate calling object size (it must be equal to \f$\min(m,n)\f
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (10);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(10);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1.,
@@ -5612,7 +5608,7 @@ try {
     std::cout << (~mA * mU - ~(mSigma * mVH)).norm() << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -5674,8 +5670,8 @@ in case of inappropriate calling object size (it must be equal to \f$\min(m,n)\f
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (10);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(10);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1.,
@@ -5696,7 +5692,7 @@ try {
     std::cout << (~mA * mU - ~(mSigma * mVH)).norm() << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -5751,8 +5747,8 @@ in case of inappropriate calling object sizes or in case of convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 
 try {
     srsmatrix m(3);
@@ -5760,7 +5756,7 @@ try {
     rvector v(3);
     m.randomize(1., 3.);
 
-    v.eig (m, me);
+    v.eig(m, me);
     std::cout << v;
 
     std::cout << m * me(1) - me(1) * v(1);
@@ -5773,7 +5769,7 @@ try {
     mc.randomize_real(1., 3.);
     mc.randomize_imag(1., 3.);
 
-    v.eig (mc, mce);
+    v.eig(mc, mce);
     std::cout << v;
 
     std::cout << mc * mce(1) - mce(1) * v(1);
@@ -5782,7 +5778,7 @@ try {
     std::cout << mce(1) % mce(2) << std::endl; // orthogonality check
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -5830,8 +5826,8 @@ It sets output parameter \c mEigVect to be equal to square matrix containing eig
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 
 try {
     srsmatrix m(3);
@@ -5839,7 +5835,7 @@ try {
     rvector v(3);
     m.randomize(1., 3.);
 
-    v.eig (m, me);
+    v.eig(m, me);
     std::cout << v;
 
     std::cout << m * me(1) - me(1) * v(1);
@@ -5852,7 +5848,7 @@ try {
     mc.randomize_real(1., 3.);
     mc.randomize_imag(1., 3.);
 
-    v.eig (mc, mce);
+    v.eig(mc, mce);
     std::cout << v;
 
     std::cout << mc * mce(1) - mce(1) * v(1);
@@ -5861,7 +5857,7 @@ try {
     std::cout << mce(1) % mce(2) << std::endl; // orthogonality check
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -5911,8 +5907,8 @@ in case of inappropriate calling object sizes or in case of convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 
 try {
     srsmatrix m(3);
@@ -5920,7 +5916,7 @@ try {
     rvector v(3);
     m.randomize(1., 3.);
 
-    v.eig (m, me);
+    v.eig(m, me);
     std::cout << v;
 
     std::cout << m * me(1) - me(1) * v(1);
@@ -5933,7 +5929,7 @@ try {
     mc.randomize_real(1., 3.);
     mc.randomize_imag(1., 3.);
 
-    v.eig (mc, mce);
+    v.eig(mc, mce);
     std::cout << v;
 
     std::cout << mc * mce(1) - mce(1) * v(1);
@@ -5942,7 +5938,7 @@ try {
     std::cout << mce(1) % mce(2) << std::endl; // orthogonality check
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -5990,8 +5986,8 @@ It sets output parameter \c mEigVect to be equal to square matrix containing eig
 Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 
 try {
     srsmatrix m(3);
@@ -5999,7 +5995,7 @@ try {
     rvector v(3);
     m.randomize(1., 3.);
 
-    v.eig (m, me);
+    v.eig(m, me);
     std::cout << v;
 
     std::cout << m * me(1) - me(1) * v(1);
@@ -6012,7 +6008,7 @@ try {
     mc.randomize_real(1., 3.);
     mc.randomize_imag(1., 3.);
 
-    v.eig (mc, mce);
+    v.eig(mc, mce);
     std::cout << v;
 
     std::cout << mc * mce(1) - mce(1) * v(1);
@@ -6021,7 +6017,7 @@ try {
     std::cout << mce(1) % mce(2) << std::endl; // orthogonality check
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -6069,8 +6065,8 @@ in case of inappropriate sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 
 try {
     double alpha = 1.3;
@@ -6086,7 +6082,7 @@ try {
     std::cout << v.gemv(true, m, alpha, c, beta);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -6129,8 +6125,8 @@ in case of inappropriate sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 
 try {
     double alpha = 1.3;
@@ -6146,7 +6142,7 @@ try {
     std::cout << v.gbmv(true, m, alpha, c, beta);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -6180,8 +6176,8 @@ Function returns reference to the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(7);
 
 rvector v(4);
 v.randomize(-2.,3.);
@@ -6263,13 +6259,13 @@ Creates zero size \ref cvector. No memory gets allocated.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector v;
 std::cout << v.size() << std::endl;
 
-v.resize (3);
+v.resize(3);
 v(1) = std::complex<double>(1.5, -1.);
 std::cout << v;
 \endcode
@@ -6292,8 +6288,8 @@ It throws \ref cvmexception in case of non-positive size passed or memory alloca
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector v(3);
 std::cout << v.size() << std::endl;
@@ -6361,10 +6357,10 @@ It throws \ref cvmexception in case of non-positive size passed or memory alloca
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
-cvector v (3, std::complex<double>(1.5, -1.));
+cvector v(3, std::complex<double>(1.5, -1.));
 std::cout << v;
 \endcode
 prints
@@ -6390,30 +6386,30 @@ It just shares memory with array pointed to by \c pd using
 distance between elements equal to \c nIncr.
 It is intented to make possible the following syntax:
 \code
-cmatrix m (10, 20);
-cvector v (20);
+cmatrix m(10, 20);
+cvector v(20);
 
 m[1] = v;       // assigns v to the 1st row of m
 \endcode
      And for example this code...
 \code
-cmatrix m (10,20);
+cmatrix m(10,20);
 cvector vRow = m[1];
 \endcode
 will also call this constructor and <em>memory will be shared</em>.
 
 If you need the code like this with memory allocation, use the following:
 \code
-cmatrix m (10,20);
-cvector vRow (m.msize());
+cmatrix m(10,20);
+cvector vRow(m.msize());
 vRow = m[1];
 \endcode
 
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
 cvector v1 ((std::complex<double>*) a, 2, 2);
@@ -6457,8 +6453,8 @@ It copies \c nSize elements total.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 const double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
 cvector v1 ((const std::complex<double>*) a, 2, 2);
@@ -6503,12 +6499,12 @@ Constructor throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10.};
-const cvector v ((std::complex<double>*) a, 3, 2);
-cvector vc (v);
+const cvector v((std::complex<double>*) a, 3, 2);
+cvector vc(v);
 
 vc(1) = std::complex<double>(7.77,8.88);
 std::cout << vc;
@@ -6560,12 +6556,12 @@ It throws \ref cvmexception in case of non-positive size passed or memory alloca
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double re[] = {1., 2., 3., 4., 5.};
 double im[] = {5., 4., 3., 2., 1.};
-cvector v (re, im, 3, 2);
+cvector v(re, im, 3, 2);
 
 std::cout << v;
 re[0] = 7.77;
@@ -6573,7 +6569,7 @@ std::cout << v;
 
 const double rec[] = {1., 2., 3.};
 const double imc[] = {5., 4., 3.};
-const cvector vc (rec, imc, 3);
+const cvector vc(rec, imc, 3);
 std::cout << vc;
 \endcode
 prints
@@ -6606,8 +6602,8 @@ or memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 rvector vr(3), vi(3);
 vr[1] = 1.;
@@ -6647,8 +6643,8 @@ Constructor throws \ref cvmexception in case of non-positive size passed or memo
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 const double a[] = {1., 2., 3., 4., 5.};
 cvector v1 (a, 3, false, 2);
@@ -6683,10 +6679,10 @@ Constructor throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
-rvector vr (3);
+rvector vr(3);
 vr(1) = 1.;
 vr(2) = 2.;
 vr(3) = 3.;
@@ -6706,8 +6702,12 @@ prints
     explicit basic_cvector(const basic_rvector<TR>& v, bool bRealPart = true)
       : BaseArray(v.size())
     {
-        if (bRealPart) __copy2<TR,TC>(this->get(), this->size(), this->incr(), v, nullptr, v.incr(), 0);
-        else __copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, v, 0, v.incr());
+        if (bRealPart) {
+            __copy2<TR,TC>(this->get(), this->size(), this->incr(), v, nullptr, v.incr(), 0);
+        }
+        else {
+            __copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, v, 0, v.incr());
+        }
     }
 
 /**
@@ -6719,8 +6719,8 @@ In other words, the vector returned is <em>l-value</em>.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector vc(3);
 vc.set(std::complex<double>(1.,1.));
@@ -6750,8 +6750,8 @@ In other words, the vector returned is <em>l-value</em>.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector vc(3);
 vc.set(std::complex<double>(1.,1.));
@@ -6782,8 +6782,8 @@ Operator throws \ref cvmexception in case of different vector sizes.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector vc(3);
 vc.set(std::complex<double>(1.,1.));
@@ -6836,8 +6836,8 @@ and returns reference to the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 const double a[] = {1., 2., 3., 4., 5., 6., 7.};
 cvector v1(3);
@@ -6977,8 +6977,8 @@ and returns reference to the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector v(3);
 v.set(std::complex<double>(3.,1.));
@@ -7006,8 +7006,8 @@ Function throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 rvector v(3);
 cvector vc(3);
@@ -7039,8 +7039,8 @@ Function throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 rvector v(3);
 cvector vc(3);
@@ -7071,8 +7071,8 @@ parameter \c x and returns reference to the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector v(3);
 v.set_real(1.);
@@ -7099,8 +7099,8 @@ parameter \c x and returns reference to the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector v(3);
 v.set_imag(1.);
@@ -7134,15 +7134,15 @@ using namespace cvm;
 
 try {
     double a[] = {1., 2., 3., 4.};
-    rvector v (a, 3);
+    rvector v(a, 3);
     std::cout << v;
     v.resize(2);
     std::cout << v;
     v.resize(4);
     std::cout << v;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -7232,8 +7232,8 @@ in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     cvector v(2);
@@ -7245,8 +7245,8 @@ try {
     vc << v;
     std::cout << vc;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -7278,8 +7278,8 @@ or memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     cvector va(3);
@@ -7290,8 +7290,8 @@ try {
     std::cout << va + vb;
     std::cout << va + va;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -7321,8 +7321,8 @@ or memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     cvector va(3);
@@ -7333,8 +7333,8 @@ try {
     std::cout << va - vb;
     std::cout << va - va;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -7364,8 +7364,8 @@ It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     cvector va(3);
@@ -7377,8 +7377,8 @@ try {
     std::cout << v.sum(va, vb);
     std::cout << v.sum(v, va);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -7409,8 +7409,8 @@ It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     cvector va(3);
@@ -7422,8 +7422,8 @@ try {
     std::cout << v.diff(va, vb);
     std::cout << v.diff(v, va);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -7453,8 +7453,8 @@ It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     cvector v1(3);
@@ -7469,8 +7469,8 @@ try {
     v2 += v2;
     std::cout << v2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -7499,8 +7499,8 @@ It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     cvector v1(3);
@@ -7515,8 +7515,8 @@ try {
     v2 -= v2;
     std::cout << v2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -7545,11 +7545,11 @@ It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-const cvector v ((std::complex<double>*) a, 2);
+const cvector v((std::complex<double>*) a, 2);
 
 std::cout << - v;
 \endcode
@@ -7577,11 +7577,11 @@ It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-const cvector v ((std::complex<double>*) a, 2);
+const cvector v((std::complex<double>*) a, 2);
 
 std::cout << v * 5.;
 \endcode
@@ -7612,11 +7612,11 @@ It also throws exception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-const cvector v ((std::complex<double>*) a, 2);
+const cvector v((std::complex<double>*) a, 2);
 
 std::cout << v / 4.;
 \endcode
@@ -7645,11 +7645,11 @@ It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-const cvector v ((std::complex<double>*) a, 2);
+const cvector v((std::complex<double>*) a, 2);
 
 std::cout << v * std::complex<double>(1.,1.);
 \endcode
@@ -7680,11 +7680,11 @@ It also throws exception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-const cvector v ((std::complex<double>*) a, 2);
+const cvector v((std::complex<double>*) a, 2);
 
 std::cout << v / std::complex<double>(1.,1.);
 \endcode
@@ -7711,11 +7711,11 @@ the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-cvector v ((std::complex<double>*) a, 2);
+cvector v((std::complex<double>*) a, 2);
 
 std::cout << (v *= 2.);
 \endcode
@@ -7743,11 +7743,11 @@ smallest normalized positive number).
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-cvector v ((std::complex<double>*) a, 2);
+cvector v((std::complex<double>*) a, 2);
 
 std::cout << (v /= 2.);
 \endcode
@@ -7773,11 +7773,11 @@ the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-cvector v ((std::complex<double>*) a, 2);
+cvector v((std::complex<double>*) a, 2);
 
 v *= std::complex<double>(1.,1.);
 std::cout << v;
@@ -7806,11 +7806,11 @@ smallest normalized positive number).
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-cvector v ((std::complex<double>*) a, 2);
+cvector v((std::complex<double>*) a, 2);
 
 v /= std::complex<double>(1.,1.);
 std::cout << v;
@@ -7839,11 +7839,11 @@ Does nothing otherwise.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
-cvector v ((std::complex<double>*) a, 2);
+cvector v((std::complex<double>*) a, 2);
 
 std::cout << v.normalize();
 std::cout << v.norm() << std::endl;
@@ -7870,10 +7870,10 @@ It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 2., 3., 4.};
-const cvector v ((std::complex<double>*) a, 2);
+const cvector v((std::complex<double>*) a, 2);
 cvector vc(2);
 
 std::cout << ~v;
@@ -7904,10 +7904,10 @@ It throws \ref cvmexception in case of different sizes of the operands)
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 2., 3., 4.};
-const cvector v ((std::complex<double>*) a, 2);
+const cvector v((std::complex<double>*) a, 2);
 cvector vc(2);
 
 std::cout << ~v;
@@ -7939,10 +7939,10 @@ Sets calling vector to be equal to conjugated itself.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 2., 3., 4.};
-const cvector v ((std::complex<double>*) a, 2);
+const cvector v((std::complex<double>*) a, 2);
 cvector vc(2);
 
 std::cout << ~v;
@@ -7973,8 +7973,8 @@ It throws \ref cvmexception if the operands have different sizes.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
 double b[] = {1., -1., 1., 2.};
@@ -8004,8 +8004,8 @@ It throws \ref cvmexception if the operands have different sizes.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 4.};
 double b[] = {1., -1., 1., 2.};
@@ -8040,8 +8040,8 @@ differs from number of rows in matrix \c m.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 double a[] = {1., 2., 3., 3., 2., 1.};
 double b[] = {1., -1., 1., 2., -2., 1.,
@@ -8079,23 +8079,23 @@ Sets calling vector to be equal to product of vector
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 1., 2., 3.};
     double b[] = {1., -1., 1., -1., 1., -1.,
                   2., -1., 2., -1., 2., -1.};
-    const cvector v ((std::complex<double>*) a, 3);
-    const cmatrix m ((std::complex<double>*) b, 3, 2);
-    const scmatrix sm ((std::complex<double>*) b, 2);
-    cvector vm (2);
+    const cvector v((std::complex<double>*) a, 3);
+    const cmatrix m((std::complex<double>*) b, 3, 2);
+    const scmatrix sm((std::complex<double>*) b, 2);
+    cvector vm(2);
 
     std::cout << vm.mult(v, m) << std::endl;
     std::cout << sm << std::endl;
     std::cout << vm.mult(vm, sm);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8128,23 +8128,23 @@ Sets calling vector to be equal to product of matrix \c m by vector
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 1., 2., 3.};
     double b[] = {1., -1., 1., -1., 1., -1.,
                 2., -1., 2., -1., 2., -1.};
-    const cvector v ((std::complex<double>*) a, 3);
-    const cmatrix m ((std::complex<double>*) b, 2, 3);
-    const scmatrix sm ((std::complex<double>*) b, 2);
-    cvector vm (2);
+    const cvector v((std::complex<double>*) a, 3);
+    const cmatrix m((std::complex<double>*) b, 2, 3);
+    const scmatrix sm((std::complex<double>*) b, 2);
+    cvector vm(2);
 
     std::cout << vm.mult(m, v) << std::endl;
     std::cout << sm << std::endl;;
     std::cout << vm.mult(vm, sm);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8169,7 +8169,7 @@ prints
     }
 
 /**
-@brief Rank-1 update (unconjugated)
+@brief Rank-1 update(unconjugated)
 
 Creates object of type \ref cmatrix
 as rank-1 update of calling vector and vector \c v.
@@ -8193,14 +8193,14 @@ y_1 & y_2 & \cdots & y_n
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 2., 3., -2., -1., 1.};
 double b[] = {4., 5., 3., 2.};
 cvector v1((std::complex<double>*) a, 3);
 cvector v2((std::complex<double>*) b, 2);
 
-std::cout << v1.rank1update_u (v2);
+std::cout << v1.rank1update_u(v2);
 \endcode
 prints
 \code
@@ -8245,15 +8245,15 @@ where \f$y_i^*\f$ is \f$i\f$-th complex conjugated element of \f$y\f$.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 2., 3., -2., -1., 1.};
 double b[] = {4., 5., 3., 2.};
 cvector v1((std::complex<double>*) a, 3);
 cvector v2((std::complex<double>*) b, 2);
 
-std::cout << v1.rank1update_c (v2) << std::endl;
-std::cout << v1.rank1update_u (~v2);
+std::cout << v1.rank1update_c(v2) << std::endl;
+std::cout << v1.rank1update_u(~v2);
 \endcode
 prints
 \code
@@ -8290,8 +8290,8 @@ of the objects or when  matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(7);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
@@ -8301,12 +8301,12 @@ try {
     cvector vx(2);
     double dErr = 0.;
 
-    std::cout << vx.solve (ma, vb, dErr);
+    std::cout << vx.solve(ma, vb, dErr);
     std::cout << dErr << std::endl;
     std::cout << ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8340,8 +8340,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
@@ -8351,13 +8351,13 @@ try {
     cvector vx(2);
     double dErr = 0.;
 
-    std::cout << vx.solve_tran (ma, vb, dErr);
+    std::cout << vx.solve_tran(ma, vb, dErr);
     std::cout << dErr << std::endl;
     std::cout << vx * ma - vb;
     std::cout << !ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8392,8 +8392,8 @@ of the objects or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
@@ -8403,12 +8403,12 @@ try {
     cvector vx(2);
     double dErr = 0.;
 
-    std::cout << vx.solve_conj (ma, vb, dErr);
+    std::cout << vx.solve_conj(ma, vb, dErr);
     std::cout << dErr << std::endl;
     std::cout << ~ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8439,8 +8439,8 @@ of the objects or when  matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(7);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
@@ -8449,11 +8449,11 @@ try {
     cvector vb((std::complex<double>*) b, 2);
     cvector vx(2);
 
-    std::cout << vx.solve (ma, vb);
+    std::cout << vx.solve(ma, vb);
     std::cout << ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8486,8 +8486,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
@@ -8496,12 +8496,12 @@ try {
     cvector vb((std::complex<double>*) b, 2);
     cvector vx(2);
 
-    std::cout << vx.solve_tran (ma, vb);
+    std::cout << vx.solve_tran(ma, vb);
     std::cout << vx * ma - vb;
     std::cout << !ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8535,8 +8535,8 @@ of the objects or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
@@ -8545,11 +8545,11 @@ try {
     cvector vb((std::complex<double>*) b, 2);
     cvector vx(2);
 
-    std::cout << vx.solve_conj (ma, vb);
+    std::cout << vx.solve_conj(ma, vb);
     std::cout << ~ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8581,8 +8581,8 @@ of the objects or when  matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
@@ -8595,8 +8595,8 @@ try {
 
     std::cout << vx * ma - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8621,8 +8621,8 @@ of the objects or when  matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
@@ -8635,8 +8635,8 @@ try {
 
     std::cout << ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8670,8 +8670,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
@@ -8687,14 +8687,14 @@ try {
     double dErr = 0.;
 
     mLU.low_up(ma, nPivots);
-    std::cout << vx1.solve_lu (ma, mLU, nPivots, vb1, dErr);
+    std::cout << vx1.solve_lu(ma, mLU, nPivots, vb1, dErr);
     std::cout << dErr << std::endl;
-    std::cout << vx2.solve_lu (ma, mLU, nPivots, vb2, dErr);
+    std::cout << vx2.solve_lu(ma, mLU, nPivots, vb2, dErr);
     std::cout << dErr << std::endl;
     std::cout << ma * vx1 - vb1 << ma * vx2 - vb2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8741,8 +8741,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
@@ -8757,12 +8757,12 @@ try {
     iarray nPivots(2);
 
     mLU.low_up(ma, nPivots);
-    std::cout << vx1.solve_lu (ma, mLU, nPivots, vb1);
-    std::cout << vx2.solve_lu (ma, mLU, nPivots, vb2);
+    std::cout << vx1.solve_lu(ma, mLU, nPivots, vb1);
+    std::cout << vx2.solve_lu(ma, mLU, nPivots, vb2);
     std::cout << ma * vx1 - vb1 << ma * vx2 - vb2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -8814,8 +8814,8 @@ It throws \ref cvmexception in case of inappropriate sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 cvm::cmatrix a(7, 5);
 cvm::cvector b(7), bt(5);
 tcomplex cErr, cErrc;
@@ -9069,8 +9069,8 @@ in case of inappropriate calling object sizes or in case of convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 
 try {
     srmatrix m(3);
@@ -9080,10 +9080,10 @@ try {
     m(2,1) = 0.11; m(2,2) = 2.9;  m(2,3) = -8.4;
     m(3,1) = 0.;   m(3,2) = 2.91; m(3,3) = 8.2;
 
-    std::cout << vl.eig (m);
+    std::cout << vl.eig(m);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9127,8 +9127,8 @@ in case of inappropriate calling object sizes or in case of convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 
 try {
     srmatrix m(3);
@@ -9140,18 +9140,18 @@ try {
     m(3,1) = 0.;   m(3,2) = 2.91; m(3,3) = 8.2;
     scmatrix mc(m);
 
-    std::cout << vl.eig (m, me) << std::endl;
+    std::cout << vl.eig(m, me) << std::endl;
     std::cout << mc * me(1) - me(1) * vl(1);
     std::cout << mc * me(2) - me(2) * vl(2);
     std::cout << mc * me(3) - me(3) * vl(3) << std::endl;
 
-    std::cout << vl.eig (m, me, false) << std::endl;
+    std::cout << vl.eig(m, me, false) << std::endl;
     std::cout << ~(me(1)) * mc - ~(me(1)) * vl(1);
     std::cout << ~(me(2)) * mc - ~(me(2)) * vl(2);
     std::cout << ~(me(3)) * mc - ~(me(3)) * vl(3);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9197,8 +9197,8 @@ in case of inappropriate calling object sizes or in case of convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
@@ -9206,10 +9206,10 @@ try {
     scmatrix m(re, im, 3);
     cvector vl(3);
 
-    std::cout << vl.eig (m);
+    std::cout << vl.eig(m);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9248,8 +9248,8 @@ in case of inappropriate calling object sizes or in case of convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
@@ -9258,18 +9258,18 @@ try {
     scmatrix me(3);
     cvector vl(3);
 
-    std::cout << vl.eig (m, me) << std::endl;
+    std::cout << vl.eig(m, me) << std::endl;
     std::cout << m * me(1) - me(1) * vl(1);
     std::cout << m * me(2) - me(2) * vl(2);
     std::cout << m * me(3) - me(3) * vl(3) << std::endl;
 
-    std::cout << vl.eig (m, me, false) << std::endl;
+    std::cout << vl.eig(m, me, false) << std::endl;
     std::cout << ~(me(1)) * m - ~(me(1)) * vl(1);
     std::cout << ~(me(2)) * m - ~(me(2)) * vl(2);
     std::cout << ~(me(3)) * m - ~(me(3)) * vl(3);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9326,8 +9326,8 @@ try {
         std::cout << (scmatrix(a) - alpha[i] / beta[i] * scmatrix(b)).svd();
     }
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9398,8 +9398,8 @@ try {
         std::cout << (scmatrix(a) * eigVectRight(i) - (alpha[i] / beta[i]) * scmatrix(b) * eigVectRight(i)).norm() << std::endl;
     }
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9488,8 +9488,8 @@ try {
         std::cout << (scmatrix(a) * eigVectRight(i) - (alpha[i] / beta[i]) * scmatrix(b) * eigVectRight(i)).norm() << std::endl;
     }
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9561,8 +9561,8 @@ try {
         std::cout << (a - alpha[i] / beta[i] * b).svd();
     }
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9636,8 +9636,8 @@ try {
         std::cout << (a * eigVectRight(i) - (alpha[i] / beta[i]) * b * eigVectRight(i)).norm() << std::endl;
     }
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9729,8 +9729,8 @@ try {
         std::cout << (a * eigVectRight(i) - (alpha[i] / beta[i]) * b * eigVectRight(i)).norm() << std::endl;
     }
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9789,8 +9789,8 @@ in case of inappropriate sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     std::complex<double> alpha = std::complex<double>(1.3,-0.7);
@@ -9806,8 +9806,8 @@ try {
     std::cout << c * m * alpha + v * beta;
     std::cout << v.gemv(true, m, alpha, c, beta);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9850,8 +9850,8 @@ in case of inappropriate sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     std::complex<double> alpha = std::complex<double>(1.3,-0.7);
@@ -9867,8 +9867,8 @@ try {
     std::cout << c * m * alpha + v * beta;
     std::cout << v.gbmv(true, m, alpha, c, beta);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -9902,8 +9902,8 @@ It returns reference to the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector v(3);
 v.randomize_real(-2.,3.);
@@ -9931,8 +9931,8 @@ It returns reference to the vector changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 cvector v(3);
 v.randomize_imag(-2.,3.);
@@ -10183,7 +10183,7 @@ Returns number of rows of calling matrix.
 \code
 using namespace cvm;
 
-rmatrix m (100, 200);
+rmatrix m(100, 200);
 std::cout << m.msize() << std::endl;
 \endcode
 prints
@@ -10204,7 +10204,7 @@ Returns number of columns of calling matrix.
 \code
 using namespace cvm;
 
-rmatrix m (100, 200);
+rmatrix m(100, 200);
 std::cout << m.nsize() << std::endl;
 \endcode
 prints
@@ -10228,8 +10228,8 @@ it's equal to number of rows of parent matrix.
 \code
 using namespace cvm;
 
-rmatrix m (100, 200);
-srmatrix ms (m, 30, 40, 5); // 5x5 submatrix
+rmatrix m(100, 200);
+srmatrix ms(m, 30, 40, 5); // 5x5 submatrix
 std::cout << ms.ld() << std::endl;
 \endcode
 prints
@@ -10252,7 +10252,7 @@ where the element with the maximum absolute value is located.
 using namespace cvm;
 
 double a[] = {1., 0., 2., -3., 1., -1.};
-rmatrix m (a, 2, 3);
+rmatrix m(a, 2, 3);
 
 std::cout << m << std::endl << m.rowofmax() << std::endl;
 \endcode
@@ -10279,7 +10279,7 @@ where the element with the minimum absolute value is located.
 using namespace cvm;
 
 double a[] = {1., 0., 2., -3., 1., -1.};
-rmatrix m (a, 2, 3);
+rmatrix m(a, 2, 3);
 
 std::cout << m << std::endl << m.rowofmin() << std::endl;
 \endcode
@@ -10306,7 +10306,7 @@ where the element with the maximum absolute value is located.
 using namespace cvm;
 
 double a[] = {1., 0., 2., -3., 1., -1.};
-rmatrix m (a, 2, 3);
+rmatrix m(a, 2, 3);
 
 std::cout << m << std::endl << m.colofmax() << std::endl;
 \endcode
@@ -10333,7 +10333,7 @@ where the element with the minimum absolute value is located.
 using namespace cvm;
 
 double a[] = {1., 0., 2., -3., 1., -1.};
-rmatrix m (a, 2, 3);
+rmatrix m(a, 2, 3);
 
 std::cout << m << std::endl << m.colofmin() << std::endl;
 \endcode
@@ -10839,7 +10839,7 @@ using namespace cvm;
 rmatrix m;
 std::cout << m.msize() << std::endl << m.nsize() << std::endl;
 std::cout << m.size() << std::endl;
-m.resize (2, 3);
+m.resize(2, 3);
 std::cout << m;
 \endcode
 prints
@@ -10865,7 +10865,7 @@ It throws \ref cvmexception in case of non-positive sizes passed or memory alloc
 Example:
 \code
 using namespace cvm;
-rmatrix m (3, 4);
+rmatrix m(3, 4);
 std::cout << m.msize() << std::endl << m.nsize()
           << std::endl << m.size() << std::endl << m;
 \endcode
@@ -10897,10 +10897,10 @@ It just shares memory with array pointed to by \c pd (for matrices \c nIncr=1 is
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 2., 3., 4., 5., 6.};
-rmatrix m (a, 2, 3);
+rmatrix m(a, 2, 3);
 m(1,1) = 7.77;
 std::cout << m << std::endl;
 std::cout << a[0] << " " << a[1] << " " << a[2] << std::endl;
@@ -10935,10 +10935,10 @@ It copies \c nM*nN elements total.
 Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 const double a[] = {1., 2., 3., 4., 5., 6.};
-rmatrix m (a, 2, 3);
+rmatrix m(a, 2, 3);
 
 m(1,1) = 7.77;
 std::cout << m << std::endl;
@@ -10970,10 +10970,10 @@ It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 2., 3., 4., 5., 6.};
-rmatrix m (a, 2, 3);
+rmatrix m(a, 2, 3);
 rmatrix mc(m);
 
 m(1,1) = 7.77;
@@ -11028,15 +11028,15 @@ Constructor throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 rvector v(3);
 v(1) = 1.;
 v(2) = 2.;
 v(3) = 3.;
 
-rmatrix mc (v);
-rmatrix mr (v, false);
+rmatrix mc(v);
+rmatrix mr(v, false);
 
 std::cout << mc << std::endl << mr;
 \endcode
@@ -11102,11 +11102,11 @@ Operator throws \ref cvmexception if \c nRow or \c nCol is outside of boundaries
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
-    const rmatrix m (a, 2, 3);
+    const rmatrix m(a, 2, 3);
     rmatrix ms(m);
 
     std::cout << m(1,1) << " " << m(2,3) << std::endl << std::endl;
@@ -11114,8 +11114,8 @@ try {
     ms(2,2) = 7.77;
     std::cout << ms;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11146,16 +11146,16 @@ Operator throws \ref cvmexception if \c nRow or \c nCol is outside of boundaries
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
-    const rmatrix m (a, 2, 3);
+    const rmatrix m(a, 2, 3);
 
     std::cout << m(1,1) << " " << m(2,3) << std::endl;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11183,11 +11183,11 @@ Operator throws \ref cvmexception if \c nCol is outside of boundaries.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
-    const rmatrix m (a, 2, 3);
+    const rmatrix m(a, 2, 3);
     srmatrix ms(2);
 
     std::cout << m(2) << std::endl;
@@ -11195,8 +11195,8 @@ try {
     ms(2) = m(3);
     std::cout << ms;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11224,11 +11224,11 @@ Operator throws \ref cvmexception if \c nRow is outside of boundaries.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
-    const rmatrix m (a, 2, 3);
+    const rmatrix m(a, 2, 3);
     srmatrix ms(3);
 
     std::cout << m[1] << std::endl;
@@ -11236,8 +11236,8 @@ try {
     ms[1] = m[2];
     std::cout << ms;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11265,15 +11265,15 @@ Operator throws \ref cvmexception if \c nCol is outside of boundaries.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
-    const rmatrix m (a, 2, 3);
+    const rmatrix m(a, 2, 3);
     std::cout << m(2) << std::endl;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11297,15 +11297,15 @@ Operator throws \ref cvmexception if \c nRow is outside of boundaries.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
-    const rmatrix m (a, 2, 3);
+    const rmatrix m(a, 2, 3);
     std::cout << m[1] << std::endl;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11342,8 +11342,8 @@ try {
     m.diag(2).set(4.);
     std::cout << m << std::endl;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11374,8 +11374,8 @@ try {
     std::cout << ms << std::endl;
     std::cout << ms.diag(0) << ms.diag(1);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11404,8 +11404,8 @@ Operator throws \ref cvmexception in case of different matrix dimensions.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
@@ -11414,8 +11414,8 @@ try {
     m2 = m1;
     std::cout << m2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11470,8 +11470,9 @@ try {
     std::cout << v << std::endl;
     m.assign(v);
     std::cout << m;
-} catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+}
+catch(std::exception& e) {
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11503,8 +11504,8 @@ enough to fill calling matrix.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 const double a[] = {1., 2., 3., 4., 5., 6.};
 rmatrix m(2, 3);
 m.assign(a);
@@ -11572,8 +11573,8 @@ parameter \c d and returns reference to the matrix changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 rmatrix m(2, 3);
 m.set(3.);
 std::cout << m;
@@ -11604,19 +11605,19 @@ in case of negative dimension passed or memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
     rmatrix m(a, 2, 3);
     std::cout << m << std::endl;
-    m.resize (2, 2);
+    m.resize(2, 2);
     std::cout << m << std::endl;
-    m.resize (3, 3);
+    m.resize(3, 3);
     std::cout << m;
 }
-catch (std::exception& e) {
-     std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+     std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11710,8 +11711,8 @@ in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     rmatrix m(3,4);
     rmatrix mc(1,1);
@@ -11722,8 +11723,8 @@ try {
     mc << m;
     std::cout << mc;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11768,8 +11769,8 @@ try {
     std::cout << ma + mb << std::endl;
     std::cout << ma + ma;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11812,8 +11813,8 @@ try {
     std::cout << ma - mb << std::endl;
     std::cout << ma - ma;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11856,8 +11857,8 @@ try {
     std::cout << m.sum(m1, m2) << std::endl;
     std::cout << m.sum(m, m2);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11902,8 +11903,8 @@ try {
     std::cout << m.diff(m1, m2) << std::endl;
     std::cout << m.diff(m, m2);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11951,8 +11952,8 @@ try {
     m2 += m2;
     std::cout << m2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -11998,8 +11999,8 @@ try {
     m2 -= m2;
     std::cout << m2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12089,16 +12090,16 @@ It also throws exception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
     rmatrix m(a, 2, 3);
     std::cout << m / 2.;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12155,8 +12156,8 @@ smallest normalized positive number).
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
@@ -12164,8 +12165,8 @@ try {
     m /= 2.;
     std::cout << m;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12193,8 +12194,8 @@ Does nothing otherwise.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 2., 3., 4., 5., 6.};
 rmatrix m(a, 2, 3);
 m.normalize();
@@ -12226,8 +12227,8 @@ try {
     rmatrix m(a,2,3);
     std::cout << m << std::endl << ~m;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12264,8 +12265,8 @@ try {
     mt.transpose(m);
     std::cout << mt;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12307,8 +12308,8 @@ try {
     std::cout << m << std::endl;
     std::cout << m.transpose();
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12347,8 +12348,8 @@ try {
     v.set(1.);
     std::cout << m * v;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12384,8 +12385,8 @@ try {
     m2.set(1.);
     std::cout << m1 * m2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12422,8 +12423,8 @@ try {
     std::cout << m.mult(m1, m2) << std::endl;
     std::cout << m1.mult(m, m1);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12480,10 +12481,10 @@ try {
     vc(3) = 3.;
     vr(1) = 4.;
     vr(2) = 5.;
-    std::cout << m.rank1update (vc, vr);
+    std::cout << m.rank1update(vc, vr);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12518,12 +12519,12 @@ Function throws \ref cvmexception if one of the parameters is outside of boundar
 using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
-    rmatrix m (a, 3, 2);
+    rmatrix m(a, 3, 2);
     std::cout << m << std::endl;
     std::cout << m.swap_rows(2,3);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12557,12 +12558,12 @@ Function throws \ref cvmexception if one of the parameters is outside of boundar
 using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.};
-    rmatrix m (a, 2, 3);
+    rmatrix m(a, 2, 3);
     std::cout << m << std::endl;
     std::cout << m.swap_cols(2,3);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12595,8 +12596,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     srmatrix ma(3);
     rmatrix  mb(3,4);
@@ -12604,11 +12605,11 @@ try {
     double dErr;
     ma.randomize(-10., 10.);
     mb.randomize(-10., 10.);
-    mx.solve (ma, mb, dErr);
+    mx.solve(ma, mb, dErr);
     std::cout << ma * mx - mb << dErr << std::endl;
 }
-catch (cvmexception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(cvmexception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12642,8 +12643,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     srmatrix ma(3);
     rmatrix  mb(3,4);
@@ -12651,12 +12652,12 @@ try {
     double dErr;
     ma.randomize(-10., 10.);
     mb.randomize(-10., 10.);
-    mx.solve_tran (ma, mb, dErr);
+    mx.solve_tran(ma, mb, dErr);
     std::cout << ~ma * mx - mb << dErr << std::endl;
     std::cout << ~mx * ma - ~mb;
 }
-catch (cvmexception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(cvmexception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12691,19 +12692,19 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     srmatrix ma(3);
     rmatrix  mb(3,4);
     rmatrix  mx(3,4);
     ma.randomize(-10., 10.);
     mb.randomize(-10., 10.);
-    mx.solve (ma, mb);
+    mx.solve(ma, mb);
     std::cout << ma * mx - mb;
 }
-catch (cvmexception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(cvmexception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12736,20 +12737,20 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     srmatrix ma(3);
     rmatrix  mb(3,4);
     rmatrix  mx(3,4);
     ma.randomize(-10., 10.);
     mb.randomize(-10., 10.);
-    mx.solve_tran (ma, mb);
+    mx.solve_tran(ma, mb);
     std::cout << ~ma * mx - mb << std::endl;
     std::cout << ~mx * ma - ~mb;
 }
-catch (cvmexception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(cvmexception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12792,8 +12793,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
     srmatrix ma(a,3);
@@ -12808,13 +12809,13 @@ try {
     mb2.randomize(2.,5.);
 
     mLU.low_up(ma, nPivots);
-    std::cout << mx1.solve_lu (ma, mLU, nPivots, mb1, dErr);
+    std::cout << mx1.solve_lu(ma, mLU, nPivots, mb1, dErr);
     std::cout << dErr << std::endl;
-    std::cout << mx2.solve_lu (ma, mLU, nPivots, mb2) << std::endl;
+    std::cout << mx2.solve_lu(ma, mLU, nPivots, mb2) << std::endl;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12871,8 +12872,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
     srmatrix ma(a,3);
@@ -12886,13 +12887,13 @@ try {
     mb2.randomize(2.,5.);
 
     mLU.low_up(ma, nPivots);
-    std::cout << mx1.solve_lu (ma, mLU, nPivots, mb1);
+    std::cout << mx1.solve_lu(ma, mLU, nPivots, mb1);
     std::cout << std::endl;
-    std::cout << mx2.solve_lu (ma, mLU, nPivots, mb2) << std::endl;
+    std::cout << mx2.solve_lu(ma, mLU, nPivots, mb2) << std::endl;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -12951,16 +12952,16 @@ Function throws \ref cvmexception in case of convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (5);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(5);
 try {
     double m[] = {1., -1., 1., 2., -2., 1.,
                   3., -2., 1., 0., -2., 1.};
     rmatrix mA(m,4,3);
     std::cout << mA.svd();
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -13004,8 +13005,8 @@ in case of inappropriate calling object size (it must be equal to \f$\min(m,n)\f
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double m[] = {1., -1., 1., 2., -2., 1.,
                   3., -2., 1., 0., -2., 1.};
@@ -13024,8 +13025,8 @@ try {
     std::cout << (mA * ~mVH - mU * mSigma).norm() << std::endl;
     std::cout << (~mA * mU - ~(mSigma * mVH)).norm() << std::endl;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -13095,8 +13096,8 @@ try {
     rmatrix mX = mA.pinv(1.e-13);
     std::cout << mX << (mA * mX * mA - mA).norm2() << std::endl;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -13147,8 +13148,8 @@ Function throws \ref cvmexception in case of not appropriate sizes of the operan
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 try {
     rmatrix mA(3,4);
     rmatrix mX(4,3);
@@ -13158,8 +13159,8 @@ try {
     mX.pinv(mA, 1.e-13);
     std::cout << mX << (mA * mX * mA - mA).norm2() << std::endl;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -14011,8 +14012,8 @@ try {
     m(3,4) = 13.;
     std::cout << m.rank() << std::endl;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -14460,8 +14461,8 @@ Function is <b>not applicable</b> to objects of the classes \ref srbmatrix and \
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (4);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(4);
 try {
     double alpha = 1.3;
     rmatrix m(3,4);
@@ -14469,11 +14470,11 @@ try {
     rvector vr(4);
     m.randomize(-1., 2.); vc.randomize(-1., 3.); vr.randomize(0., 2.);
 
-    std::cout << m + vc.rank1update (vr) * alpha << std::endl;
+    std::cout << m + vc.rank1update(vr) * alpha << std::endl;
     std::cout << m.ger(alpha, vc, vr);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -14526,8 +14527,8 @@ type \ref cvmexception would be thrown).
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (4);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(4);
 try {
     double alpha = 1.3;
     double beta = -0.7;
@@ -14537,8 +14538,8 @@ try {
     std::cout << ~m1 * m2 * alpha + m * beta << std::endl;
     std::cout << m.gemm(m1, true, m2, false, alpha, beta);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -14592,8 +14593,8 @@ Function is <b>not applicable</b> to objects of the class \ref srbmatrix
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (4);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(4);
 try {
     double alpha = 1.3;
     double beta = -0.7;
@@ -14605,14 +14606,14 @@ try {
     ms.randomize(-3., 1.);
 
     std::cout << ms * m1 * alpha + m * beta << std::endl;
-    std::cout << m.symm (true, ms, m1, alpha, beta) << std::endl;
+    std::cout << m.symm(true, ms, m1, alpha, beta) << std::endl;
 
     m.resize(4,3);
     std::cout << m2 * ms * alpha + m * beta << std::endl;
-    std::cout << m.symm (false, ms, m2, alpha, beta);
+    std::cout << m.symm(false, ms, m2, alpha, beta);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -14668,7 +14669,7 @@ rmatrix m(3, 4);
 m.randomize(0.,1.);
 
 std::cout << m << std::endl;
-std::cout << m.vanish ();
+std::cout << m.vanish();
 \endcode
 prints
 \code
@@ -14696,8 +14697,8 @@ Function returns reference to the matrix changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(7);
 
 rmatrix m(3,4);
 m.randomize(-2.,3.);
@@ -15065,7 +15066,7 @@ srmatrix m;
 std::cout << m.msize() << std::endl << m.nsize() << std::endl;
 std::cout << m.size() << std::endl;
 
-m.resize (3);
+m.resize(3);
 std::cout << m;
 \endcode
 prints
@@ -15092,7 +15093,7 @@ Example:
 \code
 using namespace cvm;
 
-srmatrix m (4);
+srmatrix m(4);
 std::cout << m.msize() << std::endl << m.nsize()
           << std::endl << m.size() << std::endl << m;
 \endcode
@@ -15124,7 +15125,7 @@ It just shares memory with array pointed to by \c pd (for matrices \c nIncr=1 is
 \code
 using namespace cvm;
 double a[] = {1., 1., 1., 1., 1., 1., 1., 1., 1.};
-srmatrix m (a, 3);
+srmatrix m(a, 3);
 
 m(1,1) = 5.;
 std::cout << m << std::endl;
@@ -15160,7 +15161,7 @@ Example:
 \code
 using namespace cvm;
 const double a[] = {1., 1., 1., 1., 1., 1., 1., 1., 1.};
-srmatrix m (a, 3);
+srmatrix m(a, 3);
 
 m(1,1) = 5.;
 std::cout << m << std::endl;
@@ -15257,7 +15258,7 @@ rmatrix m(a, 2, 3);
 std::cout << m << std::endl;
 
 m.resize(3, 3);
-srmatrix ms (m);
+srmatrix ms(m);
 std::cout << ms;
 \endcode
 prints
@@ -15395,8 +15396,8 @@ Operator throws \ref cvmexception in case of different matrix dimensions.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     const srmatrix m1(a, 3);
@@ -15405,8 +15406,8 @@ try {
     m2 = m1;
     std::cout << m2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -15524,11 +15525,11 @@ in case of negative dimension passed or memory allocation failure.
      double a[] = {1., 2., 3., 4.};
      srmatrix m(a, 2);
      std::cout << m << std::endl;
-     m.resize (3);
+     m.resize(3);
      std::cout << m;
  }
- catch (std::exception& e) {
-     std::cout << "Exception " << e.what () << std::endl;
+ catch(std::exception& e) {
+     std::cout << "Exception " << e.what() << std::endl;
  }
  \endcode
  prints
@@ -15558,8 +15559,8 @@ in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     srmatrix m(3);
     srmatrix mc(1);
@@ -15569,8 +15570,8 @@ try {
     mc << m;
     std::cout << mc;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -15614,8 +15615,8 @@ try {
     srmatrix m2(b, 3);
     std::cout << m1 + m2 << std::endl << m1 + m1;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -15657,8 +15658,8 @@ try {
     srmatrix m2(b, 3);
     std::cout << m2 - m1 << std::endl << m1 - m1;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -15701,8 +15702,8 @@ try {
     std::cout << m.sum(m1, m2) << std::endl;
     std::cout << m.sum(m, m2);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -15746,8 +15747,8 @@ try {
     std::cout << m.diff(m1, m2) << std::endl;
     std::cout << m.diff(m, m2);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -15793,8 +15794,8 @@ try {
     m2 += m2;
     std::cout << m2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -15841,8 +15842,8 @@ try {
     m2 -= m2;
     std::cout << m2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -15904,7 +15905,7 @@ Adds identity matrix to calling square matrix and returns reference to the matri
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
-srmatrix m (a, 3);
+srmatrix m(a, 3);
 m++;
 std::cout << m << std::endl;
 std::cout << ++m;
@@ -15935,7 +15936,7 @@ Adds identity matrix to calling square matrix and returns reference to the matri
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
-srmatrix m (a, 3);
+srmatrix m(a, 3);
 m++;
 std::cout << m << std::endl;
 std::cout << ++m;
@@ -15966,7 +15967,7 @@ Subtracts identity matrix from calling square matrix and returns reference to th
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
-srmatrix m (a, 3);
+srmatrix m(a, 3);
 m--;
 std::cout << m << std::endl;
 std::cout << --m;
@@ -15997,7 +15998,7 @@ Subtracts identity matrix from calling square matrix and returns reference to th
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
-srmatrix m (a, 3);
+srmatrix m(a, 3);
 m--;
 std::cout << m << std::endl;
 std::cout << --m;
@@ -16066,8 +16067,8 @@ try {
     srmatrix m(a, 3);
     std::cout << m / 4.;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16122,8 +16123,8 @@ try {
     mt.transpose();
     std::cout << mt;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16166,8 +16167,8 @@ try {
     mt.transpose();
     std::cout << mt;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16221,8 +16222,8 @@ try {
     m.set(1.);
     std::cout << ms * m;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16255,8 +16256,8 @@ try {
     m2.set(1.);
     std::cout << m1 * m2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16295,8 +16296,8 @@ try {
     m1 *= m1;
     std::cout << m1;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16347,8 +16348,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix ma(a, 3);
@@ -16361,17 +16362,17 @@ try {
     mb(3).set(3.);
     mb(1,4) = 1.; mb(2,4) = 2.; mb(3,4) = 3.;
 
-    mx = ma.solve (mb, dErr);
+    mx = ma.solve(mb, dErr);
     std::cout << mx << dErr
               << std::endl << ma * mx - mb << std::endl;
 
     rvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve (vb, dErr);
+    vx = ma.solve(vb, dErr);
     std::cout << vx << dErr << std::endl << ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16412,8 +16413,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix ma(a, 3);
@@ -16426,17 +16427,17 @@ try {
     mb(3).set(3.);
     mb(1,4) = 1.; mb(2,4) = 2.; mb(3,4) = 3.;
 
-    mx = ma.solve_tran (mb, dErr);
+    mx = ma.solve_tran(mb, dErr);
     std::cout << mx << dErr
               << std::endl << ~ma * mx - mb << std::endl;
 
     rvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_tran (vb, dErr);
+    vx = ma.solve_tran(vb, dErr);
     std::cout << vx << dErr << std::endl << vx * ma - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16474,8 +16475,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix ma(a, 3);
@@ -16487,16 +16488,16 @@ try {
     mb(3).set(3.);
     mb(1,4) = 1.; mb(2,4) = 2.; mb(3,4) = 3.;
 
-    mx = ma.solve (mb);
+    mx = ma.solve(mb);
     std::cout << mx << std::endl << ma * mx - mb << std::endl;
 
     rvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve (vb);
+    vx = ma.solve(vb);
     std::cout << vx << std::endl << ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16536,8 +16537,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix ma(a, 3);
@@ -16549,16 +16550,16 @@ try {
     mb(3).set(3.);
     mb(1,4) = 1.; mb(2,4) = 2.; mb(3,4) = 3.;
 
-    mx = ma.solve_tran (mb, dErr);
+    mx = ma.solve_tran(mb, dErr);
     std::cout << mx << std::endl << ~ma * mx - mb << std::endl;
 
     rvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_tran (vb, dErr);
+    vx = ma.solve_tran(vb, dErr);
     std::cout << vx << std::endl << vx * ma - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16598,8 +16599,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix ma(a, 3);
@@ -16612,17 +16613,17 @@ try {
     mb(3).set(3.);
     mb(1,4) = 1.; mb(2,4) = 2.; mb(3,4) = 3.;
 
-    mx = ma.solve (mb, dErr);
+    mx = ma.solve(mb, dErr);
     std::cout << mx << dErr
               << std::endl << ma * mx - mb << std::endl;
 
     rvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve (vb, dErr);
+    vx = ma.solve(vb, dErr);
     std::cout << vx << dErr << std::endl << ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16663,8 +16664,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix ma(a, 3);
@@ -16676,16 +16677,16 @@ try {
     mb(3).set(3.);
     mb(1,4) = 1.; mb(2,4) = 2.; mb(3,4) = 3.;
 
-    mx = ma.solve_tran (mb, dErr);
+    mx = ma.solve_tran(mb, dErr);
     std::cout << mx << std::endl << ~ma * mx - mb << std::endl;
 
     rvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_tran (vb, dErr);
+    vx = ma.solve_tran(vb, dErr);
     std::cout << vx << std::endl << vx * ma - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16723,8 +16724,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix ma(a, 3);
@@ -16736,16 +16737,16 @@ try {
     mb(3).set(3.);
     mb(1,4) = 1.; mb(2,4) = 2.; mb(3,4) = 3.;
 
-    mx = ma.solve (mb);
+    mx = ma.solve(mb);
     std::cout << mx << std::endl << ma * mx - mb << std::endl;
 
     rvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve (vb);
+    vx = ma.solve(vb);
     std::cout << vx << std::endl << ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16786,8 +16787,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix ma(a, 3);
@@ -16799,16 +16800,16 @@ try {
     mb(3).set(3.);
     mb(1,4) = 1.; mb(2,4) = 2.; mb(3,4) = 3.;
 
-    mx = ma.solve_tran (mb, dErr);
+    mx = ma.solve_tran(mb, dErr);
     std::cout << mx << std::endl << ~ma * mx - mb << std::endl;
 
     rvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_tran (vb, dErr);
+    vx = ma.solve_tran(vb, dErr);
     std::cout << vx << std::endl << vx * ma - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16847,8 +16848,8 @@ of the operands or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
@@ -16861,8 +16862,8 @@ try {
 
     std::cout << vx * ma - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16888,8 +16889,8 @@ of the operands or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (12);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(12);
 
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
@@ -16902,8 +16903,8 @@ try {
 
     std::cout << ma * vx - vb;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -16937,8 +16938,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double a[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
     srmatrix ma(a,3);
@@ -16953,20 +16954,20 @@ try {
     mb2.randomize(-2.,5.); vb2.randomize(-3.,1.);
 
     mLU.low_up(ma, nPivots);
-    mx1 = ma.solve_lu (mLU, nPivots, mb1, dErr);
+    mx1 = ma.solve_lu(mLU, nPivots, mb1, dErr);
     std::cout << mx1 << dErr << std::endl;
-    mx2 = ma.solve_lu (mLU, nPivots, mb2);
+    mx2 = ma.solve_lu(mLU, nPivots, mb2);
     std::cout << mx2 << std::endl;;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
 
-    vx1 = ma.solve_lu (mLU, nPivots, vb1, dErr);
+    vx1 = ma.solve_lu(mLU, nPivots, vb1, dErr);
     std::cout << vx1 << dErr << std::endl;
-    vx2 = ma.solve_lu (mLU, nPivots, vb2);
+    vx2 = ma.solve_lu(mLU, nPivots, vb2);
     std::cout << vx2 << std::endl;;
     std::cout << ma * vx1 - vb1 << std::endl << ma * vx2 - vb2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17029,8 +17030,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double a[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
     srmatrix ma(a,3);
@@ -17045,20 +17046,20 @@ try {
     mb2.randomize(-2.,5.); vb2.randomize(-3.,1.);
 
     mLU.low_up(ma, nPivots);
-    mx1 = ma.solve_lu (mLU, nPivots, mb1, dErr);
+    mx1 = ma.solve_lu(mLU, nPivots, mb1, dErr);
     std::cout << mx1 << dErr << std::endl;
-    mx2 = ma.solve_lu (mLU, nPivots, mb2);
+    mx2 = ma.solve_lu(mLU, nPivots, mb2);
     std::cout << mx2 << std::endl;;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
 
-    vx1 = ma.solve_lu (mLU, nPivots, vb1, dErr);
+    vx1 = ma.solve_lu(mLU, nPivots, vb1, dErr);
     std::cout << vx1 << dErr << std::endl;
-    vx2 = ma.solve_lu (mLU, nPivots, vb2);
+    vx2 = ma.solve_lu(mLU, nPivots, vb2);
     std::cout << vx2 << std::endl;;
     std::cout << ma * vx1 - vb1 << std::endl << ma * vx2 - vb2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17117,8 +17118,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double a[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
     srmatrix ma(a,3);
@@ -17133,20 +17134,20 @@ try {
     mb2.randomize(-2.,5.); vb2.randomize(-3.,1.);
 
     mLU.low_up(ma, nPivots);
-    mx1 = ma.solve_lu (mLU, nPivots, mb1, dErr);
+    mx1 = ma.solve_lu(mLU, nPivots, mb1, dErr);
     std::cout << mx1 << dErr << std::endl;
-    mx2 = ma.solve_lu (mLU, nPivots, mb2);
+    mx2 = ma.solve_lu(mLU, nPivots, mb2);
     std::cout << mx2 << std::endl;;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
 
-    vx1 = ma.solve_lu (mLU, nPivots, vb1, dErr);
+    vx1 = ma.solve_lu(mLU, nPivots, vb1, dErr);
     std::cout << vx1 << dErr << std::endl;
-    vx2 = ma.solve_lu (mLU, nPivots, vb2);
+    vx2 = ma.solve_lu(mLU, nPivots, vb2);
     std::cout << vx2 << std::endl;;
     std::cout << ma * vx1 - vb1 << std::endl << ma * vx2 - vb2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17208,8 +17209,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double a[] = {1., -1., 1., 2., -2., 1., 3., -2., 1.};
     srmatrix ma(a,3);
@@ -17224,20 +17225,20 @@ try {
     mb2.randomize(-2.,5.); vb2.randomize(-3.,1.);
 
     mLU.low_up(ma, nPivots);
-    mx1 = ma.solve_lu (mLU, nPivots, mb1, dErr);
+    mx1 = ma.solve_lu(mLU, nPivots, mb1, dErr);
     std::cout << mx1 << dErr << std::endl;
-    mx2 = ma.solve_lu (mLU, nPivots, mb2);
+    mx2 = ma.solve_lu(mLU, nPivots, mb2);
     std::cout << mx2 << std::endl;;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
 
-    vx1 = ma.solve_lu (mLU, nPivots, vb1, dErr);
+    vx1 = ma.solve_lu(mLU, nPivots, vb1, dErr);
     std::cout << vx1 << dErr << std::endl;
-    vx2 = ma.solve_lu (mLU, nPivots, vb2);
+    vx2 = ma.solve_lu(mLU, nPivots, vb2);
     std::cout << vx2 << std::endl;;
     std::cout << ma * vx1 - vb1 << std::endl << ma * vx2 - vb2;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17285,15 +17286,15 @@ It uses the LU factorization internally and may throw the same exceptions as the
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix m(a, 3);
     std::cout << m << std::endl << m.det() << std::endl;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17335,17 +17336,17 @@ singular. It is recommended to use \ref iarray for pivot values.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix m(a, 3);
     srmatrix mLU(3), mLo(3), mUp(3);
     iarray naPivots(3);
 
-    mLU.low_up (m, naPivots);
+    mLU.low_up(m, naPivots);
 
-    mLo.identity ();
+    mLo.identity();
 
     mLo.diag(-2) = mLU.diag(-2);
     mLo.diag(-1) = mLU.diag(-1);
@@ -17358,12 +17359,12 @@ try {
 
     mLU = mLo * mUp;
     for (int i = 3; i >= 1; i--) {
-        mLU.swap_rows (i, naPivots[i]);
+        mLU.swap_rows(i, naPivots[i]);
     }
     std::cout << mLU;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17416,17 +17417,17 @@ singular. It is recommended to use \ref iarray for pivot values.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix m(a, 3);
     srmatrix mLU(3), mLo(3), mUp(3);
     iarray naPivots(3);
 
-    mLU = m.low_up (naPivots);
+    mLU = m.low_up(naPivots);
 
-    mLo.identity ();
+    mLo.identity();
     mLo.diag(-2) = mLU.diag(-2);
     mLo.diag(-1) = mLU.diag(-1);
     mUp.diag(0) = mLU.diag(0);
@@ -17436,12 +17437,12 @@ try {
               << std::endl << naPivots << std::endl;
     mLU = mLo * mUp;
     for (int i = 3; i >= 1; i--) {
-        mLU.swap_rows (i, naPivots[i]);
+        mLU.swap_rows(i, naPivots[i]);
     }
     std::cout << mLU;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17486,8 +17487,8 @@ Function throws \ref cvmexception in case of LAPACK subroutines failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     srmatrix m(a, 3);
@@ -17496,8 +17497,8 @@ try {
     m(3,3) = 10.;
     std::cout << m.cond() << std::endl << m.det() << std::endl;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17528,18 +17529,18 @@ sizes of the operands or when the matrix to be inverted is close to singular.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (10);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(10);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix m(a, 3);
     srmatrix mi(3);
-    mi.inv (m);
+    mi.inv(m);
     std::cout << mi << std::endl << mi * m - eye_real(3);
     std::cout << std::endl << mi.inv() * mi - eye_real(3);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17575,18 +17576,18 @@ or when the matrix to be inverted is close to singular.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (10);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(10);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     srmatrix m(a, 3);
     srmatrix mi(3);
-    mi.inv (m);
+    mi.inv(m);
     std::cout << mi << std::endl << mi * m - eye_real(3);
     std::cout << std::endl << mi.inv() * mi - eye_real(3);
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17641,8 +17642,8 @@ inappropriate sizes of the operands or when LAPACK subroutine fails.
 \par Example
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(15);
 try {
     srmatrix m(2), me(2);
     m(1,1) = -49.;
@@ -17652,8 +17653,8 @@ try {
     me.exp(m);
     std::cout << m << std::endl << me;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17707,8 +17708,8 @@ inappropriate sizes of the operands or when LAPACK subroutine fails.
 \par Example
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(15);
 try {
     srmatrix m(2);
     m(1,1) = -49.;
@@ -17717,8 +17718,8 @@ try {
     m(2,2) = 31.;
     std::cout << m << std::endl << m.exp();
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17776,8 +17777,8 @@ Function throws \ref cvmexception in case of inappropriate sizes of the operands
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(15);
 try {
     double a[] = {2.2, 1.3, 1.1, -0.9, 0.2,
                  -0.45, 45, -30, 10, 3, 3.2};
@@ -17787,11 +17788,11 @@ try {
     m(1,2) = 0.5;
     m(2,1) = -1.;
     m(2,2) = 0.3;
-    mp.polynom (m, v);
+    mp.polynom(m, v);
     std::cout << mp;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17849,8 +17850,8 @@ Function throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(15);
 try {
     double a[] = {2.2, 1.3, 1.1, -0.9, 0.2,
                  -0.45, 45, -30, 10, 3, 3.2};
@@ -17860,11 +17861,11 @@ try {
     m(1,2) = 0.5;
     m(2,1) = -1.;
     m(2,2) = 0.3;
-    srmatrix mp = m.polynom (v);
+    srmatrix mp = m.polynom(v);
     std::cout << mp;
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17923,22 +17924,22 @@ try {
     m(2,1) = 0.11; m(2,2) = -2.9; m(2,3) = -8.4;
     m(3,1) = 0.;   m(3,2) = 2.91; m(3,3) = 8.2;
 
-    vl = m.eig (me);
+    vl = m.eig(me);
     std::cout << vl;
 
     m(2,2) = 2.9;
-    vl = m.eig (me);
+    vl = m.eig(me);
     std::cout << vl << std::endl;
 
-    std::cout.setf (std::ios::scientific | std::ios::showpos);
-    std::cout.precision (1);
+    std::cout.setf(std::ios::scientific | std::ios::showpos);
+    std::cout.precision(1);
 
     std::cout << m * me(1) - me(1) * vl(1);
     std::cout << m * me(2) - me(2) * vl(2);
     std::cout << m * me(3) - me(3) * vl(3);
 }
-catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -17981,8 +17982,8 @@ in case of in caso of memory allocation failure or convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     srmatrix m(3);
     m(1,1) = 0.1;  m(1,2) = 0.2;  m(1,3) = 0.1;
@@ -17990,8 +17991,8 @@ try {
     m(3,1) = 0.;   m(3,2) = 2.91; m(3,3) = 8.2;
     std::cout << m.eig();
 }
-catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -18031,8 +18032,8 @@ try {
     std::cout << h << std::endl;
     std::cout << ~h * h - m;
 }
-catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+catch(std::exception& e) {
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -18228,8 +18229,8 @@ Sets calling matrix to be equal to identity matrix and returns reference to the 
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 srmatrix m(3);
 m.randomize(0.,1.);
 std::cout << m << std::endl;
@@ -18263,12 +18264,12 @@ than, for example, set(TR) with zero parameter passed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 srmatrix m(3);
 m.randomize(0.,1.);
 std::cout << m << std::endl;
-std::cout << m.vanish ();
+std::cout << m.vanish();
 \endcode
 prints
 \code
@@ -18320,8 +18321,8 @@ prints
         __solve<TR,TR, basic_srmatrix>(*this, mB.nsize(), mB, mB.ld(), mX, mX.ld(), dErr, pLU, pPivots, transp_mode);
     }
 
-    const TR* _pv() const override { return this->get();}
-    TR*       _pv()       override { return this->get();}
+    const TR* _pv() const override { return this->get(); }
+    TR*       _pv()       override { return this->get(); }
 
 protected:
     // protected constructors for inherited stuff
@@ -18537,7 +18538,7 @@ It throws \ref cvmexception in case of non-positive sizes passed or memory alloc
 \par Example:
 \code
 using namespace cvm;
-cmatrix m (3, 4);
+cmatrix m(3, 4);
 std::cout << m.msize() << std::endl
           << m.nsize() << std::endl
           << m.size()  << std::endl << m;
@@ -18572,7 +18573,7 @@ It just shares memory with array pointed to by \c pd (for matrices \c nIncr=1 is
 using namespace cvm;
 double a[] = {5., 5., 5., 5., 5., 5.,
               5., 5., 5., 5., 5., 5.};
-cmatrix m ((std::complex<double>*) a, 2, 3);
+cmatrix m((std::complex<double>*) a, 2, 3);
 m(1,1) = std::complex<double>(1.,2.);
 std::cout << m << std::endl;
 std::cout << a[0] << " " << a[1] << " "
@@ -18610,7 +18611,7 @@ It copies \c nM*nN elements total.
 using namespace cvm;
 const double a[] = {5., 5., 5., 5., 5., 5.,
                     5., 5., 5., 5., 5., 5.};
-cmatrix m ((const std::complex<double>*) a, 2, 3);
+cmatrix m((const std::complex<double>*) a, 2, 3);
 m(1,1) = std::complex<double>(1.,2.);
 std::cout << m << std::endl;
 std::cout << a[0] << " " << a[1] << " "
@@ -18644,7 +18645,7 @@ It throws \ref cvmexception in case of memory allocation failure.
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6.,
               7., 8., 9., 10., 11., 12.};
-cmatrix m ((std::complex<double>*) a, 2, 3);
+cmatrix m((std::complex<double>*) a, 2, 3);
 cmatrix mc(m);
 m(1,1) = std::complex<double>(7.77,7.77);
 std::cout << m << std::endl << mc;
@@ -18702,8 +18703,8 @@ cvector v(3);
 v(1) = std::complex<double>(1.,2.);
 v(2) = std::complex<double>(2.,3.);
 v(3) = std::complex<double>(3.,4.);
-cmatrix mc (v);
-cmatrix mr (v, false);
+cmatrix mc(v);
+cmatrix mr(v, false);
 std::cout << mc << std::endl << mr;
 \endcode
 prints
@@ -18732,7 +18733,7 @@ Constructor throws \ref cvmexception in case of memory allocation failure.
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6.};
-const rmatrix m (a, 2, 3);
+const rmatrix m(a, 2, 3);
 cmatrix mr(m), mi(m, false);
 std::cout << mr << std::endl << mi;
 \endcode
@@ -18771,7 +18772,7 @@ Constructor throws \ref cvmexception in case of memory allocation failure.
 using namespace cvm;
 double re[] = {1., 2., 3., 4., 5., 6.};
 double im[] = {6., 5., 4., 3., 2., 1.};
-cmatrix m (re, im, 3, 2);
+cmatrix m(re, im, 3, 2);
 std::cout << m << std::endl;
 re[1] = 7.77;
 std::cout << m << std::endl;
@@ -18890,7 +18891,7 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    const cmatrix m ((std::complex<double>*) a, 2, 3);
+    const cmatrix m((std::complex<double>*) a, 2, 3);
     scmatrix ms(2);
     std::cout << m(1,1) << " "
               << m(2,3) << std::endl << std::endl;
@@ -18898,7 +18899,7 @@ try {
     std::cout << ms;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -18932,11 +18933,11 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    const cmatrix m ((std::complex<double>*) a, 2, 3);
+    const cmatrix m((std::complex<double>*) a, 2, 3);
     std::cout << m(1,1) << " " << m(2,3) << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -18967,7 +18968,7 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    const cmatrix m ((std::complex<double>*) a, 2, 3);
+    const cmatrix m((std::complex<double>*) a, 2, 3);
     scmatrix ms(2);
 
     std::cout << m(2) << std::endl;
@@ -18976,7 +18977,7 @@ try {
     std::cout << ms;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19004,18 +19005,18 @@ Operator throws \ref cvmexception if \c nRow is outside of boundaries.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
-    const srmatrix m (a, 3);
+    const srmatrix m(a, 3);
     srmatrix ms(3);
     std::cout << m[2] << std::endl;
     ms[2] = m[3];
     std::cout << ms;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19046,11 +19047,11 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    const cmatrix m ((std::complex<double>*) a, 2, 3);
+    const cmatrix m((std::complex<double>*) a, 2, 3);
     std::cout << m(2) << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19074,15 +19075,15 @@ Operator throws \ref cvmexception if \c nRow is outside of boundaries.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
-    const srmatrix m (a, 3);
+    const srmatrix m(a, 3);
     std::cout << m[2] << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19112,7 +19113,7 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
                   10., 11., 12., 13., 14., 15., 16., 17., 18.};
-    cmatrix m (2, 3);
+    cmatrix m(2, 3);
     const scmatrix ms((std::complex<double>*)a, 3);
     m.diag(-1).set(std::complex<double>(1.,1.));
     m.diag(0).set(std::complex<double>(2.,2.));
@@ -19123,7 +19124,7 @@ try {
     std::cout << ms.diag(0) << ms.diag(1);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19163,7 +19164,7 @@ try {
     std::cout << ms.diag(0) << ms.diag(1);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19263,7 +19264,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19315,7 +19316,7 @@ const double a[] = {1., 2., 3., 4., 5., 6.,
                     7., 8., 9., 10., 11., 12.};
 const cvector v((const std::complex<double>*) a,6);
 cmatrix m(2, 3);
-m.assign (v);
+m.assign(v);
 std::cout << m;
 \endcode
 prints
@@ -19347,7 +19348,7 @@ using namespace cvm;
 const double a[] = {1., 2., 3., 4., 5., 6.,
                     7., 8., 9., 10., 11., 12.};
 cmatrix m(2, 3);
-m.assign ((const std::complex<double>*) a);
+m.assign((const std::complex<double>*) a);
 std::cout << m;
 \endcode
 prints
@@ -19440,9 +19441,9 @@ the matrix changed. Function throws \ref cvmexception in case of different sizes
 \par Example:
 \code
 using namespace cvm;
-rmatrix m (2,3);
+rmatrix m(2,3);
 cmatrix mc(2,3);
-m.randomize (0., 1.);
+m.randomize(0., 1.);
 mc.assign_real(m);
 std::cout << mc;
 \endcode
@@ -19471,9 +19472,9 @@ the matrix changed. Function throws \ref cvmexception in case of different sizes
 \par Example:
 \code
 using namespace cvm;
-rmatrix m (2,3);
+rmatrix m(2,3);
 cmatrix mc(2,3);
-m.randomize (0., 1.);
+m.randomize(0., 1.);
 mc.assign_imag(m);
 std::cout << mc;
 \endcode
@@ -19562,13 +19563,13 @@ in case of negative dimension passed or memory allocation failure.
                    7., 8., 9., 10., 11., 12.};
      cmatrix m((std::complex<double>*) a, 2, 3);
      std::cout << m << std::endl;
-     m.resize (2, 2);
+     m.resize(2, 2);
      std::cout << m << std::endl;
-     m.resize (3, 3);
+     m.resize(3, 3);
      std::cout << m;
  }
  catch (std::exception& e) {
-     std::cout << "Exception " << e.what () << std::endl;
+     std::cout << "Exception " << e.what() << std::endl;
  }
  \endcode
  prints
@@ -19670,7 +19671,7 @@ try {
     std::cout << mc;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19707,14 +19708,14 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    const cmatrix ma ((std::complex<double>*) a, 2, 3);
-    cmatrix mb (2, 3);
-    mb.set (std::complex<double>(1.,1.));
+    const cmatrix ma((std::complex<double>*) a, 2, 3);
+    cmatrix mb(2, 3);
+    mb.set(std::complex<double>(1.,1.));
     std::cout << ma + mb << std::endl;
     std::cout << ma + ma;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19751,14 +19752,14 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    const cmatrix ma ((std::complex<double>*) a, 2, 3);
-    cmatrix mb (2, 3);
-    mb.set (std::complex<double>(1.,1.));
+    const cmatrix ma((std::complex<double>*) a, 2, 3);
+    cmatrix mb(2, 3);
+    mb.set(std::complex<double>(1.,1.));
     std::cout << ma - mb << std::endl;
     std::cout << ma - ma;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19795,15 +19796,15 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    const cmatrix ma ((std::complex<double>*) a, 2, 3);
-    cmatrix mb (2, 3);
-    cmatrix m (2, 3);
-    mb.set (std::complex<double>(1.,1.));
+    const cmatrix ma((std::complex<double>*) a, 2, 3);
+    cmatrix mb(2, 3);
+    cmatrix m(2, 3);
+    mb.set(std::complex<double>(1.,1.));
     std::cout << m.sum(ma, mb) << std::endl;
     std::cout << m.sum(m, mb);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19842,15 +19843,15 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    const cmatrix ma ((std::complex<double>*) a, 2, 3);
-    cmatrix mb (2, 3);
-    cmatrix m (2, 3);
-    mb.set (std::complex<double>(1.,1.));
+    const cmatrix ma((std::complex<double>*) a, 2, 3);
+    cmatrix mb(2, 3);
+    cmatrix m(2, 3);
+    mb.set(std::complex<double>(1.,1.));
     std::cout << m.diff(ma, mb) << std::endl;
     std::cout << m.diff(m, mb);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19897,7 +19898,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -19942,7 +19943,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -20039,11 +20040,11 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    const cmatrix ma ((std::complex<double>*) a, 2, 3);
+    const cmatrix ma((std::complex<double>*) a, 2, 3);
     std::cout << ma / 4.;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -20106,11 +20107,11 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    const cmatrix ma ((std::complex<double>*) a, 2, 3);
+    const cmatrix ma((std::complex<double>*) a, 2, 3);
     std::cout << ma / std::complex<double>(4.,2.);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -20171,12 +20172,12 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    cmatrix ma ((std::complex<double>*) a, 2, 3);
+    cmatrix ma((std::complex<double>*) a, 2, 3);
     ma /= 2.;
     std::cout << ma;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -20236,12 +20237,12 @@ using namespace cvm;
 try {
     double a[] = {1., 2., 3., 4., 5., 6.,
                   7., 8., 9., 10., 11., 12.};
-    cmatrix ma ((std::complex<double>*) a, 2, 3);
+    cmatrix ma((std::complex<double>*) a, 2, 3);
     ma /= std::complex<double>(2.,1.);
     std::cout << ma;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -20682,7 +20683,7 @@ cvector vc(3), vr(2);
 cmatrix m(3, 2);
 vc.set(std::complex<double>(1.,1.));
 vr.set(std::complex<double>(1.,1.));
-std::cout << m.rank1update_u (vc, vr);
+std::cout << m.rank1update_u(vc, vr);
 \endcode
 prints
 \code
@@ -20737,7 +20738,7 @@ cvector vc(3), vr(2);
 cmatrix m(3, 2);
 vc.set(std::complex<double>(1.,1.));
 vr.set(std::complex<double>(1.,1.));
-std::cout << m.rank1update_c (vc, vr);
+std::cout << m.rank1update_c(vc, vr);
 \endcode
 prints
 \code
@@ -20841,8 +20842,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (4);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(4);
 
 scmatrix ma(3);
 cmatrix  mb(3,2);
@@ -20851,7 +20852,7 @@ double dErr;
 ma.randomize_real(0.,10.); ma.randomize_imag(0.,10.);
 mb.randomize_real(0.,10.); mb.randomize_imag(0.,10.);
 
-mx.solve (ma, mb, dErr);
+mx.solve(ma, mb, dErr);
 std::cout << mx << std::endl << ma * mx - mb
           << dErr << std::endl;
 \endcode
@@ -20890,8 +20891,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 
 scmatrix ma(3);
 cmatrix  mb(3,2);
@@ -20900,7 +20901,7 @@ double dErr;
 ma.randomize_real(0.,10.); ma.randomize_imag(0.,10.);
 mb.randomize_real(0.,10.); mb.randomize_imag(0.,10.);
 
-mx.solve_tran (ma, mb, dErr);
+mx.solve_tran(ma, mb, dErr);
 
 std::cout << !ma * mx - mb << dErr << std::endl;
 std::cout << !mx * ma - !mb << std::endl;
@@ -20938,8 +20939,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 
 scmatrix ma(3);
 cmatrix  mb(3,2);
@@ -20948,7 +20949,7 @@ double dErr;
 ma.randomize_real(0.,10.); ma.randomize_imag(0.,10.);
 mb.randomize_real(0.,10.); mb.randomize_imag(0.,10.);
 
-mx.solve_conj (ma, mb, dErr);
+mx.solve_conj(ma, mb, dErr);
 
 std::cout << ~ma * mx - mb << dErr << std::endl;
 std::cout << ~mx * ma - ~mb << std::endl;
@@ -20983,8 +20984,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (4);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(4);
 
 scmatrix ma(3);
 cmatrix  mb(3,2);
@@ -20992,7 +20993,7 @@ cmatrix  mx(3,2);
 ma.randomize_real(0.,10.); ma.randomize_imag(0.,10.);
 mb.randomize_real(0.,10.); mb.randomize_imag(0.,10.);
 
-mx.solve (ma, mb);
+mx.solve(ma, mb);
 std::cout << mx << std::endl << ma * mx - mb;
 \endcode
 prints
@@ -21029,8 +21030,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 
 scmatrix ma(3);
 cmatrix  mb(3,2);
@@ -21038,7 +21039,7 @@ cmatrix  mx(3,2);
 ma.randomize_real(0.,10.); ma.randomize_imag(0.,10.);
 mb.randomize_real(0.,10.); mb.randomize_imag(0.,10.);
 
-mx.solve_tran (ma, mb);
+mx.solve_tran(ma, mb);
 
 std::cout << !ma * mx - mb << std::endl;
 std::cout << !mx * ma - !mb << std::endl;
@@ -21076,8 +21077,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 
 scmatrix ma(3);
 cmatrix  mb(3,2);
@@ -21085,7 +21086,7 @@ cmatrix  mx(3,2);
 ma.randomize_real(0.,10.); ma.randomize_imag(0.,10.);
 mb.randomize_real(0.,10.); mb.randomize_imag(0.,10.);
 
-mx.solve_conj (ma, mb);
+mx.solve_conj(ma, mb);
 
 std::cout << ~ma * mx - mb << std::endl;
 std::cout << ~mx * ma - ~mb << std::endl;
@@ -21128,8 +21129,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (4);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(4);
 try {
     scmatrix ma(3);
     scmatrix mLU(3);
@@ -21144,13 +21145,13 @@ try {
     mb2.randomize_real(0.,10.); mb2.randomize_imag(0.,10.);
 
     mLU.low_up(ma, nPivots);
-    std::cout << mx1.solve_lu (ma, mLU, nPivots, mb1, dErr);
+    std::cout << mx1.solve_lu(ma, mLU, nPivots, mb1, dErr);
     std::cout << dErr << std::endl;
-    std::cout << mx2.solve_lu (ma, mLU, nPivots, mb2) << std::endl;
+    std::cout << mx2.solve_lu(ma, mLU, nPivots, mb2) << std::endl;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -21207,8 +21208,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (4);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(4);
 try {
     scmatrix ma(3);
     scmatrix mLU(3);
@@ -21222,13 +21223,13 @@ try {
     mb2.randomize_real(0.,10.); mb2.randomize_imag(0.,10.);
 
     mLU.low_up(ma, nPivots);
-    std::cout << mx1.solve_lu (ma, mLU, nPivots, mb1);
+    std::cout << mx1.solve_lu(ma, mLU, nPivots, mb1);
     std::cout << std::endl;
-    std::cout << mx2.solve_lu (ma, mLU, nPivots, mb2) << std::endl;
+    std::cout << mx2.solve_lu(ma, mLU, nPivots, mb2) << std::endl;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -21288,8 +21289,8 @@ Function throws \ref cvmexception in case of convergence error.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double m[] = {1., -1., 1., 2., -2., 1.,
                   3., -2., 1., 0., -2., 1.};
@@ -21309,7 +21310,7 @@ try {
     std::cout << (~mA * mU - ~(mSigma * mVH)).norm() << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -21364,8 +21365,8 @@ in case of inappropriate calling object size (it must be equal to \f$\min(m,n)\f
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     double m[] = {1., -1., 1., 2., -2., 1.,
                   3., -2., 1., 0., -2., 1.};
@@ -21385,7 +21386,7 @@ try {
     std::cout << (~mA * mU - ~(mSigma * mVH)).norm() << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -21444,8 +21445,8 @@ Function throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 try {
     cmatrix mA(2,3);
     mA(1,1) = tcomplex(1.,2.);  mA(1,2) = tcomplex(-1.,3.);
@@ -21456,7 +21457,7 @@ try {
     std::cout << mX << (mA * mX * mA - mA).norm2() << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -21507,8 +21508,8 @@ Function throws \ref cvmexception in case of not appropriate sizes of the operan
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(3);
 try {
     cmatrix mA(2,3), mX(3,2);
     mA(1,1) = tcomplex(1.,2.);  mA(1,2) = tcomplex(-1.,3.);
@@ -21519,7 +21520,7 @@ try {
     std::cout << mX << (mA * mX * mA - mA).norm2() << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -22844,8 +22845,8 @@ Function is <b>not applicable</b> to objects of the classes \ref scbmatrix and \
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (5);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(5);
 std::complex<double> alpha = std::complex<double>(1.2,4.11);
 cmatrix m(3,2);
 cvector vc(3);
@@ -22910,8 +22911,8 @@ Function is <b>not applicable</b> to objects of the classes \ref scbmatrix and \
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (5);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(5);
 std::complex<double> alpha = std::complex<double>(1.2,4.11);
 cmatrix m(3,2);
 cvector vc(3);
@@ -22973,8 +22974,8 @@ type \ref cvmexception would be thrown).
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     std::complex<double> alpha = std::complex<double>(1.1,2.1);
     std::complex<double> beta = std::complex<double>(0.71,0.12);
@@ -22988,7 +22989,7 @@ try {
     std::cout << m.gemm(m1, true, m2, false, alpha, beta);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -23042,8 +23043,8 @@ Function is <b>not applicable</b> to objects of the class \ref scbmatrix
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 try {
     std::complex<double> alpha = std::complex<double>(1.3,0.21);
     std::complex<double> beta = std::complex<double>(0.5,-0.1);
@@ -23057,15 +23058,15 @@ try {
     ms.randomize_real(-3., 1.); ms.randomize_imag(-1.3, 4.);
 
     std::cout << ms * m1 * alpha + m * beta << std::endl;
-    std::cout << m.hemm (true, ms, m1, alpha, beta) << std::endl;
+    std::cout << m.hemm(true, ms, m1, alpha, beta) << std::endl;
 
     m.resize(3,2);
     m.randomize_real(-1.4, 1.3); m.randomize_imag(1.1, 3.);
     std::cout << m2 * ms * alpha + m * beta << std::endl;
-    std::cout << m.hemm (false, ms, m2, alpha, beta);
+    std::cout << m.hemm(false, ms, m2, alpha, beta);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -23116,7 +23117,7 @@ cmatrix m(4, 3);
 m.randomize_real(0.,1.);
 m.randomize_imag(1.,2.);
 std::cout << m << std::endl;
-std::cout << m.vanish ();
+std::cout << m.vanish();
 \endcode
 prints
 \code
@@ -23146,8 +23147,8 @@ It returns reference to the matrix changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 cmatrix m(2,3);
 m.randomize_real(-1., 2.);
 std::cout << m;
@@ -23175,8 +23176,8 @@ It returns reference to the matrix changed.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (3);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(3);
 cmatrix m(2,3);
 m.randomize_imag(-1., 2.);
 std::cout << m;
@@ -23608,7 +23609,7 @@ It throws \ref cvmexception in case of non-positive size passed or memory alloca
 Example:
 \code
 using namespace cvm;
-scmatrix m (4);
+scmatrix m(4);
 std::cout << m.msize() << std::endl
           << m.nsize() << std::endl
           << m.size() << std::endl << m;
@@ -23642,7 +23643,7 @@ It just shares memory with array pointed to by \c pd (for matrices \c nIncr=1 is
 using namespace cvm;
 double a[] = {1., 1., 1., 1., 1., 1., 1., 1., 1.,
               1., 1., 1., 1., 1., 1., 1., 1., 1.};
-scmatrix m ((std::complex<double>*) a, 3);
+scmatrix m((std::complex<double>*) a, 3);
 m(1,1) = std::complex<double>(2.,3.);
 std::cout << m << std::endl;
 std::cout << a[0] << " " << a[1] << " " << a[2] << " "
@@ -23679,7 +23680,7 @@ It copies \c nDim*nDim elements total.
 using namespace cvm;
 const double a[] = {1., 1., 1., 1., 1., 1., 1., 1., 1.,
                     1., 1., 1., 1., 1., 1., 1., 1., 1.};
-scmatrix m ((const std::complex<double>*) a, 3);
+scmatrix m((const std::complex<double>*) a, 3);
 m(1,1) = std::complex<double>(2.,3.);
 std::cout << m << std::endl;
 std::cout << a[0] << " " << a[1] << " " << a[2] << " "
@@ -23712,7 +23713,7 @@ It throws \ref cvmexception in case of memory allocation failure.
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
-scmatrix m ((std::complex<double>*) a, 2);
+scmatrix m((std::complex<double>*) a, 2);
 scmatrix mc(m);
 m(1,1) = std::complex<double>(7.77,7.77);
 std::cout << m << std::endl << mc;
@@ -24043,7 +24044,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -24238,11 +24239,11 @@ try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
     scmatrix m((std::complex<double>*) a, 2);
     std::cout << m << std::endl;
-    m.resize (3);
+    m.resize(3);
     std::cout << m;
 }
 catch (std::exception& e) {
-std::cout << "Exception " << e.what () << std::endl;
+std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -24282,7 +24283,7 @@ try {
     std::cout << mc;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -24327,7 +24328,7 @@ try {
     std::cout << m1 + m2 << std::endl << m1 + m1;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -24368,7 +24369,7 @@ try {
     std::cout << m2 - m1 << std::endl << m1 - m1;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -24411,7 +24412,7 @@ try {
     std::cout << m.sum(m, m2);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -24457,7 +24458,7 @@ try {
     std::cout << m.diff(m, m2);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -24506,7 +24507,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -24554,7 +24555,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25273,7 +25274,7 @@ try {
     std::cout << ms * m;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25306,7 +25307,7 @@ try {
     std::cout << m1 * m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25344,7 +25345,7 @@ try {
     std::cout << m1 << std::endl << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25394,8 +25395,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -25409,17 +25410,17 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve (ma, mb, dErr);
+    mx.solve(ma, mb, dErr);
     std::cout << mx << dErr
               << std::endl << ma * mx - mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve (vb, dErr);
+    vx = ma.solve(vb, dErr);
     std::cout << vx << dErr << std::endl << ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25459,8 +25460,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -25474,18 +25475,18 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve_tran (ma, mb, dErr);
+    mx.solve_tran(ma, mb, dErr);
     std::cout << mx << dErr
               << std::endl << !ma * mx - mb
               << std::endl << !mx * ma - !mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_tran (vb, dErr);
+    vx = ma.solve_tran(vb, dErr);
     std::cout << vx << dErr << std::endl << vx * ma - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25528,8 +25529,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -25543,18 +25544,18 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve_conj (ma, mb, dErr);
+    mx.solve_conj(ma, mb, dErr);
     std::cout << mx << dErr
               << std::endl << ~ma * mx - mb
               << std::endl << ~mx * ma - ~mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_conj (vb, dErr);
+    vx = ma.solve_conj(vb, dErr);
     std::cout << vx << dErr << std::endl << ~ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25594,8 +25595,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -25608,16 +25609,16 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve (ma, mb);
+    mx.solve(ma, mb);
     std::cout << mx << std::endl << ma * mx - mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve (vb);
+    vx = ma.solve(vb);
     std::cout << vx << std::endl << ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25656,8 +25657,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -25670,18 +25671,18 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve_tran (ma, mb);
+    mx.solve_tran(ma, mb);
     std::cout << mx
               << std::endl << !ma * mx - mb
               << std::endl << !mx * ma - !mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_tran (vb);
+    vx = ma.solve_tran(vb);
     std::cout << vx << std::endl << vx * ma - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25723,8 +25724,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -25737,18 +25738,18 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve_conj (ma, mb);
+    mx.solve_conj(ma, mb);
     std::cout << mx
               << std::endl << ~ma * mx - mb
               << std::endl << ~mx * ma - ~mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_conj (vb);
+    vx = ma.solve_conj(vb);
     std::cout << vx << std::endl << ~ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25790,8 +25791,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -25805,17 +25806,17 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve (ma, mb, dErr);
+    mx.solve(ma, mb, dErr);
     std::cout << mx << dErr
               << std::endl << ma * mx - mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve (vb, dErr);
+    vx = ma.solve(vb, dErr);
     std::cout << vx << dErr << std::endl << ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25855,8 +25856,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -25870,18 +25871,18 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve_tran (ma, mb, dErr);
+    mx.solve_tran(ma, mb, dErr);
     std::cout << mx << dErr
               << std::endl << !ma * mx - mb
               << std::endl << !mx * ma - !mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_tran (vb, dErr);
+    vx = ma.solve_tran(vb, dErr);
     std::cout << vx << dErr << std::endl << vx * ma - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25924,8 +25925,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -25939,18 +25940,18 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve_conj (ma, mb, dErr);
+    mx.solve_conj(ma, mb, dErr);
     std::cout << mx << dErr
               << std::endl << ~ma * mx - mb
               << std::endl << ~mx * ma - ~mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_conj (vb, dErr);
+    vx = ma.solve_conj(vb, dErr);
     std::cout << vx << dErr << std::endl << ~ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -25990,8 +25991,8 @@ of the operands or when the matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -26004,16 +26005,16 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve (ma, mb);
+    mx.solve(ma, mb);
     std::cout << mx << std::endl << ma * mx - mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve (vb);
+    vx = ma.solve(vb);
     std::cout << vx << std::endl << ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26053,8 +26054,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -26067,18 +26068,18 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve_tran (ma, mb);
+    mx.solve_tran(ma, mb);
     std::cout << mx
               << std::endl << !ma * mx - mb
               << std::endl << !mx * ma - !mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_tran (vb);
+    vx = ma.solve_tran(vb);
     std::cout << vx << std::endl << vx * ma - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26121,8 +26122,8 @@ of the objects or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {-1., 2., -3., -4., 5., -6., 7., -8., 9.};
@@ -26135,18 +26136,18 @@ try {
     mb(2,2) = std::complex<double>(2.,2.);
     mb(3,2) = std::complex<double>(3.,3.);
 
-    mx.solve_conj (ma, mb);
+    mx.solve_conj(ma, mb);
     std::cout << mx
               << std::endl << ~ma * mx - mb
               << std::endl << ~mx * ma - ~mb << std::endl;
 
     cvector vb(3), vx(3);
     vb = mb(2);
-    vx = ma.solve_conj (vb);
+    vx = ma.solve_conj(vb);
     std::cout << vx << std::endl << ~ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26188,8 +26189,8 @@ of the operands or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
     double b[] = {1., 2., 5., -3.};
@@ -26200,7 +26201,7 @@ try {
     std::cout << vx * ma - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26226,8 +26227,8 @@ of the operands or when matrix \f$A\f$ is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(7);
 try {
     double m[] = {1., -1., 1., 2., -2., 1., 3., -3.};
     double b[] = {1., 2., 5., -3.};
@@ -26238,7 +26239,7 @@ try {
     std::cout << ma * vx - vb;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26272,8 +26273,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     scmatrix ma(3);
     scmatrix mLU(3);
@@ -26289,19 +26290,19 @@ try {
     mb2.randomize_real(-5.,1.); mb2.randomize_imag(-4.,1.);
     vb2.randomize_real(-1.,6.); vb1.randomize_imag(-4.,4.);
     mLU.low_up(ma, nPivots);
-    mx1 = ma.solve_lu (mLU, nPivots, mb1, dErr);
+    mx1 = ma.solve_lu(mLU, nPivots, mb1, dErr);
     std::cout << mx1 << dErr << std::endl;
-    mx2 = ma.solve_lu (mLU, nPivots, mb2);
+    mx2 = ma.solve_lu(mLU, nPivots, mb2);
     std::cout << mx2 << std::endl;;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
-    vx1 = ma.solve_lu (mLU, nPivots, vb1, dErr);
+    vx1 = ma.solve_lu(mLU, nPivots, vb1, dErr);
     std::cout << vx1 << dErr << std::endl;
-    vx2 = ma.solve_lu (mLU, nPivots, vb2);
+    vx2 = ma.solve_lu(mLU, nPivots, vb2);
     std::cout << vx2 << std::endl;;
     std::cout << ma * vx1 - vb1 << std::endl << ma * vx2 - vb2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26365,8 +26366,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     scmatrix ma(3);
     scmatrix mLU(3);
@@ -26382,19 +26383,19 @@ try {
     mb2.randomize_real(-5.,1.); mb2.randomize_imag(-4.,1.);
     vb2.randomize_real(-1.,6.); vb1.randomize_imag(-4.,4.);
     mLU.low_up(ma, nPivots);
-    mx1 = ma.solve_lu (mLU, nPivots, mb1, dErr);
+    mx1 = ma.solve_lu(mLU, nPivots, mb1, dErr);
     std::cout << mx1 << dErr << std::endl;
-    mx2 = ma.solve_lu (mLU, nPivots, mb2);
+    mx2 = ma.solve_lu(mLU, nPivots, mb2);
     std::cout << mx2 << std::endl;;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
-    vx1 = ma.solve_lu (mLU, nPivots, vb1, dErr);
+    vx1 = ma.solve_lu(mLU, nPivots, vb1, dErr);
     std::cout << vx1 << dErr << std::endl;
-    vx2 = ma.solve_lu (mLU, nPivots, vb2);
+    vx2 = ma.solve_lu(mLU, nPivots, vb2);
     std::cout << vx2 << std::endl;;
     std::cout << ma * vx1 - vb1 << std::endl << ma * vx2 - vb2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26453,8 +26454,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     scmatrix ma(3);
     scmatrix mLU(3);
@@ -26470,19 +26471,19 @@ try {
     mb2.randomize_real(-5.,1.); mb2.randomize_imag(-4.,1.);
     vb2.randomize_real(-1.,6.); vb1.randomize_imag(-4.,4.);
     mLU.low_up(ma, nPivots);
-    mx1 = ma.solve_lu (mLU, nPivots, mb1, dErr);
+    mx1 = ma.solve_lu(mLU, nPivots, mb1, dErr);
     std::cout << mx1 << dErr << std::endl;
-    mx2 = ma.solve_lu (mLU, nPivots, mb2);
+    mx2 = ma.solve_lu(mLU, nPivots, mb2);
     std::cout << mx2 << std::endl;;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
-    vx1 = ma.solve_lu (mLU, nPivots, vb1, dErr);
+    vx1 = ma.solve_lu(mLU, nPivots, vb1, dErr);
     std::cout << vx1 << dErr << std::endl;
-    vx2 = ma.solve_lu (mLU, nPivots, vb2);
+    vx2 = ma.solve_lu(mLU, nPivots, vb2);
     std::cout << vx2 << std::endl;;
     std::cout << ma * vx1 - vb1 << std::endl << ma * vx2 - vb2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26545,8 +26546,8 @@ in case of inappropriate sizes of the objects or when matrix \f$A\f$ is close to
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     scmatrix ma(3);
     scmatrix mLU(3);
@@ -26562,19 +26563,19 @@ try {
     mb2.randomize_real(-5.,1.); mb2.randomize_imag(-4.,1.);
     vb2.randomize_real(-1.,6.); vb1.randomize_imag(-4.,4.);
     mLU.low_up(ma, nPivots);
-    mx1 = ma.solve_lu (mLU, nPivots, mb1, dErr);
+    mx1 = ma.solve_lu(mLU, nPivots, mb1, dErr);
     std::cout << mx1 << dErr << std::endl;
-    mx2 = ma.solve_lu (mLU, nPivots, mb2);
+    mx2 = ma.solve_lu(mLU, nPivots, mb2);
     std::cout << mx2 << std::endl;;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
-    vx1 = ma.solve_lu (mLU, nPivots, vb1, dErr);
+    vx1 = ma.solve_lu(mLU, nPivots, vb1, dErr);
     std::cout << vx1 << dErr << std::endl;
-    vx2 = ma.solve_lu (mLU, nPivots, vb2);
+    vx2 = ma.solve_lu(mLU, nPivots, vb2);
     std::cout << vx2 << std::endl;;
     std::cout << ma * vx1 - vb1 << std::endl << ma * vx2 - vb2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26629,7 +26630,7 @@ try {
     std::cout << m << std::endl << m.det() << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26678,9 +26679,9 @@ try {
     scmatrix mLU(3), mLo(3), mUp(3);
     iarray naPivots(3);
 
-    mLU.low_up (m, naPivots);
+    mLU.low_up(m, naPivots);
 
-    mLo.identity ();
+    mLo.identity();
     mLo.diag(-2) = mLU.diag(-2);
     mLo.diag(-1) = mLU.diag(-1);
     mUp.diag(0) = mLU.diag(0);
@@ -26692,12 +26693,12 @@ try {
 
     mLU = mLo * mUp;
     for (int i = 3; i >= 1; i--) {
-        mLU.swap_rows (i, naPivots[i]);
+        mLU.swap_rows(i, naPivots[i]);
     }
     std::cout << mLU << std::endl << m - mLU;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26763,7 +26764,7 @@ try {
 
     mLU = m.low_up(naPivots);
 
-    mLo.identity ();
+    mLo.identity();
     mLo.diag(-2) = mLU.diag(-2);
     mLo.diag(-1) = mLU.diag(-1);
     mUp.diag(0) = mLU.diag(0);
@@ -26775,12 +26776,12 @@ try {
 
     mLU = mLo * mUp;
     for (int i = 3; i >= 1; i--) {
-        mLU.swap_rows (i, naPivots[i]);
+        mLU.swap_rows(i, naPivots[i]);
     }
     std::cout << mLU << std::endl << m - mLU;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26841,7 +26842,7 @@ try {
     std::cout << m.cond() << std::endl << m.det() << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26871,20 +26872,20 @@ sizes of the operands or when the matrix to be inverted is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     scmatrix m(re, im, 3);
     scmatrix mi(3);
 
-    mi.inv (m);
+    mi.inv(m);
     std::cout << mi << std::endl << mi * m - eye_complex(3);
     std::cout << std::endl << mi.inv() * mi - eye_complex(3);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26919,20 +26920,20 @@ or when the matrix to be inverted is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double re[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
     double im[] = {1., 2., 3., 4., 5., 6., 7., 8., 10.};
     scmatrix m(re, im, 3);
     scmatrix mi(3);
 
-    mi.inv (m);
+    mi.inv(m);
     std::cout << mi << std::endl << mi * m - eye_complex(3);
     std::cout << std::endl << mi.inv() * mi - eye_complex(3);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -26987,8 +26988,8 @@ inappropriate sizes of the operands or when LAPACK subroutine fails.
 \par Example
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(15);
 try {
     scmatrix m(2);
     m(1,1) = std::complex<double>(-49.,1.);
@@ -27003,7 +27004,7 @@ try {
               << m(2,2) << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -27063,8 +27064,8 @@ inappropriate sizes of the operands or when LAPACK subroutine fails.
 \par Example
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(15);
 try {
     scmatrix m(2);
     m(1,1) = std::complex<double>(-49.,1.);
@@ -27079,7 +27080,7 @@ try {
               << m(2,2) << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -27143,8 +27144,8 @@ Function throws \ref cvmexception in case of inappropriate sizes of the operands
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(15);
 try {
     const double re[] = {2.2, 1.3, 1.1, -0.9, 0.2,
                         -0.45, 45., -30., 10., 3., 0.};
@@ -27157,14 +27158,14 @@ try {
     m(2,1) = std::complex<double>(0.5, -0.6);
     m(2,2) = std::complex<double>(0.3, -0.4);
 
-    mp.polynom (m, v);
+    mp.polynom(m, v);
     std::cout << mp(1,1) << std::endl << "   "
               << mp(1,2) << std::endl;
     std::cout << mp(2,1) << std::endl << "   "
               << mp(2,2) << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -27231,8 +27232,8 @@ Function throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(15);
 try {
     const double re[] = {2.2, 1.3, 1.1, -0.9, 0.2,
                         -0.45, 45., -30., 10., 3., 0.};
@@ -27245,14 +27246,14 @@ try {
     m(2,1) = std::complex<double>(0.5, -0.6);
     m(2,2) = std::complex<double>(0.3, -0.4);
 
-    mp = m.polynom (v);
+    mp = m.polynom(v);
     std::cout << mp(1,1) << std::endl << "   "
               << mp(1,2) << std::endl;
     std::cout << mp(2,1) << std::endl << "   "
               << mp(2,2) << std::endl;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -27319,16 +27320,16 @@ try {
     scmatrix me(3);
     cvector vl(3);
 
-    vl = m.eig (me);
+    vl = m.eig(me);
     std::cout << vl << std::endl;
-    std::cout.setf (std::ios::scientific | std::ios::left);
-    std::cout.precision (2);
+    std::cout.setf(std::ios::scientific | std::ios::left);
+    std::cout.precision(2);
     std::cout << m * me(1) - me(1) * vl(1);
     std::cout << m * me(2) - me(2) * vl(2);
     std::cout << m * me(3) - me(3) * vl(3);
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -27378,7 +27379,7 @@ try {
     std::cout << m.eig();
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -27423,7 +27424,7 @@ try {
     std::cout << ~c * c - m;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -27954,7 +27955,7 @@ protected:
 #ifdef CVM_USE_POOL_MANAGER
     void _bresize(tint nNewM) throw(cvmexception)
 #else
-    void _bresize(std::shared_ptr<TC>& mp, tint nNewM)throw (cvmexception)
+    void _bresize(std::shared_ptr<TC>& mp, tint nNewM) throw(cvmexception)
 #endif
     {
         const tint mm = this->_msize();
@@ -28440,7 +28441,7 @@ using namespace cvm;
 srbmatrix m;
 std::cout << m.msize() << " " << m.nsize() << " " << m.size();
 std::cout << " " << m.lsize() << " " << m.usize() << std::endl;
-m.resize (3);
+m.resize(3);
 m.resize_lu(1,0);
 m.set(1.);
 std::cout << m;
@@ -28801,7 +28802,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -28883,12 +28884,12 @@ try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
     srbmatrix m(a,4,1,0);
     std::cout << m << std::endl;
-    m.resize_lu (0,1);
+    m.resize_lu(0,1);
     m.diag(1).set(9.);
     std::cout << m;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -29007,7 +29008,7 @@ try {
     std::cout << mc;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -29048,8 +29049,8 @@ or memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (1);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(1);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
     double b[] = {10., 20., 30., 40., 50., 60., 70., 80.};
@@ -29058,7 +29059,7 @@ try {
     std::cout << m1 + m2 << std::endl << m1 + m1;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -29095,8 +29096,8 @@ or memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (1);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(1);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
     double b[] = {10., 20., 30., 40., 50., 60., 70., 80.};
@@ -29105,7 +29106,7 @@ try {
     std::cout << m2 - m1 << std::endl << m1 - m1;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -29152,7 +29153,7 @@ try {
     std::cout << m.sum(m, m2);
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -29206,7 +29207,7 @@ try {
     std::cout << m.diff(m, m2);
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -29263,7 +29264,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -29313,7 +29314,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -29349,10 +29350,10 @@ It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific |
+std::cout.setf(std::ios::scientific |
                 std::ios::left |
                 std::ios::showpos);
-std::cout.precision (1);
+std::cout.precision(1);
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
 srbmatrix m(a,4,1,0);
 std::cout << -m;
@@ -29382,7 +29383,7 @@ Adds identity matrix to calling square band matrix and returns reference to the 
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
-srbmatrix m (a,4,1,0);
+srbmatrix m(a,4,1,0);
 m++;
 std::cout << m << std::endl;
 std::cout << ++m;
@@ -29415,7 +29416,7 @@ Adds identity matrix to calling square band matrix and returns reference to the 
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
-srbmatrix m (a,4,1,0);
+srbmatrix m(a,4,1,0);
 m++;
 std::cout << m << std::endl;
 std::cout << ++m;
@@ -29448,7 +29449,7 @@ Subtracts identity matrix from calling square band matrix and returns reference 
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
-srbmatrix m (a,4,1,0);
+srbmatrix m(a,4,1,0);
 m--;
 std::cout << m << std::endl;
 std::cout << --m;
@@ -29481,7 +29482,7 @@ Subtracts identity matrix from calling square band matrix and returns reference 
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
-srbmatrix m (a,4,1,0);
+srbmatrix m(a,4,1,0);
 m--;
 std::cout << m << std::endl;
 std::cout << --m;
@@ -29554,7 +29555,7 @@ Function throws \ref cvmexception in case of not appropriate sizes of the operan
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
-srbmatrix m (a,4,1,0);
+srbmatrix m(a,4,1,0);
 srbmatrix mt(4,0,1);
 std::cout << ~m << std::endl ;
 mt.transpose(m);
@@ -29630,7 +29631,7 @@ try {
     std::cout << mb * ms;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -29667,7 +29668,7 @@ try {
     std::cout << m1 * m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -29724,8 +29725,8 @@ singular. It is recommended to use \ref iarray for pivot values.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (4);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(4);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
     srbmatrix ma(a,4,1,0);
@@ -29740,20 +29741,20 @@ try {
     mb2.randomize(-2.,5.); vb2.randomize(-3.,1.);
 
     mLU.low_up(ma, nPivots);
-    mx1 = ma.solve_lu (mLU, nPivots, mb1, dErr);
+    mx1 = ma.solve_lu(mLU, nPivots, mb1, dErr);
     std::cout << mx1 << dErr << std::endl << std::endl;
-    mx2 = ma.solve_lu (mLU, nPivots, mb2);
+    mx2 = ma.solve_lu(mLU, nPivots, mb2);
     std::cout << mx2 << std::endl;;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
 
-    vx1 = ma.solve_lu (mLU, nPivots, vb1, dErr);
+    vx1 = ma.solve_lu(mLU, nPivots, vb1, dErr);
     std::cout << vx1 << dErr << std::endl;
-    vx2 = ma.solve_lu (mLU, nPivots, vb2);
+    vx2 = ma.solve_lu(mLU, nPivots, vb2);
     std::cout << vx2 << std::endl;;
     std::cout << ma * vx1 - vb1 << std::endl << ma * vx2 - vb2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -30336,8 +30337,8 @@ It just shares memory with array pointed to by \c pd (for matrices \c nIncr=1 is
 using namespace cvm;
 double a[] = {1., 1., 1., 1., 1., 1., 1., 1.,
               1., 1., 1., 1., 1., 1., 1., 1.};
-scbmatrix ml ((std::complex<double>*)a,4,1,0);
-scbmatrix mu ((std::complex<double>*)a,4,0,1);
+scbmatrix ml((std::complex<double>*)a,4,1,0);
+scbmatrix mu((std::complex<double>*)a,4,0,1);
 ml(2,1) = std::complex<double>(5.,5.);
 std::cout << ml << std::endl << mu << std::endl;
 std::cout << a[0] << " " << a[1] << " " << a[2] << " "
@@ -30386,8 +30387,8 @@ matrix according to band storage.
 using namespace cvm;
 const double a[] = {1., 1., 1., 1., 1., 1., 1., 1.,
                     1., 1., 1., 1., 1., 1., 1., 1.};
-scbmatrix ml ((const std::complex<double>*)a,4,1,0);
-scbmatrix mu ((const std::complex<double>*)a,4,0,1);
+scbmatrix ml((const std::complex<double>*)a,4,1,0);
+scbmatrix mu((const std::complex<double>*)a,4,0,1);
 ml(2,1) = std::complex<double>(5.,5.);
 std::cout << ml << std::endl << mu << std::endl;
 std::cout << a[0] << " " << a[1] << " " << a[2] << " "
@@ -30431,7 +30432,7 @@ It throws \ref cvmexception in case of memory allocation failure.
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
               10., 11., 12., 13., 14., 15., 16.};
-scbmatrix m ((std::complex<double>*)a,4,1,0);
+scbmatrix m((std::complex<double>*)a,4,1,0);
 scbmatrix mc(m);
 m(1,1) = 7.77;
 std::cout << m << std::endl << mc;
@@ -30684,8 +30685,8 @@ Operator throws \ref cvmexception in case of different matrix dimensions.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
     scbmatrix m1((std::complex<double>*)a,3,1,0);
@@ -30694,7 +30695,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -30763,11 +30764,11 @@ the matrix changed. Function throws \ref cvmexception in case of different sizes
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
-srbmatrix m (3,0,1);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
+srbmatrix m(3,0,1);
 scbmatrix mc(3,0,1);
-m.randomize (0., 1.);
+m.randomize(0., 1.);
 mc.assign_real(m);
 std::cout << mc;
 \endcode
@@ -30798,11 +30799,11 @@ the matrix changed. Function throws \ref cvmexception in case of different sizes
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
-srbmatrix m (3,0,1);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
+srbmatrix m(3,0,1);
 scbmatrix mc(3,0,1);
-m.randomize (0., 1.);
+m.randomize(0., 1.);
 mc.assign_imag(m);
 std::cout << mc;
 \endcode
@@ -30858,12 +30859,12 @@ try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
     scbmatrix m((std::complex<double>*)a,3,1,0);
     std::cout << m << std::endl;
-    m.resize_lu (0,1);
+    m.resize_lu(0,1);
     m.diag(1).set(std::complex<double>(9.,9.));
     std::cout << m;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -30982,7 +30983,7 @@ try {
     std::cout << mc;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -31034,7 +31035,7 @@ try {
     std::cout << m1 + m2 << std::endl << m1 + m1;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -31088,7 +31089,7 @@ try {
     std::cout << m1 - m2 << std::endl << m1 - m1;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -31244,7 +31245,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -31294,7 +31295,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -31580,7 +31581,7 @@ try {
     std::cout << mb * m;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -31618,7 +31619,7 @@ try {
     std::cout << m1 * m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -31673,8 +31674,8 @@ singular. It is recommended to use \ref iarray for pivot values.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 try {
     double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.,
                   10., 11., 12.};
@@ -31692,20 +31693,20 @@ try {
     vb2.randomize_real(-3.,1.); vb2.randomize_imag(4.,5.);
 
     mLU.low_up(ma, nPivots);
-    mx1 = ma.solve_lu (mLU, nPivots, mb1, dErr);
+    mx1 = ma.solve_lu(mLU, nPivots, mb1, dErr);
     std::cout << mx1 << dErr << std::endl << std::endl;
-    mx2 = ma.solve_lu (mLU, nPivots, mb2);
+    mx2 = ma.solve_lu(mLU, nPivots, mb2);
     std::cout << mx2 << std::endl;;
     std::cout << ma * mx1 - mb1 << std::endl << ma * mx2 - mb2;
 
-    vx1 = ma.solve_lu (mLU, nPivots, vb1, dErr);
+    vx1 = ma.solve_lu(mLU, nPivots, vb1, dErr);
     std::cout << vx1 << dErr << std::endl;
-    vx2 = ma.solve_lu (mLU, nPivots, vb2);
+    vx2 = ma.solve_lu(mLU, nPivots, vb2);
     std::cout << vx2 << std::endl;;
     std::cout << ma * vx1 - vb1 << std::endl << ma * vx2 - vb2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -32162,7 +32163,7 @@ using namespace cvm;
 srsmatrix m;
 std::cout << m.msize() << " " << m.nsize() << " " << m.size()
           << std::endl << std::endl;
-m.resize (3);
+m.resize(3);
 m.set(1.);
 std::cout << m;
 \endcode
@@ -32224,7 +32225,7 @@ it becomes not symmetric matrix anymore then results are not predictable.
 \code
 using namespace cvm;
 double a[] = {1., 1., 1., 1., 1., 1., 1., 1., 1.};
-srsmatrix m (a, 3);
+srsmatrix m(a, 3);
 m.set(2,1,5.);
 std::cout << m << std::endl;
 std::cout << a[0] << " " << a[1] << " " << a[2] << " "
@@ -32263,7 +32264,7 @@ Example:
 \code
 using namespace cvm;
 const double a[] = {1., 1., 1., 1., 1., 1., 1., 1., 1.};
-srmatrix m (a, 3);
+srmatrix m(a, 3);
 
 m(1,1) = 5.;
 std::cout << m << std::endl;
@@ -32298,7 +32299,7 @@ It throws \ref cvmexception in case of memory allocation failure.
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.};
-srsmatrix m (a, 3);
+srsmatrix m(a, 3);
 srmatrix mc(m);
 m.set(2,3,7.77);
 std::cout << m << std::endl << mc;
@@ -33203,7 +33204,7 @@ try {
     std::cout << ms2 * ms;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -33266,7 +33267,7 @@ srsmatrix ms(3), ms2(3);
 v.randomize(-3.,2.);
 ms.randomize(-1.,2.);
 ms2 = ms;
-ms.syrk (alpha, v, beta);
+ms.syrk(alpha, v, beta);
 ms2 = alpha * srsmatrix(v.rank1update(v)) + beta * ms2;
 std::cout << ms - ms2;
 \endcode
@@ -33315,8 +33316,8 @@ srsmatrix ms(3), ms2(3);
 m.randomize(-1.,2.);
 ms.randomize(-1.,2.);
 ms2 = ms;
-ms.syrk (false, alpha, m, beta);
-ms2 = alpha * srsmatrix (m * ~m) + beta * ms2;
+ms.syrk(false, alpha, m, beta);
+ms2 = alpha * srsmatrix(m * ~m) + beta * ms2;
 std::cout << ms - ms2;
 \endcode
 prints
@@ -33335,8 +33336,8 @@ srsmatrix ms(3), ms2(3);
 m.randomize(-1.,2.);
 ms.randomize(-1.,2.);
 ms2 = ms;
-ms.syrk (true, alpha, m, beta);
-ms2 = alpha * srsmatrix (~m * m) + beta * ms2;
+ms.syrk(true, alpha, m, beta);
+ms2 = alpha * srsmatrix(~m * m) + beta * ms2;
 std::cout << ms - ms2;
 \endcode
 prints
@@ -33376,8 +33377,8 @@ in case of inappropriate sizes of the operands.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(2);
 const treal alpha = 2.12;
 const treal beta = -3.07;
 rvector v1(4);
@@ -33387,7 +33388,7 @@ v1.randomize(-1.,3.);
 v2.randomize(-1.,3.);
 ms.randomize(-1.,3.);
 ms2 = ms;
-ms.syr2k (alpha, v1, v2, beta);
+ms.syr2k(alpha, v1, v2, beta);
 ms2 = alpha * srsmatrix(v1.rank1update(v2) + v2.rank1update(v1)) + beta * ms2;
 std::cout << ms - ms2;
 \endcode
@@ -33443,8 +33444,8 @@ m1.randomize(-2.,2.);
 m2.randomize(-2.,2.);
 ms.randomize(-1.,2.);
 ms2 = ms;
-ms.syr2k (false, alpha, m1, m2, beta);
-ms2 = alpha * srsmatrix (m1 * ~m2 + m2 * ~m1) + beta * ms2;
+ms.syr2k(false, alpha, m1, m2, beta);
+ms2 = alpha * srsmatrix(m1 * ~m2 + m2 * ~m1) + beta * ms2;
 std::cout << ms - ms2;
 \endcode
 prints
@@ -33464,8 +33465,8 @@ m1.randomize(-2.,2.);
 m2.randomize(-2.,2.);
 ms.randomize(-1.,2.);
 ms2 = ms;
-ms.syr2k (true, alpha, m1, m2, beta);
-ms2 = alpha * srsmatrix (~m1 * m2 + ~m2 * m1) + beta * ms2;
+ms.syr2k(true, alpha, m1, m2, beta);
+ms2 = alpha * srsmatrix(~m1 * m2 + ~m2 * m1) + beta * ms2;
 std::cout << ms - ms2;
 \endcode
 prints
@@ -33507,8 +33508,8 @@ sizes of the operands or when the matrix to be inverted is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (5);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(5);
 double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.05};
 const srsmatrix m(a, 3);
 srsmatrix mi(3);
@@ -33544,8 +33545,8 @@ or when the matrix to be inverted is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (5);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(5);
 double a[] = {1., 2., 3., 2., 5., 6., 3., 6., 9.05};
 const srsmatrix m(a, 3);
 const srsmatrix mi = m.inv();
@@ -33600,8 +33601,8 @@ inappropriate sizes of the operands or when LAPACK subroutine fails.
 \par Example
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(15);
 double a[] = {1., 2., 1., 2., 0., -1., 1., -1., 2.};
 const srsmatrix m(a, 3);
 srsmatrix me(3);
@@ -33666,8 +33667,8 @@ inappropriate sizes of the operands or when LAPACK subroutine fails.
 \par Example
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(15);
 double a[] = {1., 2., 1., 2., 0., -1., 1., -1., 2.};
 const srsmatrix m(a, 3);
 std::cout << m.exp();
@@ -33734,8 +33735,8 @@ Function throws \ref cvmexception in case of inappropriate sizes of the operands
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(7);
 double a[] = {1., 2., 1., 2., 0., -1., 1., -1., 2.};
 double av[] = {2.2, 1.3, 1.1, -0.9, 0.2,
               -0.45, 45, -30, 10, 3, 3.2};
@@ -33810,14 +33811,14 @@ Function throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (7);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(7);
 double a[] = {1., 2., 1., 2., 0., -1., 1., -1., 2.};
 double av[] = {2.2, 1.3, 1.1, -0.9, 0.2,
               -0.45, 45, -30, 10, 3, 3.2};
 const rvector v(av, 11);
 const srsmatrix m(a, 3);
-std::cout << m.polynom (v);
+std::cout << m.polynom(v);
 \endcode
 prints
 \code
@@ -33869,8 +33870,8 @@ in case of inappropriate calling object sizes or in case of convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (10);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(10);
 double a[] = {1., 2., 1., 2., 0., -1., 1., -1., 2.};
 const srsmatrix m(a, 3);
 srmatrix me(3);
@@ -33917,8 +33918,8 @@ in case of memory allocation failure or convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (10);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(10);
 double a[] = {1., 2., 1., 2., 0., -1., 1., -1., 2.};
 const srsmatrix m(a, 3);
 std::cout << m.eig();
@@ -33959,7 +33960,7 @@ try {
     std::cout << ~h * h - m;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -34366,7 +34367,7 @@ using namespace cvm;
 schmatrix m;
 std::cout << m.msize() << " " << m.nsize() << " "
           << m.size() << std::endl;
-m.resize (3);
+m.resize(3);
 std::cout << m;
 \endcode
 prints
@@ -34390,7 +34391,7 @@ It throws \ref cvmexception in case of non-positive size passed or memory alloca
 Example:
 \code
 using namespace cvm;
-schmatrix m (4);
+schmatrix m(4);
 std::cout << m.msize() << std::endl
           << m.nsize() << std::endl
           << m.size() << std::endl << m;
@@ -34428,7 +34429,7 @@ it becomes not hermitian matrix anymore then results are not predictable.
 using namespace cvm;
 double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
               0., 3., -1., -2., 0., -3., 3., 0.};
-schmatrix m ((std::complex<double>*)a, 3);
+schmatrix m((std::complex<double>*)a, 3);
 m.set(2,1,std::complex<double>(8.,8.));
 std::cout << m << std::endl;
 std::cout << a[0] << " " << a[1] << " " << a[2] << " "
@@ -34469,7 +34470,7 @@ It copies \c nDim*nDim elements total.
 using namespace cvm;
 const double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
                     0., 3., -1., -2., 0., -3., 3., 0.};
-schmatrix m ((const std::complex<double>*)a, 3);
+schmatrix m((const std::complex<double>*)a, 3);
 m.set(2,1,std::complex<double>(8.,8.));
 std::cout << m << std::endl;
 std::cout << a[0] << " " << a[1] << " " << a[2] << " "
@@ -34503,12 +34504,12 @@ It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left |
+std::cout.setf(std::ios::scientific | std::ios::left |
                 std::ios::showpos);
-std::cout.precision (1);
+std::cout.precision(1);
 double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
               0., 3., -1., -2., 0., -3., 3., 0.};
-schmatrix m ((std::complex<double>*)a, 3);
+schmatrix m((std::complex<double>*)a, 3);
 scmatrix mc(m);
 m.set(1,2, std::complex<double>(7.7,7.7));
 std::cout << m << std::endl << mc;
@@ -34810,7 +34811,7 @@ try {
     std::cout << m2;
 }
 catch (std::exception& e) {
-    std::cout << "Exception " << e.what () << std::endl;
+    std::cout << "Exception " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -35737,7 +35738,7 @@ try {
     std::cout << ms * m;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -35797,7 +35798,7 @@ schmatrix mh(3), mh2(3);
 mh.randomize_real(-1.,2.);
 mh.randomize_imag(-2.,3.);
 mh2 = mh;
-mh.herk (alpha, v, beta);
+mh.herk(alpha, v, beta);
 mh2 = alpha * schmatrix(v.rank1update_c(v)) + beta * mh2;
 std::cout << mh - mh2;
 \endcode
@@ -35848,8 +35849,8 @@ m.randomize_imag(-2.,3.);
 mh.randomize_real(-1.,2.);
 mh.randomize_imag(-2.,3.);
 mh2 = mh;
-mh.herk (false, alpha, m, beta);
-mh2 = alpha * schmatrix (m * ~m) + beta * mh2;
+mh.herk(false, alpha, m, beta);
+mh2 = alpha * schmatrix(m * ~m) + beta * mh2;
 std::cout << mh - mh2;
 \endcode
 prints
@@ -35870,8 +35871,8 @@ m.randomize_imag(-2.,3.);
 mh.randomize_real(-1.,2.);
 mh.randomize_imag(-2.,3.);
 mh2 = mh;
-mh.herk (true, alpha, m, beta);
-mh2 = alpha * schmatrix (~m * m) + beta * mh2;
+mh.herk(true, alpha, m, beta);
+mh2 = alpha * schmatrix(~m * m) + beta * mh2;
 std::cout << mh - mh2;
 \endcode
 prints
@@ -35925,7 +35926,7 @@ v2.randomize_imag(-2.,3.);
 mh.randomize_real(-1.,2.);
 mh.randomize_imag(-2.,3.);
 mh2 = mh;
-mh.her2k (alpha, v1, v2, beta);
+mh.her2k(alpha, v1, v2, beta);
 mh2 = schmatrix(alpha * v1.rank1update_c(v2) + alphac * v2.rank1update_c(v1)) + beta * mh2;
 std::cout << mh - mh2;
 \endcode
@@ -35986,7 +35987,7 @@ m2.randomize_imag(-2.,3.);
 mh.randomize_real(-1.,2.);
 mh.randomize_imag(-2.,3.);
 mh2 = mh;
-mh.her2k (false, alpha, m1, m2, beta);
+mh.her2k(false, alpha, m1, m2, beta);
 mh2 = schmatrix(alpha * m1 * ~m2 + alphac * m2 * ~m1, 1.e-14) + beta * mh2;
 std::cout << mh - mh2;
 \endcode
@@ -36013,7 +36014,7 @@ m2.randomize_imag(-2.,3.);
 mh.randomize_real(-1.,2.);
 mh.randomize_imag(-2.,3.);
 mh2 = mh;
-mh.her2k (true, alpha, m1, m2, beta);
+mh.her2k(true, alpha, m1, m2, beta);
 mh2 = schmatrix(alpha * ~m1 * m2 + alphac * ~m2 * m1, 1.e-14) + beta * mh2;
 std::cout << mh - mh2;
 \endcode
@@ -36056,8 +36057,8 @@ sizes of the operands or when the matrix to be inverted is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
               0., 3., -1., -2., 0., -3., 3., 0.};
 schmatrix m((std::complex<double>*)a,3);
@@ -36094,8 +36095,8 @@ or when the matrix to be inverted is close to singular.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
               0., 3., -1., -2., 0., -3., 3., 0.};
 schmatrix m((std::complex<double>*)a,3);
@@ -36152,9 +36153,9 @@ inappropriate sizes of the operands or when LAPACK subroutine fails.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::left |
+std::cout.setf(std::ios::scientific | std::ios::left |
                 std::ios::showpos);
-std::cout.precision (15);
+std::cout.precision(15);
 double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
               0., 3., -1., -2., 0., -3., 3., 0.};
 schmatrix m((std::complex<double>*)a,3);
@@ -36241,9 +36242,9 @@ inappropriate sizes of the operands or when LAPACK subroutine fails.
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::left |
+std::cout.setf(std::ios::scientific | std::ios::left |
                 std::ios::showpos);
-std::cout.precision (15);
+std::cout.precision(15);
 double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
               0., 3., -1., -2., 0., -3., 3., 0.};
 schmatrix m((std::complex<double>*)a,3);
@@ -36332,9 +36333,9 @@ Function throws \ref cvmexception in case of inappropriate sizes of the operands
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left |
+std::cout.setf(std::ios::scientific | std::ios::left |
                 std::ios::showpos);
-std::cout.precision (10);
+std::cout.precision(10);
 double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
             0., 3., -1., -2., 0., -3., 3., 0.};
 schmatrix m((std::complex<double>*)a,3);
@@ -36342,7 +36343,7 @@ double re[]={2.2,1.3,1.1,-0.9,0.2,-0.45,45.,-30.,10.,3.,1.13};
 const rvector vr(re, 11);
 schmatrix mp(3);
 
-mp.polynom (m, vr);
+mp.polynom(m, vr);
 
 std::cout << "Column 1" << std::endl
 << mp(1,1) << std::endl << mp(2,1) << std::endl << mp(3,1) << std::endl
@@ -36430,9 +36431,9 @@ Function throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left |
+std::cout.setf(std::ios::scientific | std::ios::left |
                 std::ios::showpos);
-std::cout.precision (10);
+std::cout.precision(10);
 double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
             0., 3., -1., -2., 0., -3., 3., 0.};
 schmatrix m((std::complex<double>*)a,3);
@@ -36512,8 +36513,8 @@ in case of inappropriate calling object sizes or in case of convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
               0., 3., -1., -2., 0., -3., 3., 0.};
 schmatrix m((std::complex<double>*)a,3);
@@ -36572,8 +36573,8 @@ in case of memory allocation failure or convergence error.
 \par Example:
 \code
 using namespace cvm;
-std::cout.setf (std::ios::scientific | std::ios::left);
-std::cout.precision (2);
+std::cout.setf(std::ios::scientific | std::ios::left);
+std::cout.precision(2);
 double a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
               0., 3., -1., -2., 0., -3., 3., 0.};
 schmatrix m((std::complex<double>*)a,3);
@@ -36617,7 +36618,7 @@ try {
     std::cout << ~h * h - m;
 }
 catch (std::exception& e) {
-    std::cout << "Exception: " << e.what () << std::endl;
+    std::cout << "Exception: " << e.what() << std::endl;
 }
 \endcode
 prints
@@ -37190,7 +37191,7 @@ inline basic_schmatrix<TR,TC> operator * (CVM_LONGEST_INT d, const basic_schmatr
 }
 
 
-#if defined (CVM_FLOAT)
+#if defined(CVM_FLOAT)
 using treal = float; //!< Either \c double (default) of \c float (when \c CVM_FLOAT is defined)
 #else
 using treal = double; //!< Either \c double (default) of \c float (when \c CVM_FLOAT is defined)
@@ -37285,8 +37286,8 @@ Returns the smallest normalized positive number, i.e. \c numeric_limits<treal>::
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(15);
 std::cout << cvmMachMin() << std::endl;
 \endcode
 on Intel Pentium III machine prints
@@ -37310,8 +37311,8 @@ i.e. \c numeric_limits<treal>::epsilon().
 \code
 using namespace cvm;
 
-std::cout.setf (std::ios::scientific | std::ios::showpos);
-std::cout.precision (15);
+std::cout.setf(std::ios::scientific | std::ios::showpos);
+std::cout.precision(15);
 std::cout << cvmMachSp() << std::endl;
 \endcode
 on Intel Pentium III machine prints
@@ -37331,12 +37332,12 @@ inline treal cvmMachSp() {
 
 class CriticalSection
 {
-#if defined (CVM_MT)
+#if defined(CVM_MT)
 private:
     bool mbOK;
 
-#if defined (WIN32) || defined (_WIN32)
-#if defined (CVM_USE_CRITICAL_SECTION_NOT_MUTEX)
+#if defined(WIN32) || defined(_WIN32)
+#if defined(CVM_USE_CRITICAL_SECTION_NOT_MUTEX)
     ::CRITICAL_SECTION mCriticalSection;
 #else
     HANDLE mMutex;
@@ -37352,12 +37353,12 @@ public:
     ~CriticalSection();
 
     void enter()
-#if defined (CVM_MT)
+#if defined(CVM_MT)
     throw(cvmexception)
 #endif
           ;
     void leave()
-#if defined (CVM_MT)
+#if defined(CVM_MT)
     throw(cvmexception)
 #endif
           ;
@@ -37422,17 +37423,17 @@ CVM_NAMESPACE_END
 namespace std {
 
 template<typename T, typename TR>
-inline TR abs (const CVM_NAMESPACE::type_proxy<T,TR>& p) {
+inline TR abs(const CVM_NAMESPACE::type_proxy<T,TR>& p) {
     return abs(p.val());
 }
 
 template<typename T, typename TR>
-inline TR norm (const CVM_NAMESPACE::type_proxy<T,TR>& p) {
+inline TR norm(const CVM_NAMESPACE::type_proxy<T,TR>& p) {
     return norm(p.val());
 }
 
 template<typename T, typename TR>
-inline T conj (const CVM_NAMESPACE::type_proxy<T,TR>& p) {
+inline T conj(const CVM_NAMESPACE::type_proxy<T,TR>& p) {
     return conj(p.val());
 }
 
@@ -37440,14 +37441,14 @@ inline T conj (const CVM_NAMESPACE::type_proxy<T,TR>& p) {
 
 
 //! BLAS callback error handler, don't use
-#if !defined (_MSC_VER)
+#if !defined(_MSC_VER)
 #   define XERBLA xerbla_
 #endif
 
 extern "C"
 {
     void __stdcall XERBLA(const char* szSubName,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                           const tint nLen,
 #endif
                           const tint* pnParam) throw(cvm::cvmexception);
