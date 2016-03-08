@@ -20,6 +20,6 @@ release:
 	$(MAKEUTIL) release -C test $(MAKECMD)
 
 clean:
-	$(MAKEUTIL) -C ftn clean
-	$(MAKEUTIL) -C src clean
-	$(MAKEUTIL) -C test clean
+	$(MAKEUTIL) clean -C ftn $(MAKECMD)
+	$(MAKEUTIL) clean -C src $(MAKECMD)
+	$(MAKEUTIL) clean -C test $(MAKECMD)

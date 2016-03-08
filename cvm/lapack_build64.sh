@@ -1,5 +1,5 @@
 #!/bin/sh
-CVMVER=8.1
+CVMVER=8.2
 LIBDIR=../lib64
 FILESET='LIC* libcvm_em64t.* libcvm_em64t_debug.* regtest_cvm_em64t regtest_cvm_em64t_debug'
 FILESET_ILP64='LIC* libcvm_em64t_ilp64.* libcvm_em64t_ilp64_debug.* regtest_cvm_em64t_ilp64 regtest_cvm_em64t_ilp64_debug'

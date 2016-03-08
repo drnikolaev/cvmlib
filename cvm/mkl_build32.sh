@@ -1,5 +1,5 @@
 #!/bin/bash
-CVMVER=8.1
+CVMVER=8.2
 LIBDIR=../lib
 FILESET='LIC* libcvm_ia32.* libcvm_ia32_debug.* regtest_cvm_ia32 regtest_cvm_ia32_debug'
 

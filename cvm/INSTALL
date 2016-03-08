@@ -12,7 +12,7 @@ Here
       libraries by default)
     - MKL_PATH=path specifies the directory where the MKL is installed to. It's
       set to "/opt/intel/composerxe/mkl/lib" by default.
-    - EM64T=1 instructs to build EM64T version of the library. 
+    - EM64T=1 instructs to build EM64T version of the library.
     - ILP64=1 instructs to build INT64-based version of the library (EM64T must be turned on).
     - CVM_FLOAT=1 [deprecated] instructs to build float version of the library.
     - ICCT=1 instructs to use Intel C++ compiler for building the regression 

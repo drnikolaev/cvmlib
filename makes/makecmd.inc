@@ -16,9 +16,17 @@ endif
 ifdef CVM_FLOAT
   MAKECMD += CVM_FLOAT=1
 endif
+
 ifdef EM64T
   MAKECMD += EM64T=1
+else
+  LBITS := $(shell getconf LONG_BIT)
+  ifeq ($(LBITS),64)
+    EM64T=1
+    MAKECMD += EM64T=1
+  endif
 endif
+
 ifdef ILP64
   MAKECMD += ILP64=1
 endif
