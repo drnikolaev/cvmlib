@@ -3,6 +3,7 @@ SHELL=/bin/sh
 ROOT_PATH=../..
 INC_PATH=$(ROOT_PATH)/makes
 include $(INC_PATH)/defines.inc
+include $(INC_PATH)/makecmd.inc
 
 ifneq (cygwin,${TERM})
 #ifndef COMSPEC

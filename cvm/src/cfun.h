@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2014
+//          Copyright Sergei Nikolaev 1992-2016
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
