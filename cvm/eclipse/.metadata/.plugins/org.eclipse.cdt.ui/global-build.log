@@ -1,0 +1,49 @@
+15:58:36 **** Incremental Build of configuration Release for project cvm_test ****
+make all 
+Building file: /home/snikolaev/cvmlib/cvm/test/testBlas.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"test/testBlas.d" -MT"test/testBlas.o" -o "test/testBlas.o" "/home/snikolaev/cvmlib/cvm/test/testBlas.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/test/testBlas.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/test/testInitialization.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"test/testInitialization.d" -MT"test/testInitialization.o" -o "test/testInitialization.o" "/home/snikolaev/cvmlib/cvm/test/testInitialization.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/test/testInitialization.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/test/testLapack.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"test/testLapack.d" -MT"test/testLapack.o" -o "test/testLapack.o" "/home/snikolaev/cvmlib/cvm/test/testLapack.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/test/testLapack.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/test/testMisc.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"test/testMisc.d" -MT"test/testMisc.o" -o "test/testMisc.o" "/home/snikolaev/cvmlib/cvm/test/testMisc.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/test/testMisc.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/test/testcvm.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"test/testcvm.d" -MT"test/testcvm.o" -o "test/testcvm.o" "/home/snikolaev/cvmlib/cvm/test/testcvm.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/test/testcvm.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/test/testfun.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"test/testfun.d" -MT"test/testfun.o" -o "test/testfun.o" "/home/snikolaev/cvmlib/cvm/test/testfun.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/test/testfun.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/test/testmain.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"test/testmain.d" -MT"test/testmain.o" -o "test/testmain.o" "/home/snikolaev/cvmlib/cvm/test/testmain.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/test/testmain.cpp
+ 
+Building target: cvm_test
+Invoking: GCC C++ Linker
+g++ -L/home/snikolaev/CODE/caffe/cnmem -L/usr/local/lib -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L/usr/lib/libblas -L"/home/snikolaev/cvmlib/cvm/eclipse/cvm/Release" -L../../../../gtest -L../../cvm/Release -o "cvm_test"  ./test/testBlas.o ./test/testInitialization.o ./test/testLapack.o ./test/testMisc.o ./test/testcvm.o ./test/testfun.o ./test/testmain.o   -lgtest -lcvm -lpthread -lgfortran
+Finished building target: cvm_test
+ 
+16:01:52 **** Incremental Build of configuration Debug for project cvm_test ****
+make all 
+Building target: cvm_test
+Invoking: GCC C++ Linker
+g++ -L"/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug" -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o "cvm_test"  ./test/testBlas.o ./test/testInitialization.o ./test/testLapack.o ./test/testMisc.o ./test/testcvm.o ./test/testfun.o ./test/testmain.o   -lgtest -lcvm -lpthread -lgfortran
+Finished building target: cvm_test
+ 

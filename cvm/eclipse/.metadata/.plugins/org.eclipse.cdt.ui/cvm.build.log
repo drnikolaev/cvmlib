@@ -1,0 +1,55 @@
+15:57:24 **** Incremental Build of configuration Release for project cvm ****
+make all 
+Building file: /home/snikolaev/cvmlib/cvm/src/arrays.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"src/arrays.d" -MT"src/arrays.o" -o "src/arrays.o" "/home/snikolaev/cvmlib/cvm/src/arrays.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/src/arrays.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/src/cmatrix.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"src/cmatrix.d" -MT"src/cmatrix.o" -o "src/cmatrix.o" "/home/snikolaev/cvmlib/cvm/src/cmatrix.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/src/cmatrix.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/src/cvector.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"src/cvector.d" -MT"src/cvector.o" -o "src/cvector.o" "/home/snikolaev/cvmlib/cvm/src/cvector.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/src/cvector.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/src/globals.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"src/globals.d" -MT"src/globals.o" -o "src/globals.o" "/home/snikolaev/cvmlib/cvm/src/globals.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/src/globals.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/src/rmatrix.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"src/rmatrix.d" -MT"src/rmatrix.o" -o "src/rmatrix.o" "/home/snikolaev/cvmlib/cvm/src/rmatrix.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/src/rmatrix.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/src/rvector.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"src/rvector.d" -MT"src/rvector.o" -o "src/rvector.o" "/home/snikolaev/cvmlib/cvm/src/rvector.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/src/rvector.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/src/scmatrix.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"src/scmatrix.d" -MT"src/scmatrix.o" -o "src/scmatrix.o" "/home/snikolaev/cvmlib/cvm/src/scmatrix.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/src/scmatrix.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/src/srmatrix.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"src/srmatrix.d" -MT"src/srmatrix.o" -o "src/srmatrix.o" "/home/snikolaev/cvmlib/cvm/src/srmatrix.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/src/srmatrix.cpp
+ 
+Building file: /home/snikolaev/cvmlib/cvm/src/utils.cpp
+Invoking: GCC C++ Compiler
+g++ -std=c++0x -O3 -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"src/utils.d" -MT"src/utils.o" -o "src/utils.o" "/home/snikolaev/cvmlib/cvm/src/utils.cpp"
+Finished building: /home/snikolaev/cvmlib/cvm/src/utils.cpp
+ 
+Building target: libcvm.so
+Invoking: GCC C++ Linker
+g++ -L/home/snikolaev/CODE/caffe/cnmem -L/usr/local/lib -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L/usr/lib/libblas -L../../../../lib64/linux/gf -L../../../../lib64 -shared -o "libcvm.so"  ./src/arrays.o ./src/cmatrix.o ./src/cvector.o ./src/globals.o ./src/rmatrix.o ./src/rvector.o ./src/scmatrix.o ./src/srmatrix.o ./src/utils.o   -lpthread -llapack_em64t -lblas_em64t -lftn_em64t
+Finished building target: libcvm.so
+ 
+
+15:57:50 Build Finished (took 26s.208ms)
+
