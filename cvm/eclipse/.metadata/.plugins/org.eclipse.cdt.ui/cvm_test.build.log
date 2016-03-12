@@ -1,10 +1,1 @@
-16:01:52 **** Incremental Build of configuration Debug for project cvm_test ****
-make all 
-Building target: cvm_test
-Invoking: GCC C++ Linker
-g++ -L"/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug" -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o "cvm_test"  ./test/testBlas.o ./test/testInitialization.o ./test/testLapack.o ./test/testMisc.o ./test/testcvm.o ./test/testfun.o ./test/testmain.o   -lgtest -lcvm -lpthread -lgfortran
-Finished building target: cvm_test
- 
-
-16:01:53 Build Finished (took 562ms)
-
+Info: Nothing to build for cvm_test

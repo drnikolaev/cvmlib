@@ -13,6 +13,7 @@ with open("../testcvm.cpp") as f:
         # else:
         #     continue
 
+        line = re.sub('cvm::', r'', line)
         line = re.sub('^(\s*)treal', r'\1TP', line)
         line = re.sub('std::complex<treal>', r'TPC', line)
         line = re.sub('\(treal\)\s*', '', line)

@@ -3323,3 +3323,137 @@ TYPED_TEST(InitializationTest, TestDiagComplex) {
     EXPECT_EQ(TPC(3.,3.), m(CVM0+1, CVM0+2)) << "cmatrix::diag";
     EXPECT_EQ(TPC(9.,10.), ms.diag(0)[CVM0+1]) << "cmatrix::diag";
 }
+
+TYPED_TEST(InitializationTest, TestBandAssignReal) {
+    basic_srmatrix<TP> s(9);
+    basic_srbmatrix<TP> m(3, 0, 1);
+    for (int i = 1; i <= 9; ++i) {
+        s[i - (1 - CVM0)].set(i);
+    }
+    m.assign(s(CVM0+8));     // should be 1, 2, ..9
+    EXPECT_EQ(TP(2.), m(CVM0, CVM0)) << "rmatrix.assign(vector)";
+    EXPECT_EQ(TP(3.), m(CVM0, CVM0+1)) << "rmatrix.assign(vector)";
+    EXPECT_EQ(TP(6.), m(CVM0+2, CVM0+2)) << "rmatrix.assign(vector)";
+    m.assign(s[CVM0+8]);     // should be 9, 9, ..9
+    EXPECT_EQ(TP(9.), m(CVM0, CVM0)) << "rmatrix.assign(vector)";
+    EXPECT_EQ(TP(9.), m(CVM0, CVM0+1)) << "rmatrix.assign(vector)";
+    EXPECT_EQ(TP(9.), m(CVM0+2, CVM0+2)) << "rmatrix.assign(vector)";
+}
+
+TYPED_TEST(InitializationTest, TestBandAssignComplex) {
+    basic_scmatrix<TP,TPC> s(9);
+    basic_scbmatrix<TP,TPC> m(3, 1, 1);
+    for (int i = 1; i <= 9; ++i) {
+        s[i - (1 - CVM0)].set(TPC(i,-i));
+    }
+    m.assign(s(CVM0+8));     // should be 1, 2, ..9
+    EXPECT_EQ(TPC(2., -2.), m(CVM0, CVM0)) << "scbmatrix.assign(vector)";
+    EXPECT_EQ(TPC(4., -4.), m(CVM0, CVM0+1)) << "scbmatrix.assign(vector)";
+    EXPECT_EQ(TPC(8., -8.), m(CVM0+2, CVM0+2)) << "scbmatrix.assign(vector)";
+    EXPECT_EQ(TPC(0.,0.), m(CVM0, CVM0+2)) << "scbmatrix.assign(vector)";
+    m.assign(s[CVM0+8]);     // should be 9, 9, ..9
+    EXPECT_EQ(TPC(9., -9.), m(CVM0, CVM0)) << "scbmatrix.assign(vector)";
+    EXPECT_EQ(TPC(9., -9.), m(CVM0, CVM0+1)) << "scbmatrix.assign(vector)";
+    EXPECT_EQ(TPC(9., -9.), m(CVM0+2, CVM0+2)) << "scbmatrix.assign(vector)";
+    EXPECT_EQ(TPC(0.,0.), m(CVM0, CVM0+2)) << "scbmatrix.assign(vector)";
+}
+
+TYPED_TEST(InitializationTest, TestAssignReal) {
+    basic_srmatrix<TP> s(9);
+    basic_rmatrix<TP> mbig(30, 30);
+    basic_rmatrix<TP> m(mbig, 4, 7, 3, 3);
+    for (int i = 1; i <= 9; ++i) {
+        s[i - (1 - CVM0)].set(i);
+    }
+    m.assign(s(CVM0+8));     // should be 1, 2, ..9
+    EXPECT_EQ(TP(1.), m(CVM0, CVM0)) << "rmatrix.assign(vector)";
+    EXPECT_EQ(TP(4.), m(CVM0, CVM0+1)) << "rmatrix.assign(vector)";
+    EXPECT_EQ(TP(9.), m(CVM0+2, CVM0+2)) << "rmatrix.assign(vector)";
+    m.assign(s[CVM0+8]);     // should be 9, 9, ..9
+    EXPECT_EQ(TP(9.), m(CVM0, CVM0)) << "rmatrix.assign(vector)";
+    EXPECT_EQ(TP(9.), m(CVM0, CVM0+1)) << "rmatrix.assign(vector)";
+    EXPECT_EQ(TP(9.), m(CVM0+2, CVM0+2)) << "rmatrix.assign(vector)";
+}
+
+TYPED_TEST(InitializationTest, TestSquareAssignReal) {
+    basic_srmatrix<TP> s(9);
+    basic_srmatrix<TP> mbig(20);
+    basic_srmatrix<TP> m(mbig, 4, 7, 3);
+    for (int i = 1; i <= 9; ++i) {
+        s[i - (1 - CVM0)].set(i);
+    }
+    m.assign(s(CVM0+8));     // should be 1, 2, ..9
+    EXPECT_EQ(TP(1.), m(CVM0, CVM0)) << "srmatrix.assign(vector)";
+    EXPECT_EQ(TP(4.), m(CVM0, CVM0+1)) << "srmatrix.assign(vector)";
+    EXPECT_EQ(TP(9.), m(CVM0+2, CVM0+2)) << "srmatrix.assign(vector)";
+    m.assign(s[CVM0+8]);     // should be 9, 9, ..9
+    EXPECT_EQ(TP(9.), m(CVM0, CVM0)) << "srmatrix.assign(vector)";
+    EXPECT_EQ(TP(9.), m(CVM0, CVM0+1)) << "srmatrix.assign(vector)";
+    EXPECT_EQ(TP(9.), m(CVM0+2, CVM0+2)) << "srmatrix.assign(vector)";
+}
+
+TYPED_TEST(InitializationTest, TestAssignComplex) {
+    basic_scmatrix<TP,TPC> s(9);
+    basic_cmatrix<TP,TPC> mbig(30, 30);
+    basic_cmatrix<TP,TPC> m(mbig, 4, 7, 3, 3);
+    for (int i = 1; i <= 9; ++i) {
+        s[i - (1 - CVM0)].set(TPC(i,-i));
+    }
+    m.assign(s(CVM0+8));     // should be 1, 2, ..9
+    EXPECT_EQ(TPC(1., -1.), m(CVM0, CVM0)) << "cmatrix.assign(vector)";
+    EXPECT_EQ(TPC(4., -4.), m(CVM0, CVM0+1)) << "cmatrix.assign(vector)";
+    EXPECT_EQ(TPC(9., -9.), m(CVM0+2, CVM0+2)) << "cmatrix.assign(vector)";
+    m.assign(s[CVM0+8]);     // should be 9, 9, ..9
+    EXPECT_EQ(TPC(9., -9.), m(CVM0, CVM0)) << "cmatrix.assign(vector)";
+    EXPECT_EQ(TPC(9., -9.), m(CVM0, CVM0+1)) << "cmatrix.assign(vector)";
+    EXPECT_EQ(TPC(9., -9.), m(CVM0+2, CVM0+2)) << "cmatrix.assign(vector)";
+}
+
+TYPED_TEST(InitializationTest, TestSymmetricAssignReal) {
+    basic_srmatrix<TP> s(9);
+    basic_srsmatrix<TP> m(3);
+    s(CVM0+8, CVM0+1) = 1.;
+    s(CVM0+8, CVM0+3) = 1.;
+    s(CVM0+8, CVM0+8) = 5.;
+    m.assign(s[CVM0+8]);
+    EXPECT_EQ(TP(0.), m(CVM0, CVM0)) << "srsmatrix.assign(vector)";
+    EXPECT_EQ(TP(1.), m(CVM0, CVM0+1)) << "srsmatrix.assign(vector)";
+    EXPECT_EQ(TP(1.), m(CVM0+1, CVM0)) << "srsmatrix.assign(vector)";
+    EXPECT_EQ(TP(5.), m(CVM0+2, CVM0+2)) << "srsmatrix.assign(vector)";
+}
+
+// 5.4.2
+TYPED_TEST(InitializationTest, TestLdComplex) {
+    // bug fix check
+    basic_cmatrix<TP,TPC> a(3, 4);
+    EXPECT_EQ(3, a.ld()) << "a.ld()";
+    a.resize(0, 0);
+    EXPECT_EQ(0, a.ld()) << "a.ld()";
+}
+
+TYPED_TEST(InitializationTest, TestVectorOfVectorComplex) {
+    std::vector<basic_cvector<TP,TPC>> vcv;
+    vcv.reserve(5);
+    vcv.push_back(basic_cvector<TP,TPC>(10));
+    vcv.push_back(basic_cvector<TP,TPC>());
+    vcv[0][CVM0] = TPC(1.,-1.);
+    EXPECT_EQ(TPC(1., -1.), vcv[0](CVM0)) << "std::vector<cvector>[][]";
+}
+
+TYPED_TEST(InitializationTest, TestVectorOfMatrixReal) {
+    std::vector<basic_srmatrix<TP>> vcm;
+    vcm.reserve(5);
+    vcm.push_back(basic_srmatrix<TP>(10));
+    vcm.push_back(basic_srmatrix<TP>());
+    vcm[0][CVM0][CVM0+1] = 7.77;
+    EXPECT_EQ(TP(7.77), vcm[0](CVM0, CVM0+1)) << "std::vector<srmatrix>[][][]";
+}
+
+TYPED_TEST(InitializationTest, TestVectorOfMatrixComplex) {
+    std::vector<basic_cmatrix<TP,TPC>> vcm;
+    vcm.reserve(5);
+    vcm.push_back(basic_cmatrix<TP,TPC>(10, 20));
+    vcm[0][CVM0][CVM0+1] = TPC(1.,-1.);
+    EXPECT_EQ(TPC(1., -1.), vcm[0](CVM0, CVM0+1)) << "std::vector<cmatrix>[][][]";
+}
+

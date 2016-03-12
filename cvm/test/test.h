@@ -53,20 +53,3 @@ template<typename T>
 constexpr inline T spp(double fine, double coarse) {
     return sizeof(T) >= 8 ? T(fine) : T(coarse);
 }
-
-//template<typename T>
-//inline TC conj(const TC& c)
-//{
-//    return TC(c.real(), - c.imag());
-//}
-//
-//template<typename T, typename TR>
-//inline T conj(const CVM_NAMESPACE::type_proxy<T,TR>& p) {
-//    return conj(p.val());
-//}
-
-//template<typename T>
-//inline TC conj(const cvm::type_proxy<TC,T>& c)
-//{
-//    return TC(c.real(), - c.imag());
-//}

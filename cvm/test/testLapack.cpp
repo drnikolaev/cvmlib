@@ -711,3 +711,620 @@ TYPED_TEST(LapackTest, TestGercComplex) {
     EXPECT_NEAR(TP(0.), (mr - m.gerc(alpha, vc, vr)).norm(), sf<TP>()) << "cmatrix::gerc";
 }
 
+TYPED_TEST(LapackTest, TestPinvReal) {
+    // Gantmaher, p. 33
+    basic_rmatrix<TP> mA(3, 4);
+    mA(CVM0, CVM0) =  1.; mA(CVM0, CVM0+1) = -1.; mA(CVM0, CVM0+2) =  2.; mA(CVM0, CVM0+3) =  0.;
+    mA(CVM0+1, CVM0) = -1.; mA(CVM0+1, CVM0+1) =  2.; mA(CVM0+1, CVM0+2) = -3.; mA(CVM0+1, CVM0+3) =  1.;
+    mA(CVM0+2, CVM0) =  0.; mA(CVM0+2, CVM0+1) =  1.; mA(CVM0+2, CVM0+2) = -1.; mA(CVM0+2, CVM0+3) =  1.;
+
+    // lower rank case
+    basic_rmatrix<TP> mX = mA.pinv(sf<TP>());
+    EXPECT_NEAR(TP(0.), (mA * mX * mA - mA).norm2(), sf<TP>()) << "pinv, lower rank, m < n";
+
+    // m > n
+    mA.transpose();
+    basic_rmatrix<TP> mX2 = mA.pinv(sf<TP>());
+    EXPECT_NEAR(TP(0.), (mA * mX2 * mA - mA).norm2(), sf<TP>()) << "pinv, lower rank, m > n";
+
+    // full rank case
+    mA.transpose();
+    mA(CVM0, CVM0+2) = 4.;
+    mX.pinv (mA);
+    EXPECT_NEAR(TP(0.), (mA * mX * mA - mA).norm2(), sf<TP>()) << "pinv, full rank, m < n";
+
+    // m > n
+    mA.transpose();
+    mX2.pinv(mA);
+    EXPECT_NEAR(TP(0.), (mA * mX2 * mA - mA).norm2(), sf<TP>()) << "pinv, full rank, m > n";
+}
+
+TYPED_TEST(LapackTest, TestPinvComplex) {
+    basic_cmatrix<TP,TPC> mA(3, 4), mX(4, 3);
+    mA.randomize_real(-2., 11.);
+    mA.randomize_imag(-9., 7.);
+
+    mX.pinv (mA);
+    EXPECT_NEAR(TP(0.), (mA * mX * mA - mA).norm2(), sp<TP>()) << "complex pinv, m < n";
+
+    // m > n
+    mA.conj();
+    basic_cmatrix<TP,TPC> mX2 = mA.pinv();
+    EXPECT_NEAR(TP(0.), (mA * mX2 * mA - mA).norm2(), sp<TP>()) << "complex pinv, m > n";
+}
+
+TYPED_TEST(LapackTest, TestPinvBandReal) {
+    basic_srbmatrix<TP> mA (40, 1, 2);
+    mA.diag(0).randomize(-1., 1.);
+    mA.diag(-1).randomize(-1., 1.);
+    mA.diag(1).randomize(-1., 1.);
+
+    basic_rmatrix<TP> mX = mA.pinv(sf<TP>());
+    EXPECT_NEAR(TP(0.), (mA * mX * mA - mA).norm2(), sp<TP>()) << "srbmatrix pinv";
+
+    mA.transpose();
+    mX.pinv (mA);
+    EXPECT_NEAR(TP(0.), (mA * mX * mA - mA).norm2(), sp<TP>()) << "srbmatrix pinv";
+}
+
+TYPED_TEST(LapackTest, TestPinvBandComplex) {
+    basic_scbmatrix<TP,TPC> mA (40, 1, 2);
+    mA.diag(0).randomize_real(-1., 1.);
+    mA.diag(-1).randomize_real(-1., 1.);
+    mA.diag(1).randomize_real(-1., 1.);
+    mA.diag(0).randomize_imag(-1., 2.);
+    mA.diag(-1).randomize_imag(-1., 2.);
+    mA.diag(1).randomize_imag(-1., 2.);
+
+    basic_scmatrix<TP,TPC> mX = mA.pinv(sf<TP>());
+    EXPECT_NEAR(TP(0.), (mA * mX * mA - mA).norm2(), sp<TP>()) << "scbmatrix pinv";
+
+    mA.conj();
+    mX.pinv (mA);
+    EXPECT_NEAR(TP(0.), (mA * mX * mA - mA).norm2(), sp<TP>()) << "scbmatrix pinv";
+}
+
+// 5.4.1
+TYPED_TEST(LapackTest, TestSvdReal) {
+    TP m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1., 0., -2., 1.};
+    basic_rmatrix<TP> mA(m, 4, 3);
+    basic_rmatrix<TP> mSigma(4, 3);
+    basic_rvector<TP> v(3);
+    basic_srmatrix<TP> mU(4), mVH(3);
+    v.svd(mA, mU, mVH);
+    mSigma.diag(0) = v;
+    EXPECT_NEAR(TP(0.), (mA * ~mVH - mU * mSigma).norm(), sf<TP>()) << "rmatrix svd";
+    EXPECT_NEAR(TP(0.), (~mA * mU - ~(mSigma * mVH)).norm(), sf<TP>()) << "rmatrix svd";
+}
+
+TYPED_TEST(LapackTest, TestSvdComplex) {
+    TP m[] = {1., -1., 1., 2., -2., 1., 3., -2., 1., 0., -2., 1.};
+    basic_cmatrix<TP,TPC> mA((TPC*) m, 2, 3);
+    basic_cmatrix<TP,TPC> mSigma(2, 3);
+    basic_rvector<TP> v(2);
+    basic_scmatrix<TP,TPC> mU(2), mVH(3);
+    v = mA.svd(mU, mVH);
+    mSigma.diag(0) = basic_cvector<TP,TPC>(v);
+    EXPECT_NEAR(TP(0.), (mA * ~mVH - mU * mSigma).norm(), sf<TP>()) << "cmatrix svd";
+    EXPECT_NEAR(TP(0.), (~mA * mU - ~(mSigma * mVH)).norm(), sf<TP>()) << "cmatrix svd";
+}
+
+// 5.5 QR
+TYPED_TEST(LapackTest, TestQRReal) {
+    const TP a[] = {1., 2., 3., 4., 5., 6.};
+    const basic_rmatrix<TP> mh(a, 2, 3);
+    const basic_rmatrix<TP> mv(a, 3, 2);
+    basic_srmatrix<TP> s2(2), s3(3);
+    basic_rmatrix<TP> h(2, 3), v(3, 2);
+
+    mh.qr(h, s3);
+
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) -
+    		~basic_rmatrix<TP>(h,CVM0,CVM0,2,2) * basic_rmatrix<TP>(h,CVM0,CVM0,2,2)).norm(),
+			sf<TP>()) << "rmatrix QR";
+    EXPECT_NEAR(TP(0.), (mh - h * s3).norm(), sf<TP>()) << "rmatrix QR";
+    mh.qr(s2, h);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) - ~s2 * s2).norm(), sf<TP>()) << "rmatrix QR";
+    EXPECT_NEAR(TP(0.), (mh - s2 * h).norm(), sf<TP>()) << "rmatrix QR";
+    mv.qr(v, s2);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) - ~v * v).norm(), sf<TP>()) << "rmatrix QR";
+    EXPECT_NEAR(TP(0.), (mv - v * s2).norm(), sf<TP>()) << "rmatrix QR";
+    mv.qr(s3, v);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(3) - ~s3 * s3).norm(), sf<TP>()) << "rmatrix QR";
+    EXPECT_NEAR(TP(0.), (mv - s3 * v).norm(), sf<TP>()) << "rmatrix QR";
+}
+
+TYPED_TEST(LapackTest, TestQRSquareReal) {
+	const TP a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
+    const basic_srmatrix<TP> m(a, 3);
+    basic_srmatrix<TP> q(3), r(3);
+    m.qr(q, r);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(3) - ~q * q).norm(), sf<TP>()) << "srmatrix QR";
+    EXPECT_NEAR(TP(0.), (m - q * r).norm(), sf<TP>()) << "srmatrix QR";
+}
+
+TYPED_TEST(LapackTest, TestQRSquareReal2) {
+    TP a[] = {1., 4., 7., 2., 5., 8., 3., 6., 0.};
+    basic_srmatrix<TP> A(a, 3);
+    basic_srmatrix<TP> Q(3);
+    basic_srmatrix<TP> R(3);
+    A.qr(Q, R);
+    EXPECT_NEAR(TP(0.), (A - Q * R).norm(), sf<TP>()) << "srmatrix QR";
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(3) - ~Q * Q).norm(), sf<TP>()) << "srmatrix QR - Q";
+}
+
+TYPED_TEST(LapackTest, TestQRComplex) {
+    const TP ar[] = {1., 2., 3., 4., 5., 6.};
+    const TP ai[] = {1., -1., 2., -2., 3., -3.};
+    const basic_cmatrix<TP,TPC> mh(ar, ai, 2, 3);
+    const basic_cmatrix<TP,TPC> mv(ar, ai, 3, 2);
+    basic_scmatrix<TP,TPC> s2(2), s3(3);
+    basic_cmatrix<TP,TPC>  h(2, 3), v(3, 2);
+
+    mh.qr(h, s3);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) -
+    		~basic_cmatrix<TP,TPC>(h,CVM0,CVM0,2,2) * basic_cmatrix<TP,TPC>(h,CVM0,CVM0,2,2)).norm(),
+			sf<TP>()) << "cmatrix QR";
+    EXPECT_NEAR(TP(0.), (mh - h * s3).norm(), sf<TP>()) << "cmatrix QR";
+
+    mh.qr(s2, h);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) - ~s2 * s2).norm(), sf<TP>()) << "cmatrix QR";
+    EXPECT_NEAR(TP(0.), (mh - s2 * h).norm(), sf<TP>()) << "cmatrix QR";
+
+    mv.qr(v, s2);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) - ~v * v).norm(), sf<TP>()) << "cmatrix QR";
+    EXPECT_NEAR(TP(0.), (mv - v * s2).norm(), sf<TP>()) << "cmatrix QR";
+
+    mv.qr(s3, v);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(3) - ~s3 * s3).norm(), sf<TP>()) << "cmatrix QR";
+    EXPECT_NEAR(TP(0.), (mv - s3 * v).norm(), sf<TP>()) << "cmatrix QR";
+}
+
+TYPED_TEST(LapackTest, TestQRSquareComplex) {
+	const TP ar[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
+	const TP ai[] = {1., -1., 2., -2., 3., -3., 4., -4., 5.};
+    const basic_scmatrix<TP,TPC> m(ar, ai, 3);
+    basic_scmatrix<TP,TPC> q(3), r(3);
+    m.qr(q, r);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(3) - ~q * q).norm(), sf<TP>()) << "scmatrix QR";
+    EXPECT_NEAR(TP(0.), (m - q * r).norm(), sf<TP>()) << "scmatrix QR";
+}
+
+TYPED_TEST(LapackTest, TestQRSquareComplex2) {
+    const int m = 10;
+    basic_scmatrix<TP,TPC> A (m);
+    A.randomize_real(-10., 10.);
+    A.randomize_imag(-10., 10.);
+    basic_scmatrix<TP,TPC> Q(m);
+    basic_scmatrix<TP,TPC> R(m);
+    A.qr(Q, R);
+    EXPECT_NEAR(TP(0.), (Q * R - A).norm(), sp<TP>()) << "scmatrix QR";
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(m) - ~Q * Q).norm(), sf<TP>()) << "scmatrix QR - Q";
+}
+
+TYPED_TEST(LapackTest, TestQRBandReal) {
+    const int m = 10;
+    basic_srbmatrix<TP> A (m, 2, 3);
+    A.randomize(-10., 10.);
+    basic_srmatrix<TP> Q(m);
+    basic_srmatrix<TP> R(m);
+    A.qr(Q, R);
+    EXPECT_NEAR(TP(0.), (Q * R - A).norm(), sp<TP>()) << "srbmatrix QR";
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(m) - ~Q * Q).norm(), sf<TP>()) << "srbmatrix QR - Q";
+}
+
+TYPED_TEST(LapackTest, TestQRBandComplex) {
+    const int m = 10;
+    basic_scbmatrix<TP,TPC> A (m, 2, 3);
+    A.randomize_real(-10., 10.);
+    A.randomize_imag(-10., 10.);
+    basic_scmatrix<TP,TPC> Q(m);
+    basic_scmatrix<TP,TPC> R(m);
+    A.qr(Q, R);
+    EXPECT_NEAR(TP(0.), (Q * R - A).norm(), sp<TP>()) << "scbmatrix QR";
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(m) - ~Q * Q).norm(), sf<TP>()) << "scbmatrix QR - Q";
+}
+
+TYPED_TEST(LapackTest, TestQRSymmetricReal) {
+    const int m = 10;
+    basic_srsmatrix<TP> A (m);
+    A.randomize(-10., 10.);
+    basic_srmatrix<TP> Q(m);
+    basic_srmatrix<TP> R(m);
+    A.qr(Q, R);
+    EXPECT_NEAR(TP(0.), (Q * R - A).norm(), sp<TP>()) << "srsmatrix QR";
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(m) - ~Q * Q).norm(), sf<TP>()) << "srsmatrix QR - Q";
+}
+
+TYPED_TEST(LapackTest, TestQRHermitianComplex) {
+    const int m = 10;
+    basic_schmatrix<TP,TPC> A (m);
+    A.randomize_real(-10., 10.);
+    A.randomize_imag(-10., 10.);
+    basic_scmatrix<TP,TPC> Q(m);
+    basic_scmatrix<TP,TPC> R(m);
+    A.qr(Q, R);
+    EXPECT_NEAR(TP(0.), (Q * R - A).norm(), sp<TP>()) << "schmatrix QR";
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(m) - ~Q * Q).norm(), sf<TP>()) << "schmatrix QR - Q";
+}
+
+// Case 1: economy mode, A is (m x n) and Q is (m x n) and R is (n x n)
+TYPED_TEST(LapackTest, TestQREconomyReal) {
+	const int m = 10;
+	const int n = 5;
+    basic_rmatrix<TP> A(m, n);
+    A.randomize(-10.0, 10.0);
+    basic_rmatrix<TP> Q(m, n);
+    basic_srmatrix<TP> R(n);
+    A.qr(Q, R);
+    EXPECT_NEAR(TP(0.), (Q * R - A).norm(), sp<TP>()) << "rmatrix QR economy";
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(n) - ~Q * Q).norm(), sf<TP>()) << "rmatrix QR - Q economy";
+}
+
+// Case 2: full mode, A is (m x n) and Q is (m x m) and R is (m x n)
+TYPED_TEST(LapackTest, TestQRFullReal) {
+	const int m = 10;
+	const int n = 5;
+    basic_rmatrix<TP> A(m, n);
+    A.randomize(-10.0, 10.0);
+    basic_srmatrix<TP> Q(m);
+    basic_rmatrix<TP> R(m, n);
+    A.qr(Q, R);
+    EXPECT_NEAR(TP(0.), (Q * R - A).norm(), sp<TP>()) << "rmatrix QR full";
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(m) - ~Q * Q).norm(), sf<TP>()) << "rmatrix QR - Q full";
+}
+
+// Case 1: economy mode, A is (m x n) and Q is (m x n) and R is (n x n)
+TYPED_TEST(LapackTest, TestQREconomyComplex) {
+	const int m = 10;
+	const int n = 5;
+    basic_cmatrix<TP,TPC> A(m, n);
+    A.randomize_real(-10.0, 10.0);
+    A.randomize_imag(-10.0, 10.0);
+    basic_cmatrix<TP,TPC> Q(m, n);
+    basic_scmatrix<TP,TPC> R(n);
+    A.qr(Q, R);
+    EXPECT_NEAR(TP(0.), (Q * R - A).norm(), sp<TP>()) << "cmatrix QR economy";
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(n) - ~Q * Q).norm(), sf<TP>())
+    	<< "cmatrix QR - Q economy";
+}
+
+// Case 2: full mode, A is (m x n) and Q is (m x m) and R is (m x n)
+TYPED_TEST(LapackTest, TestQRFullComplex) {
+	const int m = 10;
+	const int n = 5;
+    basic_cmatrix<TP,TPC> A(m, n);
+    A.randomize_real(-10.0, 10.0);
+    A.randomize_imag(-10.0, 10.0);
+    basic_scmatrix<TP,TPC> Q(m);
+    basic_cmatrix<TP,TPC> R(m, n);
+    A.qr(Q, R);
+    EXPECT_NEAR(TP(0.), (Q * R - A).norm(), sp<TP>()) << "cmatrix QR full";
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(m) - ~Q * Q).norm(), sf<TP>())
+    	<< "cmatrix QR - Q full";
+}
+
+// 6.0 RQ
+TYPED_TEST(LapackTest, TestRQReal) {
+    basic_rmatrix<TP> mh(2, 3);
+    basic_rmatrix<TP> mv(3, 2);
+    mh.randomize(-10., 10.);
+    mv.randomize(-10., 10.);
+    basic_srmatrix<TP> s2(2), s3(3);
+    basic_rmatrix<TP>  h(2, 3), v(3, 2);
+    mh.rq(h, s3);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) -
+    		basic_rmatrix<TP>(s3,CVM0+1,CVM0,2,3) * ~basic_rmatrix<TP>(s3,CVM0+1,CVM0,2,3)).norm(),
+			sf<TP>()) << "rmatrix RQ (full mode)";
+    EXPECT_NEAR(TP(0.), (mh - h * s3).norm(), sf<TP>()) << "rmatrix RQ (full mode)";
+    mh.rq(s2, h);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) - h * ~h).norm(), sf<TP>()) << "rmatrix RQ (economy mode)";
+    EXPECT_NEAR(TP(0.), (mh - s2 * h).norm(), sf<TP>()) << "rmatrix RQ (economy mode)";
+}
+
+TYPED_TEST(LapackTest, TestRQComplex) {
+    basic_cmatrix<TP,TPC> mh(2, 3);
+    basic_cmatrix<TP,TPC> mv(3, 2);
+    mh.randomize_real(-10.0, 10.0);
+    mh.randomize_imag(-10.0, 10.0);
+    mv.randomize_real(-10.0, 10.0);
+    mv.randomize_imag(-10.0, 10.0);
+    basic_scmatrix<TP,TPC> s2(2), s3(3);
+    basic_cmatrix<TP,TPC>  h(2, 3), v(3, 2);
+
+    mh.rq(h, s3);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) -
+    		basic_cmatrix<TP,TPC>(s3,CVM0+1,CVM0,2,3) * ~basic_cmatrix<TP,TPC>(s3,CVM0+1,CVM0,2,3)).norm(),
+			sf<TP>()) << "cmatrix RQ (full mode)";
+    EXPECT_NEAR(TP(0.), (mh - h * s3).norm(), sf<TP>()) << "cmatrix RQ (full mode)";
+
+    mh.rq(s2, h);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) - h * ~h).norm(), sf<TP>()) << "cmatrix RQ (economy mode)";
+    EXPECT_NEAR(TP(0.), (mh - s2 * h).norm(), sf<TP>()) << "cmatrix RQ (economy mode)";
+}
+
+TYPED_TEST(LapackTest, TestRQSquareReal) {
+    basic_srmatrix<TP> m(3);
+    m.randomize(-100., 100.);
+    basic_srmatrix<TP> q(3), r(3);
+    m.rq(r, q);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(3) - ~q * q).norm(), sp<TP>()) << "srmatrix RQ";
+    EXPECT_NEAR(TP(0.), (m - r * q).norm(), sp<TP>()) << "srmatrix RQ";
+}
+
+TYPED_TEST(LapackTest, TestRQSquareComplex) {
+    basic_scmatrix<TP,TPC> m(3);
+    m.randomize_real(-10.0, 10.0);
+    m.randomize_imag(-10.0, 10.0);
+    basic_scmatrix<TP,TPC> q(3), r(3);
+    m.rq(r, q);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(3) - ~q * q).norm(), sp<TP>()) << "scmatrix RQ";
+    EXPECT_NEAR(TP(0.), (m - r * q).norm(), sp<TP>()) << "scmatrix RQ";
+}
+
+TYPED_TEST(LapackTest, TestRQBandReal) {
+    const int m = 10;
+    basic_srbmatrix<TP> A (m, 2, 3);
+    A.randomize(-10., 10.);
+    basic_srmatrix<TP> Q(m);
+    basic_srmatrix<TP> R(m);
+    A.rq(R, Q);
+    EXPECT_NEAR(TP(0.), (R * Q - A).norm(), sp<TP>()) << "srbmatrix RQ";
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(m) - ~Q * Q).norm(), sp<TP>()) << "srbmatrix RQ - Q";
+}
+
+TYPED_TEST(LapackTest, TestRQBandComplex) {
+    const int m = 10;
+    basic_scbmatrix<TP,TPC> A (m, 2, 3);
+    A.randomize_real(-10., 10.);
+    A.randomize_imag(-10., 10.);
+    basic_scmatrix<TP,TPC> Q(m);
+    basic_scmatrix<TP,TPC> R(m);
+    A.rq(R, Q);
+    EXPECT_NEAR(TP(0.), (R * Q - A).norm(), sp<TP>()) << "scbmatrix RQ";
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(m) - ~Q * Q).norm(), sp<TP>()) << "scbmatrix RQ - Q";
+}
+
+TYPED_TEST(LapackTest, TestRQSymmetricReal) {
+    const int m = 10;
+    basic_srsmatrix<TP> A (m);
+    A.randomize(-10., 10.);
+    basic_srmatrix<TP> Q(m);
+    basic_srmatrix<TP> R(m);
+    A.rq(R, Q);
+    EXPECT_NEAR(TP(0.), (R * Q - A).norm(), sp<TP>()) << "srsmatrix RQ";
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(m) - ~Q * Q).norm(), sp<TP>()) << "srsmatrix RQ - Q";
+}
+
+TYPED_TEST(LapackTest, TestRQHermitianComplex) {
+    const int m = 10;
+    basic_schmatrix<TP,TPC> A (m);
+    A.randomize_real(-10., 10.);
+    A.randomize_imag(-10., 10.);
+    basic_scmatrix<TP,TPC> Q(m);
+    basic_scmatrix<TP,TPC> R(m);
+    A.rq(R, Q);
+    EXPECT_NEAR(TP(0.), (R * Q - A).norm(), sp<TP>()) << "schmatrix RQ";
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(m) - ~Q * Q).norm(), sp<TP>()) << "schmatrix RQ - Q";
+}
+
+// 6.0 LQ
+TYPED_TEST(LapackTest, TestLQReal) {
+	const TP a[] = {1., 2., 3., 4., 5., 6.};
+    const basic_rmatrix<TP> mh(a, 2, 3);
+    const basic_rmatrix<TP> mv(a, 3, 2);
+    basic_srmatrix<TP> s2(2), s3(3);
+    basic_rmatrix<TP> h(2, 3), v(3, 2);
+
+    mh.lq(s2, h);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) - h * ~h).norm(), sf<TP>()) << "rmatrix LQ (economy)";
+    EXPECT_NEAR(TP(0.), (mh - s2 * h).norm(), sf<TP>()) << "rmatrix LQ (economy)";
+
+    mv.lq(s3, v);
+
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) -
+    		~basic_rmatrix<TP>(v,CVM0,CVM0,2,2) * basic_rmatrix<TP>(v,CVM0,CVM0,2,2)).norm(),
+			sf<TP>()) << "rmatrix LQ (economy)";
+    EXPECT_NEAR(TP(0.), (mv - s3 * v).norm(), sf<TP>()) << "rmatrix LQ (economy)";
+
+    mh.lq(h, s3);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(3) - s3 * ~s3).norm(), sf<TP>()) << "rmatrix LQ (full)";
+    EXPECT_NEAR(TP(0.), (mh - h * s3).norm(), sf<TP>()) << "rmatrix LQ (full)";
+
+    mv.lq(v, s2);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) - s2 * ~s2).norm(), sf<TP>()) << "rmatrix LQ (full)";
+    EXPECT_NEAR(TP(0.), (mv - v * s2).norm(), sf<TP>()) << "rmatrix LQ (full)";
+}
+
+TYPED_TEST(LapackTest, TestLQComplex) {
+	const TP ar[] = {1., 2., 3., 4., 5., 6.};
+	const TP ai[] = {1., -1., 2., -2., 3., -3.};
+    const basic_cmatrix<TP,TPC> mh(ar, ai, 2, 3);
+    const basic_cmatrix<TP,TPC> mv(ar, ai, 3, 2);
+    basic_scmatrix<TP,TPC> s2(2), s3(3);
+    basic_cmatrix<TP,TPC>  h(2, 3), v(3, 2);
+
+    mh.lq(s2, h);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) - h * ~h).norm(), sf<TP>()) << "cmatrix LQ (economy)";
+    EXPECT_NEAR(TP(0.), (mh - s2 * h).norm(), sf<TP>()) << "cmatrix LQ (economy)";
+
+    mv.lq(s3, v);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) -
+    		~basic_cmatrix<TP,TPC>(v,CVM0,CVM0,2,2) * basic_cmatrix<TP,TPC>(v,CVM0,CVM0,2,2)).norm(),
+			sf<TP>()) << "cmatrix LQ (economy)";
+    EXPECT_NEAR(TP(0.), (mv - s3 * v).norm(), sf<TP>()) << "cmatrix LQ (economy)";
+
+    mh.lq(h, s3);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(3) - s3 * ~s3).norm(), sf<TP>()) << "cmatrix LQ (full)";
+    EXPECT_NEAR(TP(0.), (mh - h * s3).norm(), sf<TP>()) << "cmatrix LQ (full)";
+
+    mv.lq(v, s2);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) - s2 * ~s2).norm(), sf<TP>()) << "cmatrix LQ (full)";
+    EXPECT_NEAR(TP(0.), (mv - v * s2).norm(), sf<TP>()) << "cmatrix LQ (full)";
+}
+
+TYPED_TEST(LapackTest, TestLQSquareReal) {
+	const TP a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
+    const basic_srmatrix<TP> m(a, 3);
+    basic_srmatrix<TP> l(3), q(3);
+    m.lq(l, q);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(3) - ~q * q).norm(), sp<TP>()) << "srmatrix LQ";
+    EXPECT_NEAR(TP(0.), (m - l * q).norm(), sp<TP>()) << "srmatrix LQ";
+}
+
+TYPED_TEST(LapackTest, TestLQSquareComplex) {
+	const TP ar[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
+	const TP ai[] = {1., -1., 2., -2., 3., -3., 4., -4., 5.};
+    const basic_scmatrix<TP,TPC> m(ar, ai, 3);
+    basic_scmatrix<TP,TPC> l(3), q(3);
+    m.lq(l, q);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(3) - ~q * q).norm(), sp<TP>()) << "scmatrix LQ";
+    EXPECT_NEAR(TP(0.), (m - l * q).norm(), sp<TP>()) << "scmatrix LQ";
+}
+
+TYPED_TEST(LapackTest, TestLQBandReal) {
+    const int m = 10;
+    basic_srbmatrix<TP> A (m, 2, 3);
+    A.randomize(-10., 10.);
+    basic_srmatrix<TP> L(m);
+    basic_srmatrix<TP> Q(m);
+    A.lq(L, Q);
+    EXPECT_NEAR(TP(0.), (L * Q - A).norm(), sp<TP>()) << "srbmatrix LQ";
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(m) - ~Q * Q).norm(), sp<TP>()) << "srbmatrix LQ - Q";
+}
+
+TYPED_TEST(LapackTest, TestLQBandComplex) {
+    const int m = 10;
+    basic_scbmatrix<TP,TPC> A (m, 2, 3);
+    A.randomize_real(-10., 10.);
+    A.randomize_imag(-10., 10.);
+    basic_scmatrix<TP,TPC> L(m);
+    basic_scmatrix<TP,TPC> Q(m);
+    A.lq(L, Q);
+    EXPECT_NEAR(TP(0.), (L * Q - A).norm(), sp<TP>()) << "scbmatrix LQ";
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(m) - ~Q * Q).norm(), sp<TP>()) << "scbmatrix LQ - Q";
+}
+
+TYPED_TEST(LapackTest, TestLQSymmetricReal) {
+    const int m = 10;
+    basic_srsmatrix<TP> A (m);
+    A.randomize(-10., 10.);
+    basic_srmatrix<TP> L(m);
+    basic_srmatrix<TP> Q(m);
+    A.lq(L, Q);
+    EXPECT_NEAR(TP(0.), (L * Q - A).norm(), sp<TP>()) << "srsmatrix LQ";
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(m) - ~Q * Q).norm(), sp<TP>()) << "srsmatrix LQ - Q";
+}
+
+TYPED_TEST(LapackTest, TestLQHermitianComplex) {
+    const int m = 10;
+    basic_schmatrix<TP,TPC> A (m);
+    A.randomize_real(-10., 10.);
+    A.randomize_imag(-10., 10.);
+    basic_scmatrix<TP,TPC> L(m);
+    basic_scmatrix<TP,TPC> Q(m);
+    A.lq(L, Q);
+    EXPECT_NEAR(TP(0.), (L * Q - A).norm(), sp<TP>()) << "schmatrix LQ";
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(m) - ~Q * Q).norm(), sp<TP>()) << "schmatrix LQ - Q";
+}
+
+// 6.0 QL
+TYPED_TEST(LapackTest, TestQLReal) {
+	const TP a[] = {1., 2., 3., 4., 5., 6.};
+    const basic_rmatrix<TP> mv(a, 3, 2);
+    basic_srmatrix<TP> s2(2), s3(3);
+    basic_rmatrix<TP> v(3, 2);
+
+    mv.ql(v, s2);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) - ~v * v).norm(), sf<TP>()) << "rmatrix QL (economy)";
+    EXPECT_NEAR(TP(0.), (mv - v * s2).norm(), sf<TP>()) << "rmatrix QL (economy)";
+
+    mv.ql(s3, v);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) -
+    		~basic_rmatrix<TP>(s3,CVM0,CVM0+1,3,2) * basic_rmatrix<TP>(s3,CVM0,CVM0+1,3,2)).norm(),
+			sf<TP>()) << "rmatrix QL (full)";
+    EXPECT_NEAR(TP(0.), (mv - s3 * v).norm(), sf<TP>()) << "rmatrix QL (full)";
+}
+
+TYPED_TEST(LapackTest, TestQLComplex) {
+	const TP ar[] = {1., 2., 3., 4., 5., 6.};
+    const TP ai[] = {1., -1., 2., -2., 3., -3.};
+    const basic_cmatrix<TP,TPC> mv(ar, ai, 3, 2);
+    basic_scmatrix<TP,TPC> s2(2), s3(3);
+    basic_cmatrix<TP,TPC> v(3, 2);
+
+    mv.ql(v, s2);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) - ~v * v).norm(), sf<TP>()) << "cmatrix QL (economy)";
+    EXPECT_NEAR(TP(0.), (mv - v * s2).norm(), sf<TP>()) << "cmatrix QL (economy)";
+
+    mv.ql(s3, v);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) -
+    		~basic_cmatrix<TP,TPC>(s3,CVM0,CVM0+1,3,2) * basic_cmatrix<TP,TPC>(s3,CVM0,CVM0+1,3,2)).norm(),
+			sf<TP>()) << "cmatrix QL (full)";
+    EXPECT_NEAR(TP(0.), (mv - s3 * v).norm(), sf<TP>()) << "cmatrix QL (full)";
+}
+
+TYPED_TEST(LapackTest, TestQLSquareReal) {
+	const TP a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
+    const basic_srmatrix<TP> m(a, 3);
+    basic_srmatrix<TP> l(3), q(3);
+    m.ql(q, l);
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(3) - ~q * q).norm(), sp<TP>()) << "srmatrix QL";
+    EXPECT_NEAR(TP(0.), (m - q * l).norm(), sp<TP>()) << "srmatrix QL";
+}
+
+TYPED_TEST(LapackTest, TestQLSquareComplex) {
+	const TP ar[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
+	const TP ai[] = {1., -1., 2., -2., 3., -3., 4., -4., 5.};
+    const basic_scmatrix<TP,TPC> m(ar, ai, 3);
+    basic_scmatrix<TP,TPC> l(3), q(3);
+    m.ql(q, l);
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(3) - ~q * q).norm(), sp<TP>()) << "scmatrix QL";
+    EXPECT_NEAR(TP(0.), (m - q * l).norm(), sp<TP>()) << "scmatrix QL";
+}
+
+TYPED_TEST(LapackTest, TestQLBandReal) {
+    const int m = 10;
+    basic_srbmatrix<TP> A (m, 2, 3);
+    A.randomize(-10., 10.);
+    basic_srmatrix<TP> L(m);
+    basic_srmatrix<TP> Q(m);
+    A.ql(Q, L);
+    EXPECT_NEAR(TP(0.), (Q * L - A).norm(), sp<TP>()) << "srbmatrix QL";
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(m) - ~Q * Q).norm(), sp<TP>()) << "srbmatrix QL - Q";
+}
+
+TYPED_TEST(LapackTest, TestQLBandComplex) {
+    const int m = 10;
+    basic_scbmatrix<TP,TPC> A (m, 2, 3);
+    A.randomize_real(-10., 10.);
+    A.randomize_imag(-10., 10.);
+    basic_scmatrix<TP,TPC> L(m);
+    basic_scmatrix<TP,TPC> Q(m);
+    A.ql(Q, L);
+    EXPECT_NEAR(TP(0.), (Q * L - A).norm(), sp<TP>()) << "scbmatrix QL";
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(m) - ~Q * Q).norm(), sp<TP>()) << "scbmatrix QL - Q";
+}
+
+TYPED_TEST(LapackTest, TestQLSymmetricReal) {
+    const int m = 10;
+    basic_srsmatrix<TP> A (m);
+    A.randomize(-10., 10.);
+    basic_srmatrix<TP> L(m);
+    basic_srmatrix<TP> Q(m);
+    A.ql(Q, L);
+    EXPECT_NEAR(TP(0.), (Q * L - A).norm(), sp<TP>()) << "srsmatrix QL";
+    EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(m) - ~Q * Q).norm(), sp<TP>()) << "srsmatrix QL - Q";
+}
+
+TYPED_TEST(LapackTest, TestQLHermitianComplex) {
+    const int m = 10;
+    basic_schmatrix<TP,TPC> A (m);
+    A.randomize_real(-10., 10.);
+    A.randomize_imag(-10., 10.);
+    basic_scmatrix<TP,TPC> L(m);
+    basic_scmatrix<TP,TPC> Q(m);
+    A.ql(Q, L);
+    EXPECT_NEAR(TP(0.), (Q * L - A).norm(), sp<TP>()) << "schmatrix QL";
+    EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(m) - ~Q * Q).norm(), sp<TP>()) << "schmatrix QL - Q";
+}
