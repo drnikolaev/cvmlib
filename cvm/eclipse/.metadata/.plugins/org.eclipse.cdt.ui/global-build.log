@@ -142,3 +142,512 @@ g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/incl
 g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testcvm.o ../../../test/testcvm.cpp 
 g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
 Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:29:42 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testcvm.o ../../../test/testcvm.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:30:24 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:32:10 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:33:02 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:37:12 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:39:49 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:41:29 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:42:54 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:43:51 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:45:42 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:47:04 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:50:02 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:54:42 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:56:38 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+13:59:06 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:01:15 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:03:02 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:04:09 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:05:11 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:07:04 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:07:49 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:10:32 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+../../../test/testLapack.cpp: In member function ‘virtual void LapackTest_TestGelsomplexVector_Test<gtest_TypeParam_>::TestBody()’:
+../../../test/testLapack.cpp:1559:5: error: ‘TPCcErr’ was not declared in this scope
+     TPCcErr;
+     ^
+../../../test/testLapack.cpp:1567:50: error: ‘cErr’ was not declared in this scope
+     basic_cvector<TP,TPC> xn = a.gels(false, bn, cErr);
+                                                  ^
+Info: Nothing to build for cvm
+14:11:28 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:13:14 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+../../../test/testLapack.cpp: In member function ‘virtual void LapackTest_TestGelsomplexVector2_Test<gtest_TypeParam_>::TestBody()’:
+../../../test/testLapack.cpp:1610:5: error: ‘TPCcErr’ was not declared in this scope
+     TPCcErr;
+     ^
+../../../test/testLapack.cpp:1618:50: error: ‘cErr’ was not declared in this scope
+     basic_cvector<TP,TPC> xn = a.gels(false, bn, cErr);
+                                                  ^
+Info: Nothing to build for cvm
+14:13:23 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:16:01 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:18:42 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:20:31 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:24:00 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testcvm.o ../../../test/testcvm.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:26:00 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:28:28 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:57:15 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+14:59:09 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:01:05 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testcvm.o ../../../test/testcvm.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:06:27 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:08:33 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:12:00 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testInitialization.o ../../../test/testInitialization.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:14:43 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testcvm.o ../../../test/testcvm.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testInitialization.o ../../../test/testInitialization.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:18:34 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:20:01 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:21:55 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:25:05 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:26:12 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:42:54 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testcvm.o ../../../test/testcvm.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:44:15 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:48:52 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testcvm.o ../../../test/testcvm.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+../../../test/testLapack.cpp: In instantiation of ‘void LapackTest_TestGenEigComplex_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = double]’:
+../../../test/testLapack.cpp:2148:1:   required from here
+../../../test/testLapack.cpp:2104:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2110:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2115:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2123:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2128:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2136:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2141:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp: In instantiation of ‘void LapackTest_TestGenEigComplex_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = float]’:
+../../../test/testLapack.cpp:2148:1:   required from here
+../../../test/testLapack.cpp:2104:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2110:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2115:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2123:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2128:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2136:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2141:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+Info: Nothing to build for cvm
+15:49:35 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+../../../test/testLapack.cpp: In member function ‘virtual void LapackTest_TestGenEigComplex_Test<gtest_TypeParam_>::TestBody()’:
+../../../test/testLapack.cpp:2104:13: error: ‘mod’ is not a member of ‘std’
+         if (std::mod(beta[CVM0+i]) > spp<TP>()) {
+             ^
+../../../test/testLapack.cpp: In instantiation of ‘void LapackTest_TestGenEigComplex_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = double]’:
+../../../test/testLapack.cpp:2148:1:   required from here
+../../../test/testLapack.cpp:2110:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2115:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2123:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2128:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2136:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2141:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp: In instantiation of ‘void LapackTest_TestGenEigComplex_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = float]’:
+../../../test/testLapack.cpp:2148:1:   required from here
+../../../test/testLapack.cpp:2110:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2115:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2123:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2128:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2136:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2141:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+Info: Nothing to build for cvm
+15:50:12 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+../../../test/testLapack.cpp: In instantiation of ‘void LapackTest_TestGenEigComplex_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = double]’:
+../../../test/testLapack.cpp:2148:1:   required from here
+../../../test/testLapack.cpp:2110:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2115:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2123:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2128:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2136:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2141:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp: In instantiation of ‘void LapackTest_TestGenEigComplex_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = float]’:
+../../../test/testLapack.cpp:2148:1:   required from here
+../../../test/testLapack.cpp:2110:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2115:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2123:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2128:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2136:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+../../../test/testLapack.cpp:2141:29: error: ‘mod’ was not declared in this scope
+         if (mod(beta[CVM0+i]) > spp<TP>()) {
+                             ^
+Info: Nothing to build for cvm
+15:50:46 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+15:55:59 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testcvm.o ../../../test/testcvm.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm
+16:44:10 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testMisc.o ../../../test/testMisc.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testFunctional.o ../../../test/testFunctional.cpp 
+../../../test/testFunctional.cpp: In member function ‘virtual void FunctionalTest_TestMoveFVector_Test<gtest_TypeParam_>::TestBody()’:
+../../../test/testFunctional.cpp:27:5: error: ‘basic_rfvector’ was not declared in this scope
+     basic_rfvector<TP> fa(sa);
+     ^
+../../../test/testFunctional.cpp:27:22: error: expected primary-expression before ‘>’ token
+     basic_rfvector<TP> fa(sa);
+                      ^
+../../../test/testFunctional.cpp:27:29: error: there are no arguments to ‘fa’ that depend on a template parameter, so a declaration of ‘fa’ must be available [-fpermissive]
+     basic_rfvector<TP> fa(sa);
+                             ^
+../../../test/testFunctional.cpp:27:29: note: (if you use ‘-fpermissive’, G++ will accept your code, but allowing the use of an undeclared name is deprecated)
+../../../test/testFunctional.cpp:28:22: error: expected primary-expression before ‘>’ token
+     basic_rfvector<TP> fb(fa+fa);
+                      ^
+../../../test/testFunctional.cpp:28:27: error: ‘fa’ was not declared in this scope
+     basic_rfvector<TP> fb(fa+fa);
+                           ^
+../../../test/testFunctional.cpp:28:32: error: there are no arguments to ‘fb’ that depend on a template parameter, so a declaration of ‘fb’ must be available [-fpermissive]
+     basic_rfvector<TP> fb(fa+fa);
+                                ^
+../../../test/testFunctional.cpp:35:5: error: ‘fb’ was not declared in this scope
+     fb.value(x, y);
+     ^
+../../../test/testFunctional.cpp:44:22: error: expected primary-expression before ‘>’ token
+     basic_rfvector<TP> fc = fb + fa;
+                      ^
+../../../test/testFunctional.cpp:44:24: error: ‘fc’ was not declared in this scope
+     basic_rfvector<TP> fc = fb + fa;
+                        ^
+../../../test/testFunctional.cpp: In instantiation of ‘void FunctionalTest_TestMoveFVector_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = double]’:
+../../../test/testFunctional.cpp:47:1:   required from here
+../../../test/testFunctional.cpp:27:29: error: ‘fa’ was not declared in this scope
+     basic_rfvector<TP> fa(sa);
+                             ^
+../../../test/testFunctional.cpp:28:32: error: ‘fb’ was not declared in this scope
+     basic_rfvector<TP> fb(fa+fa);
+                                ^
+../../../test/testFunctional.cpp: In instantiation of ‘void FunctionalTest_TestMoveFVector_Test<gtest_TypeParam_>::TestBody() [with gtest_TypeParam_ = float]’:
+../../../test/testFunctional.cpp:47:1:   required from here
+../../../test/testFunctional.cpp:27:29: error: ‘fa’ was not declared in this scope
+     basic_rfvector<TP> fa(sa);
+                             ^
+../../../test/testFunctional.cpp:28:32: error: ‘fb’ was not declared in this scope
+     basic_rfvector<TP> fb(fa+fa);
+                                ^
+Info: Nothing to build for cvm
+16:52:44 **** Incremental Build of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testFunctional.o ../../../test/testFunctional.cpp 
+g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testFunctional.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm_test

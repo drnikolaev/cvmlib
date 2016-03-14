@@ -3457,3 +3457,43 @@ TYPED_TEST(InitializationTest, TestVectorOfMatrixComplex) {
     EXPECT_EQ(TPC(1., -1.), vcm[0](CVM0, CVM0+1)) << "std::vector<cmatrix>[][][]";
 }
 
+// 5.5.1 coverage
+TYPED_TEST(InitializationTest, TestCoverage) {
+    basic_cvector<TP,TPC> v(5);
+    v.set_real(3.45);
+    v.set_imag(-4.17);
+    EXPECT_EQ(TPC(TP(3.45), TP(-4.17)), v(CVM0)) << "cvector set_real set_image";
+    EXPECT_EQ(TPC(TP(3.45), TP(-4.17)), v[CVM0+4]) << "cvector set_real set_image";
+
+    basic_cmatrix<TP,TPC> m(4, 5);
+    m.set_real(3.45);
+    m.set_imag(-4.17);
+    EXPECT_EQ(TPC(TP(3.45), TP(-4.17)), m(CVM0, CVM0+2)) << "cmatrix set_real set_image";
+    EXPECT_EQ(TPC(TP(3.45), TP(-4.17)), m[CVM0+3][CVM0+4]) << "cmatrix set_real set_image";
+
+    basic_scmatrix<TP,TPC> sm(5);
+    sm.set_real(3.45);
+    sm.set_imag(-4.17);
+    EXPECT_EQ(TPC(TP(3.45), TP(-4.17)), sm(CVM0, CVM0+2)) << "scmatrix set_real set_image";
+    EXPECT_EQ(TPC(TP(3.45), TP(-4.17)), sm[CVM0+4][CVM0+4]) << "scmatrix set_real set_image";
+
+    basic_scbmatrix<TP,TPC> bm(5, 1, 2);
+    bm.set_real(3.45);
+    bm.set_imag(-4.17);
+    EXPECT_EQ(TPC(TP(3.45), TP(-4.17)), bm(CVM0, CVM0+2)) << "scbmatrix set_real set_image";
+    EXPECT_EQ(TPC(TP(3.45), TP(-4.17)), bm[CVM0+4][CVM0+4]) << "scbmatrix set_real set_image";
+
+    basic_schmatrix<TP,TPC> hm(5);
+    hm.set_real(3.45);
+    EXPECT_EQ(TPC(3.45,0.), hm(CVM0, CVM0+2)) << "schmatrix set_real";
+
+    bool ex = false;
+    try {
+        hm.set_imag(-4.17);
+    }
+    catch (cvmexception&)
+    {
+        ex = true;
+    }
+    EXPECT_TRUE(ex) << "schmatrix set_image not allowed";
+}

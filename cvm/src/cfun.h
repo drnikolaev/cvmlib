@@ -11625,7 +11625,7 @@ prints
 @brief Constructor
 
 Creates <tt>m</tt>-by-<tt>n</tt> matrix of parameterized functions.
-Each function element is ininialized using appropriate string as
+Each function element is initialized using appropriate string as
 parameterless input in Wolfram's Mathematica syntax <tt>{var1[,var2,...]} expr</tt>.
 For expression syntax look at \ref basic_function description.
 %Matrix elements are initialized column by column.

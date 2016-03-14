@@ -8,7 +8,6 @@
 
 #include "StdAfx.h"
 #include "test.h"
-//#include <iostream>
 
 template <typename T>
 class MiscTest : public ::testing::Test {
@@ -24,9 +23,9 @@ TYPED_TEST(MiscTest, TestPrintProxy) {
     m(CVM0,CVM0) = 1.234;
     char buf[32];
 #if defined (_MSC_VER) && !defined(__INTEL_COMPILER)
-    sprintf_s (buf, sizeof(buf), "%.3f", m(CVM0,CVM0).val());  // use .val to printf type_proxy!
+    sprintf_s(buf, sizeof(buf), "%.3f", m(CVM0,CVM0).val());  // use .val to printf type_proxy!
 #else
-    sprintf (buf, "%.3f", m(CVM0,CVM0).val());  // use .val to printf type_proxy!
+    sprintf(buf, "%.3f", m(CVM0,CVM0).val());  // use .val to printf type_proxy!
 #endif
     EXPECT_STREQ("1.234", buf);
 }
