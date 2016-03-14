@@ -269,7 +269,8 @@ TYPED_TEST(BlasTest, TestBandMatrixGbmvComplex) {
 
 TYPED_TEST(BlasTest, TestSymmetricMatrixPolynom1) {
     TP a[] = {1., 2., 1., 2., 0., -1., 1., -1., 2.};
-    TP av[] = {2.2, 1.3, 1.1, -0.9, 0.2, -0.45, 45., -30., 10., 3., 3.2};
+    TP av[] = {TP(2.2), TP(1.3), TP(1.1), TP(-0.9), TP(0.2),
+        TP(-0.45), TP(45.), TP(-30.), TP(10.), TP(3.), TP(3.2)};
     const basic_rvector<TP> v(av, 11);
     const basic_srsmatrix<TP> m(a, 3);
     const basic_srsmatrix<TP> mp = m.polynom (v);
@@ -288,7 +289,8 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom1) {
     TP a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
               0., 3., -1., -2., 0., -3., 3., 0.};
     basic_schmatrix<TP,TPC> m{(TPC*)a, 3};
-    TP re[] = {2.2, 1.3, 1.1, -0.9, 0.2, -0.45, 45., -30., 10., 3., 1.13};
+    TP re[] = {TP(2.2), TP(1.3), TP(1.1), TP(-0.9), TP(0.2),
+        TP(-0.45), TP(45.), TP(-30.), TP(10.), TP(3.), TP(1.13)};
     const basic_rvector<TP> vr{re, 11};
     basic_schmatrix<TP,TPC> mp{3};
     mp.polynom (m, vr);
@@ -316,7 +318,8 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom2) {
     TP a[] = {1., 0., 2., 1., -1., 2., 2., -1., 2., 0.,
               0., 3., -1., -2., 0., -3., 3., 0.};
     basic_schmatrix<TP,TPC> m{(TPC*)a, 3};
-    TP re[] = {2.2, 1.3, 1.1, -0.9, 0.2, -0.45, 45., -30., 10., 3., 1.13};
+    TP re[] = {TP(2.2), TP(1.3), TP(1.1), TP(-0.9), TP(0.2),
+        TP(-0.45), TP(45.), TP(-30.), TP(10.), TP(3.), TP(1.13)};
     TP im[] = {0.5, -2, 0, 1, 3, -3., 30., 0., -9., 0., 1.};
     const basic_cvector<TP,TPC> vc{re, im, 11};
     basic_scmatrix<TP,TPC> mp{3};

@@ -3328,7 +3328,7 @@ TYPED_TEST(InitializationTest, TestBandAssignReal) {
     basic_srmatrix<TP> s(9);
     basic_srbmatrix<TP> m(3, 0, 1);
     for (int i = 1; i <= 9; ++i) {
-        s[i - (1 - CVM0)].set(i);
+        s[i - (1 - CVM0)].set(TP(i));
     }
     m.assign(s(CVM0+8));     // should be 1, 2, ..9
     EXPECT_EQ(TP(2.), m(CVM0, CVM0)) << "rmatrix.assign(vector)";
@@ -3344,7 +3344,7 @@ TYPED_TEST(InitializationTest, TestBandAssignComplex) {
     basic_scmatrix<TP,TPC> s(9);
     basic_scbmatrix<TP,TPC> m(3, 1, 1);
     for (int i = 1; i <= 9; ++i) {
-        s[i - (1 - CVM0)].set(TPC(i,-i));
+        s[i - (1 - CVM0)].set(TPC(TP(i), TP(-i)));
     }
     m.assign(s(CVM0+8));     // should be 1, 2, ..9
     EXPECT_EQ(TPC(2., -2.), m(CVM0, CVM0)) << "scbmatrix.assign(vector)";
@@ -3363,7 +3363,7 @@ TYPED_TEST(InitializationTest, TestAssignReal) {
     basic_rmatrix<TP> mbig(30, 30);
     basic_rmatrix<TP> m(mbig, 4, 7, 3, 3);
     for (int i = 1; i <= 9; ++i) {
-        s[i - (1 - CVM0)].set(i);
+        s[i - (1 - CVM0)].set(TP(i));
     }
     m.assign(s(CVM0+8));     // should be 1, 2, ..9
     EXPECT_EQ(TP(1.), m(CVM0, CVM0)) << "rmatrix.assign(vector)";
@@ -3380,7 +3380,7 @@ TYPED_TEST(InitializationTest, TestSquareAssignReal) {
     basic_srmatrix<TP> mbig(20);
     basic_srmatrix<TP> m(mbig, 4, 7, 3);
     for (int i = 1; i <= 9; ++i) {
-        s[i - (1 - CVM0)].set(i);
+        s[i - (1 - CVM0)].set(TP(i));
     }
     m.assign(s(CVM0+8));     // should be 1, 2, ..9
     EXPECT_EQ(TP(1.), m(CVM0, CVM0)) << "srmatrix.assign(vector)";
@@ -3397,7 +3397,7 @@ TYPED_TEST(InitializationTest, TestAssignComplex) {
     basic_cmatrix<TP,TPC> mbig(30, 30);
     basic_cmatrix<TP,TPC> m(mbig, 4, 7, 3, 3);
     for (int i = 1; i <= 9; ++i) {
-        s[i - (1 - CVM0)].set(TPC(i,-i));
+        s[i - (1 - CVM0)].set(TPC(TP(i),TP(-i)));
     }
     m.assign(s(CVM0+8));     // should be 1, 2, ..9
     EXPECT_EQ(TPC(1., -1.), m(CVM0, CVM0)) << "cmatrix.assign(vector)";
