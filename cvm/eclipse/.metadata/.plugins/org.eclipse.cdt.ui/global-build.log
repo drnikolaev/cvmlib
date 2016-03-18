@@ -651,3 +651,27 @@ g++ -L/home/snikolaev/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/l
 Info: Nothing to build for cvm
 Info: Nothing to build for cvm_test
 Info: Nothing to build for cvm_test
+19:29:46 **** Rebuild of configuration Debug for project cvm ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o src/scmatrix.o ../../../src/scmatrix.cpp 
+g++ -std=c++0x -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o src/srmatrix.o ../../../src/srmatrix.cpp 
+g++ -std=c++0x -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o src/utils.o ../../../src/utils.cpp 
+g++ -std=c++0x -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o src/globals.o ../../../src/globals.cpp 
+g++ -std=c++0x -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o src/cvector.o ../../../src/cvector.cpp 
+g++ -std=c++0x -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o src/rvector.o ../../../src/rvector.cpp 
+g++ -std=c++0x -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o src/rmatrix.o ../../../src/rmatrix.cpp 
+g++ -std=c++0x -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o src/arrays.o ../../../src/arrays.cpp 
+g++ -std=c++0x -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o src/cmatrix.o ../../../src/cmatrix.cpp 
+g++ -L/home/snikolaev/CODE/caffe/cnmem -L/usr/local/lib -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L/usr/lib/libblas -L../../../../lib64/linux/gf -L../../../../lib64 -shared -o libcvm.so src/arrays.o src/cmatrix.o src/cvector.o src/globals.o src/rmatrix.o src/rvector.o src/scmatrix.o src/srmatrix.o src/utils.o -lpthread -llapack_em64t_debug -lblas_em64t_debug -lftn_em64t_debug 
+19:30:15 **** Rebuild of configuration Debug for project cvm_test ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testfun.o ../../../test/testfun.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testcvm.o ../../../test/testcvm.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testmain.o ../../../test/testmain.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testMisc.o ../../../test/testMisc.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testBlas.o ../../../test/testBlas.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testInitialization.o ../../../test/testInitialization.cpp 
+g++ -std=c++0x -I/home/snikolaev/CODE/caffe/cnmem/include -I/usr/local/cuda/include -I/home/snikolaev/repo/sw/gpgpu/MachineLearning/cudnn_v4/src -I../../../../gtest/googletest/include -O0 -g3 -Wall -c -fmessage-length=0 -fPIC -o test/testLapack.o ../../../test/testLapack.cpp 
+g++ -L/home/sam/cvmlib/cvm/eclipse/cvm/Debug -L/usr/local/lib -L/usr/lib/libblas -L/home/snikolaev/CODE/caffe/cnmem -L/home/snikolaev/repo/sw/gpgpu/install/cuda/lib64 -L../../../../gtest -L../../cvm/Debug -o cvm_test test/testBlas.o test/testInitialization.o test/testLapack.o test/testMisc.o test/testcvm.o test/testfun.o test/testmain.o -lgtest -lcvm -lpthread -lgfortran 
+Info: Nothing to build for cvm_test
+Info: Nothing to build for cvm_test
