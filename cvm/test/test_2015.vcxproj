@@ -215,6 +215,7 @@
     <ClCompile Include="testBlas.cpp" />
     <ClCompile Include="testcvm.cpp" />
     <ClCompile Include="testfun.cpp" />
+    <ClCompile Include="testFunctional.cpp" />
     <ClCompile Include="testInitialization.cpp" />
     <ClCompile Include="testLapack.cpp" />
     <ClCompile Include="testmain.cpp" />

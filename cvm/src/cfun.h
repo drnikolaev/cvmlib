@@ -100,31 +100,36 @@
 // find* functions failure code
 #define CFUN_NOT_FOUND              size_t(~0)
 
-#if defined(CVM_FLOAT)
-#   define             CFUN_M_ZERO                         0.F
-#   define             CFUN_M_ONE                          1.F
-#   define             CFUN_M_TWO                          2.F
-#   define             CFUN_M_MONE                         -1.F
-#   define             CFUN_M_HALF                         0.5F
-#   define             CFUN_M_E                            2.7182818284590452353602874713527F
-#   define             CFUN_M_LN2                          0.69314718055994530941723212145818F
-#   define             CFUN_M_PI                           3.1415926535897932384626433832795F
-#   define             CFUN_M_PI_2                         1.5707963267948966192313216916398F
-#   define             CFUN_M_LN_10                        2.3025850929940456840179914546844F
-#   define             CFUN_M_GAMMA                        0.57721566490153286060651209008240243F
-#else
-#   define             CFUN_M_ZERO                         0.L
-#   define             CFUN_M_ONE                          1.L
-#   define             CFUN_M_TWO                          2.L
-#   define             CFUN_M_MONE                         -1.L
-#   define             CFUN_M_HALF                         0.5L
-#   define             CFUN_M_E                            2.7182818284590452353602874713527L
-#   define             CFUN_M_LN2                          0.69314718055994530941723212145818L
-#   define             CFUN_M_PI                           3.1415926535897932384626433832795L
-#   define             CFUN_M_PI_2                         1.5707963267948966192313216916398L
-#   define             CFUN_M_LN_10                        2.3025850929940456840179914546844L
-#   define             CFUN_M_GAMMA                        0.57721566490153286060651209008240243L
-#endif
+//#if defined(CVM_FLOAT)
+//#   define             CFUN_M_ZERO                         0.F
+//#   define             CFUN_M_ONE                          1.F
+//#   define             CFUN_M_TWO                          2.F
+//#   define             CFUN_M_MONE                         -1.F
+//#   define             CFUN_M_HALF                         0.5F
+//#   define             CFUN_M_E                            2.7182818284590452353602874713527F
+//#   define             CFUN_M_LN2                          0.69314718055994530941723212145818F
+//#   define             CFUN_M_PI                           3.1415926535897932384626433832795F
+//#   define             CFUN_M_PI_2                         1.5707963267948966192313216916398F
+//#   define             CFUN_M_LN_10                        2.3025850929940456840179914546844F
+//#   define             CFUN_M_GAMMA                        0.57721566490153286060651209008240243F
+//#else
+#   define             CFUN_M_ZERO                         0.
+#   define             CFUN_M_ONE                          1.
+#   define             CFUN_M_TWO                          2.
+#   define             CFUN_M_MONE                         -1.
+#   define             CFUN_M_HALF                         0.5
+#   define             CFUN_M_E                            2.7182818284590452353602874713527
+#   define             CFUN_M_LN2                          0.69314718055994530941723212145818
+#   define             CFUN_M_PI                           3.1415926535897932384626433832795
+#   define             CFUN_M_PI_2                         1.5707963267948966192313216916398
+#   define             CFUN_M_LN_10                        2.3025850929940456840179914546844
+#   define             CFUN_M_GAMMA                        0.57721566490153286060651209008240243
+//#endif
+
+template <typename T>
+constexpr T cfun_two() {
+    return sizeof(T) <= 4 ? 2.F : 2.;
+}
 
 #define                CFUN_OK                            CVM_OK
 #define                CFUN_PARSEERROR                    CVM_THE_LAST_ERROR_CODE + 1  //!< Error code for "Error while parsing \'%s\' for variables %s"
@@ -215,7 +220,7 @@ public:
         T xa = cvm::_abs(x);
 
         if (xa > CFUN_M_TWO) {
-            si = CFUN_M_PI_2 + e1(xa, eps).imag();
+            si = T(CFUN_M_PI_2) + e1(xa, eps).imag();
         }
         else {
             si = xa;
@@ -268,7 +273,7 @@ public:
                     throw cvmexception(CFUN_CONVERGENCEERROR, "cosint", x);
                 }
             }
-            ci += log(x) + CFUN_M_GAMMA;
+            ci += log(x) + T(CFUN_M_GAMMA);
         }
         return ci;
     }
@@ -279,8 +284,8 @@ public:
         static const TC c1(CFUN_M_ONE, CFUN_M_ZERO);
         static const TC c2(CFUN_M_TWO, CFUN_M_ZERO);
         TC a;
-        TC b(CFUN_M_ONE, x);
-        TC c(CFUN_M_ONE / (eps * eps), CFUN_M_ZERO);
+        TC b(T(CFUN_M_ONE), x);
+        TC c(T(CFUN_M_ONE) / (eps * eps), T(CFUN_M_ZERO));
         TC d(c1 / b);
         TC e(d);
 
@@ -1708,7 +1713,7 @@ protected:
         }
         if (fCopy[0]->_equals(fCopy[1]))
         {                                                                   // x+x = 2*x
-            return std::make_shared<Fmult<T>>(std::make_shared<Fconst<T>>(CFUN_M_TWO), fCopy[0])->_simp();
+            return std::make_shared<Fmult<T>>(std::make_shared<Fconst<T>>(cfun_two<T>()), fCopy[0])->_simp();
         }
 
         for (i = 0; i <= 1; ++i)
@@ -4387,8 +4392,8 @@ protected:
         static U _value(const BaseFunction<U>* pfArg, const U* pdVars)
         {
             const U dV = pfArg->_value(pdVars);
-            return dV > CFUN_M_ZERO ? CFUN_M_ONE :
-                                      (dV < CFUN_M_ZERO ? CFUN_M_MONE : CFUN_M_ZERO);
+            return U(dV > CFUN_M_ZERO ? CFUN_M_ONE :
+                                        (dV < CFUN_M_ZERO ? CFUN_M_MONE : CFUN_M_ZERO));
         }
     };
 
@@ -4564,7 +4569,7 @@ protected:
         static U _value(const BaseFunction<U>* pfArg0, const BaseFunction<U>* pfArg1, const U* pdVars)
         {
             return cvm::_abs(pfArg0->_value(pdVars) - pfArg1->_value(pdVars)) <= basic_cvmMachMin<U>() ?
-                   basic_cvmMachMax<U>() : CFUN_M_ZERO;
+                   basic_cvmMachMax<U>() : U(CFUN_M_ZERO);
         }
     };
 
