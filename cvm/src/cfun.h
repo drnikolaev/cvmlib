@@ -9259,10 +9259,11 @@ protected:
 @see basic_fvector
 @see cfvector
 */
-class rfvector : public basic_fvector<treal>
+template <typename TR>
+class basic_rfvector : public basic_fvector<TR>
 {
 protected:
-    typedef basic_fvector<treal> BaseFVector; //!< Base class
+    typedef basic_fvector<TR> BaseFVector; //!< Base class
 
 public:
 /**
@@ -9270,7 +9271,7 @@ public:
 
 Creates empty vector of functions. No memory gets allocated.
 */
-    rfvector()
+    basic_rfvector()
       : BaseFVector()
     {
     }
@@ -9294,7 +9295,7 @@ prints
 \endcode
 @param[in] nSize Number of functions in array.
 */
-    explicit rfvector(size_t nSize)
+    explicit basic_rfvector(size_t nSize)
       : BaseFVector(nSize)
     {
     }
@@ -9335,7 +9336,7 @@ prints
 \endcode
 @param[in] saInput Array of strings.
 */
-    explicit rfvector(const string_array& saInput)
+    explicit basic_rfvector(const string_array& saInput)
       : BaseFVector(saInput)
     {
     }
@@ -9385,7 +9386,7 @@ prints
 @param[in] saParameters String array with parameters (may be empty).
 @param[in] saMeanings String array with parameters' meanings (may be empty, must have the same size as saParameters).
 */
-    rfvector(const string_array& saVars, const string_array& saBodies,
+    basic_rfvector(const string_array& saVars, const string_array& saBodies,
                   const string_array& saParameters, const string_array& saMeanings)
       : BaseFVector(saVars, saBodies, saParameters, saMeanings)
     {
@@ -9397,7 +9398,7 @@ prints
 Creates copy of vector of functions referred by <tt>fv</tt>.
 @param[in] fv Vector of functions (\ref rfvector or \ref cfvector) to copy from.
 */
-    rfvector(const BaseFVector& fv)
+    basic_rfvector(const BaseFVector& fv)
       : BaseFVector(fv)
     {
     }
@@ -9405,7 +9406,7 @@ Creates copy of vector of functions referred by <tt>fv</tt>.
 /**
 @brief Move Constructor
 */
-    rfvector(BaseFVector&& fv)
+    basic_rfvector(BaseFVector&& fv)
       : BaseFVector(std::move(fv))
     {
     }
@@ -9438,8 +9439,8 @@ prints
 \endcode
 @return vector of functions' values.
 */
-    rvector operator () () const {
-        rvector ret((tint)this->size());
+    basic_rvector<TR> operator () () const {
+        basic_rvector<TR> ret((tint)this->size());
         this->value(ret);
         return ret;
     }
@@ -9474,8 +9475,8 @@ prints
 @param[in] d variable's value.
 @return vector of functions' values.
 */
-    rvector operator () (treal d) const {
-        rvector ret((tint)this->size());
+    basic_rvector<TR> operator () (TR d) const {
+        basic_rvector<TR> ret((tint)this->size());
         this->value(d, ret);
         return ret;
     }
@@ -9511,8 +9512,8 @@ prints
 @param[in] d2 Second variable's value.
 @return vector of functions' values.
 */
-    rvector operator () (treal d1, treal d2) const {
-        rvector ret((tint)this->size());
+    basic_rvector<TR> operator () (TR d1, TR d2) const {
+        basic_rvector<TR> ret((tint)this->size());
         this->value(d1, d2, ret);
         return ret;
     }
@@ -9549,8 +9550,8 @@ prints
 @param[in] d3 Third variable's value.
 @return vector of functions' values.
 */
-    rvector operator () (treal d1, treal d2, treal d3) const {
-        rvector ret((tint)this->size());
+    basic_rvector<TR> operator () (TR d1, TR d2, TR d3) const {
+        basic_rvector<TR> ret((tint)this->size());
         this->value(d1, d2, d3, ret);
         return ret;
     }
@@ -9590,8 +9591,8 @@ prints
 @param[in] pd array of variables' values.
 @return vector of functions' values.
 */
-    rvector operator () (const treal* pd) const {
-        rvector ret((tint)this->size());
+    basic_rvector<TR> operator () (const TR* pd) const {
+        basic_rvector<TR> ret((tint)this->size());
         this->value(pd, ret);
         return ret;
     }
@@ -9604,10 +9605,11 @@ prints
 @see basic_fvector
 @see rfvector
 */
-class cfvector : public basic_fvector<tcomplex>
+template <typename TR, typename TC>
+class basic_cfvector : public basic_fvector<TC>
 {
 protected:
-    typedef basic_fvector<tcomplex> BaseFVector; //!< Base class
+    typedef basic_fvector<TC> BaseFVector; //!< Base class
 
 public:
 /**
@@ -9615,7 +9617,7 @@ public:
 
 Creates empty vector of functions. No memory gets allocated.
 */
-    cfvector()
+    basic_cfvector()
       : BaseFVector()
     {
     }
@@ -9639,7 +9641,7 @@ prints
 \endcode
 @param[in] nSize Number of functions in array.
 */
-    explicit cfvector(size_t nSize)
+    explicit basic_cfvector(size_t nSize)
       : BaseFVector(nSize)
     {
     }
@@ -9680,7 +9682,7 @@ prints
 \endcode
 @param[in] saInput Array of strings.
 */
-    explicit cfvector(const string_array& saInput)
+    explicit basic_cfvector(const string_array& saInput)
       : BaseFVector(saInput)
     {
     }
@@ -9730,7 +9732,7 @@ prints
 @param[in] saParameters String array with parameters (may be empty).
 @param[in] saMeanings String array with parameters' meanings (may be empty, must have the same size as saParameters).
 */
-    cfvector(const string_array& saVars, const string_array& saBodies,
+    basic_cfvector(const string_array& saVars, const string_array& saBodies,
                   const string_array& saParameters, const string_array& saMeanings)
       : BaseFVector(saVars, saBodies, saParameters, saMeanings)
     {
@@ -9742,7 +9744,7 @@ prints
 Creates copy of vector of functions referred by <tt>fv</tt>.
 @param[in] fv Vector of functions (\ref rfvector or \ref cfvector) to copy from.
 */
-    cfvector(const BaseFVector& fv)
+    basic_cfvector(const BaseFVector& fv)
       : BaseFVector(fv)
     {
     }
@@ -9750,7 +9752,7 @@ Creates copy of vector of functions referred by <tt>fv</tt>.
 /**
 @brief Move Constructor
 */
-    cfvector(BaseFVector&& fv)
+    basic_cfvector(BaseFVector&& fv)
       : BaseFVector(std::move(fv))
     {
     }
@@ -9782,8 +9784,8 @@ prints
 (4,0) (9,0)
 \endcode
 */
-    cvector operator () () const {
-        cvector ret((tint)this->size());
+    basic_cvector<TR,TC> operator () () const {
+        basic_cvector<TR,TC> ret((tint)this->size());
         this->value(ret);
         return ret;
     }
@@ -9818,8 +9820,8 @@ prints
 @param[in] d variable's value.
 @return vector of functions' values.
 */
-    cvector operator () (tcomplex d) const {
-        cvector ret((tint)this->size());
+    basic_cvector<TR,TC> operator () (TC d) const {
+        basic_cvector<TR,TC> ret((tint)this->size());
         this->value(d, ret);
         return ret;
     }
@@ -9855,8 +9857,8 @@ prints
 @param[in] d2 Second variable's value.
 @return vector of functions' values.
 */
-    cvector operator () (tcomplex d1, tcomplex d2) const {
-        cvector ret((tint)this->size());
+    basic_cvector<TR,TC> operator () (TC d1, TC d2) const {
+        basic_cvector<TR,TC> ret((tint)this->size());
         this->value(d1, d2, ret);
         return ret;
     }
@@ -9893,8 +9895,8 @@ prints
 @param[in] d3 Third variable's value.
 @return vector of functions' values.
 */
-    cvector operator () (tcomplex d1, tcomplex d2, tcomplex d3) const {
-        cvector ret((tint)this->size());
+    basic_cvector<TR,TC> operator () (TC d1, TC d2, TC d3) const {
+        basic_cvector<TR,TC> ret((tint)this->size());
         this->value(d1, d2, d3, ret);
         return ret;
     }
@@ -9934,8 +9936,8 @@ prints
 @param[in] pd array of variables' values.
 @return vector of functions' values.
 */
-    cvector operator () (const tcomplex* pd) const {
-        cvector ret((tint)this->size());
+    basic_cvector<TR,TC> operator () (const TC* pd) const {
+        basic_cvector<TR,TC> ret((tint)this->size());
         this->value(pd, ret);
         return ret;
     }
@@ -11539,10 +11541,11 @@ Fortran style storage is used here, i.e. elements are stored by columns (the sam
 @see basic_fmatrix
 @see cfmatrix
 */
-class rfmatrix : public basic_fmatrix<treal>
+template <typename TR>
+class basic_rfmatrix : public basic_fmatrix<TR>
 {
 protected:
-    typedef basic_fmatrix<treal> BaseFMatrix; //!< Base class
+    typedef basic_fmatrix<TR> BaseFMatrix; //!< Base class
 
 public:
 /**
@@ -11550,7 +11553,7 @@ public:
 
 Creates empty matrix of functions. No memory gets allocated.
 */
-    rfmatrix()
+    basic_rfmatrix()
       : BaseFMatrix()
     {
     }
@@ -11577,7 +11580,7 @@ prints
 @param[in] m Number of rows.
 @param[in] n Number of columns.
 */
-    rfmatrix(size_t m, size_t n)
+    basic_rfmatrix(size_t m, size_t n)
       : BaseFMatrix(m, n)
     {
     }
@@ -11616,7 +11619,7 @@ prints
 @param[in] n Number of columns.
 @param[in] saInput Array of strings with functions' expressions.
 */
-    rfmatrix(size_t m, size_t n, const string_array& saInput)
+    basic_rfmatrix(size_t m, size_t n, const string_array& saInput)
       : BaseFMatrix(m, n, saInput)
     {
     }
@@ -11667,7 +11670,7 @@ prints
 @param[in] saParameters String array with parameters (may be empty).
 @param[in] saMeanings String array with parameters' meanings (may be empty, must have the same size as saParameters).
 */
-    rfmatrix(size_t m, size_t n, const string_array& saVars, const string_array& saBodies,
+    basic_rfmatrix(size_t m, size_t n, const string_array& saVars, const string_array& saBodies,
              const string_array& saParameters, const string_array& saMeanings)
       : BaseFMatrix(m, n, saVars, saBodies, saParameters, saMeanings)
     {
@@ -11679,7 +11682,7 @@ prints
 Creates copy of matrix of functions referred by <tt>fm</tt>.
 @param[in] fm %Matrix of functions (or \ref rfmatrix) to copy from.
 */
-    rfmatrix(const BaseFMatrix& fm)
+    basic_rfmatrix(const BaseFMatrix& fm)
       : BaseFMatrix(fm)
     {
     }
@@ -11687,7 +11690,7 @@ Creates copy of matrix of functions referred by <tt>fm</tt>.
 /**
 @brief Move Constructor
 */
-    rfmatrix(BaseFMatrix&& fm)
+    basic_rfmatrix(BaseFMatrix&& fm)
       : BaseFMatrix(std::move(fm))
     {
     }
@@ -11767,7 +11770,7 @@ prints
 @param[in] d variable's value.
 @return matrix of functions' values.
 */
-    rmatrix operator () (treal d) const {
+    rmatrix operator () (TR d) const {
         rmatrix ret((tint)this->msize(), (tint)this->nsize());
         this->value(d, ret);
         return ret;
@@ -11809,7 +11812,7 @@ prints
 @param[in] d2 Second variable's value.
 @return matrix of functions' values.
 */
-    rmatrix operator () (treal d1, treal d2) const {
+    rmatrix operator () (TR d1, TR d2) const {
         rmatrix ret((tint)this->msize(), (tint)this->nsize());
         this->value(d1, d2, ret);
         return ret;
@@ -11852,7 +11855,7 @@ prints
 @param[in] d3 Third variable's value.
 @return matrix of functions' values.
 */
-    rmatrix operator () (treal d1, treal d2, treal d3) const {
+    rmatrix operator () (TR d1, TR d2, TR d3) const {
         rmatrix ret((tint)this->msize(), (tint)this->nsize());
         this->value(d1, d2, d3, ret);
         return ret;
@@ -11898,7 +11901,7 @@ prints
 @param[in] pd array of variables' values.
 @return vector of functions' values.
 */
-    rmatrix operator () (const treal* pd) const {
+    rmatrix operator () (const TR* pd) const {
         rmatrix ret((tint)this->msize(), (tint)this->nsize());
         this->value(pd, ret);
         return ret;
@@ -11915,10 +11918,11 @@ Fortran style storage is used here, i.e. elements are stored by columns (the sam
 @see basic_fmatrix
 @see rfmatrix
 */
-class cfmatrix : public basic_fmatrix<tcomplex>
+template <typename TR, typename TC>
+class basic_cfmatrix : public basic_fmatrix<TC>
 {
 protected:
-    typedef basic_fmatrix<tcomplex> BaseFMatrix; //!< Base class
+    typedef basic_fmatrix<TC> BaseFMatrix; //!< Base class
 
 public:
 /**
@@ -11926,7 +11930,7 @@ public:
 
 Creates empty matrix of functions. No memory gets allocated.
 */
-    cfmatrix()
+    basic_cfmatrix()
       : BaseFMatrix()
     {
     }
@@ -11953,7 +11957,7 @@ prints
 @param[in] m Number of rows.
 @param[in] n Number of columns.
 */
-    cfmatrix(size_t m, size_t n)
+    basic_cfmatrix(size_t m, size_t n)
       : BaseFMatrix(m, n)
     {
     }
@@ -11992,7 +11996,7 @@ prints
 @param[in] n Number of columns.
 @param[in] saInput Array of strings with functions' expressions.
 */
-    cfmatrix(size_t m, size_t n, const string_array& saInput)
+    basic_cfmatrix(size_t m, size_t n, const string_array& saInput)
       : BaseFMatrix(m, n, saInput)
     {
     }
@@ -12043,7 +12047,7 @@ prints
 @param[in] saParameters String array with parameters (may be empty).
 @param[in] saMeanings String array with parameters' meanings (may be empty, must have the same size as saParameters).
 */
-    cfmatrix(size_t m, size_t n, const string_array& saVars, const string_array& saBodies,
+    basic_cfmatrix(size_t m, size_t n, const string_array& saVars, const string_array& saBodies,
              const string_array& saParameters, const string_array& saMeanings)
       : BaseFMatrix(m, n, saVars, saBodies, saParameters, saMeanings)
     {
@@ -12055,7 +12059,7 @@ prints
 Creates copy of matrix of functions referred by <tt>fm</tt>.
 @param[in] fm %Matrix of functions (or \ref cfmatrix) to copy from.
 */
-    cfmatrix(const BaseFMatrix& fm)
+    basic_cfmatrix(const BaseFMatrix& fm)
       : BaseFMatrix(fm)
     {
     }
@@ -12063,7 +12067,7 @@ Creates copy of matrix of functions referred by <tt>fm</tt>.
 /**
 @brief Move Constructor
 */
-    cfmatrix(BaseFMatrix&& fm)
+    basic_cfmatrix(BaseFMatrix&& fm)
       : BaseFMatrix(std::move(fm))
     {
     }
@@ -12102,8 +12106,8 @@ prints
 \endcode
 @return vector of functions' values.
 */
-    cmatrix operator () () const {
-        cmatrix ret((tint)this->msize(), (tint)this->nsize());
+    basic_cmatrix<TR,TC> operator () () const {
+        basic_cmatrix<TR,TC> ret((tint)this->msize(), (tint)this->nsize());
         this->value(ret);
         return ret;
     }
@@ -12143,8 +12147,8 @@ prints
 @param[in] d variable's value.
 @return matrix of functions' values.
 */
-    cmatrix operator () (tcomplex d) const {
-        cmatrix ret((tint)this->msize(), (tint)this->nsize());
+    basic_cmatrix<TR,TC> operator () (TC d) const {
+        basic_cmatrix<TR,TC> ret((tint)this->msize(), (tint)this->nsize());
         this->value(d, ret);
         return ret;
     }
@@ -12185,8 +12189,8 @@ prints
 @param[in] d2 Second variable's value.
 @return matrix of functions' values.
 */
-    cmatrix operator () (tcomplex d1, tcomplex d2) const {
-        cmatrix ret((tint)this->msize(), (tint)this->nsize());
+    basic_cmatrix<TR,TC> operator () (TC d1, TC d2) const {
+        basic_cmatrix<TR,TC> ret((tint)this->msize(), (tint)this->nsize());
         this->value(d1, d2, ret);
         return ret;
     }
@@ -12228,8 +12232,8 @@ prints
 @param[in] d3 Third variable's value.
 @return matrix of functions' values.
 */
-    cmatrix operator () (tcomplex d1, tcomplex d2, tcomplex d3) const {
-        cmatrix ret((tint)this->msize(), (tint)this->nsize());
+    basic_cmatrix<TR,TC> operator () (TC d1, TC d2, TC d3) const {
+        basic_cmatrix<TR,TC> ret((tint)this->msize(), (tint)this->nsize());
         this->value(d1, d2, d3, ret);
         return ret;
     }
@@ -12274,8 +12278,8 @@ prints
 @param[in] pd array of variables' values.
 @return vector of functions' values.
 */
-    cmatrix operator () (const tcomplex* pd) const {
-        cmatrix ret((tint)this->msize(), (tint)this->nsize());
+    basic_cmatrix<TR,TC> operator () (const TC* pd) const {
+        basic_cmatrix<TR,TC> ret((tint)this->msize(), (tint)this->nsize());
         this->value(pd, ret);
         return ret;
     }
@@ -12397,8 +12401,13 @@ public:
 //! @endcond
 
 // end-user classes
-typedef basic_function<treal>    rfunction; //!< End-user class: function of real variables, see \ref basic_function
-typedef basic_function<tcomplex> cfunction; //!< End-user class: function of complex variables, see \ref basic_function
+using rfunction = basic_function<treal>; //!< End-user class: function of real variables, see \ref basic_function
+using cfunction = basic_function<tcomplex>; //!< End-user class: function of complex variables, see \ref basic_function
+
+using rfvector  = basic_rfvector<treal>;
+using cfvector  = basic_cfvector<treal,tcomplex>;
+using rfmatrix  = basic_rfmatrix<treal>;
+using cfmatrix  = basic_cfmatrix<treal,tcomplex>;
 
 CVM_NAMESPACE_END
 

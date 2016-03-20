@@ -14,6 +14,7 @@
 		225DE8181C8283AA009F3A3E /* testLapack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 225DE8111C8283AA009F3A3E /* testLapack.cpp */; };
 		225DE8191C8283AA009F3A3E /* testmain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 225DE8121C8283AA009F3A3E /* testmain.cpp */; };
 		225DE81A1C8283AA009F3A3E /* testMisc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 225DE8131C8283AA009F3A3E /* testMisc.cpp */; };
+		22E787381C9C8807002D7D20 /* testFunctional.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22E787371C9C8807002D7D20 /* testFunctional.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +38,7 @@
 		225DE8111C8283AA009F3A3E /* testLapack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testLapack.cpp; path = ../../../test/testLapack.cpp; sourceTree = "<group>"; };
 		225DE8121C8283AA009F3A3E /* testmain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testmain.cpp; path = ../../../test/testmain.cpp; sourceTree = "<group>"; };
 		225DE8131C8283AA009F3A3E /* testMisc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testMisc.cpp; path = ../../../test/testMisc.cpp; sourceTree = "<group>"; };
+		22E787371C9C8807002D7D20 /* testFunctional.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testFunctional.cpp; path = ../../../test/testFunctional.cpp; sourceTree = "<group>"; };
 		550A53A3162698B200CFC413 /* cvm_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = cvm_test; sourceTree = BUILT_PRODUCTS_DIR; };
 		550A53B0162698D500CFC413 /* StdAfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StdAfx.h; path = ../../../test/StdAfx.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,6 +73,7 @@
 		550A53A6162698B200CFC413 /* cvm_test */ = {
 			isa = PBXGroup;
 			children = (
+				22E787371C9C8807002D7D20 /* testFunctional.cpp */,
 				225DE80C1C8283AA009F3A3E /* test.h */,
 				225DE80D1C8283AA009F3A3E /* testBlas.cpp */,
 				225DE80E1C8283AA009F3A3E /* testcvm.cpp */,
@@ -141,6 +144,7 @@
 				225DE8141C8283AA009F3A3E /* testBlas.cpp in Sources */,
 				225DE8161C8283AA009F3A3E /* testfun.cpp in Sources */,
 				225DE81A1C8283AA009F3A3E /* testMisc.cpp in Sources */,
+				22E787381C9C8807002D7D20 /* testFunctional.cpp in Sources */,
 				225DE8171C8283AA009F3A3E /* testInitialization.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -167,7 +171,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -177,7 +181,7 @@
 					/Users/sam/cvmlib/gtest,
 				);
 				MACH_O_TYPE = mh_execute;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = "-I../../../gtest/googletest/include";
 				"OTHER_LDFLAGS[arch=*]" = "";
@@ -199,6 +203,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 1;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -208,7 +213,7 @@
 					/Users/sam/cvmlib/gtest,
 				);
 				MACH_O_TYPE = mh_execute;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CPLUSPLUSFLAGS = "-I../../../gtest/googletest/include";
 				"OTHER_LDFLAGS[arch=*]" = "";
 				SDKROOT = macosx;
