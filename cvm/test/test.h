@@ -25,7 +25,6 @@ using namespace cvm;
 
 typedef ::testing::Types<float, double> TestTypes;
 
-#define TC std::complex<T>
 #define TP TypeParam
 #define TPC std::complex<TypeParam>
 

@@ -2035,7 +2035,7 @@ TYPED_TEST(LapackTest, TestGenEigReal) {
     for (int i = 0; i < 5; ++i) {
         if (fabs(beta[CVM0+i]) > spp<TP>()) {
             EXPECT_TRUE((basic_scmatrix<TP,TPC>(a) - alpha[CVM0+i] / beta[CVM0+i] *
-            		basic_scmatrix<TP,TPC>(b)).rank(sp<TP>()) < 5) << "srmatrix geneig";
+                basic_scmatrix<TP,TPC>(b)).rank(sp<TP>()) < 5) << "srmatrix geneig";
         }
     }
 
@@ -2043,14 +2043,14 @@ TYPED_TEST(LapackTest, TestGenEigReal) {
     for (int i = 0; i < 5; ++i) {
         if (fabs(beta[CVM0+i]) > spp<TP>()) {
             EXPECT_TRUE((basic_scmatrix<TP,TPC>(a) - alpha[CVM0+i] / beta[CVM0+i] *
-            		basic_scmatrix<TP,TPC>(b)).rank(sp<TP>()) < 5) << "srmatrix geneig";
+                basic_scmatrix<TP,TPC>(b)).rank(sp<TP>()) < 5) << "srmatrix geneig";
         }
     }
     for (int i = 0; i < 5; ++i) {
         if (fabs(beta[CVM0+i]) > spp<TP>()) {
             EXPECT_NEAR(TP(0), (~(eigVectLeft(CVM0+i)) * basic_scmatrix<TP,TPC>(a) -
-            		(alpha[CVM0+i] / beta[CVM0+i]) * ~(eigVectLeft(CVM0+i)) *
-					basic_scmatrix<TP,TPC>(b)).norm(), sp<TP>()) << "srmatrix left geneig";
+                (alpha[CVM0+i] / beta[CVM0+i]) * ~(eigVectLeft(CVM0+i)) *
+                basic_scmatrix<TP,TPC>(b)).norm(), spp<TP>()) << "srmatrix left geneig";
         }
     }
 
@@ -2080,10 +2080,10 @@ TYPED_TEST(LapackTest, TestGenEigReal) {
         if (fabs(beta[CVM0+i]) > spp<TP>()) {
             EXPECT_NEAR(TP(0), (~(eigVectLeft(CVM0+i)) * basic_scmatrix<TP,TPC>(a) -
             		(alpha[CVM0+i] / beta[CVM0+i]) * ~(eigVectLeft(CVM0+i)) *
-					basic_scmatrix<TP,TPC>(b)).norm(), sp<TP>()) << "srmatrix left geneig";
+					basic_scmatrix<TP,TPC>(b)).norm(), spp<TP>()) << "srmatrix left geneig";
             EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(a) * eigVectRight(CVM0+i) -
             		(alpha[CVM0+i] / beta[CVM0+i]) * basic_scmatrix<TP,TPC>(b) *
-					eigVectRight(CVM0+i)).norm(), sp<TP>()) << "srmatrix right geneig";
+					eigVectRight(CVM0+i)).norm(), spp<TP>()) << "srmatrix right geneig";
         }
     }
 }

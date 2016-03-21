@@ -14,38 +14,6 @@
 #include <ctype.h>
 #include <vector>
 
-#define CFUN_K_FUN                  1
-#define CFUN_K_VAR                  2
-#define CFUN_K_CONST                3
-#define CFUN_K_PLUS                 10
-#define CFUN_K_MINUS                11
-#define CFUN_K_MULT                 12
-#define CFUN_K_DIV                  13
-#define CFUN_K_POWER                14
-#define CFUN_K_EXP                  16
-#define CFUN_K_SQRT                 17
-#define CFUN_K_LOG                  18
-#define CFUN_K_LOG10                19
-#define CFUN_K_SIN                  20
-#define CFUN_K_COS                  21
-#define CFUN_K_TAN                  22
-#define CFUN_K_ARCSIN               23
-#define CFUN_K_ARCCOS               24
-#define CFUN_K_ARCTAN               25
-#define CFUN_K_SINH                 26
-#define CFUN_K_COSH                 27
-#define CFUN_K_TANH                 28
-#define CFUN_K_UMINUS               29
-#define CFUN_K_SIGN                 30
-#define CFUN_K_ABS                  31
-#define CFUN_K_DELTA                32
-#define CFUN_K_INFINITY             33
-#define CFUN_K_MNINFINITY           34
-#define CFUN_K_INTSIN               35
-#define CFUN_K_INTCOS               36
-#define CFUN_K_SAT                  37
-#define CFUN_K_DSOLVE               38
-#define CFUN_K_IIF                  39
 #define CFUN_O_BRACE                '{'
 #define CFUN_C_BRACE                '}'
 #define CFUN_O_BRACKET              '['
@@ -100,37 +68,6 @@
 // find* functions failure code
 #define CFUN_NOT_FOUND              size_t(~0)
 
-//#if defined(CVM_FLOAT)
-//#   define             CFUN_M_ZERO                         0.F
-//#   define             CFUN_M_ONE                          1.F
-//#   define             CFUN_M_TWO                          2.F
-//#   define             CFUN_M_MONE                         -1.F
-//#   define             CFUN_M_HALF                         0.5F
-//#   define             CFUN_M_E                            2.7182818284590452353602874713527F
-//#   define             CFUN_M_LN2                          0.69314718055994530941723212145818F
-//#   define             CFUN_M_PI                           3.1415926535897932384626433832795F
-//#   define             CFUN_M_PI_2                         1.5707963267948966192313216916398F
-//#   define             CFUN_M_LN_10                        2.3025850929940456840179914546844F
-//#   define             CFUN_M_GAMMA                        0.57721566490153286060651209008240243F
-//#else
-#   define             CFUN_M_ZERO                         0.
-#   define             CFUN_M_ONE                          1.
-#   define             CFUN_M_TWO                          2.
-#   define             CFUN_M_MONE                         -1.
-#   define             CFUN_M_HALF                         0.5
-#   define             CFUN_M_E                            2.7182818284590452353602874713527
-#   define             CFUN_M_LN2                          0.69314718055994530941723212145818
-#   define             CFUN_M_PI                           3.1415926535897932384626433832795
-#   define             CFUN_M_PI_2                         1.5707963267948966192313216916398
-#   define             CFUN_M_LN_10                        2.3025850929940456840179914546844
-#   define             CFUN_M_GAMMA                        0.57721566490153286060651209008240243
-//#endif
-
-template <typename T>
-constexpr T cfun_two() {
-    return sizeof(T) <= 4 ? 2.F : 2.;
-}
-
 #define                CFUN_OK                            CVM_OK
 #define                CFUN_PARSEERROR                    CVM_THE_LAST_ERROR_CODE + 1  //!< Error code for "Error while parsing \'%s\' for variables %s"
 #define                CFUN_DOMAINERROR                   CVM_THE_LAST_ERROR_CODE + 2  //!< Error code for "Domain error while calculating %s of %g"
@@ -148,25 +85,112 @@ constexpr T cfun_two() {
 
 CVM_NAMESPACE_BEG
 
+enum class Kind {
+    cfun_var,
+    cfun_const,
+    cfun_plus,
+    cfun_minus,
+    cfun_mult,
+    cfun_div,
+    cfun_power,
+    cfun_exp,
+    cfun_sqrt,
+    cfun_log,
+    cfun_log10,
+    cfun_sin,
+    cfun_cos,
+    cfun_tan,
+    cfun_arcsin,
+    cfun_arccos,
+    cfun_arctan,
+    cfun_sinh,
+    cfun_cosh,
+    cfun_tanh,
+    cfun_uminus,
+    cfun_sign,
+    cfun_abs,
+    cfun_delta,
+    cfun_infinity,
+    cfun_mninfinity,
+    cfun_intsin,
+    cfun_intcos,
+    cfun_sat,
+    cfun_iif
+};
 
 //! @cond INTERNAL
+
+template <typename T>
+constexpr T cfun_zero() {
+    return sizeof(T) <= 4 ? 0.F : 0.;
+}
+
+template <typename T>
+constexpr T cfun_one() {
+    return sizeof(T) <= 4 ? 1.F : 1.;
+}
+
+template <typename T>
+constexpr T cfun_mone() {
+    return sizeof(T) <= 4 ? -1.F : -1.;
+}
+
+template <typename T>
+constexpr T cfun_two() {
+    return sizeof(T) <= 4 ? 2.F : 2.;
+}
+
+template <typename T>
+constexpr T cfun_half() {
+    return sizeof(T) <= 4 ? 0.5F : 0.5;
+}
+
+template <typename T>
+constexpr T cfun_e() {
+    return sizeof(T) <= 4 ? 2.7182818284590452353602874713527F : 2.7182818284590452353602874713527;
+}
+
+template <typename T>
+constexpr T cfun_ln2() {
+    return sizeof(T) <= 4 ? 0.69314718055994530941723212145818F : 0.69314718055994530941723212145818;
+}
+
+template <typename T>
+constexpr T cfun_ln10() {
+    return sizeof(T) <= 4 ? 2.3025850929940456840179914546844F : 2.3025850929940456840179914546844;
+}
+
+template <typename T>
+constexpr T cfun_pi() {
+    return sizeof(T) <= 4 ? 3.1415926535897932384626433832795F : 3.1415926535897932384626433832795;
+}
+
+template <typename T>
+constexpr T cfun_pi_2() {
+    return sizeof(T) <= 4 ? 1.5707963267948966192313216916398F : 1.5707963267948966192313216916398;
+}
+
+template <typename T>
+constexpr T cfun_gamma() {
+    return sizeof(T) <= 4 ? 0.57721566490153286060651209008240243F : 0.57721566490153286060651209008240243;
+}
 
 // specializations for some elementary functions
 template <typename T>
 class ElementaryFunctions 
 {
-    typedef std::complex<T> TC;
+    using TC = std::complex<T>;
 
 public:
     static T asin(const T& v) throw(cvmexception)
     {
-        if (v < CFUN_M_MONE || v > CFUN_M_ONE)
+        if (v < cfun_mone<T>() || v > cfun_one<T>())
             throw cvmexception(CFUN_DOMAINERROR, "asin", v);
         return ::asin(v);
     }
     static T acos(const T& v) throw(cvmexception)
     {
-        if (v < CFUN_M_MONE || v > CFUN_M_ONE)
+        if (v < cfun_mone<T>() || v > cfun_one<T>())
             throw cvmexception(CFUN_DOMAINERROR, "acos", v);
         return ::acos(v);
     }
@@ -192,7 +216,7 @@ public:
     }
     static T sqrt(const T& v) throw(cvmexception)
     {
-        if (v < CFUN_M_ZERO)
+        if (v < cfun_zero<T>())
             throw cvmexception(CFUN_DOMAINERROR, "sqrt", v);
         return ::sqrt(v);
     }
@@ -216,11 +240,11 @@ public:
     // Sine integral
     static T sinint(const T& x, const T& eps) throw(cvmexception)
     {
-        T si = CFUN_M_ZERO;
+        T si = cfun_zero<T>();
         T xa = cvm::_abs(x);
 
-        if (xa > CFUN_M_TWO) {
-            si = T(CFUN_M_PI_2) + e1(xa, eps).imag();
+        if (xa > cfun_two<T>()) {
+            si = T(cfun_pi_2<T>()) + e1(xa, eps).imag();
         }
         else {
             si = xa;
@@ -241,7 +265,7 @@ public:
                 }
             }
         }
-        if (x < CFUN_M_ZERO) {
+        if (x < cfun_zero<T>()) {
             si = -si;
         }
         return si;
@@ -250,17 +274,17 @@ public:
     // Cosine integral
     static T cosint(const T& x, const T& eps) throw(cvmexception)
     {
-        if (x <= CFUN_M_ZERO) {
+        if (x <= cfun_zero<T>()) {
             throw cvmexception(CFUN_DOMAINERROR, "cosint", x);
         }
 
-        T ci = CFUN_M_ZERO;
-        if (x > CFUN_M_TWO) {
+        T ci = cfun_zero<T>();
+        if (x > cfun_two<T>()) {
             ci = -e1(x, eps).real();
         }
         else {
             T t;
-            T f = CFUN_M_ONE;
+            T f = cfun_one<T>();
             int sign = -1;
             for (int i = 2; i < CFUN_MAX_EI_ITERATIONS; i += 2) {
                 f *= x * x / T((i - 1) * i);
@@ -273,7 +297,7 @@ public:
                     throw cvmexception(CFUN_CONVERGENCEERROR, "cosint", x);
                 }
             }
-            ci += log(x) + T(CFUN_M_GAMMA);
+            ci += log(x) + cfun_gamma<T>();
         }
         return ci;
     }
@@ -281,22 +305,22 @@ public:
     // Exponential integral routine
     static TC e1(const T& x, const T& eps) throw(cvmexception)
     {
-        static const TC c1(CFUN_M_ONE, CFUN_M_ZERO);
-        static const TC c2(CFUN_M_TWO, CFUN_M_ZERO);
+        static const TC c1(cfun_one<T>(), cfun_zero<T>());
+        static const TC c2(cfun_two<T>(), cfun_zero<T>());
         TC a;
-        TC b(T(CFUN_M_ONE), x);
-        TC c(T(CFUN_M_ONE) / (eps * eps), T(CFUN_M_ZERO));
+        TC b(cfun_one<T>(), x);
+        TC c(cfun_one<T>() / (eps * eps), cfun_zero<T>());
         TC d(c1 / b);
         TC e(d);
 
         for (int i = 1; i < CFUN_MAX_EI_ITERATIONS; ++i) {
-            a = TC(T(-i * i), CFUN_M_ZERO);
+            a = TC(T(-i * i), cfun_zero<T>());
             b += c2;
             d = c1 / (a * d + b);
             c = b + a / c;
             a = c * d;
             e *= a;
-            if (cvm::_abs(CFUN_M_ONE - a.real()) + cvm::_abs(a.imag()) < eps)
+            if (cvm::_abs(cfun_one<T>() - a.real()) + cvm::_abs(a.imag()) < eps)
                 break;
             if (i >= CFUN_MAX_EI_ITERATIONS - 1) {
                 throw cvmexception(CFUN_CONVERGENCEERROR, "ElementaryFunctions<T>::e1", x);
@@ -309,26 +333,26 @@ public:
 template <typename T>
 class ElementaryFunctions<std::complex<T> >
 {
-    typedef std::complex<T> TC;
+    using TC = std::complex<T>;
 public:
     static TC asin(const TC& v)
     {
-        static const TC c1(CFUN_M_ONE, CFUN_M_ZERO);
-        static const TC cmi(CFUN_M_ZERO, CFUN_M_MONE);
+        static const TC c1(cfun_one<T>(), cfun_zero<T>());
+        static const TC cmi(cfun_zero<T>(), cfun_mone<T>());
         return cmi * std::log(std::sqrt(c1 - v * v) - cmi * v);
     }
     static TC acos(const TC& v)
     {
-        static const TC c1(CFUN_M_ONE, CFUN_M_ZERO);
-        static const TC cmi(CFUN_M_ZERO, CFUN_M_MONE);
+        static const TC c1(cfun_one<T>(), cfun_zero<T>());
+        static const TC cmi(cfun_zero<T>(), cfun_mone<T>());
         return cmi * std::log(v - cmi * std::sqrt(c1 - v * v));
     }
     static TC tan(const TC& v)
     {
-        const T rm = v.real() * CFUN_M_TWO;
-        const T im = v.imag() * CFUN_M_TWO;
+        const T rm = v.real() * cfun_two<T>();
+        const T im = v.imag() * cfun_two<T>();
         if (cvm::_abs(im) >= basic_cvmLogMachMax<T>()) {
-            return TC(CFUN_M_ZERO, im > CFUN_M_ZERO ? CFUN_M_ONE : CFUN_M_MONE);
+            return TC(cfun_zero<T>(), im > cfun_zero<T>() ? cfun_one<T>() : cfun_mone<T>());
         }
         else {
             const T d = ::cos(rm) + ::cosh(im);
@@ -337,8 +361,8 @@ public:
     }
     static TC atan(const TC& v)
     {
-        static const TC ci(CFUN_M_ZERO, CFUN_M_ONE);
-        static const TC ci2(CFUN_M_ZERO, CFUN_M_HALF);
+        static const TC ci(cfun_zero<T>(), cfun_one<T>());
+        static const TC ci2(cfun_zero<T>(), cfun_half<T>());
         return ci2 * std::log((ci + v) / (ci - v));
     }
     static TC sinh(const TC& v)
@@ -396,14 +420,14 @@ public:
     // Cosine integral
     static TC cosint(const TC& x, const T& eps) throw(cvmexception)
     {
-        static const TC gamma(CFUN_M_GAMMA, CFUN_M_ZERO);
+        static const TC gamma(cfun_gamma<T>(), cfun_zero<T>());
         if (cvm::_abs(x) < eps) {
             throw cvmexception(CFUN_DOMAINERROR_C, "cosint", x.real(), x.imag());
         }
 
-        TC ci(CFUN_M_ZERO);
+        TC ci(cfun_zero<T>());
         TC t;
-        TC f(CFUN_M_ONE);
+        TC f(cfun_one<T>());
         int sign = -1;
         for (int i = 2; i < CFUN_MAX_EI_ITERATIONS; i += 2) {
             f *= x * x / T((i - 1) * i);
@@ -498,7 +522,7 @@ Returns one of two shared_ptr instances.
 //! @endcond
 
 
-typedef std::vector<std::string> string_array; //!< Array of strings
+using string_array = std::vector<std::string>; //!< Array of strings
 
 
 //! @cond INTERNAL
@@ -520,7 +544,7 @@ inline bool __parse_num(const std::string& s, T& result)
     bool ret = true;
     char* stop;
     result = T(::strtod(s.c_str(), &stop));
-    if ((result == CFUN_M_ZERO && s[0] != '0') ||
+    if ((result == cfun_zero<T>() && s[0] != '0') ||
         result == std::numeric_limits<T>::infinity() ||
         result == - std::numeric_limits<T>::infinity() ||
         result == std::numeric_limits<T>::lowest() ||
@@ -858,7 +882,33 @@ template <typename T>
 class FunctionFactory
 {
 public:
-    typedef typename std::shared_ptr<BaseFunction<T>> BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = std::shared_ptr<BaseFunction<T>>; //!< Shared pointer to BaseFunction
+
+/*
+private:
+    class Creator {
+    private:
+        BasePointer create(...) const = 0;
+    };
+
+    class CreatorFExp : public Creator {
+    private:
+        BasePointer create(...) const override {
+            return CFUN_NEW_FUNC(Fexp, __VA_ARGS__);
+        }
+    };
+
+    class Engine {
+        std::unordered_map<std::string,std::unique_ptr<Creator>> map;
+    public:
+        Engine() {
+        
+
+        }
+    };
+
+public:
+*/
 
 /**
 @brief Parser and factory interface (not end-user)
@@ -1042,7 +1092,7 @@ Parses incoming strings and instantiates function object
         else if (sLeft == CFUN_SAT)
             return CFUN_NEW_FUNC(Fsat, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
         else if (sLeft == CFUN_I)
-            return CFUN_NEW_FUNC(Fconst, T(1));
+            return CFUN_NEW_FUNC(Fconst, cfun_one<T>());
         else
             throw cvmexception(CFUN_PARSEERROR, sLeft.c_str(), __format_vars(saVars).c_str());
         return CFUN_NEW_FUNC(Fconst, T(0));
@@ -1060,7 +1110,7 @@ template <typename T>
 class BaseFunction
 {
 protected:
-    typedef typename FunctionFactory<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename typename FunctionFactory<T>::BasePointer; //!< Shared pointer to BaseFunction
 
 //! @cond INTERNAL
     virtual BasePointer _simpl() const = 0;                     // returns simplified function as a new object
@@ -1085,7 +1135,7 @@ public:
     }
 
 //! @cond INTERNAL
-    virtual int _kind() const = 0;                              // a kind of function type id
+    virtual Kind _kind() const = 0;                             // a kind of function type id
     virtual T _value(const T* pdVars) const = 0;                // value of scalar function of few variables
     virtual BasePointer _clone() const = 0;                     // a new clone of an object
     virtual BasePointer _deriv(size_t nVarNum) const = 0;       // _derivative by given variable as a new object
@@ -1105,9 +1155,6 @@ public:
         BasePointer pRet;
         if (_depth(true) > CFUN_SIMPS_STACK_DEPTH) {
             pRet = this->_clone();
-#ifdef CFUN_DEBUG
-            std::cout << "WARNING! Stack depth " << CFUN_SIMPS_STACK_DEPTH << " reached" << std::endl;
-#endif
         }
         else {
             pRet = this->_simpl();
@@ -1129,7 +1176,7 @@ template <typename T>
 class UnaryFunction : public BaseFunction<T>
 {
 protected:
-    typedef typename BaseFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename BaseFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
     BasePointer mf0; //!< Pointer to function's argument. If this instance is sin(A) then mf0 points to A.
 
 //! @cond INTERNAL
@@ -1214,7 +1261,7 @@ public:
     }
 
 //! @cond INTERNAL
-    virtual int _kind() const = 0;
+    virtual Kind _kind() const = 0;
     virtual T _value(const T* pdVars) const = 0;
     virtual BasePointer _clone() const = 0;
     virtual BasePointer _deriv(size_t nVarNum) const = 0;
@@ -1253,7 +1300,7 @@ template <typename T>
 class BinaryFunction : public UnaryFunction<T>
 {
 protected:
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
     BasePointer mf1; //!< Pointer to function's second argument. If this instance is A+B then mf0 points to A and mf1 points to B.
 
 //! @cond INTERNAL
@@ -1380,7 +1427,7 @@ public:
     }
 
 //! @cond INTERNAL
-    virtual int _kind() const = 0;
+    virtual Kind _kind() const = 0;
     virtual T _value(const T* pdVars) const = 0;
     virtual BasePointer _clone() const = 0;
     virtual BasePointer _deriv(size_t nVarNum) const = 0;
@@ -1419,12 +1466,12 @@ private:
     T mdConst;
     bool mbValid;
 
-    int _kind() const override {
-        return CFUN_K_CONST;
+    Kind _kind() const override {
+        return Kind::cfun_const;
     }
 
 protected:
-    typedef typename BaseFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename BaseFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override {
         return this->_clone();
@@ -1436,7 +1483,7 @@ protected:
 
 public:
     Fconst()
-      : mdConst(CFUN_M_ZERO),
+      : mdConst(cfun_zero<T>()),
         mbValid(true)
     {
     }
@@ -1455,7 +1502,7 @@ public:
     }
 
     Fconst(const std::string& sConst, bool bThrow = true)
-      : mdConst(CFUN_M_ZERO), 
+      : mdConst(cfun_zero<T>()),
         mbValid(Helper<T>::convert(sConst, mdConst, bThrow))
     {
     }
@@ -1496,7 +1543,7 @@ protected:
                 osBuf.precision(nPrecision);
                 osBuf.setf(std::ios::scientific | std::ios::showpoint | std::ios::left);
             }
-            if (v < CFUN_M_ZERO) {
+            if (v < cfun_zero<U>()) {
                 osBuf << CFUN_O_PARENTH << v << CFUN_C_PARENTH;
             }
             else {
@@ -1516,7 +1563,7 @@ protected:
 
     template<typename U>
     class Helper<std::complex<U> > {
-        typedef std::complex<U> UC;
+        using UC = std::complex<U>;
     public:
         static std::string _format(const UC& v, int nPrecision)
         {
@@ -1550,7 +1597,7 @@ protected:
                 if (bThrow && !ret1) {
                     throw cvmexception(CFUN_PARSEERROR, s.c_str(), "n/a");
                 }
-                uc = UC(re, CFUN_M_ZERO);
+                uc = UC(re, cfun_zero<U>());
             }
             return ret1 && ret2;
         }
@@ -1562,12 +1609,12 @@ template <typename T>
 class Finfinity : public BaseFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_INFINITY;
+    Kind _kind() const override {
+        return Kind::cfun_infinity;
     }
 
 protected:
-    typedef typename BaseFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename BaseFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override {
         return this->_clone();
@@ -1608,12 +1655,12 @@ template <typename T>
 class Fmninfinity : public BaseFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_MNINFINITY;
+    Kind _kind() const override {
+        return Kind::cfun_mninfinity;
     }
 
 protected:
-    typedef typename BaseFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename BaseFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override {
         return this->_clone();
@@ -1654,8 +1701,8 @@ template <typename T>
 class Fplus : public BinaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_PLUS;
+    Kind _kind() const override {
+        return Kind::cfun_plus;
     }
 
 protected:
@@ -1665,8 +1712,8 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename BinaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
-    typedef shared_ptr_pair<BaseFunction<T>> PointerPair;
+    using BasePointer = typename BinaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
+    using PointerPair = shared_ptr_pair<BaseFunction<T>>;
 
     BasePointer _simpl() const override
     {
@@ -1683,29 +1730,29 @@ protected:
         }
         for (i = 0; i <= 1; ++i)
         {
-            if (fCopy[i]->_kind() == CFUN_K_INFINITY)
+            if (fCopy[i]->_kind() == Kind::cfun_infinity)
             {                                                               // inf + f(x) = inf | f(x) + inf = inf
                 return std::make_shared<Finfinity<T>>();
             }
         }
         for (i = 0; i <= 1; ++i)
         {
-            if (fCopy[i]->_kind() == CFUN_K_MNINFINITY)
+            if (fCopy[i]->_kind() == Kind::cfun_mninfinity)
             {                                                               // -inf + f(x) = -inf | f(x) + -inf = -inf
                 return std::make_shared<Fmninfinity<T>>();
             }
         }
-        if (fCopy[0]->_kind() == CFUN_K_CONST &&
-            fCopy[1]->_kind() == CFUN_K_CONST)
+        if (fCopy[0]->_kind() == Kind::cfun_const &&
+            fCopy[1]->_kind() == Kind::cfun_const)
         {                                                                   // 1 + 2 = 3
             return std::make_shared<Fconst<T>>(fCopy[0]->_value(nullptr) + fCopy[1]->_value(nullptr));
         }
         for (i = 0; i <= 1; ++i)
         {
-            if (fCopy[i]->_kind() == CFUN_K_CONST)
+            if (fCopy[i]->_kind() == Kind::cfun_const)
             {                                                               // x + (-1) = x-1
                 T val = fCopy[i]->_value(nullptr);
-                if (Comparator<T,T>::lt(val, CFUN_M_ZERO))
+                if (Comparator<T,T>::lt(val, cfun_zero<T>()))
                 {
                     return std::make_shared<Fminus<T>>(fCopy[__not(i)], std::make_shared<Fconst<T>>(-val))->_simp();
                 }
@@ -1718,14 +1765,14 @@ protected:
 
         for (i = 0; i <= 1; ++i)
         {
-            if (fCopy[i]->_kind() == CFUN_K_UMINUS)
+            if (fCopy[i]->_kind() == Kind::cfun_uminus)
             {                                                               // -a + b = b - a     a + -b = a - b
                 return std::make_shared<Fminus<T>>(fCopy[__not(i)], fCopy[i]->_getArg(0))->_simp();
             }
         }
 
-        if (fCopy[0]->_kind() == CFUN_K_MULT &&
-            fCopy[1]->_kind() == CFUN_K_MULT)
+        if (fCopy[0]->_kind() == Kind::cfun_mult &&
+            fCopy[1]->_kind() == Kind::cfun_mult)
         {
             for (i = 0; i <= 1; ++i)
             {                                                               // C*A+C*B = C*(A+B)
@@ -1743,7 +1790,7 @@ protected:
         }
         for (j = 0; j <= 1; ++j)
         {
-            if (fCopy[j]->_kind() == CFUN_K_MULT)
+            if (fCopy[j]->_kind() == Kind::cfun_mult)
             {                                                               // a*x + x = (a+1)*x
                 for (i = 0; i <= 1; ++i)
                 {
@@ -1752,13 +1799,13 @@ protected:
                         return
                         std::make_shared<Fmult<T>>(fCopy[__not(j)],
                                                    std::make_shared<Fplus<T>>(fCopy[j]->_getArg(__not(i)),
-                                                                              std::make_shared<Fconst<T>>(CFUN_M_ONE)))->_simp();
+                                                                              std::make_shared<Fconst<T>>(cfun_one<T>())))->_simp();
                     }
                 }
             }
         }
-        if (fCopy[0]->_kind() == CFUN_K_DIV &&
-            fCopy[1]->_kind() == CFUN_K_DIV &&                              // x/a+y/a = (x+y)/a
+        if (fCopy[0]->_kind() == Kind::cfun_div &&
+            fCopy[1]->_kind() == Kind::cfun_div &&                              // x/a+y/a = (x+y)/a
             fCopy[0]->_getArg(1)->_equals(fCopy[1]->_getArg(1)))
         {
             return
@@ -1768,7 +1815,7 @@ protected:
         }
         for (j = 0; j <= 1; ++j)
         {
-            if (fCopy[j]->_kind() == CFUN_K_PLUS)
+            if (fCopy[j]->_kind() == Kind::cfun_plus)
             {                                                               // x+a + a
                 for (i = 0; i <= 1; ++i)
                 {
@@ -1783,7 +1830,7 @@ protected:
                                                    fCopy[j]->_getArg(__not(i)))->_simp();
                     }
                 }
-                if (fCopy[__not(j)]->_kind() == CFUN_K_PLUS)
+                if (fCopy[__not(j)]->_kind() == Kind::cfun_plus)
                 {                                                           // x+a + x+b
                     for (i = 0; i <= 1; ++i)
                     {
@@ -1803,7 +1850,7 @@ protected:
                         }
                     }
                 }
-                if (fCopy[__not(j)]->_kind() == CFUN_K_MINUS)
+                if (fCopy[__not(j)]->_kind() == Kind::cfun_minus)
                 {                                                           // x+a + x-b | x-a + x+b
                     for (i = 0; i <= 1; ++i)
                     {
@@ -1835,7 +1882,7 @@ protected:
                     }
                 }
             }
-            if (fCopy[j]->_kind() == CFUN_K_MINUS)
+            if (fCopy[j]->_kind() == Kind::cfun_minus)
             {
                 {                                                           // a-x + a
                     BasePointer fTmp =
@@ -1862,7 +1909,7 @@ protected:
                     }
                 }
 
-                if (fCopy[__not(j)]->_kind() == CFUN_K_MINUS)
+                if (fCopy[__not(j)]->_kind() == Kind::cfun_minus)
                 {                                                           // x-a + x-b
                     for (i = 0; i <= 1; ++i)
                     {
@@ -1938,7 +1985,7 @@ public:
     {
         std::ostringstream osBuf;
         osBuf << this->mf0->_format(nPrecision) << CFUN_SPLUS;
-        if (this->mf1->_kind() == CFUN_K_UMINUS) {
+        if (this->mf1->_kind() == Kind::cfun_uminus) {
             osBuf << CFUN_O_PARENTH << this->mf1->_format(nPrecision) << CFUN_C_PARENTH;
         }
         else {
@@ -1952,8 +1999,8 @@ template <typename T>
 class Fminus : public BinaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_MINUS;
+    Kind _kind() const override {
+        return Kind::cfun_minus;
     }
 
 protected:
@@ -1963,8 +2010,8 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename BinaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
-    typedef shared_ptr_pair<BaseFunction<T>> PointerPair;
+    using BasePointer = typename BinaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
+    using PointerPair = shared_ptr_pair<BaseFunction<T>>;
 
     BasePointer _simpl() const override
     {
@@ -1979,24 +2026,24 @@ protected:
         {
             return fCopy[0];
         }
-        if (fCopy[0]->_kind() == CFUN_K_INFINITY)                           // inf - x = inf
+        if (fCopy[0]->_kind() == Kind::cfun_infinity)                           // inf - x = inf
         {
             return std::make_shared<Finfinity<T>>();
         }
-        if (fCopy[1]->_kind() == CFUN_K_MNINFINITY)                         // x - -inf = inf
+        if (fCopy[1]->_kind() == Kind::cfun_mninfinity)                         // x - -inf = inf
         {
             return std::make_shared<Finfinity<T>>();
         }
-        if (fCopy[0]->_kind() == CFUN_K_MNINFINITY)                         // -inf - x = -inf
+        if (fCopy[0]->_kind() == Kind::cfun_mninfinity)                         // -inf - x = -inf
         {
             return std::make_shared<Fmninfinity<T>>();
         }
-        if (fCopy[1]->_kind() == CFUN_K_INFINITY)                           // x - inf = -inf
+        if (fCopy[1]->_kind() == Kind::cfun_infinity)                           // x - inf = -inf
         {
             return std::make_shared<Fmninfinity<T>>();
         }
-        if (fCopy[0]->_kind() == CFUN_K_CONST &&
-            fCopy[1]->_kind() == CFUN_K_CONST)                              // 3 - 2 = 1
+        if (fCopy[0]->_kind() == Kind::cfun_const &&
+            fCopy[1]->_kind() == Kind::cfun_const)                              // 3 - 2 = 1
         {
             return std::make_shared<Fconst<T>>(fCopy[0]->_value(nullptr)-
                                                fCopy[1]->_value(nullptr));
@@ -2005,20 +2052,20 @@ protected:
         {
             return std::make_shared<Fconst<T>>();
         }
-        if (fCopy[0]->_kind() == CFUN_K_UMINUS)                             // -a - b = -(a + b)
+        if (fCopy[0]->_kind() == Kind::cfun_uminus)                             // -a - b = -(a + b)
         {
             return
             std::make_shared<Fuminus<T>>(std::make_shared<Fplus<T>>(fCopy[0]->_getArg(0),
                                                                     fCopy[1])->_simp())->_simp();
         }
-        if (fCopy[1]->_kind() == CFUN_K_UMINUS)                              // a - -b = a + b
+        if (fCopy[1]->_kind() == Kind::cfun_uminus)                              // a - -b = a + b
         {
             return
             std::make_shared<Fplus<T>>(fCopy[0],
                                        fCopy[1]->_getArg(0))->_simp();
         }
-        if (fCopy[0]->_kind() == CFUN_K_MULT &&
-            fCopy[1]->_kind() == CFUN_K_MULT)
+        if (fCopy[0]->_kind() == Kind::cfun_mult &&
+            fCopy[1]->_kind() == Kind::cfun_mult)
         {
             for (i = 0; i <= 1; ++i)                                        // C*A-C*B = C*(A-B)
             {
@@ -2036,7 +2083,7 @@ protected:
         }
         for (j = 0; j <= 1; ++j)
         {
-            if (fCopy[j]->_kind() == CFUN_K_MULT)
+            if (fCopy[j]->_kind() == Kind::cfun_mult)
             {                                                               // a*x - x = (a-1)*x
                 for (i = 0; i <= 1; ++i)
                 {
@@ -2045,18 +2092,18 @@ protected:
                         BasePointer fTmp =
                         std::make_shared<Fmult<T>>(fCopy[__not(j)],
                                                    j ?
-                                                   std::make_shared<Fminus<T>>(std::make_shared<Fconst<T>>(CFUN_M_ONE),
+                                                   std::make_shared<Fminus<T>>(std::make_shared<Fconst<T>>(cfun_one<T>()),
                                                                                fCopy[j]->_getArg(__not(i)))
                                                    :
                                                    std::make_shared<Fminus<T>>(fCopy[j]->_getArg(__not(i)),
-                                                                               std::make_shared<Fconst<T>>(CFUN_M_ONE)));
+                                                                               std::make_shared<Fconst<T>>(cfun_one<T>())));
                         return fTmp->_simp();
                     }
                 }
             }
         }
-        if (fCopy[0]->_kind() == CFUN_K_DIV &&
-            fCopy[1]->_kind() == CFUN_K_DIV &&                              // x/a-y/a = (x+y)/a
+        if (fCopy[0]->_kind() == Kind::cfun_div &&
+            fCopy[1]->_kind() == Kind::cfun_div &&                              // x/a-y/a = (x+y)/a
             fCopy[0]->_getArg(1)->_equals(fCopy[1]->_getArg(1)))
         {
             return
@@ -2066,7 +2113,7 @@ protected:
         }
         for (j = 0; j <= 1; ++j)
         {
-            if (fCopy[j]->_kind() == CFUN_K_PLUS)                           // [x+a] - a  |  a - [x+a]
+            if (fCopy[j]->_kind() == Kind::cfun_plus)                           // [x+a] - a  |  a - [x+a]
             {
                 for (i = 0; i <= 1; ++i)
                 {
@@ -2088,7 +2135,7 @@ protected:
                         }
                     }
                 }
-                if (fCopy[__not(j)]->_kind() == CFUN_K_PLUS)                // x+a - x+b
+                if (fCopy[__not(j)]->_kind() == Kind::cfun_plus)                // x+a - x+b
                 {
                     for (i = 0; i <= 1; ++i)
                     {
@@ -2107,7 +2154,7 @@ protected:
                         }
                     }
                 }
-                if (fCopy[__not(j)]->_kind() == CFUN_K_MINUS)               // x+a - x-b | x-a - x+b
+                if (fCopy[__not(j)]->_kind() == Kind::cfun_minus)               // x+a - x-b | x-a - x+b
                 {
                     if (!j)
                     {
@@ -2147,7 +2194,7 @@ protected:
                     }
                 }
             }
-            if (fCopy[j]->_kind() == CFUN_K_MINUS)                          // a-x - a  |  a - a-x
+            if (fCopy[j]->_kind() == Kind::cfun_minus)                          // a-x - a  |  a - a-x
             {
                 if (j)                                                      // a - a-x == a + x-a
                 {
@@ -2224,7 +2271,7 @@ public:
     {
         std::ostringstream osBuf;
         osBuf << this->mf0->_format(nPrecision) << CFUN_SMINUS;
-        if (this->mf1->_kind() == CFUN_K_UMINUS) {
+        if (this->mf1->_kind() == Kind::cfun_uminus) {
             osBuf << CFUN_O_PARENTH << this->mf1->_format(nPrecision) << CFUN_C_PARENTH;
         }
         else {
@@ -2238,8 +2285,8 @@ template <typename T>
 class Fmult : public BinaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_MULT;
+    Kind _kind() const override {
+        return Kind::cfun_mult;
     }
 
 protected:
@@ -2249,23 +2296,23 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename BinaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
-    typedef shared_ptr_pair<BaseFunction<T>> PointerPair;
+    using BasePointer = typename BinaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
+    using PointerPair = shared_ptr_pair<BaseFunction<T>>;
 
     BasePointer _simpl() const override
     {
         int i, j, k;
         BasePointer fZero = std::make_shared<Fconst<T>>();
-        BasePointer fOne = std::make_shared<Fconst<T>>(CFUN_M_ONE);
-        BasePointer fMOne = std::make_shared<Fconst<T>>(CFUN_M_MONE);
+        BasePointer fOne = std::make_shared<Fconst<T>>(cfun_one<T>());
+        BasePointer fMOne = std::make_shared<Fconst<T>>(cfun_mone<T>());
         PointerPair fCopy(this->mf0->_simp(), this->mf1->_simp());
         for (i = 0; i <= 1; ++i)
         {
-            if (fCopy[i]->_kind() == CFUN_K_INFINITY)
+            if (fCopy[i]->_kind() == Kind::cfun_infinity)
             {
                 return std::make_shared<Finfinity<T>>();
             }
-            if (fCopy[i]->_kind() == CFUN_K_MNINFINITY)
+            if (fCopy[i]->_kind() == Kind::cfun_mninfinity)
             {
                 return std::make_shared<Fmninfinity<T>>();
             }
@@ -2289,8 +2336,8 @@ protected:
                 std::make_shared<Fuminus<T>>(fCopy[__not(i)])->_simp();
             }
         }
-        if (fCopy[0]->_kind() == CFUN_K_CONST &&
-            fCopy[1]->_kind() == CFUN_K_CONST)                              // 3 * 2 = 6
+        if (fCopy[0]->_kind() == Kind::cfun_const &&
+            fCopy[1]->_kind() == Kind::cfun_const)                              // 3 * 2 = 6
         {
             return std::make_shared<Fconst<T>>(fCopy[0]->_value(nullptr) * fCopy[1]->_value(nullptr));
         }
@@ -2298,10 +2345,10 @@ protected:
         {
             return
             std::make_shared<Fpower<T>>(fCopy[0],
-                                        std::make_shared<Fconst<T>>(CFUN_M_TWO))->_simp();
+                                        std::make_shared<Fconst<T>>(cfun_two<T>()))->_simp();
         }
-        if (fCopy[0]->_kind() == CFUN_K_UMINUS &&
-            fCopy[1]->_kind() == CFUN_K_UMINUS)                             // (-a)*(-b) = a*b)
+        if (fCopy[0]->_kind() == Kind::cfun_uminus &&
+            fCopy[1]->_kind() == Kind::cfun_uminus)                             // (-a)*(-b) = a*b)
         {
             return
             std::make_shared<Fmult<T>>(fCopy[0]->_getArg(0),
@@ -2309,15 +2356,15 @@ protected:
         }
         for (i = 0; i <= 1; ++i)
         {
-            if (fCopy[i]->_kind() == CFUN_K_UMINUS)                         // (-a)*b = -a*b
+            if (fCopy[i]->_kind() == Kind::cfun_uminus)                         // (-a)*b = -a*b
             {
                 return
                 std::make_shared<Fuminus<T>>(std::make_shared<Fmult<T>>(fCopy[i]->_getArg(0),
                                                                         fCopy[__not(i)]))->_simp();
             }
         }
-        if (fCopy[0]->_kind() == CFUN_K_POWER &&                            // x^a*x^b=x^(a+b)
-            fCopy[1]->_kind() == CFUN_K_POWER &&
+        if (fCopy[0]->_kind() == Kind::cfun_power &&                            // x^a*x^b=x^(a+b)
+            fCopy[1]->_kind() == Kind::cfun_power &&
             fCopy[0]->_getArg(0)->_equals(fCopy[1]->_getArg(0)))
         {
             return
@@ -2325,22 +2372,22 @@ protected:
                                         std::make_shared<Fplus<T>>(fCopy[0]->_getArg(1),
                                                                    fCopy[1]->_getArg(1)))->_simp();
         }
-        if (fCopy[0]->_kind() == CFUN_K_EXP &&                              // exp(a)*exp(b)=exp(a+b)
-            fCopy[1]->_kind() == CFUN_K_EXP)
+        if (fCopy[0]->_kind() == Kind::cfun_exp &&                              // exp(a)*exp(b)=exp(a+b)
+            fCopy[1]->_kind() == Kind::cfun_exp)
         {
             return
             std::make_shared<Fexp<T>>(std::make_shared<Fplus<T>>(fCopy[0]->_getArg(0),
                                                                  fCopy[1]->_getArg(0)))->_simp();
         }
-        if (fCopy[0]->_kind() == CFUN_K_POWER &&                            // x^a*x=x^(a+1)
+        if (fCopy[0]->_kind() == Kind::cfun_power &&                            // x^a*x=x^(a+1)
             fCopy[0]->_getArg(0)->_equals(fCopy[1]))
         {
             return
             std::make_shared<Fpower<T>>(fCopy[1],
                                         std::make_shared<Fplus<T>>(fCopy[0]->_getArg(1),
-                                                                   std::make_shared<Fconst<T>>(CFUN_M_ONE)))->_simp();
+                                                                   std::make_shared<Fconst<T>>(cfun_one<T>())))->_simp();
         }
-        if (fCopy[1]->_kind() == CFUN_K_POWER &&                            // x*x^a=x^(a+1)
+        if (fCopy[1]->_kind() == Kind::cfun_power &&                            // x*x^a=x^(a+1)
             fCopy[1]->_getArg(0)->_equals(fCopy[0]))
         {
             return
@@ -2351,7 +2398,7 @@ protected:
 
         for (j = 0; j <= 1; ++j)
         {
-            if (fCopy[j]->_kind() == CFUN_K_MULT)                           // x*a * a
+            if (fCopy[j]->_kind() == Kind::cfun_mult)                           // x*a * a
             {
                 for (i = 0; i <= 1; ++i)
                 {
@@ -2365,7 +2412,7 @@ protected:
                                                    fCopy[j]->_getArg(__not(i)))->_simp();
                     }
                 }
-                if (fCopy[__not(j)]->_kind() == CFUN_K_MULT)                // x*a * x*b
+                if (fCopy[__not(j)]->_kind() == Kind::cfun_mult)                // x*a * x*b
                 {
                     for (i = 0; i <= 1; ++i)
                     {
@@ -2384,7 +2431,7 @@ protected:
                         }
                     }
                 }
-                if (fCopy[__not(j)]->_kind() == CFUN_K_DIV)                 // x*a * x/b | x/a * x*b
+                if (fCopy[__not(j)]->_kind() == Kind::cfun_div)                 // x*a * x/b | x/a * x*b
                 {
 
                     for (i = 0; i <= 1; ++i)
@@ -2415,7 +2462,7 @@ protected:
                     }
                 }
             }
-            if (fCopy[j]->_kind() == CFUN_K_DIV)                            // a/x * a
+            if (fCopy[j]->_kind() == Kind::cfun_div)                            // a/x * a
             {
                 {
                     BasePointer fTmp = std::make_shared<Fmult<T>>(fCopy[j]->_getArg(0),
@@ -2440,7 +2487,7 @@ protected:
                     }
                 }
 
-                if (fCopy[__not(j)]->_kind() == CFUN_K_DIV)                 //   x/a * x/b
+                if (fCopy[__not(j)]->_kind() == Kind::cfun_div)                 //   x/a * x/b
                 {
                     for (i = 0; i <= 1; ++i)
                     {
@@ -2516,8 +2563,8 @@ public:
     {
         std::ostringstream osBuf;
         switch (this->mf0->_kind()) {
-        case CFUN_K_PLUS:
-        case CFUN_K_MINUS:
+        case Kind::cfun_plus:
+        case Kind::cfun_minus:
             osBuf << CFUN_O_SPARENTH << this->mf0->_format(nPrecision) << CFUN_C_PARENTH << CFUN_SMULT;
             break;
         default:
@@ -2525,9 +2572,9 @@ public:
             break;
         }
         switch (this->mf1->_kind()) {
-        case CFUN_K_PLUS:
-        case CFUN_K_MINUS:
-        case CFUN_K_UMINUS:
+        case Kind::cfun_plus:
+        case Kind::cfun_minus:
+        case Kind::cfun_uminus:
             osBuf << CFUN_O_SPARENTH << this->mf1->_format(nPrecision) << CFUN_C_PARENTH;
             break;
         default:
@@ -2542,8 +2589,8 @@ template <typename T>
 class Fdiv : public BinaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_DIV;
+    Kind _kind() const override {
+        return Kind::cfun_div;
     }
 
 protected:
@@ -2553,15 +2600,15 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename BinaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
-    typedef shared_ptr_pair<BaseFunction<T>> PointerPair;
+    using BasePointer = typename BinaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
+    using PointerPair = shared_ptr_pair<BaseFunction<T>>;
 
     BasePointer _simpl() const override
     {
         int i, j, k;
         BasePointer fZero = std::make_shared<Fconst<T>>();
-        BasePointer fOne = std::make_shared<Fconst<T>>(CFUN_M_ONE);
-        BasePointer fMOne = std::make_shared<Fconst<T>>(CFUN_M_MONE);
+        BasePointer fOne = std::make_shared<Fconst<T>>(cfun_one<T>());
+        BasePointer fMOne = std::make_shared<Fconst<T>>(cfun_mone<T>());
         PointerPair fCopy(this->mf0->_simp(), this->mf1->_simp());
         if (fCopy[0]->_equals(fZero))                                       // 0 / x = 0
         {
@@ -2571,8 +2618,8 @@ protected:
         {                                                                   // x / 0 = inf
             return std::make_shared<Finfinity<T>>();
         }
-        if (fCopy[1]->_kind() == CFUN_K_INFINITY ||
-            fCopy[1]->_kind() == CFUN_K_MNINFINITY)                         // x / inf = 0 | x / -inf = 0
+        if (fCopy[1]->_kind() == Kind::cfun_infinity ||
+            fCopy[1]->_kind() == Kind::cfun_mninfinity)                         // x / inf = 0 | x / -inf = 0
         {
             return fZero;
         }
@@ -2584,14 +2631,14 @@ protected:
         {                                                                   // x / -1 = -x
             return std::make_shared<Fuminus<T>>(fCopy[0]);
         }
-        if (fCopy[0]->_kind() == CFUN_K_CONST &&
-            fCopy[1]->_kind() == CFUN_K_CONST)
+        if (fCopy[0]->_kind() == Kind::cfun_const &&
+            fCopy[1]->_kind() == Kind::cfun_const)
         {                                                                   // 6 / 2 = 3
             T dNomin = fCopy[0]->_value(nullptr);
             T dDenom = fCopy[1]->_value(nullptr);
             if (cvm::_abs(dDenom) <= cvm::cvmMachMin())
             {
-                if (Comparator<T,T>::lt(dNomin, CFUN_M_ZERO))
+                if (Comparator<T,T>::lt(dNomin, cfun_zero<T>()))
                 {
                     return std::make_shared<Fmninfinity<T>>();
                 }
@@ -2607,10 +2654,10 @@ protected:
         }
         if (fCopy[0]->_equals(fCopy[1]))
         {                                                                   // x / x = 1
-            return std::make_shared<Fconst<T>>(CFUN_M_ONE);
+            return std::make_shared<Fconst<T>>(cfun_one<T>());
         }
-        if (fCopy[0]->_kind() == CFUN_K_UMINUS &&
-            fCopy[1]->_kind() == CFUN_K_UMINUS)
+        if (fCopy[0]->_kind() == Kind::cfun_uminus &&
+            fCopy[1]->_kind() == Kind::cfun_uminus)
         {                                                                   // (-a)/(-b) = a/b)
             return
             std::make_shared<Fdiv<T>>(fCopy[0]->_getArg(0),
@@ -2618,7 +2665,7 @@ protected:
         }
         for (i = 0; i <= 1; ++i)
         {
-            if (fCopy[i]->_kind() == CFUN_K_UMINUS)
+            if (fCopy[i]->_kind() == Kind::cfun_uminus)
             {                                                               // (-a)/b = -a/b
                 BasePointer fTmp =
                 i ?
@@ -2630,8 +2677,8 @@ protected:
                 return fTmp->_simp();
             }
         }
-        if (fCopy[0]->_kind() == CFUN_K_POWER &&                            // x^a/x^b=x^(a-b)
-            fCopy[1]->_kind() == CFUN_K_POWER &&
+        if (fCopy[0]->_kind() == Kind::cfun_power &&                            // x^a/x^b=x^(a-b)
+            fCopy[1]->_kind() == Kind::cfun_power &&
             fCopy[0]->_getArg(0)->_equals(fCopy[1]->_getArg(0)))
         {
             return
@@ -2639,26 +2686,26 @@ protected:
                                         std::make_shared<Fminus<T>>(fCopy[0]->_getArg(1),
                                                                     fCopy[1]->_getArg(1)))->_simp();
         }
-        if (fCopy[0]->_kind() == CFUN_K_POWER &&                            // x^a/x=x^(a-1)
+        if (fCopy[0]->_kind() == Kind::cfun_power &&                            // x^a/x=x^(a-1)
             fCopy[0]->_getArg(0)->_equals(fCopy[1]))
         {
             return
             std::make_shared<Fpower<T>>(fCopy[1],
                                         std::make_shared<Fminus<T>>(fCopy[0]->_getArg(1),
-                                                                    std::make_shared<Fconst<T>>(CFUN_M_ONE)))->_simp();
+                                                                    std::make_shared<Fconst<T>>(cfun_one<T>())))->_simp();
         }
-        if (fCopy[1]->_kind() == CFUN_K_POWER &&                            // x/x^a=x^(1-a)
+        if (fCopy[1]->_kind() == Kind::cfun_power &&                            // x/x^a=x^(1-a)
             fCopy[1]->_getArg(0)->_equals(fCopy[0]))
         {
             return
             std::make_shared<Fpower<T>>(fCopy[0],
-                                        std::make_shared<Fminus<T>>(std::make_shared<Fconst<T>>(CFUN_M_ONE),
+                                        std::make_shared<Fminus<T>>(std::make_shared<Fconst<T>>(cfun_one<T>()),
                                                                     fCopy[1]->_getArg(1)))->_simp();
         }
 
         for (j = 0; j <= 1; ++j)
         {
-            if (fCopy[j]->_kind() == CFUN_K_MULT)
+            if (fCopy[j]->_kind() == Kind::cfun_mult)
             {                                                               // [x*a] / a  |  a / [x*a]
                 for (i = 0; i <= 1; ++i)
                 {
@@ -2683,7 +2730,7 @@ protected:
                         }
                     }
                 }
-                if (fCopy[__not(j)]->_kind() == CFUN_K_MULT)
+                if (fCopy[__not(j)]->_kind() == Kind::cfun_mult)
                 {                                                           //   x*a / x*b
                     for (i = 0; i <= 1; ++i)
                     {
@@ -2703,7 +2750,7 @@ protected:
                     }
                 }
 
-                if (fCopy[__not(j)]->_kind() == CFUN_K_DIV)
+                if (fCopy[__not(j)]->_kind() == Kind::cfun_div)
                 {                                                           // x*a / x/b | x/a / x*b
                     if (!j)
                     {
@@ -2743,7 +2790,7 @@ protected:
                     }
                 }
             }
-            if (fCopy[j]->_kind() == CFUN_K_DIV)
+            if (fCopy[j]->_kind() == Kind::cfun_div)
             {                                                               // a/x / a  |  a / a/x
                 if (j)
                 {                                                           // a / a/x == a * x/a
@@ -2803,7 +2850,7 @@ public:
     T _value(const T* pdVars) const override
     {
         T dDenom = this->mf1->_value(pdVars);
-        if (Comparator<T,T>::eq(dDenom, CFUN_M_ZERO)) {
+        if (Comparator<T,T>::eq(dDenom, cfun_zero<T>())) {
             throw cvmexception(CVM_DIVISIONBYZERO);
         }
         return this->mf0->_value(pdVars) / dDenom;
@@ -2821,16 +2868,16 @@ public:
                                                               std::make_shared<Fmult<T>>(this->mf0,
                                                                                          this->mf1->_deriv(nVarNum))),
                                   std::make_shared<Fpower<T>>(this->mf1,
-                                                              std::make_shared<Fconst<T>>(CFUN_M_TWO)))->_simp();
+                                                              std::make_shared<Fconst<T>>(cfun_two<T>())))->_simp();
     }
 
     std::string _format(int nPrecision) const override
     {
         std::ostringstream osBuf;
         switch (this->mf0->_kind()) {
-        case CFUN_K_PLUS:
-        case CFUN_K_MINUS:
-        case CFUN_K_DIV:
+        case Kind::cfun_plus:
+        case Kind::cfun_minus:
+        case Kind::cfun_div:
             osBuf << CFUN_O_SPARENTH << this->mf0->_format(nPrecision) << CFUN_C_PARENTH << CFUN_SDIV;
             break;
         default:
@@ -2838,11 +2885,11 @@ public:
             break;
         }
         switch (this->mf1->_kind()) {
-        case CFUN_K_PLUS:
-        case CFUN_K_MINUS:
-        case CFUN_K_UMINUS:
-        case CFUN_K_MULT:
-        case CFUN_K_DIV:
+        case Kind::cfun_plus:
+        case Kind::cfun_minus:
+        case Kind::cfun_uminus:
+        case Kind::cfun_mult:
+        case Kind::cfun_div:
             osBuf << CFUN_O_SPARENTH << this->mf1->_format(nPrecision) << CFUN_C_PARENTH;
             break;
         default:
@@ -2857,8 +2904,8 @@ template <typename T>
 class Fpower : public BinaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_POWER;
+    Kind _kind() const override {
+        return Kind::cfun_power;
     }
 
 protected:
@@ -2868,14 +2915,14 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename BinaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
-    typedef shared_ptr_pair<BaseFunction<T>> PointerPair;
+    using BasePointer = typename BinaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
+    using PointerPair = shared_ptr_pair<BaseFunction<T>>;
 
     BasePointer _simpl() const override
     {
         BasePointer fZero = std::make_shared<Fconst<T>>();
-        BasePointer fOne = std::make_shared<Fconst<T>>(CFUN_M_ONE);
-        BasePointer fMOne = std::make_shared<Fconst<T>>(CFUN_M_MONE);
+        BasePointer fOne = std::make_shared<Fconst<T>>(cfun_one<T>());
+        BasePointer fMOne = std::make_shared<Fconst<T>>(cfun_mone<T>());
         PointerPair fCopy(this->mf0->_simp(), this->mf1->_simp());
         if (fCopy[1]->_equals(fZero))
         {                                                                   // x^0 = 1
@@ -2889,8 +2936,8 @@ protected:
         {                                                                   // x^1 = x
             return fCopy[0];
         }
-        else if (fCopy[0]->_kind() == CFUN_K_CONST &&
-                 fCopy[1]->_kind() == CFUN_K_CONST)
+        else if (fCopy[0]->_kind() == Kind::cfun_const &&
+                 fCopy[1]->_kind() == Kind::cfun_const)
         {                                                                   // 6^2 = 36
             return
             std::make_shared<Fconst<T>>(std::pow(fCopy[0]->_value(nullptr), fCopy[1]->_value(nullptr)));
@@ -2901,7 +2948,7 @@ protected:
             std::make_shared<Fdiv<T>>(fOne,
                                       fCopy[0]);
         }
-        else if (fCopy[0]->_kind() == CFUN_K_POWER)
+        else if (fCopy[0]->_kind() == Kind::cfun_power)
         {                                                                   // [x^a]^b = x^[a*b]
             return
             std::make_shared<Fpower<T>>(fCopy[0]->_getArg(0),
@@ -2950,7 +2997,7 @@ public:
                                                               std::make_shared<Fmult<T>>(this->mf1,
                                                                                          std::make_shared<Fpower<T>>(this->mf0,
                                                                                                                      std::make_shared<Fplus<T>>(this->mf1,
-                                                                                                                                                std::make_shared<Fconst<T>>(CFUN_M_MONE))))),
+                                                                                                                                                std::make_shared<Fconst<T>>(cfun_mone<T>()))))),
                                    std::make_shared<Fmult<T>>(this->mf1->_deriv(nVarNum),
                                                               std::make_shared<Fmult<T>>(std::make_shared<Fpower<T>>(this->mf0,
                                                                                                                      this->mf1),
@@ -2961,12 +3008,12 @@ public:
     {
         std::ostringstream osBuf;
         switch (this->mf0->_kind()) {
-        case CFUN_K_PLUS:
-        case CFUN_K_MINUS:
-        case CFUN_K_MULT:
-        case CFUN_K_DIV:
-        case CFUN_K_POWER:
-        case CFUN_K_UMINUS:
+        case Kind::cfun_plus:
+        case Kind::cfun_minus:
+        case Kind::cfun_mult:
+        case Kind::cfun_div:
+        case Kind::cfun_power:
+        case Kind::cfun_uminus:
             osBuf << CFUN_O_SPARENTH << this->mf0->_format(nPrecision) << CFUN_C_SPARENTH << CFUN_SPOWER;
             break;
         default:
@@ -2974,12 +3021,12 @@ public:
             break;
         }
         switch (this->mf1->_kind()) {
-        case CFUN_K_PLUS:
-        case CFUN_K_MINUS:
-        case CFUN_K_MULT:
-        case CFUN_K_DIV:
-        case CFUN_K_POWER:
-        case CFUN_K_UMINUS:
+        case Kind::cfun_plus:
+        case Kind::cfun_minus:
+        case Kind::cfun_mult:
+        case Kind::cfun_div:
+        case Kind::cfun_power:
+        case Kind::cfun_uminus:
             osBuf << CFUN_O_SPARENTH << this->mf1->_format(nPrecision) << CFUN_C_SPARENTH;
             break;
         default:
@@ -2994,8 +3041,8 @@ template <typename T>
 class Fsat : public BinaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_SAT;
+    Kind _kind() const override {
+        return Kind::cfun_sat;
     }
 
 protected:
@@ -3005,8 +3052,8 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename BinaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
-    typedef shared_ptr_pair<BaseFunction<T>> PointerPair;
+    using BasePointer = typename BinaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
+    using PointerPair = shared_ptr_pair<BaseFunction<T>>;
 
     BasePointer _simpl() const override
     {
@@ -3074,14 +3121,14 @@ protected:
     public:
         static U _value(const BaseFunction<U>* pfArg0, BaseFunction<U>* pfArg1, const U* pdVars)
         {
-            U dRes = CFUN_M_ZERO;
+            U dRes = cfun_zero<U>();
             const U dMeans = pfArg0->_value(pdVars);
             const U dDelta = cvm::_abs(pfArg1->_value(pdVars));
             if (dMeans > dDelta) {
-                dRes = CFUN_M_ONE;
+                dRes = cfun_one<U>();
             }
             else if (dMeans < -dDelta) {
-                dRes = CFUN_M_MONE;
+                dRes = cfun_mone<U>();
             }
             return dRes;
         }
@@ -3089,18 +3136,18 @@ protected:
 
     template<typename U>
     class Helper<std::complex<U> > {
-        typedef std::complex<U> UC;
+        using UC = std::complex<U>;
     public:
         static UC _value(const BaseFunction<UC>* pfArg0, BaseFunction<UC>* pfArg1, const UC* pdVars)
         {
-            UC dRes = CFUN_M_ZERO;
+            UC dRes = cfun_zero<U>();
             const U dMeans = pfArg0->_value(pdVars).real();
             const U dDelta = cvm::_abs(pfArg1->_value(pdVars).real());
             if (dMeans > dDelta) {
-                dRes = CFUN_M_ONE;
+                dRes = cfun_one<U>();
             }
             else if (dMeans < -dDelta) {
-                dRes = CFUN_M_MONE;
+                dRes = cfun_mone<U>();
             }
             return dRes;
         }
@@ -3112,8 +3159,8 @@ template <typename T>
 class Fexp : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_EXP;
+    Kind _kind() const override {
+        return Kind::cfun_exp;
     }
 
 protected:
@@ -3123,12 +3170,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(std::exp(fCopy->_value(nullptr)));
         }
         return std::make_shared<Fexp<T>>(fCopy);
@@ -3169,8 +3216,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_exp[] = CFUN_EXP;
-        return sz_exp;
+        return CFUN_EXP;
     }
 };
 
@@ -3178,8 +3224,8 @@ template <typename T>
 class Fsqrt : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_SQRT;
+    Kind _kind() const override {
+        return Kind::cfun_sqrt;
     }
 
 protected:
@@ -3189,12 +3235,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(ElementaryFunctions<T>::sqrt(fCopy->_value(nullptr)));
         }
         return std::make_shared<Fsqrt<T>>(fCopy);
@@ -3230,14 +3276,13 @@ public:
     {
         return
         std::make_shared<Fdiv<T>>(this->mf0->_deriv(nVarNum),
-                                  std::make_shared<Fmult<T>>(std::make_shared<Fconst<T>>(CFUN_M_TWO),
+                                  std::make_shared<Fmult<T>>(std::make_shared<Fconst<T>>(cfun_two<T>()),
                                                              std::make_shared<Fsqrt<T>>(this->mf0)))->_simp();
     }
 
     const char* _name() const override
     {
-        static const char sz_sqrt[] = CFUN_SQRT;
-        return sz_sqrt;
+        return CFUN_SQRT;
     }
 };
 
@@ -3245,8 +3290,8 @@ template <typename T>
 class Flog : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_LOG;
+    Kind _kind() const override {
+        return Kind::cfun_log;
     }
 
 protected:
@@ -3256,7 +3301,7 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
@@ -3266,17 +3311,17 @@ protected:
         {                                                                   // log 0 = - inf
             return std::make_shared<Fmninfinity<T>>();
         }
-        else if (fCopy->_kind() == CFUN_K_CONST)
+        else if (fCopy->_kind() == Kind::cfun_const)
         {                                                                   // log 1 = 0
             return std::make_shared<Fconst<T>>(ElementaryFunctions<T>::log(fCopy->_value(nullptr)));
         }
-        else if (fCopy->_kind() == CFUN_K_SQRT)
+        else if (fCopy->_kind() == Kind::cfun_sqrt)
         {                                                                   // log sqrt (x) = 0.5 * log (x)
             return
             std::make_shared<Fmult<T>>(std::make_shared<Flog<T>>(fCopy->_getArg(0)),
-                                       std::make_shared<Fconst<T>>(CFUN_M_HALF))->_simp();
+                                       std::make_shared<Fconst<T>>(cfun_half<T>()))->_simp();
         }
-        else if (fCopy->_kind() == CFUN_K_POWER)
+        else if (fCopy->_kind() == Kind::cfun_power)
         {                                                                   // log (x^y) = y * log (x)
             return
             std::make_shared<Fmult<T>>(std::make_shared<Flog<T>>(fCopy->_getArg(0)),
@@ -3320,8 +3365,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_log[] = CFUN_LOG;
-        return sz_log;
+        return CFUN_LOG;
     }
 };
 
@@ -3329,8 +3373,8 @@ template <typename T>
 class Flog10 : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_LOG10;
+    Kind _kind() const override {
+        return Kind::cfun_log10;
     }
 
 protected:
@@ -3340,7 +3384,7 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
@@ -3350,17 +3394,17 @@ protected:
         {
             return std::make_shared<Fmninfinity<T>>();
         }
-        else if (fCopy->_kind() == CFUN_K_CONST)
+        else if (fCopy->_kind() == Kind::cfun_const)
         {
             return std::make_shared<Fconst<T>>(ElementaryFunctions<T>::log10(fCopy->_value(nullptr)));
         }
-        else if (fCopy->_kind() == CFUN_K_SQRT)
+        else if (fCopy->_kind() == Kind::cfun_sqrt)
         {                                                                   // log sqrt (x) = 0.5 * log (x)
             return
             std::make_shared<Fmult<T>>(std::make_shared<Flog10<T>>(fCopy->_getArg(0)),
-                                       std::make_shared<Fconst<T>>(CFUN_M_HALF))->_simp();
+                                       std::make_shared<Fconst<T>>(cfun_half<T>()))->_simp();
         }
-        else if (fCopy->_kind() == CFUN_K_POWER)
+        else if (fCopy->_kind() == Kind::cfun_power)
         {                                                                   // log (x^y) = y * log (x)
             return
             std::make_shared<Fmult<T>>(std::make_shared<Flog10<T>>(fCopy->_getArg(0)),
@@ -3399,14 +3443,13 @@ public:
     {
         return
         std::make_shared<Fdiv<T>>(this->mf0->_deriv(nVarNum),
-                                  std::make_shared<Fmult<T>>(std::make_shared<Fconst<T>>(CFUN_M_LN_10),
+                                  std::make_shared<Fmult<T>>(std::make_shared<Fconst<T>>(cfun_ln10<T>()),
                                                              this->mf0))->_simp();
     }
 
     const char* _name() const override
     {
-        static const char sz_log10[] = CFUN_LOG10;
-        return sz_log10;
+        return CFUN_LOG10;
     }
 };
 
@@ -3414,8 +3457,8 @@ template <typename T>
 class Fsin : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_SIN;
+    Kind _kind() const override {
+        return Kind::cfun_sin;
     }
 
 protected:
@@ -3425,12 +3468,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(std::sin(fCopy->_value(nullptr)));
         }
         return std::make_shared<Fsin<T>>(fCopy);
@@ -3471,16 +3514,15 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_sin[] = CFUN_SIN;
-        return sz_sin;
+        return CFUN_SIN;
     }
 };
 
 template <typename T>
 class Fcos : public UnaryFunction<T> {
 private:
-    int _kind() const override {
-        return CFUN_K_COS;
+    Kind _kind() const override {
+        return Kind::cfun_cos;
     }
 
 protected:
@@ -3490,12 +3532,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(std::cos(fCopy->_value(nullptr)));
         }
         return std::make_shared<Fcos<T>>(fCopy);
@@ -3536,8 +3578,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_cos[] = CFUN_COS;
-        return sz_cos;
+        return CFUN_COS;
     }
 };
 
@@ -3545,8 +3586,8 @@ template <typename T>
 class Ftan : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_TAN;
+    Kind _kind() const override {
+        return Kind::cfun_tan;
     }
 
 protected:
@@ -3556,12 +3597,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(ElementaryFunctions<T>::tan(fCopy->_value(nullptr)));
         }
         return std::make_shared<Ftan<T>>(fCopy);
@@ -3598,13 +3639,12 @@ public:
         return
         std::make_shared<Fdiv<T>>(this->mf0->_deriv(nVarNum),
                                   std::make_shared<Fpower<T>>(std::make_shared<Fcos<T>>(this->mf0),
-                                                              std::make_shared<Fconst<T>>(CFUN_M_TWO)))->_simp();
+                                                              std::make_shared<Fconst<T>>(cfun_two<T>())))->_simp();
     }
 
     const char* _name() const override
     {
-        static const char sz_tan[] = CFUN_TAN;
-        return sz_tan;
+        return CFUN_TAN;
     }
 };
 
@@ -3612,8 +3652,8 @@ template <typename T>
 class Fasin : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_ARCSIN;
+    Kind _kind() const override {
+        return Kind::cfun_arcsin;
     }
 
 protected:
@@ -3623,12 +3663,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(ElementaryFunctions<T>::asin(fCopy->_value(nullptr)));
         }
         return std::make_shared<Fasin<T>>(fCopy);
@@ -3664,15 +3704,14 @@ public:
     {
         return
         std::make_shared<Fdiv<T>>(this->mf0->_deriv(nVarNum),
-                                  std::make_shared<Fsqrt<T>>(std::make_shared<Fminus<T>>(std::make_shared<Fconst<T>>(CFUN_M_ONE),
+                                  std::make_shared<Fsqrt<T>>(std::make_shared<Fminus<T>>(std::make_shared<Fconst<T>>(cfun_one<T>()),
                                                                                          std::make_shared<Fpower<T>>(this->mf0,
-                                                                                                                     std::make_shared<Fconst<T>>(CFUN_M_TWO)))))->_simp();
+                                                                                                                     std::make_shared<Fconst<T>>(cfun_two<T>())))))->_simp();
     }
 
     const char* _name() const override
     {
-        static const char sz_asin[] = CFUN_ASIN;
-        return sz_asin;
+        return CFUN_ASIN;
     }
 };
 
@@ -3680,8 +3719,8 @@ template <typename T>
 class Facos : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_ARCCOS;
+    Kind _kind() const override {
+        return Kind::cfun_arccos;
     }
 
 protected:
@@ -3691,12 +3730,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(ElementaryFunctions<T>::acos(fCopy->_value(nullptr)));
         }
         return std::make_shared<Facos<T>>(fCopy);
@@ -3736,8 +3775,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_acos[] = CFUN_ACOS;
-        return sz_acos;
+        return CFUN_ACOS;
     }
 };
 
@@ -3745,8 +3783,8 @@ template <typename T>
 class Fatan : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_ARCTAN;
+    Kind _kind() const override {
+        return Kind::cfun_arctan;
     }
 
 protected:
@@ -3756,12 +3794,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(ElementaryFunctions<T>::atan(fCopy->_value(nullptr)));
         }
         return std::make_shared<Fatan<T>>(fCopy);
@@ -3797,15 +3835,14 @@ public:
     {
         return
         std::make_shared<Fdiv<T>>(this->mf0->_deriv(nVarNum),
-                                  std::make_shared<Fplus<T>>(std::make_shared<Fconst<T>>(CFUN_M_ONE),
+                                  std::make_shared<Fplus<T>>(std::make_shared<Fconst<T>>(cfun_one<T>()),
                                                              std::make_shared<Fpower<T>>(this->mf0,
-                                                                                         std::make_shared<Fconst<T>>(CFUN_M_TWO))))->_simp();
+                                                                                         std::make_shared<Fconst<T>>(cfun_two<T>()))))->_simp();
     }
 
     const char* _name() const override
     {
-        static const char sz_atan[] = CFUN_ATAN;
-        return sz_atan;
+        return CFUN_ATAN;
     }
 };
 
@@ -3814,8 +3851,8 @@ template <typename T>
 class Fsinh : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_SINH;
+    Kind _kind() const override {
+        return Kind::cfun_sinh;
     }
 
 protected:
@@ -3825,12 +3862,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(ElementaryFunctions<T>::sinh(fCopy->_value(nullptr)));
         }
         return std::make_shared<Fsinh<T>>(fCopy);
@@ -3871,8 +3908,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_sinh[] = CFUN_SINH;
-        return sz_sinh;
+        return CFUN_SINH;
     }
 };
 
@@ -3881,8 +3917,8 @@ template <typename T>
 class Fcosh : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_COSH;
+    Kind _kind() const override {
+        return Kind::cfun_cosh;
     }
 
 protected:
@@ -3892,12 +3928,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(ElementaryFunctions<T>::cosh(fCopy->_value(nullptr)));
         }
         return std::make_shared<Fcosh<T>>(fCopy);
@@ -3938,8 +3974,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_cosh[] = CFUN_COSH;
-        return sz_cosh;
+        return CFUN_COSH;
     }
 };
 
@@ -3948,8 +3983,8 @@ template <typename T>
 class Ftanh : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_TANH;
+    Kind _kind() const override {
+        return Kind::cfun_tanh;
     }
 
 protected:
@@ -3959,12 +3994,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(ElementaryFunctions<T>::tanh(fCopy->_value(nullptr)));
         }
         return std::make_shared<Ftanh<T>>(fCopy);
@@ -4001,13 +4036,12 @@ public:
         return
         std::make_shared<Fdiv<T>>(this->mf0->_deriv(nVarNum),
                                   std::make_shared<Fpower<T>>(std::make_shared<Fcosh<T>>(this->mf0),
-                                                              std::make_shared<Fconst<T>>(CFUN_M_TWO)))->_simp();
+                                                              std::make_shared<Fconst<T>>(cfun_two<T>())))->_simp();
     }
 
     const char* _name() const override
     {
-        static const char sz_tanh[] = CFUN_TANH;
-        return sz_tanh;
+        return CFUN_TANH;
     }
 };
 
@@ -4015,8 +4049,8 @@ template <typename T>
 class Fsinint : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_INTSIN;
+    Kind _kind() const override {
+        return Kind::cfun_intsin;
     }
 
 protected:
@@ -4025,12 +4059,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(Helper<T>::_value(fCopy.get(), nullptr));
         }
         return std::make_shared<Fsinint<T>>(fCopy);
@@ -4071,8 +4105,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_si[] = CFUN_SI;
-        return sz_si;
+        return CFUN_SI;
     }
 
 protected:
@@ -4087,7 +4120,7 @@ protected:
     };
     template<typename U>
     class Helper<std::complex<U> > {
-        typedef std::complex<U> UC;
+        using UC = std::complex<U>;
     public:
         static UC _value(const BaseFunction<UC>* pfArg, const UC* pdVars)
         {
@@ -4101,8 +4134,8 @@ template <typename T>
 class Fcosint : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_INTCOS;
+    Kind _kind() const override {
+        return Kind::cfun_intcos;
     }
 
 protected:
@@ -4112,12 +4145,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(Helper<T>::_value(fCopy.get(), nullptr));
         }
         return std::make_shared<Fcosint<T>>(fCopy);
@@ -4158,8 +4191,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_ci[] = CFUN_CI;
-        return sz_ci;
+        return CFUN_CI;
     }
 
 protected:
@@ -4174,7 +4206,7 @@ protected:
     };
     template<typename U>
     class Helper<std::complex<U> > {
-        typedef std::complex<U> UC;
+        using UC = std::complex<U>;
     public:
         static UC _value(const BaseFunction<UC>* pfArg, const UC* pdVars)
         {
@@ -4188,8 +4220,8 @@ template <typename T>
 class Fuminus : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_UMINUS;
+    Kind _kind() const override {
+        return Kind::cfun_uminus;
     }
 
 protected:
@@ -4199,34 +4231,34 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_UMINUS)
+        if (fCopy->_kind() == Kind::cfun_uminus)
         {                                                                   //  - - b
             return fCopy->_getArg(0);
         }
-        if (fCopy->_kind() == CFUN_K_INFINITY)
+        if (fCopy->_kind() == Kind::cfun_infinity)
         {
             return std::make_shared<Fmninfinity<T>>();
         }
-        if (fCopy->_kind() == CFUN_K_MNINFINITY)
+        if (fCopy->_kind() == Kind::cfun_mninfinity)
         {
             return std::make_shared<Finfinity<T>>();
         }
-        if (fCopy->_kind() == CFUN_K_CONST)
+        if (fCopy->_kind() == Kind::cfun_const)
         {
             return std::make_shared<Fconst<T>>(- fCopy->_value(nullptr));
         }
-        if (fCopy->_kind() == CFUN_K_MINUS)
+        if (fCopy->_kind() == Kind::cfun_minus)
         {                                                                   // - (a - b) = b - a
             return
             std::make_shared<Fminus<T>>(fCopy->_getArg(1),
                                         fCopy->_getArg(0));
         }
-        if (fCopy->_kind() == CFUN_K_MULT)
+        if (fCopy->_kind() == Kind::cfun_mult)
         {                                                                   // - x*y
             for (size_t i = 0; i <= 1; ++i)
             {
@@ -4240,7 +4272,7 @@ protected:
                 }
             }
         }
-        if (fCopy->_kind() == CFUN_K_DIV)
+        if (fCopy->_kind() == Kind::cfun_div)
         {                                                                   // - x/y
             for (size_t i = 0; i <= 1; ++i)
             {
@@ -4293,9 +4325,9 @@ public:
         std::ostringstream osBuf;
         osBuf << this->_name();
         switch (this->mf0->_kind()) {
-        case CFUN_K_PLUS:
-        case CFUN_K_MINUS:
-        case CFUN_K_UMINUS:
+        case Kind::cfun_plus:
+        case Kind::cfun_minus:
+        case Kind::cfun_uminus:
             osBuf << CFUN_O_SPARENTH << this->mf0->_format(nPrecision) << CFUN_C_PARENTH;
             break;
         default:
@@ -4313,8 +4345,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_uminus[] = CFUN_SMINUS;
-        return sz_uminus;
+        return CFUN_SMINUS;
     }
 };
 
@@ -4322,8 +4353,8 @@ template <typename T>
 class Fsign : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_SIGN;
+    Kind _kind() const override {
+        return Kind::cfun_sign;
     }
 
 protected:
@@ -4333,12 +4364,12 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST)
+        if (fCopy->_kind() == Kind::cfun_const)
         {
             return std::make_shared<Fconst<T>>(Helper<T>::_value(fCopy.get(), nullptr));
         }
@@ -4380,8 +4411,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_sign[] = CFUN_SIGN;
-        return sz_sign;
+        return CFUN_SIGN;
     }
 
 protected:
@@ -4392,20 +4422,20 @@ protected:
         static U _value(const BaseFunction<U>* pfArg, const U* pdVars)
         {
             const U dV = pfArg->_value(pdVars);
-            return U(dV > CFUN_M_ZERO ? CFUN_M_ONE :
-                                        (dV < CFUN_M_ZERO ? CFUN_M_MONE : CFUN_M_ZERO));
+            return dV > cfun_zero<U>() ? cfun_one<U>() :
+                                         (dV < cfun_zero<U>() ? cfun_mone<U>() : cfun_zero<U>());
         }
     };
 
     template<typename U>
     class Helper<std::complex<U> > {
-        typedef std::complex<U> UC;
+        using UC = std::complex<U>;
     public:
         static UC _value(const BaseFunction<UC>* pfArg, const UC* pdVars)
         {
             const U dV = pfArg->_value(pdVars).real();
-            return dV > CFUN_M_ZERO ? CFUN_M_ONE :
-                                      (dV < CFUN_M_ZERO ? CFUN_M_MONE : CFUN_M_ZERO);
+            return dV > cfun_zero<U>() ? cfun_one<U>() :
+                                         (dV < cfun_zero<U>() ? cfun_mone<U>() : cfun_zero<U>());
         }
     };
 //! @endcond
@@ -4415,8 +4445,8 @@ template <typename T>
 class Fabs : public UnaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_ABS;
+    Kind _kind() const override {
+        return Kind::cfun_abs;
     }
 
 protected:
@@ -4426,15 +4456,15 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
     BasePointer _simpl() const override
     {
         BasePointer fCopy(this->mf0->_simp());
-        if (fCopy->_kind() == CFUN_K_CONST) {
+        if (fCopy->_kind() == Kind::cfun_const) {
             return std::make_shared<Fconst<T>>(cvm::_abs(fCopy->_value(nullptr)));
         }
-        else if (fCopy->_kind() == CFUN_K_ABS) {
+        else if (fCopy->_kind() == Kind::cfun_abs) {
             return fCopy;
         }
         return std::make_shared<Fabs<T>>(fCopy);
@@ -4475,8 +4505,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_abs[] = CFUN_ABS;
-        return sz_abs;
+        return CFUN_ABS;
     }
 };
 
@@ -4484,8 +4513,8 @@ template <typename T>
 class Fdelta : public BinaryFunction<T>
 {
 private:
-    int _kind() const override {
-        return CFUN_K_DELTA;
+    Kind _kind() const override {
+        return Kind::cfun_delta;
     }
 
 protected:
@@ -4495,13 +4524,13 @@ protected:
         return bAcquire ? ++nDepth : --nDepth;
     }
 
-    typedef typename BinaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
-    typedef shared_ptr_pair<BaseFunction<T>> PointerPair;
+    using BasePointer = typename BinaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
+    using PointerPair = shared_ptr_pair<BaseFunction<T>>;
 
     BasePointer _simpl() const override
     {
         PointerPair fCopy(this->mf0->_simp(), this->mf1->_simp());
-        if (fCopy[0]->_kind() == CFUN_K_CONST && fCopy[1]->_kind() == CFUN_K_CONST) {
+        if (fCopy[0]->_kind() == Kind::cfun_const && fCopy[1]->_kind() == Kind::cfun_const) {
             T dM1 = fCopy[0]->_value(nullptr);
             T dM2 = fCopy[1]->_value(nullptr);
             if (cvm::_abs(dM1 - dM2) <= cvm::cvmMachMin()) {
@@ -4569,18 +4598,18 @@ protected:
         static U _value(const BaseFunction<U>* pfArg0, const BaseFunction<U>* pfArg1, const U* pdVars)
         {
             return cvm::_abs(pfArg0->_value(pdVars) - pfArg1->_value(pdVars)) <= basic_cvmMachMin<U>() ?
-                   basic_cvmMachMax<U>() : U(CFUN_M_ZERO);
+                   basic_cvmMachMax<U>() : cfun_zero<U>();
         }
     };
 
     template<typename U>
     class Helper<std::complex<U> > {
-        typedef std::complex<U> UC;
+        using UC = std::complex<U>;
     public:
         static UC _value(const BaseFunction<UC>* pfArg0, const BaseFunction<UC>* pfArg1, const UC* pdVars)
         {
             return cvm::_abs((pfArg0->_value(pdVars) - pfArg1->_value(pdVars)).real()) <= basic_cvmMachMin<U>() ?
-                   basic_cvmMachMax<U>() : CFUN_M_ZERO;
+                   basic_cvmMachMax<U>() : cfun_zero<U>();
         }
     };
 //! @endcond
@@ -4593,8 +4622,8 @@ private:
     size_t mnVarPos;
     std::string msVarName;
 
-    int _kind() const override {
-        return CFUN_K_VAR;
+    Kind _kind() const override {
+        return Kind::cfun_var;
     }
 
 protected:
@@ -4602,7 +4631,7 @@ protected:
         return 1;
     }
 
-    typedef typename BaseFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename BaseFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
 
     BasePointer _simpl() const override
@@ -4648,7 +4677,7 @@ public:
     BasePointer _deriv(size_t nVarNum) const override
     {
         if (mnVarPos == nVarNum) {
-            return std::make_shared<Fconst<T>>(CFUN_M_ONE);
+            return std::make_shared<Fconst<T>>(cfun_one<T>());
         }
         return std::make_shared<Fconst<T>>();
     }
@@ -4670,10 +4699,10 @@ template <typename T>
 class Fiif : public UnaryFunction<T>
 {
 private:
-    typedef typename UnaryFunction<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename UnaryFunction<T>::BasePointer; //!< Shared pointer to BaseFunction
 
-    int _kind() const override {
-        return CFUN_K_IIF;
+    Kind _kind() const override {
+        return Kind::cfun_iif;
     }
 
     BasePointer mpflt;  // if mf0 < 0
@@ -4757,8 +4786,7 @@ public:
 
     const char* _name() const override
     {
-        static const char sz_iif[] = CFUN_IIF;
-        return sz_iif;
+        return CFUN_IIF;
     }
 
 protected:
@@ -4768,17 +4796,17 @@ protected:
     public:
         static bool left(const BaseFunction<U>* pfArg0, const U* pdVars)
         {
-            return pfArg0->_value(pdVars) < CFUN_M_ZERO;
+            return pfArg0->_value(pdVars) < cfun_zero<U>();
         }
     };
 
     template<typename U>
     class Helper<std::complex<U> > {
-        typedef std::complex<U> UC;
+        using UC = std::complex<U>;
     public:
         static bool left(const BaseFunction<UC>* pfArg0, const UC* pdVars)
         {
-            return pfArg0->_value(pdVars).real() < CFUN_M_ZERO;
+            return pfArg0->_value(pdVars).real() < cfun_zero<U>();
         }
     };
 //! @endcond
@@ -4908,7 +4936,7 @@ template <typename T>
 class basic_function
 {
 public:
-    typedef typename FunctionFactory<T>::BasePointer BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename FunctionFactory<T>::BasePointer; //!< Shared pointer to BaseFunction
 
 protected:
     mutable string_array mvars; //!< Array of variables
@@ -7432,7 +7460,7 @@ template<typename T>
 class FArray
 {
 protected:
-    typedef basic_function<T> BaseFunction; //!< Vector element, i.e. \ref rfunction or \ref cfunction
+    using BaseFunction = typename basic_function<T>; //!< Vector element, i.e. \ref rfunction or \ref cfunction
 
     std::vector<BaseFunction> mv; //!< Internal storage
 
@@ -7930,8 +7958,8 @@ class basic_fvector : public FArray<T>
     friend class basic_fmatrix<T>;  // for _mult
 
 protected:
-    typedef FArray<T> BaseFArray; //!< Base class
-    typedef typename BaseFArray::BaseFunction BaseFunction; //!< Vector element, i.e. \ref rfunction or \ref cfunction
+    using BaseFArray = FArray<T>; //!< Base class
+    using BaseFunction = typename BaseFArray::BaseFunction; //!< Vector element, i.e. \ref rfunction or \ref cfunction
 
 //! @cond INTERNAL
     void _check_size(size_t size) const throw(cvmexception)
@@ -9268,7 +9296,7 @@ template <typename TR>
 class basic_rfvector : public basic_fvector<TR>
 {
 protected:
-    typedef basic_fvector<TR> BaseFVector; //!< Base class
+    using BaseFVector = basic_fvector<TR>; //!< Base class
 
 public:
 /**
@@ -9614,7 +9642,7 @@ template <typename TR, typename TC>
 class basic_cfvector : public basic_fvector<TC>
 {
 protected:
-    typedef basic_fvector<TC> BaseFVector; //!< Base class
+    using BaseFVector = basic_fvector<TC>; //!< Base class
 
 public:
 /**
@@ -9965,8 +9993,8 @@ class basic_fmatrix : public FArray<T>
     friend class basic_fvector<T>;  // _mult
 
 protected:
-    typedef FArray<T> BaseFArray; //!< Base class
-    typedef typename BaseFArray::BaseFunction BaseFunction; //!< %Matrix element, i.e. \ref rfunction or \ref cfunction
+    using BaseFArray = FArray<T>; //!< Base class
+    using BaseFunction = typename BaseFArray::BaseFunction; //!< %Matrix element, i.e. \ref rfunction or \ref cfunction
 
     size_t mM; //!< %Number of rows
     size_t mN; //!< %Number of columns
@@ -11550,7 +11578,7 @@ template <typename TR>
 class basic_rfmatrix : public basic_fmatrix<TR>
 {
 protected:
-    typedef basic_fmatrix<TR> BaseFMatrix; //!< Base class
+    using BaseFMatrix = basic_fmatrix<TR>; //!< Base class
 
 public:
 /**
@@ -11927,7 +11955,7 @@ template <typename TR, typename TC>
 class basic_cfmatrix : public basic_fmatrix<TC>
 {
 protected:
-    typedef basic_fmatrix<TC> BaseFMatrix; //!< Base class
+    using BaseFMatrix = basic_fmatrix<TC>; //!< Base class
 
 public:
 /**

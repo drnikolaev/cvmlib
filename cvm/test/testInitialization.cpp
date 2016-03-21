@@ -19,8 +19,8 @@ protected:
             a2[i] = T(i + 1) / T(10.);
             a3[i] = T(i + 1) * T(10.);
             a4[i] = T(i + 1) / T(100.);
-            c1[i] = TC(a1[i], a2[i]);
-            c2[i] = TC(a2[i], a4[i]);
+            c1[i] = std::complex<T>(a1[i], a2[i]);
+            c2[i] = std::complex<T>(a2[i], a4[i]);
         }
     }
     virtual ~InitializationTest() {}
@@ -31,11 +31,11 @@ protected:
     basic_srmatrix<T> srm;
     basic_srbmatrix<T> srbm;
     basic_srsmatrix<T> srsm;
-    basic_cvector<T,TC> cv;
-    basic_cmatrix<T,TC> cm;
-    basic_scmatrix<T,TC> scm;
-    basic_scbmatrix<T,TC> scbm;
-    basic_schmatrix<T,TC> schm;
+    basic_cvector<T,std::complex<T>> cv;
+    basic_cmatrix<T,std::complex<T>> cm;
+    basic_scmatrix<T,std::complex<T>> scm;
+    basic_scbmatrix<T,std::complex<T>> scbm;
+    basic_schmatrix<T,std::complex<T>> schm;
 
     rvector32 rv32;
     rmatrix32 rm32;
@@ -60,7 +60,7 @@ protected:
     schmatrix64 schm64;
 
     T a1[100], a2[100], a3[100], a4[100];
-    TC c1[100], c2[100];
+    std::complex<T> c1[100], c2[100];
     const T cs[18] = {3., 0., 2., 1., -1., 2., 2., -1., 3., 0.,
                       0., 3., -1., -2., 0., -3., 5., 0.};
     const T as[9]  = {1., 2., 1., 2., 5., -1., 1., -1., 20.};
@@ -907,7 +907,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     basic_schmatrix<TP,TPC> sch1{3};
 
 
-// Array<TR,TC> derived features.
+// Array<TR,std::complex<T>> derived features.
     EXPECT_EQ(0,  rv   .size());
     EXPECT_EQ(10, rv0  .size());
     EXPECT_EQ(10, rv1  .size());
@@ -1085,7 +1085,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ(TPC(this->cs[14],this->cs[15]), sch1(CVM0+2)[CVM0+1]);
 
 
-// Array<TR,TC> derived features -  continued
+// Array<TR,std::complex<T>> derived features -  continued
     rv << rv1.normalize();
     EXPECT_EQ(rv1[CVM0+6], rv(CVM0+6));
 
