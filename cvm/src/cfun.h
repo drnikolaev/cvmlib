@@ -13,6 +13,7 @@
 
 #include <ctype.h>
 #include <vector>
+#include <unordered_map>
 
 #define CFUN_O_BRACE                '{'
 #define CFUN_C_BRACE                '}'
@@ -884,7 +885,6 @@ class FunctionFactory
 public:
     using BasePointer = std::shared_ptr<BaseFunction<T>>; //!< Shared pointer to BaseFunction
 
-/*
 private:
     class Creator {
     private:
@@ -894,7 +894,7 @@ private:
     class CreatorFExp : public Creator {
     private:
         BasePointer create(...) const override {
-            return CFUN_NEW_FUNC(Fexp, __VA_ARGS__);
+            return CFUN_NEW_FUNC(Fexp);
         }
     };
 
@@ -908,7 +908,6 @@ private:
     };
 
 public:
-*/
 
 /**
 @brief Parser and factory interface (not end-user)
@@ -1110,7 +1109,7 @@ template <typename T>
 class BaseFunction
 {
 protected:
-    using BasePointer = typename typename FunctionFactory<T>::BasePointer; //!< Shared pointer to BaseFunction
+    using BasePointer = typename FunctionFactory<T>::BasePointer; //!< Shared pointer to BaseFunction
 
 //! @cond INTERNAL
     virtual BasePointer _simpl() const = 0;                     // returns simplified function as a new object
@@ -7460,7 +7459,7 @@ template<typename T>
 class FArray
 {
 protected:
-    using BaseFunction = typename basic_function<T>; //!< Vector element, i.e. \ref rfunction or \ref cfunction
+    using BaseFunction = basic_function<T>; //!< Vector element, i.e. \ref rfunction or \ref cfunction
 
     std::vector<BaseFunction> mv; //!< Internal storage
 

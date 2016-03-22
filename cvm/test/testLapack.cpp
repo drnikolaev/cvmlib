@@ -1544,11 +1544,11 @@ TYPED_TEST(LapackTest, TestGelsBandRealVector) {
 
     basic_rvector<TP> xn = a.gels(false, bn, dErr);
     EXPECT_NEAR(TP(0.), (a*xn-bn).norm(), sp<TP>()) << "gels real nontransp";
-    EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), spp<TP>()) << "gels real nontransp";
+    EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), spp<TP>(1.e-5,1.e-2)) << "gels real nontransp";
 
     basic_rvector<TP> xt = a.gels(true, bt, dErr);
     EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), sp<TP>()) << "gels real transp";
-    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>()) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>(1.e-5,1.e-2)) << "gels real transp";
 }
 
 // complex vector gels*
