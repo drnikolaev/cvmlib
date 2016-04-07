@@ -885,27 +885,90 @@ class FunctionFactory
 public:
     using BasePointer = std::shared_ptr<BaseFunction<T>>; //!< Shared pointer to BaseFunction
 
+//! @cond INTERNAL
+    
+#define CFUN_CREATOR_DEF(f) \
+    struct CreatorF##f : public Creator { \
+        BasePointer create (const std::string& sBody, size_t nLeft, \
+                            size_t nBodyLength, const string_array& saVars, \
+                            const string_array& saParameters, const string_array& saMeanings) \
+                            const override { \
+                                return CFUN_NEW_FUNC(F##f, sBody, nLeft, nBodyLength, saVars, \
+                                                     saParameters, saMeanings); \
+                            } \
+        };
+
+#define CFUN_CREATOR_INST(F,f) \
+    mmap.emplace(F, std::unique_ptr<Creator>(new CreatorF##f()));
+    
+    
 private:
-    class Creator {
-    private:
-        BasePointer create(...) const = 0;
+    struct Creator {
+        virtual BasePointer create(const std::string& sBody, size_t nLeft,
+                                   size_t nBodyLength, const string_array& saVars,
+                                   const string_array& saParameters, const string_array& saMeanings) const = 0;
     };
 
-    class CreatorFExp : public Creator {
-    private:
-        BasePointer create(...) const override {
-            return CFUN_NEW_FUNC(Fexp);
-        }
-    };
-
+    CFUN_CREATOR_DEF(exp)
+    CFUN_CREATOR_DEF(sqrt)
+    CFUN_CREATOR_DEF(log)
+    CFUN_CREATOR_DEF(log10)
+    CFUN_CREATOR_DEF(sin)
+    CFUN_CREATOR_DEF(cos)
+    CFUN_CREATOR_DEF(tan)
+    CFUN_CREATOR_DEF(asin)
+    CFUN_CREATOR_DEF(acos)
+    CFUN_CREATOR_DEF(atan)
+    CFUN_CREATOR_DEF(sinh)
+    CFUN_CREATOR_DEF(cosh)
+    CFUN_CREATOR_DEF(tanh)
+    CFUN_CREATOR_DEF(sinint)
+    CFUN_CREATOR_DEF(cosint)
+    CFUN_CREATOR_DEF(sign)
+    CFUN_CREATOR_DEF(abs)
+    CFUN_CREATOR_DEF(iif)
+    CFUN_CREATOR_DEF(delta)
+    CFUN_CREATOR_DEF(power)
+    CFUN_CREATOR_DEF(sat)
+    
     class Engine {
-        std::unordered_map<std::string,std::unique_ptr<Creator>> map;
+        std::unordered_map<std::string,std::unique_ptr<Creator>> mmap;
     public:
         Engine() {
-        
-
+            CFUN_CREATOR_INST(CFUN_EXP,exp)
+            CFUN_CREATOR_INST(CFUN_SQRT,sqrt)
+            CFUN_CREATOR_INST(CFUN_LOG,log)
+            CFUN_CREATOR_INST(CFUN_LOG10,log10)
+            CFUN_CREATOR_INST(CFUN_SIN,sin)
+            CFUN_CREATOR_INST(CFUN_COS,cos)
+            CFUN_CREATOR_INST(CFUN_TAN,tan)
+            CFUN_CREATOR_INST(CFUN_ASIN,asin)
+            CFUN_CREATOR_INST(CFUN_ACOS,acos)
+            CFUN_CREATOR_INST(CFUN_ATAN,atan)
+            CFUN_CREATOR_INST(CFUN_SINH,sinh)
+            CFUN_CREATOR_INST(CFUN_COSH,cosh)
+            CFUN_CREATOR_INST(CFUN_TANH,tanh)
+            CFUN_CREATOR_INST(CFUN_SI,sinint)
+            CFUN_CREATOR_INST(CFUN_CI,cosint)
+            CFUN_CREATOR_INST(CFUN_SIGN,sign)
+            CFUN_CREATOR_INST(CFUN_ABS,abs)
+            CFUN_CREATOR_INST(CFUN_IIF,iif)
+            CFUN_CREATOR_INST(CFUN_DELTA,delta)
+            CFUN_CREATOR_INST(CFUN_POWERS,power)
+            CFUN_CREATOR_INST(CFUN_SAT,sat)
+        }
+        BasePointer create(const std::string& name, const std::string& sBody, size_t nLeft,
+                           size_t nBodyLength, const string_array& saVars,
+                           const string_array& saParameters, const string_array& saMeanings) const {
+            auto it = mmap.find(name);
+            if (it != mmap.end()) {
+                return it->second->create(sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
+            }
+            return nullptr;
         }
     };
+    
+//! @endcond
 
 public:
 
@@ -927,7 +990,7 @@ Parses incoming strings and instantiates function object
         size_t nBodyLength = __tassign(sBody, sPar, nFirst, nLast);
 
         if (!nBodyLength) {
-            throw cvmexception(CFUN_PARSEERROR, sPar.c_str(), __format_vars(saVars).c_str());
+            BaseFunction<T>::parse_err(sPar, saVars);
         }
 
         // trying to handle real or complex number first
@@ -976,7 +1039,7 @@ Parses incoming strings and instantiates function object
             }
         }
         if (nLevel) {                                                       // ((...) or (...))
-            throw cvmexception(CFUN_PARSEERROR, sBody.c_str(), __format_vars(saVars).c_str());
+            BaseFunction<T>::parse_err(sBody, saVars);
         }
 
         for (i = nBodyLength - 1; i < CFUN_NOT_FOUND; --i) {
@@ -989,7 +1052,7 @@ Parses incoming strings and instantiates function object
                 break;
             case CFUN_MULT:                                                 // x * y
                 if (!i) {
-                    throw cvmexception(CFUN_PARSEERROR, sBody.c_str(), __format_vars(saVars).c_str());
+                    BaseFunction<T>::parse_err(sBody, saVars);
                 }
                 if (!nLevel) {
                     return CFUN_NEW_FUNC(Fmult, sBody, 0, i, i + 1, nBodyLength, saVars, saParameters, saMeanings);
@@ -997,7 +1060,7 @@ Parses incoming strings and instantiates function object
                 break;
             case CFUN_DIV:                                                  // x / y
                 if (!i) {
-                    throw cvmexception(CFUN_PARSEERROR, sBody.c_str(), __format_vars(saVars).c_str());
+                    BaseFunction<T>::parse_err(sBody, saVars);
                 }
                 if (!nLevel) {
                     return CFUN_NEW_FUNC(Fdiv, sBody, 0, i, i + 1, nBodyLength, saVars, saParameters, saMeanings);
@@ -1018,7 +1081,7 @@ Parses incoming strings and instantiates function object
                 break;
             case CFUN_POWER:                                                // x ^ y
                 if (!i) {
-                    throw cvmexception(CFUN_PARSEERROR, sBody.c_str(), __format_vars(saVars).c_str());
+                    BaseFunction<T>::parse_err(sBody, saVars);
                 }
                 if (!nLevel) {
                     return CFUN_NEW_FUNC(Fpower, sBody, 0, i, i + 1, nBodyLength, saVars, saParameters, saMeanings);
@@ -1045,56 +1108,20 @@ Parses incoming strings and instantiates function object
         __tassign(sLeft, sBody, 0, nLeft);
 
         if (sLeft.length() == 0) {
-            throw cvmexception(CFUN_PARSEERROR, sBody.c_str(), __format_vars(saVars).c_str());
+            BaseFunction<T>::parse_err(sBody, saVars);
         }
-
-        if (sLeft == CFUN_EXP)
-            return CFUN_NEW_FUNC(Fexp, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_SQRT)
-            return CFUN_NEW_FUNC(Fsqrt, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_LOG)
-            return CFUN_NEW_FUNC(Flog, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_LOG10)
-            return CFUN_NEW_FUNC(Flog10, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_SIN)
-            return CFUN_NEW_FUNC(Fsin, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_COS)
-            return CFUN_NEW_FUNC(Fcos, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_TAN)
-            return CFUN_NEW_FUNC(Ftan, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_ASIN)
-            return CFUN_NEW_FUNC(Fasin, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_ACOS)
-            return CFUN_NEW_FUNC(Facos, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_ATAN)
-            return CFUN_NEW_FUNC(Fatan, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_SINH)
-            return CFUN_NEW_FUNC(Fsinh, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_COSH)
-            return CFUN_NEW_FUNC(Fcosh, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_TANH)
-            return CFUN_NEW_FUNC(Ftanh, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_SI)
-            return CFUN_NEW_FUNC(Fsinint, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_CI)
-            return CFUN_NEW_FUNC(Fcosint, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_SIGN)
-            return CFUN_NEW_FUNC(Fsign, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_ABS)
-            return CFUN_NEW_FUNC(Fabs, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_IIF)
-            return CFUN_NEW_FUNC(Fiif, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_DELTA)
-            return CFUN_NEW_FUNC(Fdelta, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_POWERS)
-            return CFUN_NEW_FUNC(Fpower, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_SAT)
-            return CFUN_NEW_FUNC(Fsat, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
-        else if (sLeft == CFUN_I)
+        
+        if (sLeft == CFUN_I) {
             return CFUN_NEW_FUNC(Fconst, cfun_one<T>());
-        else
-            throw cvmexception(CFUN_PARSEERROR, sLeft.c_str(), __format_vars(saVars).c_str());
-        return CFUN_NEW_FUNC(Fconst, T(0));
+        }
+        
+        static Engine eng;
+        BasePointer ptr = eng.create(sLeft, sBody, nLeft, nBodyLength, saVars, saParameters, saMeanings);
+        if (!ptr) {
+            BaseFunction<T>::parse_err(sLeft, saVars);
+        }
+        return ptr;
+ //       return CFUN_NEW_FUNC(Fconst, T(0));
     }
 };
 
@@ -1161,6 +1188,15 @@ public:
         _depth(false);
         return pRet;
     }
+
+    static void parse_err(const std::string& sBody, const char* var) throw(cvmexception) {
+        throw cvmexception(CFUN_PARSEERROR, sBody.c_str(), var);
+    }
+
+    static void parse_err(const std::string& sBody, const string_array& saVars) throw(cvmexception) {
+        parse_err(sBody, __format_vars(saVars).c_str());
+    }
+    
 //! @endcond
 };
 
@@ -1314,7 +1350,7 @@ protected:
             this->mf1 = FunctionFactory<T>::compile(sRight, 0, sRight.length(), saVars, saParameters, saMeanings);
         }
         else {
-            throw cvmexception(CFUN_PARSEERROR, sBodyCommaBody.c_str(), __format_vars(saVars).c_str());
+            BaseFunction<T>::parse_err(sBodyCommaBody, saVars);
         }
     }
 
@@ -1554,7 +1590,7 @@ protected:
         {
             bool ret = __parse_num<U>(s, u);
             if (bThrow && !ret) {
-                throw cvmexception(CFUN_PARSEERROR, s.c_str(), "n/a");
+                BaseFunction<T>::parse_err(s, "n/a");
             }
             return ret;
         }
@@ -1582,11 +1618,11 @@ protected:
                 U re, im;
                 ret1 = __parse_num<U>(sRe, re);
                 if (bThrow && !ret1) {
-                    throw cvmexception(CFUN_PARSEERROR, sRe.c_str(), "n/a");
+                    BaseFunction<T>::parse_err(sRe, "n/a");
                 }
                 ret2 = __parse_num<U>(sIm, im);
                 if (bThrow && !ret2) {
-                    throw cvmexception(CFUN_PARSEERROR, sIm.c_str(), "n/a");
+                    BaseFunction<T>::parse_err(sIm, "n/a");
                 }
                 uc = UC(re, im);
             }
@@ -1594,7 +1630,7 @@ protected:
                 U re;
                 ret1 = __parse_num<U>(s, re);
                 if (bThrow && !ret1) {
-                    throw cvmexception(CFUN_PARSEERROR, s.c_str(), "n/a");
+                    BaseFunction<T>::parse_err(s, "n/a");
                 }
                 uc = UC(re, cfun_zero<U>());
             }
@@ -4721,7 +4757,7 @@ protected:
                 return;
             }
         }
-        throw cvmexception(CFUN_PARSEERROR, sBodyCommaBodyCommaBody.c_str(), __format_vars(saVars).c_str());
+        BaseFunction<T>::parse_err(sBodyCommaBodyCommaBody, saVars);
     }
 
     int _depth(bool bAcquire) const override
