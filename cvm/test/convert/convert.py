@@ -4,7 +4,7 @@ import re
 i = 0
 ibeg = 0
 iend = 2500
-with open("../testcvm.cpp") as f:
+with open("../testfun.cpp") as f:
     for line in f:
         i = i + 1
 
@@ -83,6 +83,8 @@ with open("../testcvm.cpp") as f:
         line = re.sub('^(\s*const\s+)schmatrix', r'\1basic_schmatrix<TP,TPC>', line)
         line = re.sub('^(\s*const\s+)scbmatrix', r'\1basic_scbmatrix<TP,TPC>', line)
 
+        line = re.sub('rfunction', r'basic_function<TP>', line)
+        line = re.sub('cfunction', r'basic_function<TPC>', line)
         line = re.sub('rvector\s*\(', r'basic_rvector<TP>(', line)
         line = re.sub('[^s]+rmatrix\s*\(', r'basic_rmatrix<TP>(', line)
         line = re.sub('rfvector\s*\(', r'basic_rfvector<TP>(', line)

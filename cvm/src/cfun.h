@@ -1189,8 +1189,8 @@ public:
         return pRet;
     }
 
-    static void parse_err(const std::string& sBody, const char* var) throw(cvmexception) {
-        throw cvmexception(CFUN_PARSEERROR, sBody.c_str(), var);
+    static void parse_err(const std::string& sBody, const char* var = nullptr) throw(cvmexception) {
+        throw cvmexception(CFUN_PARSEERROR, sBody.c_str(), var == nullptr ? "n/a" : var);
     }
 
     static void parse_err(const std::string& sBody, const string_array& saVars) throw(cvmexception) {
@@ -1590,7 +1590,7 @@ protected:
         {
             bool ret = __parse_num<U>(s, u);
             if (bThrow && !ret) {
-                BaseFunction<T>::parse_err(s, "n/a");
+                BaseFunction<T>::parse_err(s);
             }
             return ret;
         }
@@ -1618,11 +1618,11 @@ protected:
                 U re, im;
                 ret1 = __parse_num<U>(sRe, re);
                 if (bThrow && !ret1) {
-                    BaseFunction<T>::parse_err(sRe, "n/a");
+                    BaseFunction<T>::parse_err(sRe);
                 }
                 ret2 = __parse_num<U>(sIm, im);
                 if (bThrow && !ret2) {
-                    BaseFunction<T>::parse_err(sIm, "n/a");
+                    BaseFunction<T>::parse_err(sIm);
                 }
                 uc = UC(re, im);
             }
@@ -1630,7 +1630,7 @@ protected:
                 U re;
                 ret1 = __parse_num<U>(s, re);
                 if (bThrow && !ret1) {
-                    BaseFunction<T>::parse_err(s, "n/a");
+                    BaseFunction<T>::parse_err(s);
                 }
                 uc = UC(re, cfun_zero<U>());
             }
@@ -11797,8 +11797,8 @@ prints
 \endcode
 @return vector of functions' values.
 */
-    rmatrix operator () () const {
-        rmatrix ret((tint)this->msize(), (tint)this->nsize());
+    basic_rmatrix<TR> operator () () const {
+        basic_rmatrix<TR> ret((tint)this->msize(), (tint)this->nsize());
         this->value(ret);
         return ret;
     }
@@ -11838,8 +11838,8 @@ prints
 @param[in] d variable's value.
 @return matrix of functions' values.
 */
-    rmatrix operator () (TR d) const {
-        rmatrix ret((tint)this->msize(), (tint)this->nsize());
+    basic_rmatrix<TR> operator () (TR d) const {
+        basic_rmatrix<TR> ret((tint)this->msize(), (tint)this->nsize());
         this->value(d, ret);
         return ret;
     }
@@ -11880,8 +11880,8 @@ prints
 @param[in] d2 Second variable's value.
 @return matrix of functions' values.
 */
-    rmatrix operator () (TR d1, TR d2) const {
-        rmatrix ret((tint)this->msize(), (tint)this->nsize());
+    basic_rmatrix<TR> operator () (TR d1, TR d2) const {
+        basic_rmatrix<TR> ret((tint)this->msize(), (tint)this->nsize());
         this->value(d1, d2, ret);
         return ret;
     }
@@ -11923,8 +11923,8 @@ prints
 @param[in] d3 Third variable's value.
 @return matrix of functions' values.
 */
-    rmatrix operator () (TR d1, TR d2, TR d3) const {
-        rmatrix ret((tint)this->msize(), (tint)this->nsize());
+    basic_rmatrix<TR> operator () (TR d1, TR d2, TR d3) const {
+        basic_rmatrix<TR> ret((tint)this->msize(), (tint)this->nsize());
         this->value(d1, d2, d3, ret);
         return ret;
     }
@@ -11969,8 +11969,8 @@ prints
 @param[in] pd array of variables' values.
 @return vector of functions' values.
 */
-    rmatrix operator () (const TR* pd) const {
-        rmatrix ret((tint)this->msize(), (tint)this->nsize());
+    basic_rmatrix<TR> operator () (const TR* pd) const {
+        basic_rmatrix<TR> ret((tint)this->msize(), (tint)this->nsize());
         this->value(pd, ret);
         return ret;
     }
@@ -12472,10 +12472,25 @@ public:
 using rfunction = basic_function<treal>; //!< End-user class: function of real variables, see \ref basic_function
 using cfunction = basic_function<tcomplex>; //!< End-user class: function of complex variables, see \ref basic_function
 
-using rfvector  = basic_rfvector<treal>;
-using cfvector  = basic_cfvector<treal,tcomplex>;
-using rfmatrix  = basic_rfmatrix<treal>;
-using cfmatrix  = basic_cfmatrix<treal,tcomplex>;
+using rfvector  = basic_rfvector<treal>; //!< End-user class: function vector of real variables, see \ref basic_rfvector
+using cfvector  = basic_cfvector<treal,tcomplex>; //!< End-user class: function vector of complex variables, see \ref basic_cfvector
+using rfmatrix  = basic_rfmatrix<treal>; //!< End-user class: function matrix of real variables, see \ref basic_rfmatrix
+using cfmatrix  = basic_cfmatrix<treal,tcomplex>; //!< End-user class: function matrix of complex variables, see \ref basic_cfmatrix
+
+using rfunction32 = basic_function<float>; //!< End-user class: function of float variables, see \ref basic_function
+using cfunction32 = basic_function<std::complex<float>>; //!< End-user class: function of complex float variables, see \ref basic_function
+using rfunction64 = basic_function<double>; //!< End-user class: function of double variables, see \ref basic_function
+using cfunction64 = basic_function<std::complex<double>>; //!< End-user class: function of complex double variables, see \ref basic_function
+
+using rfvector32  = basic_rfvector<float>; //!< End-user class: function vector of float variables, see \ref basic_rfvector
+using cfvector32  = basic_cfvector<float,std::complex<float>>; //!< End-user class: function vector of complex float variables, see \ref basic_cfvector
+using rfmatrix32  = basic_rfmatrix<float>; //!< End-user class: function matrix of float variables, see \ref basic_rfmatrix
+using cfmatrix32  = basic_cfmatrix<float,std::complex<float>>; //!< End-user class: function matrix of complex float variables, see \ref basic_cfmatrix
+
+using rfvector64  = basic_rfvector<double>; //!< End-user class: function vector of double variables, see \ref basic_rfvector
+using cfvector64  = basic_cfvector<double,std::complex<double>>; //!< End-user class: function vector of complex double variables, see \ref basic_cfvector
+using rfmatrix64  = basic_rfmatrix<double>; //!< End-user class: function matrix of double variables, see \ref basic_rfmatrix
+using cfmatrix64  = basic_cfmatrix<double,std::complex<double>>; //!< End-user class: function matrix of complex double variables, see \ref basic_cfmatrix
 
 CVM_NAMESPACE_END
 
