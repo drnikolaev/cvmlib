@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		225DE8141C8283AA009F3A3E /* testBlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 225DE80D1C8283AA009F3A3E /* testBlas.cpp */; };
-		225DE8151C8283AA009F3A3E /* testcvm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 225DE80E1C8283AA009F3A3E /* testcvm.cpp */; };
 		225DE8161C8283AA009F3A3E /* testfun.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 225DE80F1C8283AA009F3A3E /* testfun.cpp */; };
 		225DE8171C8283AA009F3A3E /* testInitialization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 225DE8101C8283AA009F3A3E /* testInitialization.cpp */; };
 		225DE8181C8283AA009F3A3E /* testLapack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 225DE8111C8283AA009F3A3E /* testLapack.cpp */; };
@@ -32,7 +31,6 @@
 /* Begin PBXFileReference section */
 		225DE80C1C8283AA009F3A3E /* test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test.h; path = ../../../test/test.h; sourceTree = "<group>"; };
 		225DE80D1C8283AA009F3A3E /* testBlas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testBlas.cpp; path = ../../../test/testBlas.cpp; sourceTree = "<group>"; };
-		225DE80E1C8283AA009F3A3E /* testcvm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testcvm.cpp; path = ../../../test/testcvm.cpp; sourceTree = "<group>"; };
 		225DE80F1C8283AA009F3A3E /* testfun.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testfun.cpp; path = ../../../test/testfun.cpp; sourceTree = "<group>"; };
 		225DE8101C8283AA009F3A3E /* testInitialization.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testInitialization.cpp; path = ../../../test/testInitialization.cpp; sourceTree = "<group>"; };
 		225DE8111C8283AA009F3A3E /* testLapack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testLapack.cpp; path = ../../../test/testLapack.cpp; sourceTree = "<group>"; };
@@ -76,7 +74,6 @@
 				22E787371C9C8807002D7D20 /* testFunctional.cpp */,
 				225DE80C1C8283AA009F3A3E /* test.h */,
 				225DE80D1C8283AA009F3A3E /* testBlas.cpp */,
-				225DE80E1C8283AA009F3A3E /* testcvm.cpp */,
 				225DE80F1C8283AA009F3A3E /* testfun.cpp */,
 				225DE8101C8283AA009F3A3E /* testInitialization.cpp */,
 				225DE8111C8283AA009F3A3E /* testLapack.cpp */,
@@ -140,7 +137,6 @@
 			files = (
 				225DE8191C8283AA009F3A3E /* testmain.cpp in Sources */,
 				225DE8181C8283AA009F3A3E /* testLapack.cpp in Sources */,
-				225DE8151C8283AA009F3A3E /* testcvm.cpp in Sources */,
 				225DE8141C8283AA009F3A3E /* testBlas.cpp in Sources */,
 				225DE8161C8283AA009F3A3E /* testfun.cpp in Sources */,
 				225DE81A1C8283AA009F3A3E /* testMisc.cpp in Sources */,

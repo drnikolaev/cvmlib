@@ -385,7 +385,8 @@ TYPED_TEST(FunctionalTest, TestFsqrt) {
 
     basic_function<TPC> cfsqrt("{x} sqrt(x)");
     EXPECT_EQ(std::string("sqrt(x)"), cfsqrt.format()) << "basic_function<TPC> sqrt - format()";
-    EXPECT_EQ(TPC(0.,1.), cfsqrt(TPC(-1., 0.))) << "basic_function<TPC> sqrt - value";
+    EXPECT_NEAR(TP(0.), cfsqrt(TPC(-1., 0.)).real(), s<TP>()) << "basic_function<TPC> sqrt - value";
+    EXPECT_NEAR(TP(1.), cfsqrt(TPC(-1., 0.)).imag(), s<TP>()) << "basic_function<TPC> sqrt - value";
     EXPECT_EQ(std::string("(0.5,0)/sqrt(x)"), cfsqrt.drv().format()) << "basic_function<TPC> sqrt - drv() - format()";
     basic_function<TPC> cfsqrt2("{x} sqrt(4, 0)");
     EXPECT_EQ(std::string("(2,0)"), cfsqrt2.simp().format()) << "basic_function<TPC> sqrt - simp() - format()";
