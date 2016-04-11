@@ -120,6 +120,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>..\..\lib\gtest\gtestd.lib;..\..\lib\cvm_ia32_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -147,6 +148,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>..\..\lib64\gtest\gtestd.lib;..\..\lib64\cvm_em64t_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -170,6 +172,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>..\..\lib\gtest\gtest.lib;..\..\lib\cvm_ia32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -197,6 +200,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>..\..\lib64\gtest\gtest.lib;..\..\lib64\cvm_em64t.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -213,8 +217,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="testBlas.cpp" />
-    <ClCompile Include="testcvm.cpp" />
-    <ClCompile Include="testfun.cpp" />
     <ClCompile Include="testFunctional.cpp" />
     <ClCompile Include="testInitialization.cpp" />
     <ClCompile Include="testLapack.cpp" />

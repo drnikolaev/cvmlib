@@ -12,7 +12,10 @@
 template <typename T>
 class InitializationTest : public ::testing::Test {
 protected:
-    InitializationTest() {
+    InitializationTest() :
+    cs ({3., 0., 2., 1., -1., 2., 2., -1., 3., 0., 0., 3., -1., -2., 0., -3., 5., 0.}),
+    as ({1., 2., 1., 2., 5., -1., 1., -1., 20.})
+    {
         for (int i = 0; i < 100; ++i)
         {
             a1[i] = T(i + 1);
@@ -61,9 +64,9 @@ protected:
 
     T a1[100], a2[100], a3[100], a4[100];
     std::complex<T> c1[100], c2[100];
-    const T cs[18] = {3., 0., 2., 1., -1., 2., 2., -1., 3., 0.,
-                      0., 3., -1., -2., 0., -3., 5., 0.};
-    const T as[9]  = {1., 2., 1., 2., 5., -1., 1., -1., 20.};
+
+    const std::array<T,18> cs;
+    const std::array<T,9> as;
 };
 
 TYPED_TEST_CASE(InitializationTest, TestTypes);
@@ -1073,8 +1076,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ(cr1, scbm1(CVM0,CVM0+1));
     EXPECT_EQ(cr1, pc2[5]);
 
-    srs1.assign(this->as);
-    sch1.assign((TPC*)this->cs);
+    srs1.assign(&this->as.front());
+    sch1.assign((TPC*)&this->cs.front());
 
     EXPECT_EQ(this->as[3], srs1[CVM0][CVM0+1]);
     EXPECT_EQ(this->as[5], srs1(CVM0+2,CVM0+1));

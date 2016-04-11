@@ -98,6 +98,11 @@
 #       define CVM_USE_USER_LITERALS
 #   endif
 
+#   if (_MSC_VER < 1900)              // before VC14 aka MS Visual Studio 2015
+#       define constexpr
+#   endif
+
+
 #   if (!defined(__INTEL_COMPILER) || !defined(_WIN64)) && !(_MSC_VER >= 1500 && defined(_WIN64))
 #       define CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES
 #   endif
