@@ -286,3 +286,237 @@ TYPED_TEST(FunctionalTest, TestFdiv) {
     EXPECT_EQ(std::string("(0,0)"), cfdiv2.drv().format()) << "basic_function<TPC> div - drv() - format()";
     EXPECT_EQ(std::string("(1,0)/y"), cfdiv.drv(0).format()) << "basic_function<TPC> div - drv() - format()";
 }
+
+// Fpower
+TYPED_TEST(FunctionalTest, TestFpower) {
+    basic_function<TP> rfpow("{x, y} x^y");
+    EXPECT_EQ(std::string("x^y"), rfpow.format()) << "basic_function<TP> power - format()";
+    basic_function<TP> rfpow2("{x} (x^3)^2");
+    EXPECT_EQ(std::string("x^6"), rfpow2.simp().format()) << "basic_function<TP> power - simp() - format()";
+    EXPECT_FLOAT_EQ(::pow(1.123, 6.), rfpow2(1.123)) << "basic_function<TP> power - value";
+    {
+        TP a[2];
+        a[0] = 1.45;
+        a[1] = 2.35;
+        EXPECT_FLOAT_EQ(::pow(a[0], a[1]), rfpow.value(a)) << "basic_function<TP> power - value";
+    }
+    EXPECT_EQ(std::string("y*x^(y-1)"), rfpow.drv().format()) << "basic_function<TP> power - drv() - format()";
+    EXPECT_EQ(std::string("x^y*log(x)"), rfpow.drv(1).format()) << "basic_function<TP> power - drv() - format()";
+    EXPECT_EQ(std::string("6*x^5"), rfpow2.drv().format()) << "basic_function<TP> power - drv() - format()";
+
+    basic_function<TPC> cfpow("{x, y} x^y");
+    EXPECT_EQ(std::string("x^y"), cfpow.format()) << "basic_function<TPC> power - format()";
+    basic_function<TPC> cfpow2("{x} (x^(3, 1))^(1, 2)");
+
+    EXPECT_EQ(std::string("x^(1,7)"), cfpow2.simp().format()) << "basic_function<TPC> power - simp() - format()";
+    TPC expected = ElementaryFunctions<TPC>::pow(TPC(7.36,3.17), TPC(1., 7.)); 
+
+    EXPECT_FLOAT_EQ(expected.real(), cfpow2(TPC(7.36,3.17)).real()) << "basic_function<TPC> power - value";
+    EXPECT_FLOAT_EQ(expected.imag(), cfpow2(TPC(7.36,3.17)).imag()) << "basic_function<TPC> power - value";
+    {
+        TPC a[2];
+        a[0] = TPC(7.31,3.18);
+        a[1] = TPC(2.44,3.12);
+        expected = ElementaryFunctions<TPC>::pow(TPC(7.31,3.18), TPC(2.44,3.12));
+        EXPECT_FLOAT_EQ(expected.real(), cfpow.value(a).real()) << "basic_function<TPC> power - value";
+        EXPECT_FLOAT_EQ(expected.imag(), cfpow.value(a).imag()) << "basic_function<TPC> power - value";
+    }
+    EXPECT_EQ(std::string("y*x^(y-(1,-0))"), cfpow.drv().format()) << "basic_function<TPC> power - drv() - format()";
+    EXPECT_EQ(std::string("x^y*log(x)"), cfpow.drv(1).format()) << "basic_function<TPC> power - drv() - format()";
+    EXPECT_EQ(std::string("(1,7)*x^(0,7)"), cfpow2.drv().format()) << "basic_function<TPC> power - drv() - format()";
+}
+
+// Fsat
+TYPED_TEST(FunctionalTest, TestFsat) {
+    basic_function<TP> rfsat("{x, y} sat(x, y)");
+    EXPECT_EQ(std::string("sat(x,y)"), rfsat.format()) << "basic_function<TP> sat - format()";
+    basic_function<TP> rfsat2("{x} sat(x, 2+1)");
+    EXPECT_EQ(std::string("sat(x,3)"), rfsat2.simp().format()) << "basic_function<TP> sat - simp() - format()";
+    EXPECT_EQ(TP(-1.), rfsat2(-3.0001)) << "basic_function<TP> sat - value";
+    EXPECT_EQ(TP(0.), rfsat2(-3.)) << "basic_function<TP> sat - value";
+    EXPECT_EQ(TP(0.), rfsat2(3.)) << "basic_function<TP> sat - value";
+    EXPECT_EQ(TP(1.), rfsat2(3.00001)) << "basic_function<TP> sat - value";
+    {
+        TP a[2];
+        a[0] = 1.45;
+        a[1] = 2.35;
+        EXPECT_EQ(TP(0.), rfsat.value(a)) << "basic_function<TP> sat - value";
+    }
+    EXPECT_EQ(std::string("delta(x,3)+delta(x,(-3))"), rfsat2.drv().format()) << "basic_function<TP> sat - drv() - format()";
+
+    basic_function<TPC> cfsat("{x, y} sat(x, y)");
+    EXPECT_EQ(std::string("sat(x,y)"), cfsat.format()) << "basic_function<TPC> sat - format()";
+    basic_function<TPC> cfsat2("{x} sat(x, (3, 1)+(1, 2))");
+    EXPECT_EQ(std::string("sat(x,(4,3))"), cfsat2.simp().format()) << "basic_function<TPC> sat - simp() - format()";
+    {
+        TPC a[2];
+        a[0] = TPC(7.31,3.18);
+        a[1] = TPC(2.44,3.12);
+        EXPECT_EQ(TPC(1.,0.), cfsat.value(a)) << "basic_function<TPC> sat - value";
+    }
+    EXPECT_EQ(std::string("delta(x,(4,3))+delta(x,(-4,-3))"), cfsat2.drv().format()) << "basic_function<TPC> sat - drv() - format()";
+}
+
+// Fexp
+TYPED_TEST(FunctionalTest, TestFexp) {
+    basic_function<TP> rfexp("{x} exp(x)");
+    EXPECT_EQ(std::string("exp(x)"), rfexp.format()) << "basic_function<TP> exp - format()";
+    EXPECT_FLOAT_EQ(cfun_e<TP>(), rfexp(1.)) << "basic_function<TP> exp - value";
+    EXPECT_FLOAT_EQ(cfun_e<TP>() * cfun_e<TP>(), rfexp(2.)) << "basic_function<TP> exp - value";
+    EXPECT_EQ(std::string("exp(x)"), rfexp.drv().format()) << "basic_function<TP> exp - drv() - format()";
+    basic_function<TP> rfexp2("exp (0)");
+    EXPECT_EQ(std::string("1"), rfexp2.simp().format()) << "basic_function<TP> exp - format()";
+
+    basic_function<TPC> cfexp("{x} exp(x)");
+    EXPECT_EQ(std::string("exp(x)"), cfexp.format()) << "basic_function<TPC> exp - format()";
+    EXPECT_FLOAT_EQ(cfun_e<TP>(), cfexp(TPC(1.,0.)).real()) << "basic_function<TPC> exp - value";
+    EXPECT_FLOAT_EQ(TP(0.), cfexp(TPC(1.,0.)).imag()) << "basic_function<TPC> exp - value";
+    EXPECT_EQ(std::string("exp(x)"), cfexp.drv().format()) << "basic_function<TPC> exp - drv() - format()";
+}
+
+// Fsqrt
+TYPED_TEST(FunctionalTest, TestFsqrt) {
+    basic_function<TP> rfsqrt("{x} sqrt(x)");
+    EXPECT_EQ(std::string("sqrt(x)"), rfsqrt.format()) << "basic_function<TP> sqrt - format()";
+    EXPECT_FLOAT_EQ(::sqrt(2.), rfsqrt(2.)) << "basic_function<TP> sqrt - value";
+    EXPECT_EQ(std::string("0.5/sqrt(x)"), rfsqrt.drv().format()) << "basic_function<TP> sqrt - drv() - format()";
+    basic_function<TP> rfsqrt2("sqrt(4)");
+    EXPECT_EQ(std::string("2"), rfsqrt2.simp().format()) << "basic_function<TP> sqrt - simp - format()";
+
+    basic_function<TPC> cfsqrt("{x} sqrt(x)");
+    EXPECT_EQ(std::string("sqrt(x)"), cfsqrt.format()) << "basic_function<TPC> sqrt - format()";
+    EXPECT_EQ(TPC(0.,1.), cfsqrt(TPC(-1., 0.))) << "basic_function<TPC> sqrt - value";
+    EXPECT_EQ(std::string("(0.5,0)/sqrt(x)"), cfsqrt.drv().format()) << "basic_function<TPC> sqrt - drv() - format()";
+    basic_function<TPC> cfsqrt2("{x} sqrt(4, 0)");
+    EXPECT_EQ(std::string("(2,0)"), cfsqrt2.simp().format()) << "basic_function<TPC> sqrt - simp() - format()";
+}
+
+// Flog
+TYPED_TEST(FunctionalTest, TestFlog) {
+    basic_function<TP> rflog("{x} log(x)");
+    EXPECT_EQ(std::string("log(x)"), rflog.format()) << "basic_function<TP> log - format()";
+    EXPECT_FLOAT_EQ(::log(2.), rflog(2.)) << "basic_function<TP> log - value";
+    EXPECT_EQ(std::string("1/x"), rflog.drv().format()) << "basic_function<TP> log - drv() - format()";
+    basic_function<TP> rflog2("{x} log(x^2)");
+    EXPECT_EQ(std::string("log(x)*2"), rflog2.simp().format()) << "basic_function<TP> log - simp - format()";
+
+    basic_function<TPC> cflog("{x} log(x)");
+    EXPECT_EQ(std::string("log(x)"), cflog.format()) << "basic_function<TPC> log - format()";
+    {
+        std::ostringstream oss;
+        oss.precision(15);
+        oss << cflog(TPC(-1.,0.));
+        EXPECT_EQ(std::string("(0,3.14159"), oss.str().substr(0, 10)) << "basic_function<TPC> log - value()";
+    }
+    basic_function<TPC> cflog2("{x} log(sqrt(x))");
+    EXPECT_EQ(std::string("log(x)*(0.5,0)"), cflog2.simp().format()) << "basic_function<TPC> log - simp()";
+}
+
+// Flog10
+TYPED_TEST(FunctionalTest, TestFlog10) {
+    basic_function<TP> rflog10("{x} log10(x)");
+    EXPECT_EQ(std::string("log10(x)"), rflog10.format()) << "basic_function<TP> log10 - format()";
+    EXPECT_FLOAT_EQ(::log10(2.), rflog10(2.)) << "basic_function<TP> log10 - value";
+    EXPECT_EQ(std::string("0.434294/x"), rflog10.drv().format()) << "basic_function<TP> log10 - drv - format()";
+    basic_function<TP> rflog10_2("{x} log10(x^2)");
+    EXPECT_EQ(std::string("log10(x)*2"), rflog10_2.simp().format()) << "basic_function<TP> log10 - simp - format()";
+
+    basic_function<TPC> cflog10("{x} log10(x)");
+    EXPECT_EQ(std::string("log10(x)"), cflog10.format()) << "basic_function<TPC> log10 - format()";
+    {
+        std::ostringstream oss;
+        oss.precision(15);
+        oss << cflog10(TPC(-1.,0.));
+        EXPECT_EQ(std::string("(0,1.36437"), oss.str().substr(0, 10)) << "basic_function<TPC> log10 - value()";
+    }
+    basic_function<TPC> cflog10_2("{x} log10(sqrt(x))");
+    EXPECT_EQ(std::string("log10(x)*(0.5,0)"), cflog10_2.simp().format()) << "basic_function<TPC> log10 - simp()";
+}
+
+// Fsin
+TYPED_TEST(FunctionalTest, TestFsin) {
+    basic_function<TP> rfsin("{x} sin(x)");
+    EXPECT_EQ(std::string("sin(x)"), rfsin.format()) << "basic_function<TP> sin - format()";
+    EXPECT_FLOAT_EQ(::sin(2.), rfsin(2.)) << "basic_function<TP> sin - value";
+    EXPECT_EQ(std::string("cos(x)"), rfsin.drv().format()) << "basic_function<TP> sin - drv - format()";
+    basic_function<TP> rfsin_2("sin(1)");
+    EXPECT_EQ(std::string("0.841471"), rfsin_2.simp().format()) << "basic_function<TP> sin - simp - format()";
+
+    basic_function<TPC> cfsin("{x} sin(x)");
+    EXPECT_EQ(std::string("sin(x)"), cfsin.format()) << "basic_function<TPC> sin - format()";
+    {
+        std::ostringstream oss;
+        oss.precision(15);
+        oss << cfsin(TPC(0.,1.));
+        EXPECT_EQ(std::string("(0,1.17520"), oss.str().substr(0, 10)) << "basic_function<TPC> sin - value()";
+    }
+    basic_function<TPC> cfsin_2("{x} sin(0, 0)");
+    EXPECT_EQ(std::string("(0,0)"), cfsin_2.simp().format()) << "basic_function<TPC> sin - simp()";
+}
+
+// Fcos
+TYPED_TEST(FunctionalTest, TestFcos) {
+    basic_function<TP> rfcos("{x} cos(x)");
+    EXPECT_EQ(std::string("cos(x)"), rfcos.format()) << "basic_function<TP> cos - format()";
+    EXPECT_FLOAT_EQ(::cos(2.), rfcos(2.)) << "basic_function<TP> cos - value";
+    EXPECT_EQ(std::string("-sin(x)"), rfcos.drv().format()) << "basic_function<TP> cos - drv - format()";
+    basic_function<TP> rfcos_2("cos(1)");
+    EXPECT_EQ(std::string("0.540302"), rfcos_2.simp().format()) << "basic_function<TP> cos - simp - format()";
+
+    basic_function<TPC> cfcos("{x} cos(x)");
+    EXPECT_EQ(std::string("cos(x)"), cfcos.format()) << "basic_function<TPC> cos - format()";
+    {
+        std::ostringstream oss;
+        oss.precision(15);
+        oss << cfcos(TPC(-1.,1.));
+        EXPECT_EQ(std::string("(0.8337"), oss.str().substr(0, 7)) << "basic_function<TPC> cos - value()";
+        EXPECT_EQ(std::string("0.988897"), oss.str().substr(oss.str().find(",")+1, 8)) << "basic_function<TPC> cos - value()";
+    }
+    basic_function<TPC> cfcos_2("{x} cos(1, -1)");
+    EXPECT_EQ(std::string("(0.83373,0.988898)"), cfcos_2.simp().format()) << "basic_function<TPC> cos - simp()";
+}
+
+// Ftan
+TYPED_TEST(FunctionalTest, TestFtan) {
+    basic_function<TP> rftan("{x} tan(x)");
+    EXPECT_EQ(std::string("tan(x)"), rftan.format()) << "basic_function<TP> tan - format()";
+    EXPECT_FLOAT_EQ(::tan(2.), rftan(2.)) << "basic_function<TP> tan - value";
+    EXPECT_EQ(std::string("1/cos(x)^2"), rftan.drv().format()) << "basic_function<TP> tan - drv - format()";
+    basic_function<TP> rftan_2("tan(1)");
+    EXPECT_EQ(std::string("1.55741"), rftan_2.simp().format()) << "basic_function<TP> tan - simp - format()";
+
+    basic_function<TPC> cftan("{x} tan(x)");
+    EXPECT_EQ(std::string("tan(x)"), cftan.format()) << "basic_function<TPC> tan - format()";
+    {
+        std::ostringstream oss;
+        oss.precision(15);
+        oss << cftan(TPC(-1.,1.));
+        EXPECT_EQ(std::string("(-0.27175"), oss.str().substr(0, 9)) << "basic_function<TPC> tan - value()";
+        EXPECT_EQ(std::string("1.083923"), oss.str().substr(oss.str().find(",")+1, 8)) << "basic_function<TPC> tan - value()";
+    }
+    basic_function<TPC> cftan_2("{x} tan(0, 0)");
+    EXPECT_EQ("(0,0)", cftan_2.simp().format()) << "basic_function<TPC> tan - simp()";
+}
+
+// Fasin
+TYPED_TEST(FunctionalTest, TestFasin) {
+    basic_function<TP> rfasin("{x} asin(x)");
+    EXPECT_EQ("asin(x)", rfasin.format()) << "basic_function<TP> asin - format()";
+    EXPECT_FLOAT_EQ(::asin(0.5), rfasin(0.5)) << "basic_function<TP> asin - value";
+    EXPECT_EQ("1/sqrt(1-x^2)", rfasin.drv().format()) << "basic_function<TP> asin - drv - format()";
+    basic_function<TP> rfasin_2("asin(1)");
+    EXPECT_EQ("1.5708", rfasin_2.simp().format()) << "basic_function<TP> asin - simp - format()";
+
+    basic_function<TPC> cfasin("{x} asin(x)");
+    EXPECT_EQ("asin(x)", cfasin.format()) << "basic_function<TPC> asin - format()";
+    {
+        std::ostringstream oss;
+        oss.precision(15);
+        oss << cfasin(TPC(-1.,1.));
+        EXPECT_EQ("(-0.66623", oss.str().substr(0, 9)) << "basic_function<TPC> asin - value()";
+        EXPECT_EQ("1.061275", oss.str().substr(oss.str().find(",")+1, 8)) << "basic_function<TPC> asin - value()";
+    }
+    basic_function<TPC> cfasin_2("{x} asin(0, 0)");
+    EXPECT_EQ("(0,0)", cfasin_2.simp().format()) << "basic_function<TPC> asin - simp()";
+}
+
