@@ -114,9 +114,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\lib\gtest\gtest.lib;..\..\lib\cvm_ia32_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib\gtest_2013\gtestd.lib;..\..\lib\cvm_ia32_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)regtest_cvm_ia32_debug.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)regtest_cvm_ia32_debug.pdb</ProgramDatabaseFile>
@@ -141,9 +142,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\lib64\gtest\gtest.lib;..\..\lib64\cvm_em64t_ilp64_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib64\gtest_2013\gtestd.lib;..\..\lib64\cvm_em64t_ilp64_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)regtest_cvm_em64t_ilp64_debug.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)regtest_cvm_em64t_ilp64_debug.pdb</ProgramDatabaseFile>
@@ -164,9 +166,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\lib\gtest\gtest.lib;..\..\lib\cvm_ia32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib\gtest_2013\gtest.lib;..\..\lib\cvm_ia32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)regtest_cvm_ia32.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -191,9 +194,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\lib64\gtest\gtest.lib;..\..\lib64\cvm_em64t_ilp64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\lib64\gtest_2013\gtest.lib;..\..\lib64\cvm_em64t_ilp64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)regtest_cvm_em64t_ilp64.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>

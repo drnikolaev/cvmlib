@@ -1340,18 +1340,18 @@ TYPED_TEST(LapackTest, TestGelsReal) {
     bt.randomize(-1., 1.);
 
     basic_rmatrix<TP> xn = a.gels(false, bn, vErr);
-    EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), sf<TP>()) << "gels real nontransp";
+    EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), sp<TP>()) << "gels real nontransp";
 
     basic_rmatrix<TP> xt = a.gels(true, bt, vErr);
-    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), sf<TP>()) << "gels real transp";
-    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), sf<TP>()) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), sp<TP>()) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), sp<TP>()) << "gels real transp";
 
     basic_rmatrix<TP> xn2(5, 2);
     xn2.gels(false, a, bn, vErr);
-    EXPECT_NEAR(TP(0.), (xn-xn2).norm(), sf<TP>()) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (xn-xn2).norm(), sp<TP>()) << "gels real transp";
     basic_rmatrix<TP> xt2(7, 2);
     xt2.gels(true, a, bt, vErr);
-    EXPECT_NEAR(TP(0.), (xt-xt2).norm(), sf<TP>()) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (xt-xt2).norm(), sp<TP>()) << "gels real transp";
 }
 
 TYPED_TEST(LapackTest, TestGelsReal2) {
@@ -1365,10 +1365,10 @@ TYPED_TEST(LapackTest, TestGelsReal2) {
 
     basic_rmatrix<TP> xn = a.gels(false, bn, vErr);
     EXPECT_NEAR(TP(0.), (a*xn-bn).norm(), sf<TP>()) << "gels real nontransp";
-    EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), sf<TP>()) << "gels real nontransp";
+    EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), sp<TP>()) << "gels real nontransp";
 
     basic_rmatrix<TP> xt = a.gels(true, bt, vErr);
-    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), sf<TP>()) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), sp<TP>()) << "gels real transp";
 }
 
 TYPED_TEST(LapackTest, TestGelsBandReal) {
@@ -1544,11 +1544,11 @@ TYPED_TEST(LapackTest, TestGelsBandRealVector) {
 
     basic_rvector<TP> xn = a.gels(false, bn, dErr);
     EXPECT_NEAR(TP(0.), (a*xn-bn).norm(), sp<TP>()) << "gels real nontransp";
-    EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), spp<TP>(1.e-5,2.e-2)) << "gels real nontransp";
+    EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), spp<TP>(1.e-5,2.e-1)) << "gels real nontransp";
 
     basic_rvector<TP> xt = a.gels(true, bt, dErr);
     EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), sp<TP>()) << "gels real transp";
-    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>(1.e-5,2.e-2)) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>(1.e-5,2.e-1)) << "gels real transp";
 }
 
 // complex vector gels*

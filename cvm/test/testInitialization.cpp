@@ -850,6 +850,7 @@ TYPED_TEST(InitializationTest, TestMultCrash) {
 }
 
 TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
+    float tmp;
     basic_rvector<TP>  rv;
     basic_rvector<TP>  rv0(10);
     basic_rvector<TP>  rv1{this->a1, 10};                 // note: this constructor shares memory
@@ -1639,7 +1640,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ(rv2 * srm2[CVM0], rv1[CVM0]) << "mult";
     rv2.mult (rv1, srm2);
 
-    EXPECT_EQ(rv1 * srm2(CVM0), rv2[CVM0]) << "mult";
+    EXPECT_FLOAT_EQ(static_cast<float>(rv1 * srm2(CVM0)), static_cast<float>(rv2[CVM0])) << "mult";
 
     cv1.resize (3);
     cv1.mult (scm2, cv2);
@@ -1680,7 +1681,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     rm1.mult (srbm1, rm4);
     EXPECT_EQ(srbm1[CVM0+2] * rm4(CVM0+1),rm1(CVM0+2,CVM0+1)) << "mult";
     rm1.mult (~srbm1, rm4);
-    EXPECT_EQ(srbm1(CVM0+2) * rm4(CVM0+1),rm1(CVM0+2,CVM0+1)) << "mult";
+    tmp = static_cast<float>(rm1(CVM0+2,CVM0+1));
+    EXPECT_FLOAT_EQ(static_cast<float>(srbm1(CVM0+2) * rm4(CVM0+1)),tmp) << "mult";
     srbm1.mult (rm1, rm2);
     EXPECT_EQ(rm1[CVM0+1] * rm2(CVM0+1),srbm1(CVM0+1,CVM0+1)) << "mult";
 
@@ -1750,14 +1752,17 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     rv1.randomize(0., 1.);
     rv2.randomize(0., 1.);
-    EXPECT_EQ(rv1[CVM0]*rv2[CVM0]+rv1[CVM0+1]*rv2[CVM0+1]+rv1[CVM0+2]*rv2[CVM0+2]+rv1[CVM0+3]*rv2[CVM0+3], rv1 * rv2) << "scalar product";
+    tmp = static_cast<float>(rv1 * rv2);
+    EXPECT_FLOAT_EQ(static_cast<float>(rv1[CVM0]*rv2[CVM0]+rv1[CVM0+1]*rv2[CVM0+1]+rv1[CVM0+2]*rv2[CVM0+2]+rv1[CVM0+3]*rv2[CVM0+3]),
+        tmp) << "scalar product";
     cv1.randomize_real(0., 1.);
 
     cv1.randomize_imag(0., 1.);
     cv2.randomize_real(0., 1.);
     cv2.randomize_imag(0., 1.);
     EXPECT_EQ(cv1[CVM0]*cv2[CVM0]+cv1[CVM0+1]*cv2[CVM0+1]+cv1[CVM0+2]*cv2[CVM0+2]+cv1[CVM0+3]*cv2[CVM0+3], cv1 * cv2) << "scalar product";
-    EXPECT_EQ(std::conj(cv1[CVM0])*cv2[CVM0]+std::conj(cv1[CVM0+1])*cv2[CVM0+1]+std::conj(cv1[CVM0+2])*cv2[CVM0+2]+std::conj(cv1[CVM0+3])*cv2[CVM0+3], cv1 % cv2) << "scalar product, conj";
+    EXPECT_EQ(std::conj(cv1[CVM0])*cv2[CVM0]+std::conj(cv1[CVM0+1])*cv2[CVM0+1]+std::conj(cv1[CVM0+2])*cv2[CVM0+2]+std::conj(cv1[CVM0+3])*cv2[CVM0+3],
+        cv1 % cv2) << "scalar product, conj";
 
     EXPECT_EQ(0.,(rm1[CVM0+1] - (~rm1)(CVM0+1)).norm()) << "~";
 
@@ -1773,7 +1778,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     rv1 = rm1 * rv2;
     EXPECT_EQ(rv2 * rm1[CVM0+2], rv1[CVM0+2]) << "rmatrix * rvector";
     rv2 = rv1 * rm1;
-    EXPECT_EQ(rv1 * rm1(CVM0+1), rv2[CVM0+1]) << "rvector * rmatrix";
+    EXPECT_FLOAT_EQ(static_cast<float>(rv1 * rm1(CVM0+1)), static_cast<float>(rv2[CVM0+1])) << "rvector * rmatrix";
     cv1.resize (3);
     cv2.resize (2);
     cv1 = cm1 * cv2;
@@ -1785,7 +1790,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     rv2 = srm4 * rv1;
     EXPECT_EQ(rv1 * srm4[CVM0+2], rv2[CVM0+2]) << "srmatrix * rvector";
     rv2 = rv1 * srm4;
-    EXPECT_EQ(rv1 * srm4(CVM0+2), rv2[CVM0+2]) << "rvector * srmatrix";
+    EXPECT_FLOAT_EQ(static_cast<float>(rv1 * srm4(CVM0+2)), static_cast<float>(rv2[CVM0+2])) << "rvector * srmatrix";
     cv2.resize (3);
     cv2 = scm4 * cv1;
     EXPECT_EQ(cv1 * scm4[CVM0+2], cv2[CVM0+2]) << "scmatrix * cvector";
@@ -1795,9 +1800,9 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     srbm1.normalize();
     rv1.normalize();
     rv2 = srbm1 * rv1;
-    EXPECT_EQ(rv1 * srbm1[CVM0+2], rv2[CVM0+2]) << "srbmatrix * rvector";
+    EXPECT_NEAR(rv1 * srbm1[CVM0+2], rv2[CVM0+2], s<TP>()) << "srbmatrix * rvector";
     rv2 = rv1 * srbm1;
-    EXPECT_EQ(rv1 * srbm1(CVM0+2), rv2[CVM0+2]) << "rvector * srbmatrix";
+    EXPECT_NEAR(rv1 * srbm1(CVM0+2), rv2[CVM0+2], s<TP>()) << "rvector * srbmatrix";
 
     scbm1.normalize();
     cv1.normalize();
