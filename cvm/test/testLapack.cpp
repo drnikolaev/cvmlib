@@ -76,9 +76,9 @@ TYPED_TEST(LapackTest, TestSlashReal) {
     vB.randomize(-10., 20.);
 
     vX = vB / srm;
-    EXPECT_NEAR(0,(vX * srm - vB).norm(),sp<TP>()) << "rvector / srmatrix";
+    EXPECT_NEAR(0,(vX * srm - vB).norm(),spp<TP>()) << "rvector / srmatrix";
     vX = srm % vB;
-    EXPECT_NEAR(0,(vX * srm - vB).norm(),sp<TP>()) << "srmatrix % rvector";
+    EXPECT_NEAR(0,(vX * srm - vB).norm(),spp<TP>()) << "srmatrix % rvector";
 
     vX = vB / srbm;
     EXPECT_NEAR(0,(vX * srbm - vB).norm(),spp<TP>(1.e-10,0.01)) << "rvector / srbmatrix";
@@ -86,24 +86,24 @@ TYPED_TEST(LapackTest, TestSlashReal) {
     EXPECT_NEAR(0,(vX * srbm - vB).norm(),spp<TP>(1.e-10,0.01)) << "srbmatrix % rvector";
 
     vX = vB / srsm;
-    EXPECT_NEAR(0,(vX * srsm - vB).norm(),sp<TP>()) << "rvector / srsmatrix";
+    EXPECT_NEAR(0,(vX * srsm - vB).norm(),spp<TP>()) << "rvector / srsmatrix";
     vX = srsm % vB;
-    EXPECT_NEAR(0,(vX * srsm - vB).norm(),sp<TP>()) << "srsmatrix % rvector";
+    EXPECT_NEAR(0,(vX * srsm - vB).norm(),spp<TP>()) << "srsmatrix % rvector";
 
     vX = vB % srm;
-    EXPECT_NEAR(0,(srm * vX - vB).norm(),sp<TP>()) << "rvector % srmatrix";
+    EXPECT_NEAR(0,(srm * vX - vB).norm(),spp<TP>()) << "rvector % srmatrix";
     vX = srm / vB;
-    EXPECT_NEAR(0,(srm * vX - vB).norm(),sp<TP>()) << "srmatrix / rvector";
+    EXPECT_NEAR(0,(srm * vX - vB).norm(),spp<TP>()) << "srmatrix / rvector";
 
     vX = vB % srbm;
-    EXPECT_NEAR(0,(srbm * vX - vB).norm(),sp<TP>()) << "rvector % srbmatrix";
+    EXPECT_NEAR(0,(srbm * vX - vB).norm(),spp<TP>()) << "rvector % srbmatrix";
     vX = srbm / vB;
-    EXPECT_NEAR(0,(srbm * vX - vB).norm(),sp<TP>()) << "srbmatrix / rvector";
+    EXPECT_NEAR(0,(srbm * vX - vB).norm(),spp<TP>()) << "srbmatrix / rvector";
 
     vX = vB % srsm;
-    EXPECT_NEAR(0,(srsm * vX - vB).norm(),sp<TP>()) << "rvector % srsmatrix";
+    EXPECT_NEAR(0,(srsm * vX - vB).norm(),spp<TP>()) << "rvector % srsmatrix";
     vX = srsm / vB;
-    EXPECT_NEAR(0,(srsm * vX - vB).norm(),sp<TP>()) << "srsmatrix / rvector";
+    EXPECT_NEAR(0,(srsm * vX - vB).norm(),spp<TP>()) << "srsmatrix / rvector";
 }
 
 // 6.1

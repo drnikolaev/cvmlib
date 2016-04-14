@@ -298,7 +298,7 @@ TYPED_TEST(FunctionalTest, TestFpower) {
         TP a[2];
         a[0] = 1.45;
         a[1] = 2.35;
-        EXPECT_DOUBLE_EQ(::pow(a[0], a[1]), rfpow.value(a)) << "basic_function<TP> power - value";
+        EXPECT_FLOAT_EQ(static_cast<float>(::pow(a[0], a[1])), static_cast<float>(rfpow.value(a))) << "basic_function<TP> power - value";
     }
     EXPECT_EQ(std::string("y*x^(y-1)"), rfpow.drv().format()) << "basic_function<TP> power - drv() - format()";
     EXPECT_EQ(std::string("x^y*log(x)"), rfpow.drv(1).format()) << "basic_function<TP> power - drv() - format()";
@@ -519,5 +519,27 @@ TYPED_TEST(FunctionalTest, TestFasin) {
     }
     basic_function<TPC> cfasin_2("{x} asin(0, 0)");
     EXPECT_EQ("(0,0)", cfasin_2.simp().format()) << "basic_function<TPC> asin - simp()";
+}
+
+// Facos
+TYPED_TEST(FunctionalTest, TestFacos) {
+    basic_function<TP> rfacos("{x} acos(x)");
+    EXPECT_EQ("acos(x)", rfacos.format()) << "basic_function<TP> acos - format()";
+    EXPECT_FLOAT_EQ(static_cast<float>(::acos(0.5)), static_cast<float>(rfacos(0.5))) << "basic_function<TP> acos - value";
+    EXPECT_EQ("(-1)/sqrt(1-x^2)", rfacos.drv().format()) << "basic_function<TP> acos - drv - format()";
+    basic_function<TP> rfacos_2("acos(1)");
+    EXPECT_EQ("0", rfacos_2.simp().format()) << "basic_function<TP> acos - simp - format()";
+
+    basic_function<TPC> cfacos("{x} acos(x)");
+    EXPECT_EQ("acos(x)", cfacos.format()) << "basic_function<TPC> acos - format()";
+    {
+        std::ostringstream oss;
+        oss.precision(15);
+        oss << cfacos(TPC(-1.,1.));
+        EXPECT_EQ("(2.237035", oss.str().substr(0, 9)) << "basic_function<TPC> acos - value()";
+        EXPECT_EQ("-1.061275", oss.str().substr(oss.str().find(",")+1, 9)) << "basic_function<TPC> acos - value()";
+    }
+    basic_function<TPC> cfacos_2("{x} acos(0, 0)");
+    EXPECT_EQ("(1.5708,0)", cfacos_2.simp().format()) << "basic_function<TPC> acos - simp()";
 }
 
