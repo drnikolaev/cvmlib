@@ -1,48 +1,4 @@
 #if 0
-        // Fatan
-        rfunction rfatan("{x} atan(x)");
-        CheckString  (rfatan.format(), "atan(x)", "rfunction atan - format()", os, __LINE__);
-        CheckReal    (rfatan((treal)0.5), (treal)::atan((treal)0.5), "rfunction atan - value", os, __LINE__);
-        CheckString  (rfatan.drv().format(), "1/(1+x^2)", "rfunction atan - drv - format()", os, __LINE__);
-        rfunction rfatan_2("atan(1)");
-        CheckString  (rfatan_2.simp().format(), "0.785398", "rfunction atan - simp - format()", os, __LINE__);
-
-        cfunction cfatan("{x} atan(x)");
-        CheckString  (cfatan.format(), "atan(x)", "cfunction atan - format()", os, __LINE__);
-        {
-            std::ostringstream oss;
-            oss.precision(15);
-            oss << cfatan(tcomplex ((treal)-1., (treal)1.));
-#ifdef CVM_FLOAT
-            CheckString(oss.str().substr(0, 9), "(-1.01722", "cfunction acos - value()", os, __LINE__);
-            CheckString(oss.str().substr(18, 9), ",0.402359", "cfunction acos - value()", os, __LINE__);
-#else
-            CheckString(oss.str().substr(0, 16), "(-1.017221967897", "cfunction acos - value()", os, __LINE__);
-            CheckString (oss.str().substr(18,16), ",0.4023594781085", "cfunction acos - value()", os, __LINE__);
-#endif
-        }
-        cfunction cfatan_2("{x} atan(0,0)");
-        CheckString (cfatan_2.simp().format(), "(0,0)", "cfunction atan - simp()", os, __LINE__);
-
-        // Fsinh
-        rfunction rfsinh("{x} sinh(x)");
-        CheckString  (rfsinh.format(), "sinh(x)", "rfunction sinh - format()", os, __LINE__);
-        CheckReal    (rfsinh((treal)1.), (treal)1.1752011936438014, "rfunction sinh - value", os, __LINE__);
-        CheckString  (rfsinh.drv().format(), "cosh(x)", "rfunction sinh - drv - format()", os, __LINE__);
-        rfunction rfsinh2("sinh(-1.)");
-        CheckString  (rfsinh2.simp().format(), "(-1.1752)", "rfunction sinh - simp - format()", os, __LINE__);
-
-        cfunction cfsinh("{x} sinh(x)");
-        CheckString  (cfsinh.format(), "sinh(x)", "cfunction sinh - format()", os, __LINE__);
-        CheckComplex (cfsinh(tcomplex ((treal)-1., (treal)1.)),
-#ifdef CVM_FLOAT
-            tcomplex((treal)-0.63496381, (treal)1.2984574), "cfunction sinh - value", os, __LINE__, dPessimisticSp);
-#else
-            tcomplex((treal)-0.63496391478473613, (treal)1.2984575814159773), "cfunction sinh - value", os, __LINE__);
-#endif
-        cfunction cfsinh2("sinh(0,0)");
-        CheckString  (cfsinh2.simp().format(), "(0,0)", "cfunction sinh - simp - format()", os, __LINE__);
-
         // Fcosh
         rfunction rfcosh("{x} cosh(x)");
         CheckString  (rfcosh.format(), "cosh(x)", "rfunction cosh - format()", os, __LINE__);

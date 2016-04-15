@@ -543,3 +543,42 @@ TYPED_TEST(FunctionalTest, TestFacos) {
     EXPECT_EQ("(1.5708,0)", cfacos_2.simp().format()) << "basic_function<TPC> acos - simp()";
 }
 
+// Fatan
+TYPED_TEST(FunctionalTest, TestFatan) {
+    basic_function<TP> rfatan("{x} atan(x)");
+    EXPECT_EQ("atan(x)", rfatan.format()) << "basic_function<TP> atan - format()";
+    EXPECT_FLOAT_EQ(static_cast<float>(::atan(0.5)), static_cast<float>(rfatan(0.5))) << "basic_function<TP> atan - value";
+    EXPECT_EQ("1/(1+x^2)", rfatan.drv().format()) << "basic_function<TP> atan - drv - format()";
+    basic_function<TP> rfatan_2("atan(1)");
+    EXPECT_EQ("0.785398", rfatan_2.simp().format()) << "basic_function<TP> atan - simp - format()";
+
+    basic_function<TPC> cfatan("{x} atan(x)");
+    EXPECT_EQ("atan(x)", cfatan.format()) << "basic_function<TPC> atan - format()";
+    {
+        std::ostringstream oss;
+        oss.precision(15);
+        oss << cfatan(TPC(-1.,1.));
+        EXPECT_EQ("(-1.01722", oss.str().substr(0, 9)) << "basic_function<TPC> acos - value()";
+        EXPECT_EQ("0.402359", oss.str().substr(oss.str().find(",")+1, 8)) << "basic_function<TPC> acos - value()";
+    }
+    basic_function<TPC> cfatan_2("{x} atan(0, 0)");
+    EXPECT_EQ("(0,0)", cfatan_2.simp().format()) << "basic_function<TPC> atan - simp()";
+}
+
+// Fsinh
+TYPED_TEST(FunctionalTest, TestFsinh) {
+    basic_function<TP> rfsinh("{x} sinh(x)");
+    EXPECT_EQ("sinh(x)", rfsinh.format()) << "basic_function<TP> sinh - format()";
+    EXPECT_FLOAT_EQ(static_cast<float>(1.1752011936438014), static_cast<float>(rfsinh(1.))) << "basic_function<TP> sinh - value";
+    EXPECT_EQ("cosh(x)", rfsinh.drv().format()) << "basic_function<TP> sinh - drv - format()";
+    basic_function<TP> rfsinh2("sinh(-1.)");
+    EXPECT_EQ("(-1.1752)", rfsinh2.simp().format()) << "basic_function<TP> sinh - simp - format()";
+
+    basic_function<TPC> cfsinh("{x} sinh(x)");
+    EXPECT_EQ("sinh(x)", cfsinh.format()) << "basic_function<TPC> sinh - format()";
+
+    EXPECT_FLOAT_EQ(static_cast<float>(-0.63496381), static_cast<float>(cfsinh(TPC(-1.,1.)).real())) << "basic_function<TPC> sinh - value";
+    EXPECT_FLOAT_EQ(static_cast<float>(1.2984574), static_cast<float>(cfsinh(TPC(-1.,1.)).imag())) << "basic_function<TPC> sinh - value";
+    basic_function<TPC> cfsinh2("sinh(0, 0)");
+    EXPECT_EQ("(0,0)", cfsinh2.simp().format()) << "basic_function<TPC> sinh - simp - format()";
+}
