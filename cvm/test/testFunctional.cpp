@@ -582,3 +582,551 @@ TYPED_TEST(FunctionalTest, TestFsinh) {
     basic_function<TPC> cfsinh2("sinh(0, 0)");
     EXPECT_EQ("(0,0)", cfsinh2.simp().format()) << "basic_function<TPC> sinh - simp - format()";
 }
+
+// Fcosh
+TYPED_TEST(FunctionalTest, TestFcosh) {
+    basic_function<TP> rfcosh("{x} cosh(x)");
+    EXPECT_EQ("cosh(x)", rfcosh.format()) << "basic_function<TP> cosh - format()";
+    EXPECT_FLOAT_EQ(static_cast<float>(1.5430806348152437), static_cast<float>(rfcosh(1.))) << "basic_function<TP> cosh - value";
+    EXPECT_EQ("-sinh(x)", rfcosh.drv().format()) << "basic_function<TP> cosh - drv - format()";
+    basic_function<TP> rfcosh2("cosh(-1.)");
+    EXPECT_EQ("1.54308", rfcosh2.simp().format()) << "basic_function<TP> sinh - simp - format()";
+
+    basic_function<TPC> cfcosh("{x} cosh(x)");
+    EXPECT_EQ("cosh(x)", cfcosh.format()) << "basic_function<TPC> cosh - format()";
+    
+    EXPECT_FLOAT_EQ(static_cast<float>(0.83373002513114913), cfcosh(TPC(-1.,1.)).real()) << "basic_function<TPC> cosh - value";
+    EXPECT_FLOAT_EQ(static_cast<float>(-0.98889770576286506), cfcosh(TPC(-1.,1.)).imag()) << "basic_function<TPC> cosh - value";
+
+    basic_function<TPC> cfcosh2("cosh(0, 0)");
+    EXPECT_EQ("(1,0)", cfcosh2.simp().format()) << "basic_function<TPC> cosh - simp - format()";
+}
+
+// Ftanh
+TYPED_TEST(FunctionalTest, TestFtanh) {
+    basic_function<TP> rftanh("{x} tanh(x)");
+    EXPECT_EQ("tanh(x)", rftanh.format()) << "basic_function<TP> tanh - format()";
+    EXPECT_FLOAT_EQ(static_cast<float>(::tanh(-1.)), static_cast<float>(rftanh(-1.))) << "basic_function<TP> tanh - value";
+    EXPECT_EQ("1/cosh(x)^2", rftanh.drv().format()) << "basic_function<TP> tanh - drv - format()";
+    basic_function<TP> rftanh2("{x} tanh(x^2)");
+    EXPECT_EQ("2*x/cosh(x^2)^2", rftanh2.drv().format()) << "basic_function<TP> tanh - drv - format()";
+
+    basic_function<TPC> cftanh("{x} tanh(x)");
+    EXPECT_EQ("tanh(x)", cftanh.format()) << "basic_function<TPC> tanh - format()";
+    EXPECT_FLOAT_EQ(static_cast<float>(std::tanh(TPC(-1.,1.)).real()),
+                    static_cast<float>(cftanh(TPC(-1.,1.)).real())) << "basic_function<TPC> tanh - value";
+    EXPECT_FLOAT_EQ(static_cast<float>(std::tanh(TPC(-1.,1.)).imag()),
+                    static_cast<float>(cftanh(TPC(-1.,1.)).imag())) << "basic_function<TPC> tanh - value";
+    basic_function<TPC> cftanh2("tanh(0, 0)");
+    EXPECT_EQ("(0,0)", cftanh2.simp().format()) << "basic_function<TPC> tanh - simp - format()";
+}
+
+// Fuminus
+TYPED_TEST(FunctionalTest, TestFuminus) {
+    basic_function<TP> rfuminus("{x} -x");
+    EXPECT_EQ("-x", rfuminus.format()) << "basic_function<TP> unary minus - format()";
+    EXPECT_EQ(TP(-0.5), rfuminus(0.5)) << "basic_function<TP> unary minus - value";
+    EXPECT_EQ("(-1)", rfuminus.drv().format()) << "basic_function<TP> unary minus - drv - format()";
+    basic_function<TP> rfuminus_2("{x} -(-x)");
+    EXPECT_EQ("x", rfuminus_2.simp().format()) << "basic_function<TP> unary minus - simp - format()";
+
+    basic_function<TPC> cfuminus("{x} -x");
+    EXPECT_EQ("-x", cfuminus.format()) << "basic_function<TPC> unary minus - format()";
+    {
+        std::ostringstream oss;
+        oss.precision(15);
+        oss << cfuminus(TPC(-1.,1.));
+        EXPECT_EQ("(1,-1)", oss.str()) << "basic_function<TPC> unary minus - value()";
+        }
+    basic_function<TPC> cfuminus_2("{x} -(1, 2)");
+    EXPECT_EQ("(-1,-2)", cfuminus_2.simp().format()) << "basic_function<TPC> unary minus - simp()";
+}
+
+// Fsign
+TYPED_TEST(FunctionalTest, TestFsign) {
+    basic_function<TP> rfsign("{x} sign(x)");
+    EXPECT_EQ("sign(x)", rfsign.format()) << "basic_function<TP> sign - format()";
+    EXPECT_EQ(TP(1.), rfsign(0.5)) << "basic_function<TP> sign - value";
+    EXPECT_EQ(TP(0.), rfsign(0.)) << "basic_function<TP> sign - value";
+    EXPECT_EQ(TP(-1.), rfsign(-0.01)) << "basic_function<TP> sign - value";
+    EXPECT_EQ("delta(x,0)", rfsign.drv().format()) << "basic_function<TP> sign - drv - format()";
+
+    basic_function<TPC> cfsign("{x} sign(x)");
+    EXPECT_EQ("sign(x)", cfsign.format()) << "basic_function<TPC> sign - format()";
+    EXPECT_EQ(TPC(-1.,0.), cfsign(TPC(-1., 1.))) << "basic_function<TPC> sign - value";
+    EXPECT_EQ(TPC(0.,0.), cfsign(TPC(0., 1.))) << "basic_function<TPC> sign - value";
+    EXPECT_EQ(TPC(1.,0.), cfsign(TPC(0.5, -1.))) << "basic_function<TPC> sign - value";
+    EXPECT_EQ("delta(x,(0,0))", cfsign.drv().format()) << "basic_function<TPC> sign - drv - format()";
+}
+
+// Fabs
+TYPED_TEST(FunctionalTest, TestFabs) {
+    basic_function<TP> rfabs("{x} abs(x)");
+    EXPECT_EQ("abs(x)", rfabs.format()) << "basic_function<TP> abs - format()";
+    EXPECT_EQ(TP(0.5), rfabs(-0.5)) << "basic_function<TP> abs - value";
+    EXPECT_EQ("sign(x)", rfabs.drv().format()) << "basic_function<TP> abs - drv - format()";
+
+    basic_function<TPC> cfabs("{x} abs(x)");
+    EXPECT_EQ("abs(x)", cfabs.format()) << "basic_function<TPC> abs - format()";
+    EXPECT_FLOAT_EQ(static_cast<float>(::sqrt(2.)),
+                    static_cast<float>(cfabs(TPC(-1.,1.)).real())) << "basic_function<TPC> abs - value";
+    EXPECT_FLOAT_EQ(0.F,
+                    static_cast<float>(cfabs(TPC(-1.,1.)).imag())) << "basic_function<TPC> abs - value";
+    EXPECT_EQ("sign(x)", cfabs.drv().format()) << "basic_function<TPC> abs - drv - format()";
+}
+
+// Fdelta
+TYPED_TEST(FunctionalTest, TestFdelta) {
+    basic_function<TP> rfdelta("{x} delta(x, 1.)");
+    EXPECT_EQ("delta(x,1)", rfdelta.format()) << "basic_function<TP> delta - format()";
+    EXPECT_EQ(TP(0.), rfdelta(-0.5)) << "basic_function<TP> delta - value";
+    EXPECT_EQ((std::numeric_limits<TP>::max)(), rfdelta(1.)) << "basic_function<TP> delta - value";
+    EXPECT_EQ("delta(x,1)", rfdelta.drv().format()) << "basic_function<TP> delta - drv - format()";
+
+    basic_function<TPC> cfdelta("{x} delta(x, 1)");
+    EXPECT_EQ("delta(x,(1,0))", cfdelta.format()) << "basic_function<TPC> delta - format()";
+
+    EXPECT_FLOAT_EQ(0.F, static_cast<float>(cfdelta(TPC(-1.,1.)).real())) << "basic_function<TPC> abs - value";
+    EXPECT_FLOAT_EQ(0.F, static_cast<float>(cfdelta(TPC(-1.,1.)).imag())) << "basic_function<TPC> abs - value";
+
+    EXPECT_EQ("delta(x,(1,0))", cfdelta.drv().format()) << "basic_function<TPC> delta - drv - format()";
+}
+
+// Fiif
+TYPED_TEST(FunctionalTest, TestFiif) {
+    basic_function<TP> rfiif("{x} iif(x+1, 1., 2.)");
+    EXPECT_EQ("iif(x+1,1,2)", rfiif.format()) << "basic_function<TP> iif - format()";
+    EXPECT_EQ(TP(1.), rfiif(-1.5)) << "basic_function<TP> iif - value";
+    EXPECT_EQ(TP(2.), rfiif(-1.)) << "basic_function<TP> iif - value";
+    EXPECT_EQ("iif(x+1,0,0)", rfiif.drv().format()) << "basic_function<TP> iif - drv - format()";
+
+    basic_function<TPC> cfiif("{x} iif(x+(1., 1.), (1., 1.), (2., 2.))");
+    EXPECT_EQ("iif(x+(1,1),(1,1),(2,2))", cfiif.format()) << "basic_function<TPC> iif - format()";
+
+    EXPECT_EQ(TPC(2., 2.), cfiif(TPC(-1.,1.))) << "basic_function<TPC> iif - value";
+    EXPECT_EQ("iif(x+(1,1),(0,0),(0,0))", cfiif.drv().format()) << "basic_function<TPC> iif - drv - format()";
+}
+
+// Fsinint
+TYPED_TEST(FunctionalTest, TestFsinint) {
+    basic_function<TP> rfSi("{x} sinint(x)");
+    EXPECT_EQ("sinint(x)", rfSi.format()) << "basic_function<TP> sinint - format()";
+    EXPECT_FLOAT_EQ(0.493107418043067F, static_cast<float>(rfSi(0.5))) << "basic_function<TP> sinint - value";
+    EXPECT_EQ("sin(x)/x", rfSi.drv().format()) << "basic_function<TP> sinint - drv - format()";
+
+    basic_function<TPC> cfSi("{x} sinint(x)");
+    EXPECT_EQ("sinint(x)", cfSi.format()) << "basic_function<TPC> sinint - format()";
+    EXPECT_FLOAT_EQ(0.F, static_cast<float>(cfSi(TPC(0.,0.)).real())) << "basic_function<TPC> sinint - value";
+    EXPECT_FLOAT_EQ(0.F, static_cast<float>(cfSi(TPC(0.,0.)).imag())) << "basic_function<TPC> sinint - value";
+    EXPECT_FLOAT_EQ(1.10422265823558F, static_cast<float>(cfSi(TPC(1.,1.)).real())) << "basic_function<TPC> sinint - value";
+    EXPECT_FLOAT_EQ(0.882453805007918F, static_cast<float>(cfSi(TPC(1.,1.)).imag())) << "basic_function<TPC> sinint - value";
+    EXPECT_FLOAT_EQ(-0.946083070367183F, static_cast<float>(cfSi(TPC(-1.,0.)).real())) << "basic_function<TPC> sinint - value";
+    EXPECT_FLOAT_EQ(0.F, static_cast<float>(cfSi(TPC(-1.,0.)).imag())) << "basic_function<TPC> sinint - value";
+    
+    EXPECT_EQ("sin(x)/x", cfSi.drv().format()) << "basic_function<TPC> sinint - drv - format()";
+}
+
+// Fcosint
+TYPED_TEST(FunctionalTest, TestFcosint) {
+    basic_function<TP> rfCi("{x} cosint(x)");
+    EXPECT_EQ("cosint(x)", rfCi.format()) << "basic_function<TP> cosint - format()";
+    EXPECT_FLOAT_EQ(-10.9357098000937F, static_cast<float>(rfCi(1.e-5))) << "basic_function<TP> cosint - value";
+    EXPECT_FLOAT_EQ(0.422980828774865F, static_cast<float>(rfCi(2.))) << "basic_function<TP> cosint - value";
+    EXPECT_EQ("cos(x)/x", rfCi.drv().format()) << "basic_function<TP> cosint - drv - format()";
+
+    basic_function<TPC> cfCi("{x} cosint(x)");
+    EXPECT_EQ("cosint(x)", cfCi.format()) << "basic_function<TPC> cosint - format()";
+
+    EXPECT_FLOAT_EQ(0.337403922900968F, static_cast<float>(cfCi(TPC(-1.,0.)).real())) << "basic_function<TPC> cosint - value";
+    EXPECT_FLOAT_EQ(3.14159265358979F, static_cast<float>(cfCi(TPC(-1.,0.)).imag())) << "basic_function<TPC> cosint - value";
+    EXPECT_FLOAT_EQ(0.882172180555936F, static_cast<float>(cfCi(TPC(1.,1.)).real())) << "basic_function<TPC> cosint - value";
+    EXPECT_FLOAT_EQ(0.287249133519956F, static_cast<float>(cfCi(TPC(1.,1.)).imag())) << "basic_function<TPC> cosint - value";
+    
+    EXPECT_EQ("cos(x)/x", cfCi.drv().format()) << "basic_function<TPC> cosint - drv - format()";
+}
+
+TYPED_TEST(FunctionalTest, TestFExpressions) {
+    basic_function<TP> rf0;
+    basic_function<TP> rfsin("{x} sin(x)");
+    basic_function<TP> rfcos("{x} cos(x)");
+    basic_function<TPC> cfsin("{x} sin(x)");
+    basic_function<TPC> cfcos("{x} cos(x)");
+    basic_function<TP> rfc ("7.77 ");
+    basic_function<TPC> cfc ("(7.77, 8.88)");
+
+    basic_function<TP> f1 ("{t} sin(t)^2 + cos(t)^2");
+    EXPECT_EQ("0", (f1 * rf0).simp().format()) << "basic_function<TP> * basic_function<TP>";
+    EXPECT_EQ(true, (f1 * rf0).simp() == basic_function<TP>("{t} 0")) << "basic_function<TP> * basic_function<TP>";
+    
+    basic_function<TP> rf_plus = rfsin + rfcos;
+    EXPECT_EQ("sin(x)+cos(x)", rf_plus.format()) << "rf_plus.format";
+    EXPECT_EQ(true, rf_plus == basic_function<TP>("{x} sin(x)+cos(x)")) << "rf_plus.format";
+    
+    basic_function<TP> rf_minus = rfsin - rfcos;
+    EXPECT_EQ("sin(x)-cos(x)", rf_minus.format()) << "rf_minus.format";
+    EXPECT_EQ(true, rf_minus == basic_function<TP>("{x} sin(x)-cos(x)")) << "rf_minus.format";
+    
+    basic_function<TP> rf_mult = rfsin * rfcos;
+    EXPECT_EQ("sin(x)*cos(x)", rf_mult.format()) << "rf_mult.format";
+    EXPECT_EQ(true, rf_mult == basic_function<TP>("{x} sin(x)*cos(x)")) << "rf_mult.format";
+    
+    basic_function<TP> rf_div = rfsin / rfcos;
+    EXPECT_EQ("sin(x)/cos(x)", rf_div.format()) << "rf_div.format";
+    EXPECT_EQ(true, rf_div == basic_function<TP>("{x} sin(x)/cos(x)")) << "rf_div.format";
+    
+    basic_function<TP> rf_power = rfsin ^ rfcos;
+    EXPECT_EQ("sin(x)^cos(x)", rf_power.format()) << "rf_power.format";
+    EXPECT_EQ(true, rf_power == basic_function<TP>("{x} sin(x)^cos(x)")) << "rf_power.format";
+    
+    basic_function<TP> rf_uminus = - rfsin;
+    EXPECT_EQ("-sin(x)", rf_uminus.format()) << "rf_uminus.format";
+    EXPECT_EQ(true, rf_uminus == basic_function<TP>("{x} -sin(x)")) << "rf_uminus.format";
+    
+    basic_function<TPC> cf_plus = cfsin + cfcos;
+    EXPECT_EQ("sin(x)+cos(x)", cf_plus.format()) << "cf_plus.format";
+    EXPECT_EQ(true, cf_plus == basic_function<TPC>("{x} sin(x)+cos(x)")) << "cf_plus.format";
+    
+    basic_function<TPC> cf_minus = cfsin - cfcos;
+    EXPECT_EQ("sin(x)-cos(x)", cf_minus.format()) << "cf_minus.format";
+    EXPECT_EQ(true, cf_minus == basic_function<TPC>("{x} sin(x)-cos(x)")) << "cf_minus.format";
+    
+    basic_function<TPC> cf_mult = cfsin * cfcos;
+    EXPECT_EQ("sin(x)*cos(x)", cf_mult.format()) << "cf_mult.format";
+    EXPECT_EQ(true, cf_mult == basic_function<TPC>("{x} sin(x)*cos(x)")) << "cf_mult.format";
+    
+    basic_function<TPC> cf_div = cfsin / cfcos;
+    EXPECT_EQ("sin(x)/cos(x)", cf_div.format()) << "cf_div.format";
+    EXPECT_EQ(true, cf_div == basic_function<TPC>("{x} sin(x)/cos(x)")) << "cf_div.format";
+    
+    basic_function<TPC> cf_power = cfsin ^ cfcos;
+    EXPECT_EQ("sin(x)^cos(x)", cf_power.format()) << "cf_power.format";
+    EXPECT_EQ(true, cf_power == basic_function<TPC>("{x} sin(x)^cos(x)")) << "cf_power.format";
+    
+    basic_function<TPC> cf_uminus = - cfsin;
+    EXPECT_EQ("-sin(x)", cf_uminus.format()) << "cf_uminus.format";
+    EXPECT_EQ(true, cf_uminus == basic_function<TPC>("{x} -sin(x)")) << "cf_uminus.format";
+    
+    rf_plus += rfcos;
+    EXPECT_EQ("sin(x)+cos(x)+cos(x)", rf_plus.format()) << "rf_plus.format";
+    EXPECT_EQ(true, rf_plus == basic_function<TP>("{x} sin(x)+cos(x)+cos(x)")) << "rf_plus.format";
+    
+    rf_plus.simp();
+    EXPECT_EQ("2*cos(x)+sin(x)", rf_plus.format()) << "rf_plus.format";
+    EXPECT_EQ(true, rf_plus == basic_function<TP>("{x} 2*cos(x)+sin(x)")) << "rf_plus.format";
+    
+    rf_plus -= rfcos;
+    EXPECT_EQ("2*cos(x)+sin(x)-cos(x)", rf_plus.format()) << "rf_plus.format";
+    EXPECT_EQ(true, rf_plus == basic_function<TP>("{x} 2*cos(x)+sin(x)-cos(x)")) << "rf_plus.format";
+    
+    rf_plus.simp();
+    EXPECT_EQ("sin(x)+cos(x)", rf_plus.format()) << "rf_plus.format";
+    EXPECT_EQ(true, rf_plus == basic_function<TP>("{x} sin(x)+cos(x)")) << "rf_plus.format";
+    
+    rf_div *= rfcos;
+    EXPECT_EQ("sin(x)/cos(x)*cos(x)", rf_div.format()) << "rf_div.format";
+    EXPECT_EQ(true, rf_div == basic_function<TP>("{x} sin(x)/cos(x)*cos(x)")) << "rf_div.format";
+    
+    rf_div.simp();
+    EXPECT_EQ("sin(x)", rf_div.format()) << "rf_div.format";
+    EXPECT_EQ(true, rf_div == basic_function<TP>("{x} sin(x)")) << "rf_div.format";
+    
+    rf_div /= rfsin;
+    EXPECT_EQ("sin(x)/sin(x)", rf_div.format()) << "rf_div.format";
+    EXPECT_EQ(true, rf_div == basic_function<TP>("{x} sin(x)/sin(x)")) << "rf_div.format";
+    
+    rf_div.simp();
+    EXPECT_EQ("1", rf_div.format()) << "rf_div.format";
+    EXPECT_EQ(true, rf_div == basic_function<TP>("{x} 1")) << "rf_div.format";
+    
+    cf_plus += cfcos;
+    EXPECT_EQ("sin(x)+cos(x)+cos(x)", cf_plus.format()) << "cf_plus.format";
+    EXPECT_EQ(true, cf_plus == basic_function<TPC>("{x} sin(x)+cos(x)+cos(x)")) << "cf_plus.format";
+    
+    cf_plus.simp();
+    EXPECT_EQ("(2,0)*cos(x)+sin(x)", cf_plus.format()) << "cf_plus.format";
+    EXPECT_EQ(true, cf_plus == basic_function<TPC>("{x} (2, 0)*cos(x)+sin(x)")) << "cf_plus.format";
+    
+    cf_plus -= cfcos;
+    EXPECT_EQ("(2,0)*cos(x)+sin(x)-cos(x)", cf_plus.format()) << "cf_plus.format";
+    EXPECT_EQ(true, cf_plus == basic_function<TPC>("{x} (2, 0)*cos(x)+sin(x)-cos(x)")) << "cf_plus.format";
+    
+    cf_plus.simp();
+    EXPECT_EQ("sin(x)+cos(x)", cf_plus.format()) << "cf_plus.format";
+    EXPECT_EQ(true, cf_plus == basic_function<TPC>("{x} sin(x)+cos(x)")) << "cf_plus.format";
+    
+    cf_div *= cfcos;
+    EXPECT_EQ("sin(x)/cos(x)*cos(x)", cf_div.format()) << "cf_div.format";
+    EXPECT_EQ(true, cf_div == basic_function<TPC>("{x} sin(x)/cos(x)*cos(x)")) << "cf_div.format";
+    
+    cf_div.simp();
+    EXPECT_EQ("sin(x)", cf_div.format()) << "cf_div.format";
+    EXPECT_EQ(true, cf_div == basic_function<TPC>("{x} sin(x)")) << "cf_div.format";
+    
+    cf_div /= cfsin;
+    EXPECT_EQ("sin(x)/sin(x)", cf_div.format()) << "cf_div.format";
+    EXPECT_EQ(true, cf_div == basic_function<TPC>("{x} sin(x)/sin(x)")) << "cf_div.format";
+    
+    cf_div.simp();
+    EXPECT_EQ("(1,0)", cf_div.format()) << "cf_div.format";
+    EXPECT_EQ(true, cf_div == basic_function<TPC>("{x} (1, 0)")) << "cf_div.format";
+    
+    rfc = 1.;
+    EXPECT_EQ("1", rfc.format()) << "basic_function<TP> = treal";
+    EXPECT_EQ("-1", (-rfc).format()) << "-basic_function<TP> = treal";
+    rfc += 3;
+    rfc.simp();
+    EXPECT_EQ("4", rfc.format()) << "basic_function<TP> += treal";
+    rfc -= 9;
+    rfc.simp();
+    EXPECT_EQ("(-5)", rfc.format()) << "basic_function<TP> -= treal";
+    rfc *= 3;
+    rfc.simp();
+    EXPECT_EQ("(-15)", rfc.format()) << "basic_function<TP> *= treal";
+    rfc /= 5;
+    rfc.simp();
+    EXPECT_EQ("(-3)", rfc.format()) << "basic_function<TP> /= treal";
+    rfc ^= 2;
+    rfc.simp();
+    EXPECT_EQ("9", rfc.format()) << "basic_function<TP> ^= treal";
+    
+    cfc = TPC(1.,1.);
+    EXPECT_EQ("(1,1)", cfc.format()) << "cfc = TPC";
+    EXPECT_EQ("-(1,1)", (-cfc).format()) << "-cfc = TPC";
+    cfc += TPC(3.,4.);
+    cfc.simp();
+    EXPECT_EQ("(4,5)", cfc.format()) << "basic_function<TPC> += TPC";
+    cfc -= TPC(2.,1.);
+    cfc.simp();
+    EXPECT_EQ("(2,4)", cfc.format()) << "basic_function<TPC> -= TPC";
+    cfc *= TPC(1.,3.);
+    cfc.simp();
+    EXPECT_EQ("(-10,10)", cfc.format()) << "basic_function<TPC> -= TPC";
+    cfc /= TPC(10.,0.);
+    cfc.simp();
+    EXPECT_EQ("(-1,1)", cfc.format()) << "basic_function<TPC> -= TPC";
+
+    basic_function<TP> rfc2(2);
+    EXPECT_EQ(TP(11.), (rfc + rfc2)()) << "basic_function<TP> + basic_function<TP>";
+    EXPECT_EQ(TP(7.), (rfc - rfc2)()) << "basic_function<TP> - basic_function<TP>";
+    EXPECT_EQ(TP(18.), (rfc * rfc2)()) << "basic_function<TP> * basic_function<TP>";
+    EXPECT_EQ(TP(4.5), (rfc / rfc2)()) << "basic_function<TP> / basic_function<TP>";
+    EXPECT_EQ(TP(81.), (rfc ^ rfc2)()) << "basic_function<TP> ^ basic_function<TP>";
+    
+    EXPECT_EQ(TP(11.), (2. + rfc)()) << "treal + basic_function<TP>";
+    EXPECT_EQ(TP(11.), (2 + rfc)()) << "treal + basic_function<TP>";
+    EXPECT_EQ(TP(-7.), (2 - rfc)()) << "treal + basic_function<TP>";
+    EXPECT_EQ(TP(18.), (2 * rfc)()) << "treal + basic_function<TP>";
+    EXPECT_EQ(TP(0.2222222222222222), (2 / rfc)()) << "treal + basic_function<TP>";
+    EXPECT_EQ(TP(512.), (2 ^ rfc)()) << "treal + basic_function<TP>";
+
+    basic_function<TPC> cfc2 ("5.55");
+    const TP r2 = 2.;
+    const TPC c11 = TPC(1.,-1.);
+    rfc2 = r2;
+    cfc2 = c11;
+    
+    basic_function<TP> rf_self("{x} x");
+    EXPECT_EQ(TP(-1.), rf_self.sat(rfc2)(-2.000001)) << "basic_function<TP>.sat - value";
+    EXPECT_EQ(TP(0.), rf_self.sat(rfc2)(-2.)) << "basic_function<TP>.sat - value";
+    EXPECT_EQ(TP(0.), rf_self.sat(rfc2)(2.)) << "basic_function<TP>.sat - value";
+    EXPECT_EQ(TP(1.), rf_self.sat(rfc2)(2.00001)) << "basic_function<TP>.sat - value";
+    basic_function<TPC> cf_self("{x} x");
+
+    EXPECT_EQ(TPC(-1.,0.), cf_self.sat(cfc2)(TPC(-1.0001,1.))) << "basic_function<TPC>.sat - value";
+    EXPECT_EQ(TPC(0.,0.), cf_self.sat(cfc2)(TPC(-1.,1.))) << "basic_function<TPC>.sat - value";
+    EXPECT_EQ(TPC(0.,0.), cf_self.sat(cfc2)(TPC(1.,1.))) << "basic_function<TPC>.sat - value";
+    EXPECT_EQ(TPC(1.,0.), cf_self.sat(cfc2)(TPC(1.0001,1.))) << "basic_function<TPC>.sat - value";
+    
+    rfc = rf_self.exp().simp();
+    EXPECT_FLOAT_EQ(cfun_e<float>() * cfun_e<float>(), static_cast<float>(rfc(r2))) << "basic_function<TP>.exp - value";
+    cfc = cf_self.exp().simp();
+    EXPECT_EQ(std::exp(c11), cfc(c11)) << "basic_function<TPC>.exp - value";
+    
+    rfc = rf_self.sqrt().simp();
+    EXPECT_EQ(std::sqrt(r2), rfc(r2)) << "basic_function<TP>.sqrt - value";
+    cfc = cf_self.sqrt().simp();
+    EXPECT_EQ(std::sqrt(c11), cfc(c11)) << "basic_function<TPC>.sqrt - value";
+    
+    rfc = rf_self.log().simp();
+    EXPECT_EQ(std::log(r2), rfc(r2)) << "basic_function<TP>.log - value";
+    cfc = cf_self.log().simp();
+    EXPECT_EQ(std::log(c11), cfc(c11)) << "basic_function<TPC>.log - value";
+    
+    rfc = rf_self.log10().simp();
+    EXPECT_EQ(std::log10(r2), rfc(r2)) << "basic_function<TP>.log10 - value";
+    cfc = cf_self.log10().simp();
+    EXPECT_EQ(std::log10(c11), cfc(c11)) << "basic_function<TPC>.log - value";
+    
+    rfc = rf_self.sin().simp();
+    EXPECT_EQ(std::sin(r2), rfc(r2)) << "basic_function<TP>.sin - value";
+    cfc = cf_self.sin().simp();
+    EXPECT_EQ(std::sin(c11), cfc(c11)) << "basic_function<TPC>.sin - value";
+    
+    rfc = rf_self.cos().simp();
+    EXPECT_EQ(std::cos(r2), rfc(r2)) << "basic_function<TP>.cos - value";
+    cfc = cf_self.cos().simp();
+    EXPECT_EQ(std::cos(c11), cfc(c11)) << "basic_function<TPC>.cos - value";
+    
+    rfc = rf_self.tan().simp();
+    EXPECT_EQ(std::tan(r2), rfc(r2)) << "basic_function<TP>.tan - value";
+    cfc = cf_self.tan().simp();
+    EXPECT_EQ(std::tan(c11), cfc(c11)) << "basic_function<TPC>.tan - value";
+    
+    rfc = rf_self.asin().simp();
+    EXPECT_EQ(std::asin(1/r2), rfc(1/r2)) << "basic_function<TP>.asin - value";
+    cfc = cf_self.asin().simp();
+    EXPECT_EQ(ElementaryFunctions<TPC>::asin(c11), cfc(c11)) << "basic_function<TPC>.asin - value";
+    
+    rfc = rf_self.acos().simp();
+    EXPECT_FLOAT_EQ(static_cast<float>(std::acos(1/r2)), static_cast<float>(rfc(1/r2))) << "basic_function<TP>.acos - value";
+    cfc = cf_self.acos().simp();
+    EXPECT_EQ(ElementaryFunctions<TPC>::acos(c11), cfc(c11)) << "basic_function<TPC>.acos - value";
+    
+    rfc = rf_self.atan().simp();
+    EXPECT_EQ(std::atan(r2), rfc(r2)) << "basic_function<TP>.atan - value";
+    cfc = cf_self.atan().simp();
+    EXPECT_EQ(ElementaryFunctions<TPC>::atan(c11), cfc(c11)) << "basic_function<TPC>.atan - value";
+    
+    rfc = rf_self.sinh().simp();
+    EXPECT_EQ(std::sinh(r2), rfc(r2)) << "basic_function<TP>.sinh - value";
+    cfc = cf_self.sinh().simp();
+    EXPECT_EQ(std::sinh(c11), cfc(c11)) << "basic_function<TPC>.sinh - value";
+    
+    rfc = rf_self.cosh().simp();
+    EXPECT_EQ(std::cosh(r2), rfc(r2)) << "basic_function<TP>.cosh - value";
+    cfc = cf_self.cosh().simp();
+    EXPECT_EQ(std::cosh(c11), cfc(c11)) << "basic_function<TPC>.cosh - value";
+    
+    rfc = rf_self.tanh().simp();
+    EXPECT_EQ(std::tanh(r2), rfc(r2)) << "basic_function<TP>.tanh - value";
+    cfc = cf_self.tanh().simp();
+    EXPECT_EQ(std::tanh(c11), cfc(c11)) << "basic_function<TPC>.tanh - value";
+    
+    rfc = rf_self.sinint().simp();
+    EXPECT_EQ(ElementaryFunctions<TP>::sinint(r2, basic_cvmMachSp<TP>()), rfc(r2)) << "basic_function<TP>.sinint - value";
+    cfc = cf_self.sinint().simp();
+    EXPECT_EQ(ElementaryFunctions<TPC>::sinint(c11, basic_cvmMachSp<TP>()), cfc(c11)) << "basic_function<TPC>.sinint - value";
+
+    rfc = rf_self.cosint().simp();
+    EXPECT_EQ(ElementaryFunctions<TP>::cosint(r2, basic_cvmMachSp<TP>()), rfc(r2)) << "basic_function<TP>.cosint - value";
+    cfc = cf_self.cosint().simp();
+    EXPECT_EQ(ElementaryFunctions<TPC>::cosint(c11, basic_cvmMachSp<TP>()), cfc(c11)) << "basic_function<TPC>.cosint - value";
+
+    rfc = rf_self.sign().simp();
+    EXPECT_EQ(r2 > 0 ? TP(1.) : TP(-1.), rfc(r2)) << "basic_function<TP>.sign - value";
+    EXPECT_EQ(TP(0.), rfc(0.)) << "basic_function<TP>.sign - value";
+    cfc = cf_self.sign().simp();
+    
+    EXPECT_EQ(c11.real() > 0 ? TPC(1.,0.) : TPC(-1., 0.), cfc(c11)) << "basic_function<TPC>.sign - value";
+    EXPECT_EQ(TPC(0., 0.), cfc(TPC(0.,0.))) << "basic_function<TPC>.sign - value";
+    
+    rfc = rf_self.abs().simp();
+    EXPECT_EQ(std::fabs(r2), rfc(-r2)) << "basic_function<TP>.abs - value";
+    EXPECT_EQ(std::fabs(r2), rfc(r2)) << "basic_function<TP>.abs - value";
+    cfc = cf_self.abs().simp();
+    EXPECT_EQ(TPC(std::abs(c11),0.), cfc(c11)) << "basic_function<TPC>.abs - value";
+
+    rfc = rf_self.delta(basic_function<TP>(1.)).simp();
+    EXPECT_EQ(TP(0.), rfc(r2)) << "basic_function<TP>.delta - value";
+    EXPECT_EQ((std::numeric_limits<TP>::max)(), rfc(1)) << "basic_function<TP>.delta - value";
+    cfc = cf_self.delta(basic_function<TPC>(TPC(1.,0.))).simp();
+    EXPECT_EQ(TPC((std::numeric_limits<TP>::max)(),0.), cfc(c11)) << "basic_function<TPC>.delta - value";
+    
+    rfc = rf_self.iif(basic_function<TP>(3.), basic_function<TP>(4.)).simp();
+    EXPECT_EQ(TP(3.), rfc(-1.)) << "basic_function<TP>.iif - value";
+    EXPECT_EQ(TP(4.), rfc(0.)) << "basic_function<TP>.iif - value";
+    EXPECT_EQ(TP(4.), rfc(1.)) << "basic_function<TP>.iif - value";
+    
+    cfc = cf_self.iif(basic_function<TPC>(3.), basic_function<TPC>(4.)).simp();
+    EXPECT_EQ(TPC(3., 0.), cfc(TPC(-1.,0.))) << "basic_function<TPC>.iif - value";
+    EXPECT_EQ(TPC(4., 0.), cfc(TPC(0.,0.))) << "basic_function<TPC>.iif - value";
+    EXPECT_EQ(TPC(4., 0.), cfc(TPC(1.,0.))) << "basic_function<TPC>.iif - value";
+}
+
+TYPED_TEST(FunctionalTest, TestParameters) {
+    std::vector<std::string> saVars;
+    std::vector<std::string> saParameters;
+    std::vector<std::string> saMeanings;
+    
+    saVars.push_back("t");
+    saParameters.push_back("p");
+    saMeanings.push_back("2");
+    
+    basic_function<TP> f2 (saVars, "sin(t)^p + cos(t)^p", saParameters, saMeanings);
+    EXPECT_EQ(TP(1.), f2(-1.5)) << "basic_function<TP> sin(t)^p + cos(t)^p - value";
+    
+    basic_function<TPC> f2c (saVars, "sin(t)^p + cos(t)^p", saParameters, saMeanings);
+    EXPECT_FLOAT_EQ(1.F, static_cast<float>(f2c(-1.5).real())) << "basic_function<TPC> sin(t)^p + cos(t)^p - value";
+    EXPECT_NEAR(0.F, static_cast<float>(f2c(-1.5).imag()), sf<TP>()) << "basic_function<TPC> sin(t)^p + cos(t)^p - value";
+}
+
+// drv
+TYPED_TEST(FunctionalTest, TestRealDrv) {
+    basic_function<TP> f("{x, y} y*x+y^3");
+    TP x[2];
+    x[0] = 1.;
+    x[1] = 2.;
+    
+    EXPECT_EQ("y", f.drv(0).format()) << "basic_function<TP> drv";
+    EXPECT_EQ("x+3*y^2", f.drv(1).format()) << "basic_function<TP> drv";
+    
+    {
+        std::ostringstream oss;
+        oss << f.drv(0);
+        EXPECT_EQ("{x,y} y", oss.str()) << "basic_function<TP> drv";
+    }
+    {
+        std::ostringstream oss;
+        oss << f.drv(0).drv(1);
+        EXPECT_EQ("{x,y} 1", oss.str()) << "basic_function<TP> drv drv";
+    }
+    {
+        std::ostringstream oss;
+        oss << f.drv(1);
+        EXPECT_EQ("{x,y} x+3*y^2", oss.str()) << "basic_function<TP> drv";
+    }
+    {
+        std::ostringstream oss;
+        oss << f.drv(1).drv(0);
+        EXPECT_EQ("{x,y} 1", oss.str()) << "basic_function<TP> drv drv";
+    }
+    
+    EXPECT_EQ(TP(2.), f.drv(0)(x)) << "basic_function<TP> drv value";
+    EXPECT_EQ(TP(13.), f.drv(1)(x)) << "basic_function<TP> drv value";
+}
+
+TYPED_TEST(FunctionalTest, TestComplexDrv) {
+    basic_function<TPC> f("{x, y} y*x+y^3");
+    TPC x[2];
+    x[0] = TPC(1.,-1.);
+    x[1] = TPC(2.,-3.);
+    
+    EXPECT_EQ("y", f.drv(0).format()) << "basic_function<TPC> drv";
+    EXPECT_EQ("x+(3,0)*y^(2,0)", f.drv(1).format()) << "basic_function<TPC> drv";
+    
+    {
+        std::ostringstream oss;
+        oss << f.drv(0);
+        EXPECT_EQ("{x,y} y", oss.str()) << "basic_function<TPC> drv";
+    }
+    {
+        std::ostringstream oss;
+        oss << f.drv(0).drv(1);
+        EXPECT_EQ("{x,y} (1,0)", oss.str()) << "basic_function<TPC> drv drv";
+    }
+    {
+        std::ostringstream oss;
+        oss << f.drv(1);
+        EXPECT_EQ("{x,y} x+(3,0)*y^(2,0)", oss.str()) << "basic_function<TPC> drv";
+    }
+    {
+        std::ostringstream oss;
+        oss << f.drv(1).drv(0);
+        EXPECT_EQ("{x,y} (1,0)", oss.str()) << "basic_function<TPC> drv drv";
+    }
+    
+    EXPECT_NEAR(std::abs(TPC(2., 3.)), std::abs(f.drv(0)(x)), s<TP>()) << "basic_function<TPC> drv value";
+    EXPECT_NEAR((x[0] + TPC(3.,0.) * x[1] * x[1]).real(), f.drv(1)(x).real(), s<TP>()) << "basic_function<TPC> drv value";
+    EXPECT_NEAR((x[0] + TPC(3.,0.) * x[1] * x[1]).imag(), f.drv(1)(x).imag(), sp<TP>()) << "basic_function<TPC> drv value";
+}
+        

@@ -37238,7 +37238,7 @@ using scbmatrix64 = basic_scbmatrix<double,std::complex<double>>;  //!< End-user
 using srsmatrix64 = basic_srsmatrix<double>;  //!< End-user class: square symmetric matrix of 64-bit double numbers, see \ref basic_srsmatrix
 using schmatrix64 = basic_schmatrix<double,std::complex<double>>;  //!< End-user class: square hermitian matrix of 64-bit double complex numbers, see \ref basic_schmatrix
 
-//! Real identity matrix creation
+//! Real identity matrix
 template<typename TR>
 inline const basic_srmatrix<TR> basic_eye_real(tint nM)
 {
@@ -37246,7 +37246,7 @@ inline const basic_srmatrix<TR> basic_eye_real(tint nM)
     ++mI;
     return mI;
 }
-//! Complex identity matrix creation
+//! Complex identity matrix
 template<typename TR, typename TC>
 inline const basic_scmatrix<TR,TC> basic_eye_complex(tint nM)
 {
@@ -37255,29 +37255,29 @@ inline const basic_scmatrix<TR,TC> basic_eye_complex(tint nM)
     return mI;
 }
 
-//! Real identity matrix creation
+//! Real identity matrix
 inline const srmatrix eye_real(tint nM) {
     return basic_eye_real<treal>(nM);
 }
-//! Complex identity matrix creation
+//! Complex identity matrix
 inline const scmatrix eye_complex(tint nM) {
     return basic_eye_complex<treal, tcomplex>(nM);
 }
 
-//! Float 32-bit identity matrix creation
+//! Float 32-bit identity matrix
 inline const srmatrix32 eye_real32(tint nM) {
     return basic_eye_real<float>(nM);
 }
-//! Complex float 32-bit identity matrix creation
+//! Complex float 32-bit identity matrix
 inline const scmatrix32 eye_complex32(tint nM) {
     return basic_eye_complex<float, std::complex<float>>(nM);
 }
 
-//! Float 64-bit identity matrix creation
+//! Float 64-bit identity matrix
 inline const srmatrix64 eye_real64(tint nM) {
     return basic_eye_real<double>(nM);
 }
-//! Complex float 64-bit identity matrix creation
+//! Complex float 64-bit identity matrix
 inline const scmatrix64 eye_complex64(tint nM) {
     return basic_eye_complex<double, std::complex<double>>(nM);
 }
@@ -37306,6 +37306,17 @@ inline treal cvmMachMin() {
     return basic_cvmMachMin<treal>();
 }
 
+//! The smallest normalized positive number for 32-bit float, see \ref cvmMachMin
+inline float cvmMachMin32() {
+    return basic_cvmMachMin<float>();
+}
+
+//! The smallest normalized positive number for 64-bit float, see \ref cvmMachMin
+inline double cvmMachMin64() {
+    return basic_cvmMachMin<double>();
+}
+
+
 /**
 @brief The largest relative spacing
 
@@ -37331,6 +37342,16 @@ inline treal cvmMachSp() {
     return basic_cvmMachSp<treal>();
 }
 
+//! The largest relative spacing for 32-bit float, see \ref cvmMachSp
+inline float cvmMachSp32() {
+    return basic_cvmMachSp<float>();
+}
+
+//! The largest relative spacing for 64-bit float, see \ref cvmMachSp
+inline double cvmMachSp64() {
+    return basic_cvmMachSp<double>();
+}
+            
 
 //! @cond INTERNAL
 #if !defined(CVM_STD_MUTEX) || defined(CVM_USE_POOL_MANAGER)
