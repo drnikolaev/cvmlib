@@ -1130,3 +1130,155 @@ TYPED_TEST(FunctionalTest, TestComplexDrv) {
     EXPECT_NEAR((x[0] + TPC(3.,0.) * x[1] * x[1]).imag(), f.drv(1)(x).imag(), sp<TP>()) << "basic_function<TPC> drv value";
 }
         
+// assign number
+TYPED_TEST(FunctionalTest, TestAssignNumber) {
+    basic_function<TP> f;
+    f = 2.2;
+    EXPECT_EQ("2.2", f.format()) << "basic_function<TP> = number";
+    
+    basic_function<TPC> fc;
+    fc = TPC(2.,-3.);
+    EXPECT_EQ("(2,-3)", fc.format()) << "basic_function<TPC> = number";
+}
+
+// complex number
+TYPED_TEST(FunctionalTest, TestComplexNumber) {
+    basic_function<TPC> c1("(1, -2.3)");
+    EXPECT_NEAR(std::abs(TPC(TP(1.), 2.3)), std::abs(c1()), s<TP>()) << "basic_function<TPC> (1, 2) - value";
+    basic_function<TPC> c2("(-.1, 2.)");
+    EXPECT_NEAR(std::abs(TPC(-.1,2.)), std::abs(c2()), s<TP>()) << "basic_function<TPC> (-.1, 2.) - value";
+    basic_function<TPC> c3("{x, z} z+(3, -1.6)");
+    TPC va[2];
+    va[0] = TPC(.777,-1.888);
+    va[1] = TPC(1.3,-2.1);
+    EXPECT_FLOAT_EQ(4.3F, c3(va).real()) << "basic_function<TPC> {x, z} z+(3, -1.6) - value";
+    EXPECT_FLOAT_EQ(-3.7F, c3(va).imag()) << "basic_function<TPC> {x, z} z+(3, -1.6) - value";
+}
+
+// rfvector
+TYPED_TEST(FunctionalTest, TestRFVector) {
+    string_array sa;
+    sa.push_back ("{x, z} sign(x+2)");
+    sa.push_back ("{x, z} z+3");
+    
+    basic_rfvector<TP> fa(sa);
+    TP x[2];
+    TP y[2];
+    
+    x[0] = -2.1;
+    x[1] = 8.8;
+    fa.value(x, y);
+    
+    EXPECT_EQ(TP(-1.), y[0]) << "rfvector - value";
+    EXPECT_EQ(TP(11.8), y[1]) << "rfvector - value";
+    
+    basic_rvector<TP> yv = fa(x);
+    EXPECT_EQ(TP(-1.), yv[CVM0]) << "rfvector - value";
+    EXPECT_EQ(TP(11.8), yv[CVM0+1]) << "rfvector - value";
+    
+    basic_rfvector<TP> fcp(fa);
+    basic_rfvector<TP> fcpcp;
+    fcpcp << fcp;
+    
+    EXPECT_TRUE(fa == fcp) << "rfvector copy";
+    EXPECT_TRUE(fa == fcpcp) << "rfvector copy";
+    
+    try {
+        basic_function<TP> xf1 ("{a, b} a+3");
+        fa /= xf1;
+        FAIL() << "No exception about variables mismatch, rvector";
+    } catch (cvmexception& ex) {
+        EXPECT_EQ(CFUN_VARSDONTMATCH, ex.cause()) << "CFUN_VARSDONTMATCH exception cause";
+    }
+    
+    basic_function<TP> xf1 ("{x, z} x+3");
+    fa /= xf1;
+    fcpcp /= xf1;
+    
+    std::stringstream s1, s2;
+    s1 << fa;
+    s2 << fcpcp;
+    
+    EXPECT_EQ(s1.str(), s2.str()) << "rfvector <<";
+    EXPECT_EQ("{x,z} sign(x+2)/(x+3) {x,z} (z+3)/(x+3) \n", s1.str()) << "rfvector <<";
+}
+
+// rfvector drv
+TYPED_TEST(FunctionalTest, TestRFVectorDrv) {
+    string_array sa;
+    sa.push_back ("{x, z} sin(x+2)^2");
+    sa.push_back ("{x, z} z+3/x");
+    
+    basic_rfvector<TP> fv(sa);
+    
+    std::stringstream s1, s2;
+    s1 << fv.drv(0);
+    s2 << fv.drv(1);
+    
+    EXPECT_EQ("{x,z} cos(x+2)*2*sin(x+2) {x,z} (-3)/x^2 \n", s1.str()) << "rfvector drv";
+    EXPECT_EQ("{x,z} 0 {x,z} 1 \n", s2.str()) << "rfvector drv";
+}
+
+// cfvector
+TYPED_TEST(FunctionalTest, TestCFVector) {
+    string_array sa;
+    sa.push_back ("{x, z} sign(x+(2, 3))");
+    sa.push_back ("{x, z} z+(3, -1.6)");
+    
+    basic_cfvector<TP,TPC> fa(sa);
+    TPC x[2];
+    TPC y[2];
+    
+    x[0] = TPC(-2.1,3.7);
+    x[1] = TPC(8.8,-1.3);
+    fa.value(x, y);
+    
+    EXPECT_NEAR(std::abs(TPC(-1.,0.)), std::abs(y[0]), s<TP>()) << "cfvector value";
+    EXPECT_NEAR(std::abs(TPC(TP(11.8), 2.9)), std::abs(y[1]), s<TP>()) << "cfvector value";
+    
+    basic_cvector<TP,TPC> yv = fa(x);
+    EXPECT_NEAR(std::abs(TPC(-1.,0.)), std::abs(yv[CVM0]), s<TP>()) << "cfvector value";
+    EXPECT_NEAR(std::abs(TPC(TP(11.8), 2.9)), std::abs(yv[CVM0+1]), s<TP>()) << "cfvector value";
+    
+    basic_cfvector<TP,TPC> fcp(fa);
+    basic_cfvector<TP,TPC> fcpcp;
+    fcpcp << fcp;
+    
+    EXPECT_TRUE(fa == fcp) << "cfvector copy";
+    EXPECT_TRUE(fa == fcpcp) << "cfvector copy";
+    
+    try {
+        basic_function<TPC> xf1 ("{a, b} a+3");
+        fa /= xf1;
+        FAIL() << "No exception about variables mismatch, cvector";
+    } catch (cvmexception& ex) {
+        EXPECT_EQ(CFUN_VARSDONTMATCH, ex.cause()) << "CFUN_VARSDONTMATCH exception cause";
+    }
+    
+    basic_function<TPC> xf1 ("{x, z} x+(3, 2.3)");
+    fa /= xf1;
+    fcpcp /= xf1;
+    
+    std::stringstream s1, s2;
+    s1 << fa;
+    s2 << fcpcp;
+    
+    EXPECT_EQ(s1.str(), s2.str()) << "cfvector <<";
+    EXPECT_EQ("{x,z} sign(x+(2,3))/(x+(3,2.3)) {x,z} (z+(3,-1.6))/(x+(3,2.3)) \n", s1.str()) << "cfvector <<";
+}
+
+// cfvector drv
+TYPED_TEST(FunctionalTest, TestCFVectorDrv) {
+    string_array sa;
+    sa.push_back ("{x, z} sin(x+2)^(2, -2.)");
+    sa.push_back ("{x, z} z+(3, -1.)/x");
+    
+    basic_cfvector<TP,TPC> fv(sa);
+    
+    std::stringstream s1, s2;
+    s1 << fv.drv(0);
+    s2 << fv.drv(1);
+    
+    EXPECT_EQ("{x,z} cos(x+(2,0))*(2,-2)*sin(x+(2,0))^(1,-2) {x,z} (-3,1)/x^(2,0) \n", s1.str()) << "cfvector drv";
+    EXPECT_EQ("{x,z} (0,0) {x,z} (1,0) \n", s2.str()) << "cfvector drv";
+}
