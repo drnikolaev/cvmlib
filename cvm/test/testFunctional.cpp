@@ -970,7 +970,10 @@ TYPED_TEST(FunctionalTest, TestFExpressions) {
     rfc = rf_self.tan().simp();
     EXPECT_EQ(std::tan(r2), rfc(r2)) << "basic_function<TP>.tan - value";
     cfc = cf_self.tan().simp();
-    EXPECT_EQ(std::tan(c11), cfc(c11)) << "basic_function<TPC>.tan - value";
+    EXPECT_FLOAT_EQ(static_cast<float>(std::tan(c11).real()),
+                    static_cast<float>(cfc(c11).real())) << "basic_function<TPC>.tan - value";
+    EXPECT_FLOAT_EQ(static_cast<float>(std::tan(c11).imag()),
+                    static_cast<float>(cfc(c11).imag())) << "basic_function<TPC>.tan - value";
     
     rfc = rf_self.asin().simp();
     EXPECT_EQ(std::asin(1/r2), rfc(1/r2)) << "basic_function<TP>.asin - value";
@@ -993,7 +996,8 @@ TYPED_TEST(FunctionalTest, TestFExpressions) {
     EXPECT_EQ(std::sinh(c11), cfc(c11)) << "basic_function<TPC>.sinh - value";
     
     rfc = rf_self.cosh().simp();
-    EXPECT_EQ(std::cosh(r2), rfc(r2)) << "basic_function<TP>.cosh - value";
+    EXPECT_FLOAT_EQ(static_cast<float>(std::cosh(r2)),
+                    static_cast<float>(rfc(r2))) << "basic_function<TP>.cosh - value";
     cfc = cf_self.cosh().simp();
     EXPECT_EQ(std::cosh(c11), cfc(c11)) << "basic_function<TPC>.cosh - value";
     
