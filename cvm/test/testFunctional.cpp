@@ -1286,3 +1286,932 @@ TYPED_TEST(FunctionalTest, TestCFVectorDrv) {
     EXPECT_EQ("{x,z} cos(x+(2,0))*(2,-2)*sin(x+(2,0))^(1,-2) {x,z} (-3,1)/x^(2,0) \n", s1.str()) << "cfvector drv";
     EXPECT_EQ("{x,z} (0,0) {x,z} (1,0) \n", s2.str()) << "cfvector drv";
 }
+
+// rfmatrix
+TYPED_TEST(FunctionalTest, TestRFmatrix) {
+    string_array sa2;
+    sa2.push_back ("1");
+    sa2.push_back ("2");
+    sa2.push_back ("3");
+    sa2.push_back ("4");
+    sa2.push_back ("5");
+    sa2.push_back ("6");
+
+    basic_rmatrix<TP> rm(2, 3);
+    basic_rfmatrix<TP> fm(2, 3, sa2);
+
+    fm.value(rm);
+    EXPECT_EQ(TP(4.), rm(CVM0+1, CVM0+1)) << "rfmatrix - value";
+
+    rm = fm();
+    EXPECT_EQ(TP(4.), rm(CVM0+1, CVM0+1)) << "rfmatrix - value";
+
+    std::ostringstream oss1, oss2;
+    oss1 << fm;
+    oss2 << rm;
+    EXPECT_EQ(oss2.str(), oss1.str()) << "rfmatrix <<";
+
+    string_array sa;
+    sa.push_back ("{x} x^2");
+    sa.push_back ("{x} sin(x)");
+    basic_rfvector<TP> fv(sa);
+
+    fm.set_col(2, fv);
+    fm.value(3, rm);
+
+    EXPECT_EQ(TP(3.), rm(CVM0, CVM0+1)) << "rfmatrix set_col";
+    EXPECT_EQ(TP(9.), rm(CVM0, CVM0+2)) << "rfmatrix set_col";
+    EXPECT_NEAR(sin(3.), rm(CVM0+1, CVM0+2), s<TP>()) << "rfmatrix set_col";
+
+    rm = fm(3);
+    EXPECT_EQ(TP(3.), rm(CVM0, CVM0+1)) << "rfmatrix set_col";
+    EXPECT_EQ(TP(9.), rm(CVM0, CVM0+2)) << "rfmatrix set_col";
+    EXPECT_NEAR(sin(3.), rm(CVM0+1, CVM0+2), s<TP>()) << "rfmatrix set_col";
+}
+
+// cfmatrix
+TYPED_TEST(FunctionalTest, TestCFmatrix) {
+    string_array sa2;
+    sa2.push_back ("(1, -1)");
+    sa2.push_back ("(2, -2)");
+    sa2.push_back ("(3, -3)");
+    sa2.push_back ("(4, -4)");
+    sa2.push_back ("(5, -5)");
+    sa2.push_back ("(6, -6)");
+
+    basic_cmatrix<TP,TPC> cm(2, 3);
+    basic_cfmatrix<TP,TPC> fm(2, 3, sa2);
+
+    fm.value(cm);
+    EXPECT_EQ(TPC(4., -4.), cm(CVM0+1, CVM0+1)) << "cfmatrix - value";
+
+    cm = fm();
+    EXPECT_EQ(TPC(4., -4.), cm(CVM0+1, CVM0+1)) << "cfmatrix - value";
+
+    std::ostringstream oss1, oss2;
+    oss1 << fm;
+    oss2 << cm;
+    EXPECT_EQ(oss2.str(), oss1.str()) << "cfmatrix <<";
+
+    string_array sa;
+    sa.push_back ("{x} x^(2, 1)");
+    sa.push_back ("{x} sin(x)");
+    basic_cfvector<TP,TPC> fv(sa);
+
+    fm.set_col(2, fv);
+    TPC c = TPC(3.,-1.);
+    fm.value(c, cm);
+
+    EXPECT_EQ(TPC(3., -3.), cm(CVM0, CVM0+1)) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).real(), cm(CVM0, CVM0+2).real(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).imag(), cm(CVM0, CVM0+2).imag(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).real(), cm(CVM0+1, CVM0+2).real(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).imag(), cm(CVM0+1, CVM0+2).imag(), s<TP>()) << "cfmatrix - value";
+
+    cm = fm(c);
+    EXPECT_EQ(TPC(3., -3.), cm(CVM0, CVM0+1)) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).real(), cm(CVM0, CVM0+2).real(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).imag(), cm(CVM0, CVM0+2).imag(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).real(), cm(CVM0+1, CVM0+2).real(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).imag(), cm(CVM0+1, CVM0+2).imag(), s<TP>()) << "cfmatrix - value";
+}
+
+// rfvector scalar product
+TYPED_TEST(FunctionalTest, TestRFvectorProduct) {
+    string_array sa;
+    sa.push_back ("{x, z} x+z");
+    sa.push_back ("{x, z} x-z");
+
+    basic_rfvector<TP> fv1(sa), fv2(sa);
+    basic_function<TP> f = fv1 * fv2;
+    basic_function<TP> fc("{x, z} (x+z)^2+(x-z)^2");
+    EXPECT_EQ(f, fc) << "rfvector scalar product";
+}
+
+// cfvector scalar product
+TYPED_TEST(FunctionalTest, TestCFvectorProduct) {
+    string_array sa1;
+    sa1.push_back ("{x, z} x+z");
+    sa1.push_back ("{x, z} x-z");
+    string_array sa2;
+    sa2.push_back ("{x, z} x-z");
+    sa2.push_back ("{x, z} x+z");
+
+    basic_cfvector<TP,TPC> fv1(sa1), fv2(sa2);
+    basic_function<TPC> f = fv1 * fv2;
+    basic_function<TPC> fc("{x, z} (x+z)*((2, 0)*(x-z))");
+    EXPECT_EQ(f, fc) << "cfvector scalar product";
+}
+
+// fully qualified input - rvector
+TYPED_TEST(FunctionalTest, TestRFvectorFullyQualified) {
+    string_array saVars, saBodies, saParameters, saMeanings;
+    saVars.push_back("x");
+    saVars.push_back("y");
+
+    saBodies.push_back("x-y");
+    saBodies.push_back("y*p");
+    saBodies.push_back("x-p");
+
+    try {
+        string_array saParameters, saMeanings;
+        saParameters.push_back("p");
+        saMeanings.push_back("p+2");
+        basic_rfvector<TP> fv (saVars, saBodies, saParameters, saMeanings);
+        FAIL() << "No exception about parameter recursion";
+    } catch (cvmexception& ex) {
+        EXPECT_EQ(CFUN_PARAMETER_RECURSION, ex.cause()) << "CFUN_PARAMETER_RECURSION exception cause";
+    }
+
+    try {
+        string_array saParameters, saMeanings;
+        saParameters.push_back("p");
+        saMeanings.push_back("x*p -2");
+        basic_rfvector<TP> fv (saVars, saBodies, saParameters, saMeanings);
+        FAIL() << "No exception about parameter recursion";
+    } catch (cvmexception& ex) {
+        EXPECT_EQ(CFUN_PARAMETER_RECURSION, ex.cause()) << "CFUN_PARAMETER_RECURSION exception cause";
+    }
+
+    try {
+        string_array saParameters, saMeanings;
+        saParameters.push_back("p");
+        saMeanings.push_back("y^ p ");
+        basic_rfvector<TP> fv (saVars, saBodies, saParameters, saMeanings);
+        FAIL() << "No exception about parameter recursion";
+    } catch (cvmexception& ex) {
+        EXPECT_EQ(CFUN_PARAMETER_RECURSION, ex.cause()) << "CFUN_PARAMETER_RECURSION exception cause";
+    }
+
+    saParameters.push_back ("p");
+    saMeanings.push_back ("x*y-3");
+    basic_rfvector<TP> fv (saVars, saBodies, saParameters, saMeanings);
+
+    std::stringstream ss;
+    ss << fv;
+
+    EXPECT_EQ("{x,y} x-y {x,y} y*(x*y-3) {x,y} x-x*y-3 \n", ss.str()) << "fully qualified input - rvector";
+}
+
+// fully qualified input - cvector
+TYPED_TEST(FunctionalTest, TestCFvectorFullyQualified) {
+    string_array saVars, saBodies, saParameters, saMeanings;
+    saVars.push_back ("x");
+    saVars.push_back ("y");
+
+    saBodies.push_back ("x-y");
+    saBodies.push_back ("y*p");
+    saBodies.push_back ("x-p");
+
+    try {
+        string_array saParameters, saMeanings;
+        saParameters.push_back ("p");
+        saMeanings.push_back ("p+2");
+        basic_cfvector<TP,TPC> fv (saVars, saBodies, saParameters, saMeanings);
+        FAIL() << "No exception about parameter recursion";
+    } catch (cvmexception& ex) {
+        EXPECT_EQ(CFUN_PARAMETER_RECURSION, ex.cause()) << "CFUN_PARAMETER_RECURSION exception cause";
+    }
+
+    try {
+        string_array saParameters, saMeanings;
+        saParameters.push_back ("p");
+        saMeanings.push_back ("x*p -2");
+        basic_cfvector<TP,TPC> fv (saVars, saBodies, saParameters, saMeanings);
+        FAIL() << "No exception about parameter recursion";
+    } catch (cvmexception& ex) {
+        EXPECT_EQ(CFUN_PARAMETER_RECURSION, ex.cause()) << "CFUN_PARAMETER_RECURSION exception cause";
+    }
+
+    try {
+        string_array saParameters, saMeanings;
+        saParameters.push_back ("p");
+        saMeanings.push_back ("y^ p ");
+        basic_cfvector<TP,TPC> fv (saVars, saBodies, saParameters, saMeanings);
+        FAIL() << "No exception about parameter recursion";
+    } catch (cvmexception& ex) {
+        EXPECT_EQ(CFUN_PARAMETER_RECURSION, ex.cause()) << "CFUN_PARAMETER_RECURSION exception cause";
+    }
+
+    saParameters.push_back ("p");
+    saMeanings.push_back ("x*y-3");
+    basic_cfvector<TP,TPC> fv (saVars, saBodies, saParameters, saMeanings);
+
+    std::stringstream ss;
+    ss << fv;
+
+    EXPECT_EQ("{x,y} x-y {x,y} y*(x*y-(3,0)) {x,y} x-x*y-(3,0) \n", ss.str()) << "fully qualified input - cvector";
+}
+
+// rfvector * rfmatrix
+TYPED_TEST(FunctionalTest, TestRFVectorMatrixProduct) {
+    string_array sa1;
+    sa1.push_back ("{x, z} x+z");
+    sa1.push_back ("{x, z} x-z");
+
+    string_array sa2;
+    sa2.push_back ("1");
+    sa2.push_back ("2");
+    sa2.push_back ("3");
+    sa2.push_back ("4");
+    sa2.push_back ("5");
+    sa2.push_back ("6");
+    basic_rfmatrix<TP> fm(2, 3, sa2);
+
+    string_array sa3;
+    sa3.push_back ("{x, z} (x+z)+(x-z)*2");
+    sa3.push_back ("{x, z} (x+z)*3+(x-z)*4");
+    sa3.push_back ("{x, z} (x+z)*5+(x-z)*6");
+
+    basic_rfvector<TP> fv1(sa1), fv2(3), fvresult(sa3);
+
+    fv2 = fv1 * fm;
+    EXPECT_EQ(fvresult, fv2) << "rfvector * rfmatrix";
+
+    fv2.mult (fv1, fm);
+    EXPECT_EQ(fvresult, fv2) << "mult (rfvector, rfmatrix)";
+}
+
+// cfvector * cfmatrix
+TYPED_TEST(FunctionalTest, TestCFVectorMatrixProduct) {
+    string_array sa1;
+    sa1.push_back ("{x, z} x+z");
+    sa1.push_back ("{x, z} x-z");
+
+    string_array sa2;
+    sa2.push_back ("1");
+    sa2.push_back ("2");
+    sa2.push_back ("3");
+    sa2.push_back ("4");
+    sa2.push_back ("5");
+    sa2.push_back ("6");
+    basic_cfmatrix<TP,TPC> fm(2, 3, sa2);
+
+    string_array sa3;
+    sa3.push_back ("{x, z} (x+z)+(x-z)*2");
+    sa3.push_back ("{x, z} (x+z)*3+(x-z)*4");
+    sa3.push_back ("{x, z} (x+z)*5+(x-z)*6");
+
+    basic_cfvector<TP,TPC> fv1(sa1), fv2(3), fvresult(sa3);
+
+    fv2 = fv1 * fm;
+    EXPECT_EQ(fvresult, fv2) << "cfvector * cfmatrix";
+
+    fv2.mult (fv1, fm);
+    EXPECT_EQ(fvresult, fv2) << "mult (cfvector, cfmatrix)";
+}
+
+// rfmatrix * rfvector
+TYPED_TEST(FunctionalTest, TestRFMatrixVectorProduct) {
+    string_array sa1;
+    sa1.push_back ("{x, z} x+z");
+    sa1.push_back ("{x, z} x-z");
+
+    string_array sa2;
+    sa2.push_back ("1");
+    sa2.push_back ("2");
+    sa2.push_back ("3");
+    sa2.push_back ("4");
+    sa2.push_back ("5");
+    sa2.push_back ("6");
+    basic_rfmatrix<TP> fm(3, 2, sa2);
+
+    string_array sa3;
+    sa3.push_back ("{x, z} x+z+4*(x-z)");
+    sa3.push_back ("{x, z} 2*(x+z)+5*(x-z)");
+    sa3.push_back ("{x, z} 3*(x+z)+6*(x-z)");
+
+    basic_rfvector<TP> fv1(sa1), fv2(3), fvresult(sa3);
+
+    fv2 = fm * fv1;
+    EXPECT_EQ(fvresult, fv2) << "rfmatrix * rfvector";
+
+    fv2.mult (fm, fv1);
+    EXPECT_EQ(fvresult, fv2) << "mult (rfmatrix, rfvector)";
+}
+
+// cfmatrix * cfvector
+TYPED_TEST(FunctionalTest, TestCFMatrixVectorProduct) {
+    string_array sa1;
+    sa1.push_back ("{x, z} x+z");
+    sa1.push_back ("{x, z} x-z");
+
+    string_array sa2;
+    sa2.push_back ("1");
+    sa2.push_back ("2");
+    sa2.push_back ("3");
+    sa2.push_back ("4");
+    sa2.push_back ("5");
+    sa2.push_back ("6");
+    basic_cfmatrix<TP,TPC> fm(3, 2, sa2);
+
+    string_array sa3;
+    sa3.push_back ("{x, z} (x+z)+4*(x-z)");
+    sa3.push_back ("{x, z} 2*(x+z)+5*(x-z)");
+    sa3.push_back ("{x, z} 3*(x+z)+6*(x-z)");
+
+    basic_cfvector<TP,TPC> fv1(sa1), fv2(3), fvresult(sa3);
+
+    fv2 = fm * fv1;
+    EXPECT_EQ(fvresult, fv2) << "cfmatrix * cfvector";
+
+    fv2.mult (fm, fv1);
+    EXPECT_EQ(fvresult, fv2) << "mult (cfmatrix, cfvector)";
+}
+
+// rfmatrix * rfmatrix
+TYPED_TEST(FunctionalTest, TestRFMatrixMatrixProduct) {
+    string_array sa1;
+    sa1.push_back ("{x, y} x");
+    sa1.push_back ("{x, y} y");
+    sa1.push_back ("{x, y} 1");
+    sa1.push_back ("{x, y} 2");
+    sa1.push_back ("{x, y} 3");
+    sa1.push_back ("{x, y} 4");
+    basic_rfmatrix<TP> fm1(2, 3, sa1);
+
+    string_array sa2;
+    sa2.push_back ("1");
+    sa2.push_back ("2");
+    sa2.push_back ("3");
+    sa2.push_back ("4");
+    sa2.push_back ("5");
+    sa2.push_back ("6");
+    basic_rfmatrix<TP> fm2(3, 2, sa2);
+
+    string_array sa3;
+    sa3.push_back ("{x, y} 11+x");
+    sa3.push_back ("{x, y} 16+y");
+    sa3.push_back ("{x, y} 23+x*4");
+    sa3.push_back ("{x, y} 34+y*4");
+
+    basic_rfmatrix<TP> fmcheck(2, 2, sa3);
+
+    basic_rfmatrix<TP> fm = fm1 * fm2;
+    EXPECT_EQ(fmcheck, fm) << "rfmatrix * rfmatrix";
+
+    fm.mult(fm1, fm2);
+    EXPECT_TRUE(fmcheck == fm) << "mult (rfmatrix, rfmatrix)";
+}
+
+// cfmatrix * cfmatrix
+TYPED_TEST(FunctionalTest, TestCFMatrixMatrixProduct) {
+    string_array sa1;
+    sa1.push_back ("{x, y} x");
+    sa1.push_back ("{x, y} y");
+    sa1.push_back ("{x, y} 1");
+    sa1.push_back ("{x, y} 2");
+    sa1.push_back ("{x, y} 3");
+    sa1.push_back ("{x, y} 4");
+    basic_cfmatrix<TP,TPC> fm1(2, 3, sa1);
+
+    string_array sa2;
+    sa2.push_back ("1");
+    sa2.push_back ("2");
+    sa2.push_back ("3");
+    sa2.push_back ("4");
+    sa2.push_back ("5");
+    sa2.push_back ("6");
+    basic_cfmatrix<TP,TPC> fm2(3, 2, sa2);
+
+    string_array sa3;
+    sa3.push_back ("{x, y} 11+x");
+    sa3.push_back ("{x, y} 16+y");
+    sa3.push_back ("{x, y} 23+x*4");
+    sa3.push_back ("{x, y} 34+y*4");
+
+    basic_cfmatrix<TP,TPC> fmcheck(2, 2, sa3);
+
+    basic_cfmatrix<TP,TPC> fm = fm1 * fm2;
+    EXPECT_EQ(fmcheck, fm) << "cfmatrix * cfmatrix";
+
+    fm.mult (fm1, fm2);
+    EXPECT_EQ(fmcheck, fm) << "mult (cfmatrix, cfmatrix)";
+}
+
+// rfmatrix mult
+TYPED_TEST(FunctionalTest, TestRFMatrixMult) {
+    string_array sa1;
+    sa1.push_back ("{x, y} x");
+    sa1.push_back ("{x, y} y");
+    sa1.push_back ("{x, y} 1");
+    sa1.push_back ("{x, y} 2");
+    sa1.push_back ("{x, y} 3");
+    sa1.push_back ("{x, y} 4");
+    basic_rfmatrix<TP> fm1(2, 3, sa1);
+
+    string_array sa2;
+    sa2.push_back ("1");
+    sa2.push_back ("2");
+    sa2.push_back ("3");
+    sa2.push_back ("4");
+    sa2.push_back ("5");
+    sa2.push_back ("6");
+    basic_rfmatrix<TP> fm2(3, 2, sa2);
+
+    string_array sa3;
+    sa3.push_back ("{x, y} 11+x");
+    sa3.push_back ("{x, y} 16+y");
+    sa3.push_back ("{x, y} 23+x*4");
+    sa3.push_back ("{x, y} 34+y*4");
+
+    basic_rfmatrix<TP> fm(2, 2), fmcheck(2, 2, sa3);
+    fm.mult(fm1, fm2);
+
+    EXPECT_EQ(fmcheck, fm) << "rfmatrix mult";
+}
+
+// cfmatrix mult
+TYPED_TEST(FunctionalTest, TestCFMatrixMult) {
+    string_array sa1;
+    sa1.push_back ("{x, y} x");
+    sa1.push_back ("{x, y} y");
+    sa1.push_back ("{x, y} 1");
+    sa1.push_back ("{x, y} 2");
+    sa1.push_back ("{x, y} 3");
+    sa1.push_back ("{x, y} 4");
+    basic_cfmatrix<TP,TPC> fm1(2, 3, sa1);
+
+    string_array sa2;
+    sa2.push_back ("1");
+    sa2.push_back ("2");
+    sa2.push_back ("3");
+    sa2.push_back ("4");
+    sa2.push_back ("5");
+    sa2.push_back ("6");
+    basic_cfmatrix<TP,TPC> fm2(3, 2, sa2);
+
+    string_array sa3;
+    sa3.push_back ("{x, y} 11+x");
+    sa3.push_back ("{x, y} 16+y");
+    sa3.push_back ("{x, y} 23+x*4");
+    sa3.push_back ("{x, y} 34+y*4");
+
+    basic_cfmatrix<TP,TPC> fm(2, 2), fmcheck(2, 2, sa3);
+    fm.mult(fm1, fm2);
+
+    EXPECT_EQ(fmcheck, fm) << "cfmatrix mult";
+}
+
+// rfmatrix jacobi
+TYPED_TEST(FunctionalTest, TestRFMatrixJacobi) {
+    string_array sa1;
+    sa1.push_back ("{x, y} 2*x^2+3*y^3");
+    sa1.push_back ("{x, y} 4*x^3-5*y^2");
+    sa1.push_back ("{x, y} -x^4+6*y^2");
+    basic_rfvector<TP> fv(sa1);
+
+    string_array sa2;
+    sa2.push_back ("{x, y} 4*x");
+    sa2.push_back ("{x, y} 12*x^2");
+    sa2.push_back ("{x, y} (-4)*x^3");
+    sa2.push_back ("{x, y} 9*y^2");
+    sa2.push_back ("{x, y} (-10)*y");
+    sa2.push_back ("{x, y} 12*y");
+    basic_rfmatrix<TP> fmcheck(3, 2, sa2);
+
+    basic_rfmatrix<TP> fm = fv.jacobian();
+    EXPECT_EQ(fmcheck, fm) << "rfmatrix jacobi";
+
+    fv.jacobian(fm);
+    EXPECT_EQ(fmcheck, fm) << "rfmatrix jacobi";
+}
+
+// rfmatrix jacobi nfrom
+TYPED_TEST(FunctionalTest, TestRFMatrixJacobiNFrom) {
+    string_array sa1;
+    sa1.push_back ("{x, y} 2*x^2+3*y^3");
+    sa1.push_back ("{x, y} 4*x^3-5*y^2");
+    sa1.push_back ("{x, y} -x^4+6*y^2");
+    basic_rfvector<TP> fv(sa1);
+
+    string_array sa2;
+    sa2.push_back ("{x, y} 9*y^2");
+    sa2.push_back ("{x, y} (-10)*y");
+    sa2.push_back ("{x, y} 12*y");
+    basic_rfmatrix<TP> fmcheck(3, 1, sa2);
+
+    basic_rfmatrix<TP> fm = fv.jacobian(1);
+    EXPECT_TRUE(fmcheck == fm) << "rfmatrix jacobi, nfrom";
+
+    fv.jacobian(fm, 1);
+    EXPECT_TRUE(fmcheck == fm) << "rfmatrix jacobi, nfrom";
+}
+
+// rfmatrix jacobi nfrom, nsize
+TYPED_TEST(FunctionalTest, TestRFMatrixJacobiNFromNSize) {
+    string_array sa1;
+    sa1.push_back ("{x, y, z} 2*x^2+3*y^3+z/2");
+    sa1.push_back ("{x, y, z} 4*x^3-5*y^2-sin(z)");
+    sa1.push_back ("{x, y, z} -x^4+6*y^2+z^(.5)");
+    basic_rfvector<TP> fv(sa1);
+
+    string_array sa2;
+    sa2.push_back ("{x, y, z} 4*x");
+    sa2.push_back ("{x, y, z} 12*x^2");
+    sa2.push_back ("{x, y, z} (-4)*x^3");
+    sa2.push_back ("{x, y, z} 9*y^2");
+    sa2.push_back ("{x, y, z} (-10)*y");
+    sa2.push_back ("{x, y, z} 12*y");
+    basic_rfmatrix<TP> fmcheck(3, 2, sa2);
+
+    basic_rfmatrix<TP> fm = fv.jacobian(0, 2);
+    EXPECT_TRUE(fmcheck == fm) << "rfmatrix jacobi, nfrom, nsize";
+
+    fv.jacobian(fm, 0, 2);
+    EXPECT_TRUE(fmcheck == fm) << "rfmatrix jacobi, nfrom, nsize";
+}
+
+// cfmatrix jacobi
+TYPED_TEST(FunctionalTest, TestCFMatrixJacobi) {
+    string_array sa1;
+    sa1.push_back ("{x, y} 2*x^2+3*y^3");
+    sa1.push_back ("{x, y} 4*x^3-5*y^2");
+    sa1.push_back ("{x, y} -x^4+6*y^2");
+    basic_cfvector<TP,TPC> fv(sa1);
+
+    string_array sa2;
+    sa2.push_back ("{x, y} 4*x");
+    sa2.push_back ("{x, y} 12*x^2");
+    sa2.push_back ("{x, y} (-4)*x^3");
+    sa2.push_back ("{x, y} 9*y^2");
+    sa2.push_back ("{x, y} (-10)*y");
+    sa2.push_back ("{x, y} 12*y");
+    basic_cfmatrix<TP,TPC> fmcheck(3, 2, sa2);
+
+    basic_cfmatrix<TP,TPC> fm = fv.jacobian();
+    EXPECT_TRUE(fmcheck == fm) << "cfmatrix jacobi";
+
+    fv.jacobian(fm);
+    EXPECT_TRUE(fmcheck == fm) << "cfmatrix jacobi";
+}
+
+// cfmatrix jacobi nfrom
+TYPED_TEST(FunctionalTest, TestCFMatrixJacobiNFrom) {
+    string_array sa1;
+    sa1.push_back ("{x, y} 2*x^2+3*y^3");
+    sa1.push_back ("{x, y} 4*x^3-5*y^2");
+    sa1.push_back ("{x, y} -x^4+6*y^2");
+    basic_cfvector<TP,TPC> fv(sa1);
+
+    string_array sa2;
+    sa2.push_back ("{x, y} 9*y^2");
+    sa2.push_back ("{x, y} (-10)*y");
+    sa2.push_back ("{x, y} 12*y");
+    basic_cfmatrix<TP,TPC> fmcheck(3, 1, sa2);
+
+    basic_cfmatrix<TP,TPC> fm = fv.jacobian(1);
+    EXPECT_TRUE(fmcheck == fm) << "cfmatrix jacobi, nfrom";
+
+    fv.jacobian(fm, 1);
+    EXPECT_TRUE(fmcheck == fm) << "cfmatrix jacobi, nfrom";
+}
+
+// cfmatrix jacobi nfrom, nsize
+TYPED_TEST(FunctionalTest, TestCFMatrixJacobiNFromNSize) {
+    string_array sa1;
+    sa1.push_back ("{x, y, z} 2*x^2+3*y^3+z/2");
+    sa1.push_back ("{x, y, z} 4*x^3-5*y^2-sin(z)");
+    sa1.push_back ("{x, y, z} -x^4+6*y^2+z^(.5)");
+    basic_cfvector<TP,TPC> fv(sa1);
+
+    string_array sa2;
+    sa2.push_back ("{x, y, z} 4*x");
+    sa2.push_back ("{x, y, z} 12*x^2");
+    sa2.push_back ("{x, y, z} (-4)*x^3");
+    sa2.push_back ("{x, y, z} 9*y^2");
+    sa2.push_back ("{x, y, z} (-10)*y");
+    sa2.push_back ("{x, y, z} 12*y");
+    basic_cfmatrix<TP,TPC> fmcheck(3, 2, sa2);
+
+    basic_cfmatrix<TP,TPC> fm = fv.jacobian(0, 2);
+    EXPECT_TRUE(fmcheck == fm) << "cfmatrix jacobi, nfrom, nsize";
+
+    fv.jacobian(fm, 0, 2);
+    EXPECT_TRUE(fmcheck == fm) << "cfmatrix jacobi, nfrom, nsize";
+}
+
+// rfvector indexing, 0-based
+TYPED_TEST(FunctionalTest, TestRFVector0Indexing) {
+    char s1[] = "{x, z} sign(x+2)";
+    char s2[] = "{x, z} z+3";
+    string_array sa;
+    sa.push_back (s1);
+    sa.push_back (s2);
+
+    basic_rfvector<TP> fa(sa);
+    basic_function<TP> f1(s1);
+    basic_function<TP> f2(s2);
+
+    EXPECT_EQ(fa[0], f1) << "rfvector indexing";
+    EXPECT_EQ(fa[1], f2) << "rfvector indexing";
+}
+
+// cfvector indexing, 0-based
+TYPED_TEST(FunctionalTest, TestCFVector0Indexing) {
+    char s1[] = "{x, z} sign(x+(2, 3))";
+    char s2[] = "{x, z} z+(3, -1.6)";
+    string_array sa;
+    sa.push_back (s1);
+    sa.push_back (s2);
+
+    basic_cfvector<TP,TPC> fa(sa);
+    basic_function<TPC> f1(s1);
+    basic_function<TPC> f2(s2);
+
+    EXPECT_EQ(fa[0], f1) << "cfvector indexing";
+    EXPECT_EQ(fa[1], f2) << "cfvector indexing";
+}
+
+// rfmatrix indexing
+TYPED_TEST(FunctionalTest, TestRFMatrixIndexing) {
+    char s1[] = "{x, y} x";
+    char s2[] = "{x, y} y";
+    char s3[] = "{x, y} 1";
+    char s4[] = "{x, y} 2";
+    char s5[] = "{x, y} 3";
+    char s6[] = "{x, y} 4";
+    string_array sa1;
+    sa1.push_back (s1);
+    sa1.push_back (s2);
+    sa1.push_back (s3);
+    sa1.push_back (s4);
+    sa1.push_back (s5);
+    sa1.push_back (s6);
+
+    basic_rfmatrix<TP> fm(2, 3, sa1);
+    basic_function<TP> f2(s2);
+    basic_function<TP> f3(s3);
+
+    EXPECT_TRUE(fm[1] == f2) << "rfmatrix indexing";
+    EXPECT_TRUE(fm[2] == f3) << "rfmatrix indexing";
+
+    EXPECT_TRUE(fm.at(1, 0) == f2) << "rfmatrix indexing";
+    EXPECT_TRUE(fm.at(0, 1) == f3) << "rfmatrix indexing";
+}
+
+// cfmatrix indexing
+TYPED_TEST(FunctionalTest, TestCFMatrixIndexing) {
+    char s1[] = "{x, y} x";
+    char s2[] = "{x, y} y";
+    char s3[] = "{x, y} (1, 0)";
+    char s4[] = "{x, y} 2";
+    char s5[] = "{x, y} 3";
+    char s6[] = "{x, y} 4";
+    string_array sa1;
+    sa1.push_back (s1);
+    sa1.push_back (s2);
+    sa1.push_back (s3);
+    sa1.push_back (s4);
+    sa1.push_back (s5);
+    sa1.push_back (s6);
+
+    basic_cfmatrix<TP,TPC> fm(2, 3, sa1);
+    basic_function<TPC> f2(s2);
+    basic_function<TPC> f3(s3);
+
+    EXPECT_TRUE(fm[1] == f2) << "cfmatrix indexing";
+    EXPECT_TRUE(fm[2] == f3) << "cfmatrix indexing";
+
+    EXPECT_TRUE(fm.at(1, 0) == f2) << "cfmatrix indexing";
+    EXPECT_TRUE(fm.at(0, 1) == f3) << "cfmatrix indexing";
+}
+
+// rfmatrix columns and rows
+TYPED_TEST(FunctionalTest, TestRFMatrixColRow) {
+    char s1[] = "{x, y} x";
+    char s2[] = "{x, y} y";
+    char s3[] = "{x, y} 1";
+    char s4[] = "{x, y} 2";
+    char s5[] = "{x, y} 3";
+    char s6[] = "{x, y} 4";
+    string_array sa1;
+    sa1.push_back (s1);
+    sa1.push_back (s2);
+    sa1.push_back (s3);
+    sa1.push_back (s4);
+    sa1.push_back (s5);
+    sa1.push_back (s6);
+
+    string_array sa1r;
+    sa1r.push_back (s2);
+    sa1r.push_back (s4);
+    sa1r.push_back (s6);
+
+    string_array sa1c;
+    sa1c.push_back (s3);
+    sa1c.push_back (s4);
+
+    basic_rfmatrix<TP> fm(2, 3, sa1);
+    basic_rfvector<TP> fr(sa1r);
+    basic_rfvector<TP> fc(sa1c);
+
+    EXPECT_EQ(fr, fm.get_row(1)) << "rfmatrix get_row";
+    EXPECT_EQ(fc, fm.get_col(1)) << "rfmatrix get_col";
+
+    fr *= 2.;
+    fr.simp();
+    fm.set_row(1, fr);
+    fc *= 2.;
+    fc.simp();
+    fm.set_col(1, fc);
+
+    EXPECT_EQ("{x,y} y*2", fm.at(1,0).vformat()) << "rfmatrix set_row";
+    EXPECT_EQ("{x,y} 4", fm.at(1,1).vformat()) << "rfmatrix set_col";
+}
+
+// cfmatrix columns and rows
+TYPED_TEST(FunctionalTest, TestCFMatrixColRow) {
+    char s1[] = "{x, y} x";
+    char s2[] = "{x, y} y";
+    char s3[] = "{x, y} 1";
+    char s4[] = "{x, y} 2";
+    char s5[] = "{x, y} 3";
+    char s6[] = "{x, y} 4";
+    string_array sa1;
+    sa1.push_back (s1);
+    sa1.push_back (s2);
+    sa1.push_back (s3);
+    sa1.push_back (s4);
+    sa1.push_back (s5);
+    sa1.push_back (s6);
+
+    string_array sa1r;
+    sa1r.push_back (s2);
+    sa1r.push_back (s4);
+    sa1r.push_back (s6);
+
+    string_array sa1c;
+    sa1c.push_back (s3);
+    sa1c.push_back (s4);
+
+    basic_cfmatrix<TP,TPC> fm(2, 3, sa1);
+    basic_cfvector<TP,TPC> fr(sa1r);
+    basic_cfvector<TP,TPC> fc(sa1c);
+
+    EXPECT_EQ(fr, fm.get_row(1)) << "cfmatrix get_row";
+    EXPECT_EQ(fc, fm.get_col(1)) << "cfmatrix get_col";
+
+    fr *= 2.;
+    fr.simp();
+    fm.set_row(1, fr);
+    fc *= 2.;
+    fc.simp();
+    fm.set_col(1, fc);
+
+    EXPECT_EQ("{x,y} y*(2,0)", fm.at(1, 0).vformat()) << "cfmatrix set_row";
+    EXPECT_EQ("{x,y} (4,0)", fm.at(1, 1).vformat()) << "cfmatrix set_col";
+}
+
+// rfvector * /
+TYPED_TEST(FunctionalTest, TestRFVectorMultDiv) {
+    char s1[] = "{x} 1";
+    char s2[] = "{x} 2";
+    char s3[] = "{x} 3";
+    char s4[] = "{x} 4";
+    string_array sa1;
+    sa1.push_back (s1);
+    sa1.push_back (s2);
+    sa1.push_back (s3);
+    sa1.push_back (s4);
+
+    basic_rfvector<TP> fv(sa1);
+    basic_function<TP> f("{x} 5");
+
+    fv *= f;
+    fv.simp();
+    EXPECT_EQ((f * 2.).simp(), fv[1]) << "rfvector * basic_function<TP>";
+
+    fv /= f;
+    fv.simp();
+    EXPECT_EQ((f / 5).simp(), fv[0]) << "rfvector / basic_function<TP>";
+
+    fv *= 5.;
+    fv.simp();
+    EXPECT_EQ((f * 2.).simp(), fv[1]) << "rfvector * real";
+
+    fv /= 5.;
+    fv.simp();
+    EXPECT_EQ((f / 5).simp(), fv[0]) << "rfvector / real";
+}
+
+// cfvector * /
+TYPED_TEST(FunctionalTest, TestCFVectorMultDiv) {
+    char s1[] = "{x} 1";
+    char s2[] = "{x} 2";
+    char s3[] = "{x} 3";
+    char s4[] = "{x} 4";
+    string_array sa1;
+    sa1.push_back (s1);
+    sa1.push_back (s2);
+    sa1.push_back (s3);
+    sa1.push_back (s4);
+
+    basic_cfvector<TP,TPC> fv(sa1);
+    basic_function<TPC> f("{x} 5");
+
+    fv *= f;
+    fv.simp();
+    EXPECT_EQ((f * 2.).simp(), fv[1]) << "cfvector * basic_function<TPC>";
+
+    fv /= f;
+    fv.simp();
+    EXPECT_EQ((f / 5.).simp(), fv[0]) << "cfvector / basic_function<TPC>";
+
+    fv *= TPC(5.,0.);
+    fv.simp();
+    EXPECT_EQ((f * 2.).simp(), fv[1]) << "cfvector * complex";
+
+    fv /= TPC(5.,0.);
+    fv.simp();
+    EXPECT_EQ((f / 5).simp(), fv[0]) << "cfvector / complex";
+}
+
+// rfmatrix * /
+TYPED_TEST(FunctionalTest, TestRFMatrixMultDiv) {
+    char s1[] = "{x} 1";
+    char s2[] = "{x} 2";
+    char s3[] = "{x} 3";
+    char s4[] = "{x} 4";
+    string_array sa1;
+    sa1.push_back (s1);
+    sa1.push_back (s2);
+    sa1.push_back (s3);
+    sa1.push_back (s4);
+
+    basic_rfmatrix<TP> fm(2, 2, sa1);
+    basic_function<TP> f("{x} 5");
+
+    fm *= f;
+    fm.simp();
+
+    EXPECT_EQ((f * 2.).simp(), fm.at(1, 0)) << "rfmatrix * basic_function<TP>";
+
+    fm /= f;
+    fm.simp();
+    EXPECT_EQ((f / 5).simp(), fm.at(0, 0)) << "rfmatrix / basic_function<TP>";
+
+    fm *= 5.;
+    fm.simp();
+    EXPECT_EQ((f * 2.).simp(), fm.at(1, 0)) << "rfmatrix * real";
+
+    fm /= 5.;
+    fm.simp();
+    EXPECT_EQ((f / 5).simp(), fm.at(0, 0)) << "rfmatrix / real";
+}
+
+// cfmatrix * /
+TYPED_TEST(FunctionalTest, TestCFMatrixMultDiv) {
+    char s1[] = "{x} 1";
+    char s2[] = "{x} 2";
+    char s3[] = "{x} 3";
+    char s4[] = "{x} 4";
+    string_array sa1;
+    sa1.push_back (s1);
+    sa1.push_back (s2);
+    sa1.push_back (s3);
+    sa1.push_back (s4);
+
+    basic_cfmatrix<TP,TPC> fm(2, 2, sa1);
+    basic_function<TPC> f("{x} 5");
+
+    fm *= f;
+    fm.simp();
+    EXPECT_EQ((f * 2.).simp(), fm.at(1, 0)) << "cfmatrix * basic_function<TPC>";
+
+    fm /= f;
+    fm.simp();
+    EXPECT_EQ((f / 5).simp(), fm.at(0, 0)) << "cfmatrix / basic_function<TPC>";
+
+    fm *= TPC(5.,0.);
+    fm.simp();
+    EXPECT_EQ((f * 2.).simp(), fm.at(1, 0)) << "cfmatrix * complex";
+
+    fm /= TPC(5.,0.);
+    fm.simp();
+    EXPECT_EQ((f / 5).simp(), fm.at(0, 0)) << "cfmatrix / complex";
+}
+
+// 8.1 CVM_SIZESMISMATCH
+TYPED_TEST(FunctionalTest, TestSizesException) {
+    char s1[] = "{x} 1";
+    char s2[] = "{x} 2";
+    char s3[] = "{x} 3";
+    char s4[] = "{x} 4";
+    string_array sa1;
+    sa1.push_back(s1);
+    sa1.push_back(s2);
+    sa1.push_back(s3);
+    sa1.push_back(s4);
+
+    basic_rfvector<TP> fv(sa1);
+    basic_rfvector<TP> fv2(2);
+
+    try {
+        fv2 = fv;
+        FAIL() << "No sizes mismatch exception";
+    } catch (cvmexception e) {
+        EXPECT_EQ(CVM_SIZESMISMATCH, e.cause());
+    }
+}
+

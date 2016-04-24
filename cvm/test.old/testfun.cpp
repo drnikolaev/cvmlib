@@ -362,15 +362,15 @@ TestFunBody (void*)
         // Fexp
         rfunction rfexp("{x} exp(x)");
         CheckString  (rfexp.format(), "exp(x)", "rfunction exp - format()", os, __LINE__);
-        CheckReal    (rfexp((treal)1.), (treal)CFUN_M_E, "rfunction exp - value", os, __LINE__);
-        CheckReal    (rfexp((treal)2.), (treal)CFUN_M_E * CFUN_M_E, "rfunction exp - value", os, __LINE__);
+        CheckReal    (rfexp((treal)1.), cfun_e<treal>(), "rfunction exp - value", os, __LINE__);
+        CheckReal    (rfexp((treal)2.), cfun_e<treal>() * cfun_e<treal>(), "rfunction exp - value", os, __LINE__);
         CheckString  (rfexp.drv().format(), "exp(x)", "rfunction exp - drv() - format()", os, __LINE__);
         rfunction rfexp2("exp (0)");
         CheckString  (rfexp2.simp().format(), "1", "rfunction exp - format()", os, __LINE__);
 
         cfunction cfexp("{x} exp(x)");
         CheckString  (cfexp.format(), "exp(x)", "cfunction exp - format()", os, __LINE__);
-        CheckComplex (cfexp(tcomplex ((treal)1., (treal)0.)), tcomplex ((treal)CFUN_M_E, (treal)0.), "cfunction exp - value", os, __LINE__);
+        CheckComplex (cfexp(tcomplex ((treal)1., (treal)0.)), tcomplex (cfun_e<treal>(), (treal)0.), "cfunction exp - value", os, __LINE__);
         CheckString  (cfexp.drv().format(), "exp(x)", "cfunction exp - drv() - format()", os, __LINE__);
 
         // Fsqrt
@@ -932,7 +932,7 @@ TestFunBody (void*)
                       tcomplex ((treal)1., (treal)0.), "cfunction.sat - value", os, __LINE__);
 
         rfc = rf_self.exp().simp();
-        CheckReal    (rfc(r2), CFUN_M_E * CFUN_M_E, "rfunction.exp - value", os, __LINE__);
+        CheckReal    (rfc(r2), cfun_e<treal>() * cfun_e<treal>(), "rfunction.exp - value", os, __LINE__);
         cfc = cf_self.exp().simp();
         CheckComplex (cfc(c11), std::exp(c11), "cfunction.exp - value", os, __LINE__);
 

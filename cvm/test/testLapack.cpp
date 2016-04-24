@@ -1381,11 +1381,11 @@ TYPED_TEST(LapackTest, TestGelsBandReal) {
     bt.randomize(-1., 1.);
 
     basic_rmatrix<TP> xn = a.gels(false, bn, vErr);
-    EXPECT_NEAR(TP(0.), (a*xn-bn).norm(), sp<TP>()) << "gels real nontransp";
+    EXPECT_NEAR(TP(0.), (a*xn-bn).norm(), spp<TP>()) << "gels real nontransp";
     EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), spp<TP>(1.e-4,2.5)) << "gels real nontransp";
 
     basic_rmatrix<TP> xt = a.gels(true, bt, vErr);
-    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), sp<TP>()) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), spp<TP>()) << "gels real transp";
     EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>(1.e-4,2.5)) << "gels real transp";
 }
 

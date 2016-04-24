@@ -77,7 +77,7 @@ treal mod (tcomplex c)
 void Report (const char* szMsg, std::ostream& os, int line) throw (test_exception)
 {
     std::ostringstream oss;
-    oss << szMsg << std::endl << "EXCEPTION ON LINE " << line << std::ends;
+    oss << szMsg << std::endl << "EXCEPTION ON LINE " << line;
     std::string sMsg = oss.str ();
     os << sMsg << std::endl;
     throw test_exception (sMsg.c_str());
