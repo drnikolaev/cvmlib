@@ -101,14 +101,23 @@ LFLAGS  += $(COMMON_LD_FLAGS) -L$(OUTDIR)
 LFLAGSD += $(COMMON_LD_FLAGS) -L$(OUTDIR)
 
 ifndef MKL
-ifdef IFORT
-  LFLAGS  += -L$(OUTDIR)/linux/ifort
-  LFLAGSD += -L$(OUTDIR)/linux/ifort
+ifdef GF_BLAS
+  ifdef MAC
+    BLAS_PATH = mac/gf  
+  else
+    BLAS_PATH = linux/gf
+  endif
 else
-  LFLAGS  += -L$(OUTDIR)/linux/gf
-  LFLAGSD += -L$(OUTDIR)/linux/gf
+  ifdef MAC
+    BLAS_PATH = mac/ifort
+  else
+    BLAS_PATH = linux/ifort
+  endif
 endif
 endif
+LFLAGS  += -L$(OUTDIR)/$(BLAS_PATH)
+LFLAGSD += -L$(OUTDIR)/$(BLAS_PATH)
+
 LFLAGS  += -shared
 LFLAGSD += -shared
 

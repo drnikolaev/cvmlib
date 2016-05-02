@@ -274,14 +274,14 @@ TYPED_TEST(BlasTest, TestSymmetricMatrixPolynom1) {
     const basic_rvector<TP> v(av, 11);
     const basic_srsmatrix<TP> m(a, 3);
     const basic_srsmatrix<TP> mp = m.polynom (v);
-    EXPECT_NEAR(TP(6.212740000000001e+004), mp(CVM0, CVM0), sp<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(2.399800000000000e+004), mp(CVM0+1, CVM0), s<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(3.410055000000000e+004), mp(CVM0+2, CVM0), s<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(2.399800000000000e+004), mp(CVM0, CVM0+1), s<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(2.802685000000000e+004), mp(CVM0+1, CVM0+1), s<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(1.010255000000000e+004), mp(CVM0+2, CVM0+1), sp<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(3.410055000000000e+004), mp(CVM0, CVM0+2), s<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(1.010255000000000e+004), mp(CVM0+1, CVM0+2), spp<TP>(1.e-14,2.e-3)) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(6.212740000000001e+004), mp(CVM0, CVM0), spp<TP>(1.e-10,4.e-3)) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(2.399800000000000e+004), mp(CVM0+1, CVM0), sp<TP>()) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(3.410055000000000e+004), mp(CVM0+2, CVM0), sp<TP>()) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(2.399800000000000e+004), mp(CVM0, CVM0+1), sp<TP>()) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(2.802685000000000e+004), mp(CVM0+1, CVM0+1), sp<TP>()) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(1.010255000000000e+004), mp(CVM0+2, CVM0+1), spp<TP>(1.e-11,2.e-3)) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(3.410055000000000e+004), mp(CVM0, CVM0+2), sp<TP>()) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(1.010255000000000e+004), mp(CVM0+1, CVM0+2), spp<TP>(1.e-13,2.e-3)) << "srsmatrix::polynom";
     EXPECT_NEAR(TP(5.202485000000000e+004), mp(CVM0+2, CVM0+2), sp<TP>()) << "srsmatrix::polynom";
 }
 

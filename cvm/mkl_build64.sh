@@ -41,11 +41,8 @@ cp /opt/intel/mkl/lib/intel64/libmkl_rt.so intel64
 cp /opt/intel/mkl/lib/intel64/libmkl_sequential.so intel64
 popd
 
-# no ICC until they make it compatible with gcc
 make clean IFORT=1 ICC=1 MKL=1 EM64T=1
 make       IFORT=1 ICC=1 MKL=1 EM64T=1
-#make clean IFORT=1 MKL=1 EM64T=1
-#make       IFORT=1 MKL=1 EM64T=1
 pushd $LIBDIR
 export LD_LIBRARY_PATH=.:intel64
 ./regtest_cvm_em64t -t2 -r3
@@ -62,11 +59,8 @@ gzip ../cvmlib.$CVMVER.mkl.em64t.tar
 popd
 
 
-# no ICC until they make it compatible with gcc
 make clean IFORT=1 ICC=1 MKL=1 EM64T=1 ILP64=1
 make       IFORT=1 ICC=1 MKL=1 EM64T=1 ILP64=1
-#make clean IFORT=1 MKL=1 EM64T=1 ILP64=1
-#make       IFORT=1 MKL=1 EM64T=1 ILP64=1
 pushd $LIBDIR
 export LD_LIBRARY_PATH=.:intel64
 ./regtest_cvm_em64t_ilp64 -t2 -r3
@@ -80,4 +74,3 @@ rm -f ../cvmlib.$CVMVER.mkl.em64t.ilp64.tar.gz
 tar -cf ../cvmlib.$CVMVER.mkl.em64t.ilp64.tar ${FILESET_ILP64} intel64/*
 gzip ../cvmlib.$CVMVER.mkl.em64t.ilp64.tar
 popd
-

@@ -1,5 +1,11 @@
 ifdef MAC
   MAKECMD += MAC=1
+else
+  UNAME_S := $(shell uname -s)
+  ifeq ($(UNAME_S),Darwin)
+    MAC=1
+    MAKECMD += MAC=1
+  endif
 endif
 ifdef IFORT
   MAKECMD += IFORT=1
@@ -44,5 +50,8 @@ ifdef CVM_USE_POOL_MANAGER
 endif
 ifdef CVM_ZERO_BASED
   MAKECMD += CVM_ZERO_BASED=1
+endif
+ifdef GF_BLAS=1
+  MAKECMD += GF_BLAS=1
 endif
 

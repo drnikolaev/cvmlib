@@ -2,7 +2,7 @@ Use the Makefile provided in the root directory:
 
 make [release|debug|clean] [MAC=1] [IFORT=1] [ICC=1] [MKL=1] [MKL_PATH=/opt/...] 
      [EM64T=1] [ILP64=1] [CVM_FLOAT=1] [ICCT=1] [STATIC_ONLY=1] [IFORT_PATH=/opt/...]
-
+     [GF_BLAS=1]
 Here
     - release|debug is a target (by default it builds both), use "clean" to clean all 
     - MAC=1 should be set to build the library on Mac OS.
@@ -11,12 +11,14 @@ Here
     - MKL=1 instructs to use Intel MKL library (it uses native BLAS and LAPACK
       libraries by default)
     - MKL_PATH=path specifies the directory where the MKL is installed to. It's
-      set to "/opt/intel/composerxe/mkl/lib" by default.
-    - EM64T=1 instructs to build EM64T version of the library.
-    - ILP64=1 instructs to build INT64-based version of the library (EM64T must be turned on).
+      set to "/opt/intel/mkl/lib" by default.
+    - EM64T=1 instructs to build EM64T version of the library (default on 64-bit systems).
+    - ILP64=1 instructs to build INT64-based version of the library (EM64T must be set).
     - CVM_FLOAT=1 [deprecated] instructs to build float version of the library.
     - ICCT=1 instructs to use Intel C++ compiler for building the regression 
       test utility (g++ is the default).
     - STATIC_ONLY=1 instructs to build .a files only. Both .so and .a will be built otherwise.
     - IFORT_PATH=path specifies the directory where the Intel Fortran is installed to. 
-      It's set to "/opt/intel/composerxe/bin" by default.
+      It's set to "/opt/intel" by default.
+    - GF_BLAS=1 instructs to link with BLAS and LAPACK libraries built by gfortran compiler.
+      If not set, ifort-built libraries will be linked.

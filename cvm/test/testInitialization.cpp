@@ -13,8 +13,8 @@ template <typename T>
 class InitializationTest : public ::testing::Test {
 protected:
     InitializationTest() :
-    cs ({3., 0., 2., 1., -1., 2., 2., -1., 3., 0., 0., 3., -1., -2., 0., -3., 5., 0.}),
-    as ({1., 2., 1., 2., 5., -1., 1., -1., 20.})
+    cs ({{3., 0., 2., 1., -1., 2., 2., -1., 3., 0., 0., 3., -1., -2., 0., -3., 5., 0.}}),
+    as ({{1., 2., 1., 2., 5., -1., 1., -1., 20.}})
     {
         for (int i = 0; i < 100; ++i)
         {
@@ -1226,12 +1226,12 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     basic_rvector<TP> vrs1(3);
     vrs1.randomize(3., 7.);
-    EXPECT_EQ(0., (srs1 * vrs1 - basic_srmatrix<TP>{srs1} * vrs1).norm());
+    EXPECT_NEAR(0., (srs1 * vrs1 - basic_srmatrix<TP>{srs1} * vrs1).norm(), sf<TP>());
 
     basic_cvector<TP,TPC> vch1(3);
     vch1.randomize_real(3., 7.);
     vch1.randomize_imag(-3., 7.);
-    EXPECT_EQ(0., (sch1 * vch1 - basic_scmatrix<TP,TPC>{sch1} * vch1).norm());
+    EXPECT_NEAR(0., (sch1 * vch1 - basic_scmatrix<TP,TPC>{sch1} * vch1).norm(), sf<TP>());
 
     r1 = rv1(CVM0+8);
     rv1 *= r2;
@@ -1644,9 +1644,11 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     cv1.resize (3);
     cv1.mult (scm2, cv2);
-    EXPECT_EQ(cv2 * scm2[CVM0], cv1[CVM0]) << "mult";
+    EXPECT_FLOAT_EQ(static_cast<float>((cv2 * scm2[CVM0]).real()), static_cast<float>(cv1[CVM0].real())) << "mult";
+    EXPECT_FLOAT_EQ(static_cast<float>((cv2 * scm2[CVM0]).imag()), static_cast<float>(cv1[CVM0].imag())) << "mult";
     cv2.mult (cv1, scm2);
-    EXPECT_EQ(cv1 * scm2(CVM0), cv2[CVM0]) << "mult";
+    EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm2(CVM0)).real()), static_cast<float>(cv2[CVM0].real())) << "mult";
+    EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm2(CVM0)).imag()), static_cast<float>(cv2[CVM0].imag())) << "mult";
 
     rv1.resize (4);
     rv2.resize (4);
@@ -1711,7 +1713,10 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     basic_cmatrix<TP,TPC> cm3 {2, 2}, cm4 {3, 3};
     cm3.assign(this->c2);
     cm3.mult (cm2, cm1);
-    EXPECT_EQ(cm2[CVM0+1] * cm1(CVM0+1),cm3(CVM0+1,CVM0+1)) << "mult";
+    EXPECT_FLOAT_EQ(static_cast<float>((cm2[CVM0+1] * cm1(CVM0+1)).real()),
+        static_cast<float>(cm3(CVM0+1,CVM0+1).real())) << "mult";
+    EXPECT_FLOAT_EQ(static_cast<float>((cm2[CVM0+1] * cm1(CVM0+1)).imag()),
+        static_cast<float>(cm3(CVM0+1,CVM0+1).imag())) << "mult";
     cm4.mult (cm1, cm2);
     EXPECT_EQ(cm1[CVM0+2] * cm2(CVM0+2),cm4(CVM0+2,CVM0+2)) << "mult";
     scm4.resize(3);
@@ -1725,7 +1730,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cm1.mult (scbm, cm4);
     EXPECT_EQ(scbm[CVM0+2] * cm4(CVM0+1),cm1(CVM0+2,CVM0+1)) << "mult";
     cm1.mult (~scbm, cm4);
-    EXPECT_EQ(~(scbm(CVM0+2)) * cm4(CVM0+1),cm1(CVM0+2,CVM0+1)) << "mult";
+    EXPECT_FLOAT_EQ(static_cast<float>((~(scbm(CVM0+2)) * cm4(CVM0+1)).real()), static_cast<float>(cm1(CVM0+2,CVM0+1).real())) << "mult";
+    EXPECT_FLOAT_EQ(static_cast<float>((~(scbm(CVM0+2)) * cm4(CVM0+1)).imag()), static_cast<float>(cm1(CVM0+2,CVM0+1).imag())) << "mult";
     scbm1.resize(3);
     scbm1.mult (cm1, cm2);
     EXPECT_EQ(cm1[CVM0+1] * cm2(CVM0+1),scbm1(CVM0+1,CVM0+1)) << "mult";
@@ -1760,9 +1766,18 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cv1.randomize_imag(0., 1.);
     cv2.randomize_real(0., 1.);
     cv2.randomize_imag(0., 1.);
-    EXPECT_EQ(cv1[CVM0]*cv2[CVM0]+cv1[CVM0+1]*cv2[CVM0+1]+cv1[CVM0+2]*cv2[CVM0+2]+cv1[CVM0+3]*cv2[CVM0+3], cv1 * cv2) << "scalar product";
-    EXPECT_EQ(std::conj(cv1[CVM0])*cv2[CVM0]+std::conj(cv1[CVM0+1])*cv2[CVM0+1]+std::conj(cv1[CVM0+2])*cv2[CVM0+2]+std::conj(cv1[CVM0+3])*cv2[CVM0+3],
-        cv1 % cv2) << "scalar product, conj";
+    EXPECT_NEAR(static_cast<float>((cv1[CVM0]*cv2[CVM0]+cv1[CVM0+1]*cv2[CVM0+1]+
+        cv1[CVM0+2]*cv2[CVM0+2]+cv1[CVM0+3]*cv2[CVM0+3]).real()),
+        static_cast<float>((cv1 * cv2).real()), sf<TP>()) << "scalar product";
+    EXPECT_NEAR(static_cast<float>((cv1[CVM0]*cv2[CVM0]+cv1[CVM0+1]*cv2[CVM0+1]+
+        cv1[CVM0+2]*cv2[CVM0+2]+cv1[CVM0+3]*cv2[CVM0+3]).imag()),
+        static_cast<float>((cv1 * cv2).imag()), sf<TP>()) << "scalar product";
+    EXPECT_NEAR(static_cast<float>((std::conj(cv1[CVM0])*cv2[CVM0]+std::conj(cv1[CVM0+1])*cv2[CVM0+1]+
+        std::conj(cv1[CVM0+2])*cv2[CVM0+2]+std::conj(cv1[CVM0+3])*cv2[CVM0+3]).real()),
+        static_cast<float>((cv1 % cv2).real()), sf<TP>()) << "scalar product, conj";
+    EXPECT_NEAR(static_cast<float>((std::conj(cv1[CVM0])*cv2[CVM0]+std::conj(cv1[CVM0+1])*cv2[CVM0+1]+
+        std::conj(cv1[CVM0+2])*cv2[CVM0+2]+std::conj(cv1[CVM0+3])*cv2[CVM0+3]).imag()),
+        static_cast<float>((cv1 % cv2).imag()), sf<TP>()) << "scalar product, conj";
 
     EXPECT_EQ(0.,(rm1[CVM0+1] - (~rm1)(CVM0+1)).norm()) << "~";
 
@@ -1782,20 +1797,32 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cv1.resize (3);
     cv2.resize (2);
     cv1 = cm1 * cv2;
-    EXPECT_EQ(cv2 * cm1[CVM0+2], cv1[CVM0+2]) << "cmatrix * cvector";
+    EXPECT_FLOAT_EQ(static_cast<float>((cv2 * cm1[CVM0+2]).real()),
+        static_cast<float>(cv1[CVM0+2].real())) << "cmatrix * cvector";
+    EXPECT_NEAR(static_cast<float>((cv2 * cm1[CVM0+2]).imag()),
+        static_cast<float>(cv1[CVM0+2].imag()), spp<TP>(1.e-7,1.e-4)) << "cmatrix * cvector";
     cv2 = cv1 * cm1;
-    EXPECT_EQ(cv1 * cm1(CVM0+1), cv2[CVM0+1]) << "cvector * cmatrix";
+    EXPECT_FLOAT_EQ(static_cast<float>((cv1 * cm1(CVM0+1)).real()), 
+        static_cast<float>(cv2[CVM0+1].real())) << "cvector * cmatrix";
+    EXPECT_NEAR(static_cast<float>((cv1 * cm1(CVM0+1)).imag()), 
+        static_cast<float>(cv2[CVM0+1].imag()), spp<TP>(1.e-7,0.1)) << "cvector * cmatrix";
 
     rv2.resize (3);
     rv2 = srm4 * rv1;
-    EXPECT_EQ(rv1 * srm4[CVM0+2], rv2[CVM0+2]) << "srmatrix * rvector";
+    EXPECT_FLOAT_EQ(static_cast<float>(rv1 * srm4[CVM0+2]), static_cast<float>(rv2[CVM0+2])) << "srmatrix * rvector";
     rv2 = rv1 * srm4;
     EXPECT_FLOAT_EQ(static_cast<float>(rv1 * srm4(CVM0+2)), static_cast<float>(rv2[CVM0+2])) << "rvector * srmatrix";
     cv2.resize (3);
     cv2 = scm4 * cv1;
-    EXPECT_EQ(cv1 * scm4[CVM0+2], cv2[CVM0+2]) << "scmatrix * cvector";
+    EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm4[CVM0+2]).real()),
+        static_cast<float>(cv2[CVM0+2].real())) << "scmatrix * cvector";
+    EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm4[CVM0+2]).imag()),
+        static_cast<float>(cv2[CVM0+2].imag())) << "scmatrix * cvector";
     cv2 = cv1 * scm4;
-    EXPECT_EQ(cv1 * scm4(CVM0+2), cv2[CVM0+2]) << "cvector * scmatrix";
+    EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm4(CVM0+2)).real()),
+        static_cast<float>(cv2[CVM0+2].real())) << "cvector * scmatrix";
+    EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm4(CVM0+2)).imag()),
+        static_cast<float>(cv2[CVM0+2].imag())) << "cvector * scmatrix";
 
     srbm1.normalize();
     rv1.normalize();
@@ -1807,9 +1834,15 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     scbm1.normalize();
     cv1.normalize();
     cv2 = scbm1 * cv1;
-    EXPECT_EQ(cv1 * scbm1[CVM0+2], cv2[CVM0+2]) << "scbmatrix * cvector";
+    EXPECT_NEAR(static_cast<float>((cv1 * scbm1[CVM0+2]).real()),
+        static_cast<float>(cv2[CVM0+2].real()), s<TP>()) << "scbmatrix * cvector";
+    EXPECT_NEAR(static_cast<float>((cv1 * scbm1[CVM0+2]).imag()),
+        static_cast<float>(cv2[CVM0+2].imag()), s<TP>()) << "scbmatrix * cvector";
     cv2 = cv1 * scbm1;
-    EXPECT_EQ(cv1 * scbm1(CVM0+2), cv2[CVM0+2]) << "cvector * scbmatrix";
+    EXPECT_NEAR(static_cast<float>((cv1 * scbm1(CVM0+2)).real()),
+        static_cast<float>(cv2[CVM0+2].real()), s<TP>()) << "cvector * scbmatrix";
+    EXPECT_NEAR(static_cast<float>((cv1 * scbm1(CVM0+2)).imag()),
+        static_cast<float>(cv2[CVM0+2].imag()), s<TP>()) << "cvector * scbmatrix";
 
     rv2.resize (2);
     rm1 = rv1.rank1update (rv2);
@@ -2737,7 +2770,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(std::abs(TPC(-5.878045515841980e+002,-7.809398663068483e+002)), std::abs(scm1(CVM0+1, CVM0)), spp<TP>(1.e-10,0.1)) << "scmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(1.111774160999558e+001,3.979363145886382e+001)), std::abs(scm1(CVM0+2, CVM0)), spp<TP>(1.e-10,0.1)) << "scmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(-1.623884970745376e+002,-2.805917519984524e+002)), std::abs(scm1(CVM0, CVM0+1)), spp<TP>(1.e-10,0.1)) << "scmatrix::exp";
-    EXPECT_NEAR(std::abs(TPC(-5.604582009475869e+003,-3.219074690441815e+003)), std::abs(scm1(CVM0+1, CVM0+1)), spp<TP>(1.e-10,0.1)) << "scmatrix::exp";
+    EXPECT_NEAR(std::abs(TPC(-5.604582009475869e+003,-3.219074690441815e+003)), std::abs(scm1(CVM0+1, CVM0+1)), spp<TP>(1.e-9,0.1)) << "scmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(1.715815440786858e+002,2.129974004265882e+002)), std::abs(scm1(CVM0+2, CVM0+1)), spp<TP>(1.e-10,0.1)) << "scmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(1.710263520348249e+000,-3.149555947204208e+000)), std::abs(scm1(CVM0, CVM0+2)), spp<TP>(1.e-10,0.1)) << "scmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(-1.432034221529735e+001,-7.375809596051487e+001)), std::abs(scm1(CVM0+1, CVM0+2)), spp<TP>(1.e-10,0.1)) << "scmatrix::exp";

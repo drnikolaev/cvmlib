@@ -3,7 +3,9 @@ ifdef ICC
 else
   NC=_gcc
 endif
-ifdef IFORT
+ifdef GF_BLAS
+  NF=
+else
   NF=_ifort
 endif
 ifdef MKL

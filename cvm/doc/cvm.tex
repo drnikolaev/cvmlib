@@ -378,7 +378,7 @@ the Makefile provided in the root directory:
 \begin{Verbatim}
 make [release|debug] [IFORT=1] [ICC=1] [MKL=1] [MKL_PATH=/opt/...] 
      [EM64T=1] [ILP64=1] [CVM_FLOAT=1] [ICCT=1] [STATIC_ONLY=1]
-     [IFORT_PATH=/opt/...] [MAC=1]
+     [IFORT_PATH=/opt/...] [MAC=1] [GF_BLAS=1]
 \end{Verbatim}
 Here
 \begin{compactitem}
@@ -390,7 +390,7 @@ compiler (\verb'gfortran' is the default)
 \item \verb'MKL=1' instructs to use Intel~MKL library (it uses
   native BLAS and LAPACK libraries by default)
 \item \verb'MKL_PATH=path' specifies the directory where the~MKL is installed to.
-It's set to \verb'/opt/intel/composerxe/mkl/lib' by default.
+It's set to \verb'/opt/intel/mkl/lib' by default.
 \item \verb'EM64T=1' instructs to build EM64T version of the library.
 \item \verb'ILP64=1' instructs to build INT64-based version of the library (EM64T must be turned on).
 \item \verb'CVM_FLOAT=1' \textbf{(deprecated)} instructs to build \verb'float' version of the library.
@@ -399,8 +399,10 @@ regression test utility (\verb'g++' is the default)
 \item \verb'STATIC_ONLY=1' instructs to build static libraries only.
 Both .so and .a will be built otherwise.
 \item \verb'IFORT_PATH=path' specifies the directory where the Intel Fortran is installed to. 
-It's set to \verb"/opt/intel/composerxe/bin" by default.
+It's set to \verb"/opt/intel" by default.
 \item \verb'MAC=1' instructs to build Mac OS X version of the library.
+\item \verb'GF_BLAS=1' instructs to link with BLAS and LAPACK libraries built by 
+\verb'gfortran' compiler. If not set, \verb'ifort'-built libraries will be linked.
 \end{compactitem}
 On Unix platforms Intel~MKL and native BLAS/LAPACK libraries as well
 as both Intel's and GNU compilers are supported. On MinGW platform the native libraries and

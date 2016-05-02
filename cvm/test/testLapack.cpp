@@ -643,7 +643,7 @@ TYPED_TEST(LapackTest, TestGemmComplex) {
     m2.randomize_imag(-3., 2.);
     basic_cmatrix<TP,TPC> mr = ~m1 * m2 * alpha + m * beta;
     EXPECT_NEAR(TP(0.), (mr - m.gemm(m1, true, m2, false, alpha, beta)).norm(),
-                s<TP>()) << "cmatrix::gemm";
+                sf<TP>()) << "cmatrix::gemm";
 }
 
 TYPED_TEST(LapackTest, TestHemmComplex) {
@@ -1382,11 +1382,15 @@ TYPED_TEST(LapackTest, TestGelsBandReal) {
 
     basic_rmatrix<TP> xn = a.gels(false, bn, vErr);
     EXPECT_NEAR(TP(0.), (a*xn-bn).norm(), spp<TP>()) << "gels real nontransp";
-    EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), spp<TP>(1.e-4,2.5)) << "gels real nontransp";
-
+    if (sizeof(TP) > 4) {
+        EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), spp<TP>(1.e-4,75.)) << "gels real nontransp";
+    }
+    
     basic_rmatrix<TP> xt = a.gels(true, bt, vErr);
-    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), spp<TP>()) << "gels real transp";
-    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>(1.e-4,2.5)) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), spp<TP>(1.e-7,1.e-2)) << "gels real transp";
+    if (sizeof(TP) > 4) {
+        EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>(1.e-4,75.)) << "gels real transp";
+    }
 }
 
 TYPED_TEST(LapackTest, TestGelsComplex) {
@@ -1769,35 +1773,35 @@ TYPED_TEST(LapackTest, TestGelssGelsdBandReal) {
     tint rank;
 
     basic_rvector<TP> xs = a.gelss(b, sv, rank);
-    EXPECT_NEAR(TP(0.), (a*xs-b).norm(), sp<TP>()) << "gelss real";
+    EXPECT_NEAR(TP(0.), (a*xs-b).norm(), spp<TP>()) << "gelss real";
     EXPECT_EQ(a.rank(), rank) << "gelss real rank";
     EXPECT_NEAR(TP(0.), (sv-a.svd()).norm(), sp<TP>()) << "gelss real svd";
 
     basic_rmatrix<TP> xsm = a.gelss(bm, sv, rank);
-    EXPECT_NEAR(TP(0.), (a*xsm-bm).norm(), sp<TP>()) << "gelss real";
+    EXPECT_NEAR(TP(0.), (a*xsm-bm).norm(), spp<TP>()) << "gelss real";
     EXPECT_EQ(a.rank(), rank) << "gelss real rank";
     EXPECT_NEAR(TP(0.), (sv-a.svd()).norm(), sp<TP>()) << "gelss real svd";
 
     basic_rmatrix<TP> xsm2(5, 2);
     xsm2.gelss(a, bm, sv, rank);
-    EXPECT_NEAR(TP(0.), (a*xsm2-bm).norm(), sp<TP>()) << "gelss real";
+    EXPECT_NEAR(TP(0.), (a*xsm2-bm).norm(), spp<TP>()) << "gelss real";
     EXPECT_EQ(a.rank(), rank) << "gelss real rank";
     EXPECT_NEAR(TP(0.), (sv-a.svd()).norm(), sp<TP>()) << "gelss real svd";
 
 
     basic_rvector<TP> xd = a.gelsd(b, sv, rank);
-    EXPECT_NEAR(TP(0.), (a*xd-b).norm(), sp<TP>()) << "gelsd real";
+    EXPECT_NEAR(TP(0.), (a*xd-b).norm(), spp<TP>()) << "gelsd real";
     EXPECT_EQ(a.rank(), rank) << "gelss real rank";
     EXPECT_NEAR(TP(0.), (sv-a.svd()).norm(), sp<TP>()) << "gelss real svd";
 
     basic_rmatrix<TP> xdm = a.gelsd(bm, sv, rank);
-    EXPECT_NEAR(TP(0.), (a*xdm-bm).norm(), sp<TP>()) << "gelss real";
+    EXPECT_NEAR(TP(0.), (a*xdm-bm).norm(), spp<TP>()) << "gelss real";
     EXPECT_EQ(a.rank(), rank) << "gelss real rank";
     EXPECT_NEAR(TP(0.), (sv-a.svd()).norm(), sp<TP>()) << "gelss real svd";
 
     basic_rmatrix<TP> xdm2(5, 2);
     xdm2.gelsd(a, bm, sv, rank);
-    EXPECT_NEAR(TP(0.), (a*xsm2-bm).norm(), sp<TP>()) << "gelss real";
+    EXPECT_NEAR(TP(0.), (a*xsm2-bm).norm(), spp<TP>()) << "gelss real";
     EXPECT_EQ(a.rank(), rank) << "gelss real rank";
     EXPECT_NEAR(TP(0.), (sv-a.svd()).norm(), sp<TP>()) << "gelss real svd";
 }

@@ -1,9 +1,13 @@
 ifdef MKL
   ifndef MKL_PATH
-    MKL_PATH=/opt/intel/composerxe/mkl/lib
+    MKL_PATH=/opt/intel/mkl/lib
   endif
   ifdef EM64T
-    MKL_PATHL=$(MKL_PATH)/intel64
+    ifdef MAC
+      MKL_PATHL=$(MKL_PATH)
+    else
+      MKL_PATHL=$(MKL_PATH)/intel64
+    endif
     ifdef ICC
       MKL_LIBS  += -lmkl_intel_thread
       ifdef ILP64
