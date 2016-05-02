@@ -25,6 +25,7 @@ export LD_LIBRARY_PATH=.
 ./regtest_cvm_em64t
 if test "$?" != 0
 then
+  export LD_LIBRARY_PATH=${LD_LIBRARY_PATH_ORIG}
   exit
 fi
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH_ORIG}
@@ -43,6 +44,7 @@ export LD_LIBRARY_PATH=.
 ./regtest_cvm_em64t_ilp64
 if test "$?" != 0
 then
+  export LD_LIBRARY_PATH=${LD_LIBRARY_PATH_ORIG}
   exit
 fi
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH_ORIG}
@@ -61,6 +63,7 @@ export LD_LIBRARY_PATH=.
 ./regtest_cvm_em64t
 if test "$?" != 0
 then
+  export LD_LIBRARY_PATH=${LD_LIBRARY_PATH_ORIG}
   exit
 fi
 cd ${RUNDIR}

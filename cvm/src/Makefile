@@ -8,7 +8,7 @@ include $(INC_PATH)/makecmd.inc
 ifdef MAC
 COMMON_LD_FLAGS = -L/usr/local/lib
 else
-COMMON_LD_FLAGS = -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
+#COMMON_LD_FLAGS = -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
 endif
 
 ifdef CVM_USE_POOL_MANAGER

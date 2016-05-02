@@ -53,5 +53,10 @@ ifdef CVM_ZERO_BASED
 endif
 ifdef GF_BLAS=1
   MAKECMD += GF_BLAS=1
+else
+  ifndef IFORT
+    GF_BLAS=1
+    MAKECMD += GF_BLAS=1
+  endif
 endif
 
