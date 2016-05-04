@@ -595,8 +595,8 @@ TYPED_TEST(FunctionalTest, TestFcosh) {
     basic_function<TPC> cfcosh("{x} cosh(x)");
     EXPECT_EQ("cosh(x)", cfcosh.format()) << "basic_function<TPC> cosh - format()";
     
-    EXPECT_FLOAT_EQ(static_cast<float>(0.83373002513114913), cfcosh(TPC(-1.,1.)).real()) << "basic_function<TPC> cosh - value";
-    EXPECT_FLOAT_EQ(static_cast<float>(-0.98889770576286506), cfcosh(TPC(-1.,1.)).imag()) << "basic_function<TPC> cosh - value";
+    EXPECT_FLOAT_EQ(static_cast<float>(0.83373002513114913), static_cast<float>(cfcosh(TPC(-1.,1.)).real())) << "basic_function<TPC> cosh - value";
+    EXPECT_FLOAT_EQ(static_cast<float>(-0.98889770576286506), static_cast<float>(cfcosh(TPC(-1.,1.)).imag())) << "basic_function<TPC> cosh - value";
 
     basic_function<TPC> cfcosh2("cosh(0, 0)");
     EXPECT_EQ("(1,0)", cfcosh2.simp().format()) << "basic_function<TPC> cosh - simp - format()";
@@ -1155,8 +1155,8 @@ TYPED_TEST(FunctionalTest, TestComplexNumber) {
     TPC va[2];
     va[0] = TPC(.777,-1.888);
     va[1] = TPC(1.3,-2.1);
-    EXPECT_FLOAT_EQ(4.3F, c3(va).real()) << "basic_function<TPC> {x, z} z+(3, -1.6) - value";
-    EXPECT_FLOAT_EQ(-3.7F, c3(va).imag()) << "basic_function<TPC> {x, z} z+(3, -1.6) - value";
+    EXPECT_FLOAT_EQ(4.3F, static_cast<float>(c3(va).real())) << "basic_function<TPC> {x, z} z+(3, -1.6) - value";
+    EXPECT_FLOAT_EQ(-3.7F, static_cast<float>(c3(va).imag())) << "basic_function<TPC> {x, z} z+(3, -1.6) - value";
 }
 
 // rfvector
