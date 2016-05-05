@@ -1819,10 +1819,10 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm4[CVM0+2]).imag()),
         static_cast<float>(cv2[CVM0+2].imag())) << "scmatrix * cvector";
     cv2 = cv1 * scm4;
-    EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm4(CVM0+2)).real()),
-        static_cast<float>(cv2[CVM0+2].real())) << "cvector * scmatrix";
-    EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm4(CVM0+2)).imag()),
-        static_cast<float>(cv2[CVM0+2].imag())) << "cvector * scmatrix";
+    EXPECT_NEAR(static_cast<float>((cv1 * scm4(CVM0+2)).real()),
+        static_cast<float>(cv2[CVM0+2].real()), sp<TP>()) << "cvector * scmatrix";
+    EXPECT_NEAR(static_cast<float>((cv1 * scm4(CVM0+2)).imag()),
+        static_cast<float>(cv2[CVM0+2].imag()), sp<TP>()) << "cvector * scmatrix";
 
     srbm1.normalize();
     rv1.normalize();
