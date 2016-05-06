@@ -13,8 +13,8 @@ template <typename T>
 class InitializationTest : public ::testing::Test {
 protected:
     InitializationTest() :
-    cs ({{3., 0., 2., 1., -1., 2., 2., -1., 3., 0., 0., 3., -1., -2., 0., -3., 5., 0.}}),
-    as ({{1., 2., 1., 2., 5., -1., 1., -1., 20.}})
+    cs({{3., 0., 2., 1., -1., 2., 2., -1., 3., 0., 0., 3., -1., -2., 0., -3., 5., 0.}}),
+    as({{1., 2., 1., 2., 5., -1., 1., -1., 20.}})
     {
         for (int i = 0; i < 100; ++i)
         {
@@ -183,7 +183,7 @@ TYPED_TEST(InitializationTest, TestIarrayReverseIteratorFrontBack) {
 
 TYPED_TEST(InitializationTest, TestIarrayResize) {
     const tint a[] = {1, 2, 3, 4};
-    iarray v (a, 3);
+    iarray v(a, 3);
     v.resize(2);
     EXPECT_EQ(2, v[CVM0+1]) << "iarray.resize";
     v.resize(4);
@@ -218,17 +218,17 @@ TYPED_TEST(InitializationTest, TestIarrayResize2) {
 
 TYPED_TEST(InitializationTest, TestIarrayArrCtr) {
     tint a[] = {1, 2, 3, 4};
-    iarray v (a, 3);
-    EXPECT_EQ(2, v[CVM0+1]) << "iarray (*, size)";
+    iarray v(a, 3);
+    EXPECT_EQ(2, v[CVM0+1]) << "iarray(*, size)";
     a[1] = 77;
-    EXPECT_EQ(77, v[CVM0+1]) << "iarray (*, size)";
+    EXPECT_EQ(77, v[CVM0+1]) << "iarray(*, size)";
 }
 
 TYPED_TEST(InitializationTest, TestIarrayItrCtr) {
     const tint a[] = {1, 2, 3, 4};
     const iarray v{a+1, a+3};
     EXPECT_EQ(2, v.size()) << "iarray.size()";
-    EXPECT_EQ(3, v[CVM0+1]) << "iarray (*, *)";
+    EXPECT_EQ(3, v[CVM0+1]) << "iarray(*, *)";
 }
 
 TYPED_TEST(InitializationTest, TestIarrayGet) {
@@ -843,8 +843,8 @@ TYPED_TEST(InitializationTest, TestMultCrash) {
     cv1.set(TPC(2,1));
     cv2.set(TPC(-1,3));
     cm2.set(TPC(-4,3));
-    cv1.resize (2);
-    cv2.resize (3);
+    cv1.resize(2);
+    cv2.resize(3);
     cv2.mult(cv1, cm2);
     EXPECT_EQ(cv2[CVM0], cv1 * cm2(CVM0));
 }
@@ -877,11 +877,11 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     basic_srmatrix<TP> srm30{srm0};
 
     basic_cvector<TP,TPC> cv;
-    basic_cvector<TP,TPC> cv0 (10);
+    basic_cvector<TP,TPC> cv0(10);
     basic_cvector<TP,TPC> cv1 {this->a1, this->a2, 10};         // note: this constructor copies memory
     basic_cvector<TP,TPC> cv2 {this->a1, this->a2, 10, 3};      // note: this constructor copies memory
     basic_cvector<TP,TPC> cv3 {this->c1, 10, 3};          // note: this constructor shares memory
-    basic_cvector<TP,TPC> cv4 (11, TPC(1.3, 2.4));
+    basic_cvector<TP,TPC> cv4(11, TPC(1.3, 2.4));
     basic_cvector<TP,TPC> cv5 {cv3};
     basic_cvector<TP,TPC> cv6 {rv1, rv2};           // note: this constructor copies memory
     basic_cvector<TP,TPC> cv7 {this->a4, 10, true,  2};   // note: this constructor copies memory
@@ -1101,13 +1101,13 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(1., r2, sp<TP>());
     EXPECT_NEAR(1., rv.norm(), s<TP>());
 
-    EXPECT_EQ(CVM0+9, rv.indofmax ());
-    EXPECT_EQ(CVM0 , rv.indofmin ());
+    EXPECT_EQ(CVM0+9, rv.indofmax());
+    EXPECT_EQ(CVM0 , rv.indofmin());
 
     r1 = rv[CVM0+9];
     EXPECT_EQ(r1, rv.norminf ());
 
-    rv1.sum (rv1, rv);
+    rv1.sum(rv1, rv);
     EXPECT_EQ(r1 + r1, rv1[CVM0+9]);
     rv1.diff (rv1, rv);
     EXPECT_EQ(r1, rv1[CVM0+9]);
@@ -1619,73 +1619,73 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cv1.set(TPC(2,1));
     cv2.set(TPC(-1,3));
     cm2.set(TPC(-4,3));
-    rv1.resize (2);
-    rv2.resize (3);
-    rv2.mult (rv1, rm2);
+    rv1.resize(2);
+    rv2.resize(3);
+    rv2.mult(rv1, rm2);
 
     EXPECT_EQ(rv1 * rm2(CVM0), rv2[CVM0]) << "mult";
-    rv1.mult (rm2, rv2);
+    rv1.mult(rm2, rv2);
     EXPECT_EQ(rv2 * rm2[CVM0], rv1[CVM0]) << "mult";
 
-    cv1.resize (2);
-    cv2.resize (3);
-    cv2.mult (cv1, cm2);
+    cv1.resize(2);
+    cv2.resize(3);
+    cv2.mult(cv1, cm2);
 
     EXPECT_EQ(cv1 * cm2(CVM0), cv2[CVM0]) << "mult";
-    cv1.mult (cm2, cv2);
+    cv1.mult(cm2, cv2);
     EXPECT_EQ(cv2 * cm2[CVM0], cv1[CVM0]) << "mult";
 
-    rv1.resize (3);
-    rv1.mult (srm2, rv2);
+    rv1.resize(3);
+    rv1.mult(srm2, rv2);
     EXPECT_EQ(rv2 * srm2[CVM0], rv1[CVM0]) << "mult";
-    rv2.mult (rv1, srm2);
+    rv2.mult(rv1, srm2);
 
     EXPECT_FLOAT_EQ(static_cast<float>(rv1 * srm2(CVM0)), static_cast<float>(rv2[CVM0])) << "mult";
 
-    cv1.resize (3);
-    cv1.mult (scm2, cv2);
+    cv1.resize(3);
+    cv1.mult(scm2, cv2);
     EXPECT_FLOAT_EQ(static_cast<float>((cv2 * scm2[CVM0]).real()), static_cast<float>(cv1[CVM0].real())) << "mult";
     EXPECT_FLOAT_EQ(static_cast<float>((cv2 * scm2[CVM0]).imag()), static_cast<float>(cv1[CVM0].imag())) << "mult";
-    cv2.mult (cv1, scm2);
+    cv2.mult(cv1, scm2);
     EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm2(CVM0)).real()), static_cast<float>(cv2[CVM0].real())) << "mult";
     EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm2(CVM0)).imag()), static_cast<float>(cv2[CVM0].imag())) << "mult";
 
-    rv1.resize (4);
-    rv2.resize (4);
-    rv2.mult (rv1, srbm2);
+    rv1.resize(4);
+    rv2.resize(4);
+    rv2.mult(rv1, srbm2);
     EXPECT_EQ(rv1 * srbm2(CVM0), rv2[CVM0]) << "mult";
-    rv1.mult (srbm2, rv2);
+    rv1.mult(srbm2, rv2);
     EXPECT_EQ(rv2 * srbm2[CVM0], rv1[CVM0]) << "mult";
 
-    cv1.resize (4);
-    cv2.resize (4);
-    cv2.mult (cv1, scbm2);
+    cv1.resize(4);
+    cv2.resize(4);
+    cv2.mult(cv1, scbm2);
     EXPECT_EQ(cv1 * scbm2(CVM0), cv2[CVM0]) << "mult";
-    cv1.mult (scbm2, cv2);
+    cv1.mult(scbm2, cv2);
     EXPECT_EQ(cv2 * scbm2[CVM0], cv1[CVM0]) << "mult";
 
-    rm1.resize (3, 2);
+    rm1.resize(3, 2);
     rm1[CVM0+2].assign(this->a1);
-    rm3.resize (2, 2);
-    rm4.resize (3, 3);
-    rm3.mult (rm2, rm1);
+    rm3.resize(2, 2);
+    rm4.resize(3, 3);
+    rm3.mult(rm2, rm1);
     EXPECT_EQ(rm2[CVM0+1] * rm1(CVM0+1),rm3(CVM0+1,CVM0+1)) << "mult";
-    rm4.mult (rm1, rm2);
+    rm4.mult(rm1, rm2);
     EXPECT_EQ(rm1[CVM0+2] * rm2(CVM0+2),rm4(CVM0+2,CVM0+2)) << "mult";
     srm4.resize(3);
-    srm4.mult (rm1, rm2);
+    srm4.mult(rm1, rm2);
 
     EXPECT_EQ(rm1[CVM0+2] * rm2(CVM0+2),srm4(CVM0+2,CVM0+2)) << "mult";
-    rm4.resize (3, 2);
-    rm1.mult (srm4, rm4);
+    rm4.resize(3, 2);
+    rm1.mult(srm4, rm4);
     EXPECT_EQ(srm4[CVM0+2] * rm4(CVM0+1),rm1(CVM0+2,CVM0+1)) << "mult";
     srbm1.resize(3);
-    rm1.mult (srbm1, rm4);
+    rm1.mult(srbm1, rm4);
     EXPECT_EQ(srbm1[CVM0+2] * rm4(CVM0+1),rm1(CVM0+2,CVM0+1)) << "mult";
-    rm1.mult (~srbm1, rm4);
+    rm1.mult(~srbm1, rm4);
     tmp = static_cast<float>(rm1(CVM0+2,CVM0+1));
     EXPECT_FLOAT_EQ(static_cast<float>(srbm1(CVM0+2) * rm4(CVM0+1)),tmp) << "mult";
-    srbm1.mult (rm1, rm2);
+    srbm1.mult(rm1, rm2);
     EXPECT_EQ(rm1[CVM0+1] * rm2(CVM0+1),srbm1(CVM0+1,CVM0+1)) << "mult";
 
     r1 = -0.031;
@@ -1695,45 +1695,45 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     rm3.randomize(0., 1.);
     basic_rmatrix<TP> rm3_dub = rm3;
 
-    rm3.gemm (rm2, false, rm1, false, r1, r2);
+    rm3.gemm(rm2, false, rm1, false, r1, r2);
     EXPECT_NEAR(0.,(rm3 - (rm2 * rm1 * r1 + rm3_dub * r2)).norm2(), s<TP>()) << "gemm";
     rm3_dub = rm3;
     rm3 << ~rm3;
-    rm3.gemm (rm1, true, rm2, true, r1, r2);
+    rm3.gemm(rm1, true, rm2, true, r1, r2);
     EXPECT_NEAR(0.,(~rm3 - (rm2 * rm1 * r1 + rm3_dub * r2)).norm2(), s<TP>()) << "gemm";
 
     srbm1.randomize(-1., 3.);
     basic_rmatrix<TP> rm1_dub = rm1;
-    rm1.gemm (srbm1, false, rm4, false, r1, r2);
+    rm1.gemm(srbm1, false, rm4, false, r1, r2);
     EXPECT_NEAR(0.,(rm1 - (srbm1 * rm4 * r1 + rm1_dub * r2)).norm2(), sp<TP>()) << "gemm";
 
 
-    cm1.resize (3, 2);
+    cm1.resize(3, 2);
     cm1[CVM0+2].assign(this->c1);
     basic_cmatrix<TP,TPC> cm3 {2, 2}, cm4 {3, 3};
     cm3.assign(this->c2);
-    cm3.mult (cm2, cm1);
+    cm3.mult(cm2, cm1);
     EXPECT_FLOAT_EQ(static_cast<float>((cm2[CVM0+1] * cm1(CVM0+1)).real()),
         static_cast<float>(cm3(CVM0+1,CVM0+1).real())) << "mult";
     EXPECT_FLOAT_EQ(static_cast<float>((cm2[CVM0+1] * cm1(CVM0+1)).imag()),
         static_cast<float>(cm3(CVM0+1,CVM0+1).imag())) << "mult";
-    cm4.mult (cm1, cm2);
+    cm4.mult(cm1, cm2);
     EXPECT_EQ(cm1[CVM0+2] * cm2(CVM0+2),cm4(CVM0+2,CVM0+2)) << "mult";
     scm4.resize(3);
-    scm4.mult (cm1, cm2);
+    scm4.mult(cm1, cm2);
     EXPECT_EQ(cm1[CVM0+2] * cm2(CVM0+2),scm4(CVM0+2,CVM0+2)) << "mult";
-    cm4.resize (3, 2);
-    cm1.mult (scm4, cm4);
+    cm4.resize(3, 2);
+    cm1.mult(scm4, cm4);
     EXPECT_EQ(scm4[CVM0+2] * cm4(CVM0+1),cm1(CVM0+2,CVM0+1)) << "mult";
     scbm.resize(3);
     scbm.set(TPC(1.23,-0.912));
-    cm1.mult (scbm, cm4);
+    cm1.mult(scbm, cm4);
     EXPECT_EQ(scbm[CVM0+2] * cm4(CVM0+1),cm1(CVM0+2,CVM0+1)) << "mult";
-    cm1.mult (~scbm, cm4);
+    cm1.mult(~scbm, cm4);
     EXPECT_FLOAT_EQ(static_cast<float>((~(scbm(CVM0+2)) * cm4(CVM0+1)).real()), static_cast<float>(cm1(CVM0+2,CVM0+1).real())) << "mult";
     EXPECT_FLOAT_EQ(static_cast<float>((~(scbm(CVM0+2)) * cm4(CVM0+1)).imag()), static_cast<float>(cm1(CVM0+2,CVM0+1).imag())) << "mult";
     scbm1.resize(3);
-    scbm1.mult (cm1, cm2);
+    scbm1.mult(cm1, cm2);
     EXPECT_EQ(cm1[CVM0+1] * cm2(CVM0+1),scbm1(CVM0+1,CVM0+1)) << "mult";
 
 
@@ -1742,17 +1742,17 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cm3.randomize_real(0., 1.);
     scbm.randomize_real(0., 1.);
     basic_cmatrix<TP,TPC> cm3_dub = cm3;
-    cm3.gemm (cm2, false, cm1, false, cr1, cr2);
+    cm3.gemm(cm2, false, cm1, false, cr1, cr2);
     EXPECT_NEAR(0.,(cm3 - (cm2 * cm1 * cr1 + cm3_dub * cr2)).norm(), sp<TP>()) << "gemm";
     basic_cmatrix<TP,TPC> cm1_dub = cm1;
-    cm1.gemm (scbm, false, cm4, false, cr1, cr2);
+    cm1.gemm(scbm, false, cm4, false, cr1, cr2);
     EXPECT_NEAR(0.,(cm1 - (scbm * cm4 * cr1 + cm1_dub * cr2)).norm(), sp<TP>()) << "gemm";
 
     cr1 = TPC(-1.14,3.22);
     cr2 = TPC(2.04,-4.2);
     cm1_dub << cm1;
     cm1.conj();
-    cm1.gemm (cm4, true, scbm, true, cr1, cr2);
+    cm1.gemm(cm4, true, scbm, true, cr1, cr2);
     EXPECT_EQ(0.,(~cm1 - (scbm * cm4 * std::conj(cr1) + cm1_dub * std::conj(cr2))).norm2()) << "gemm";
     cm1.conj();
 
@@ -1788,14 +1788,14 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ(0.,(srbm1[CVM0+1] - (~srbm1)(CVM0+1)).norm()) << "~";
     EXPECT_EQ(0.,(~(scbm1[CVM0+1]) - (~scbm1)(CVM0+1)).norm()) << "~";
 
-    rv1.resize (3);
-    rv2.resize (2);
+    rv1.resize(3);
+    rv2.resize(2);
     rv1 = rm1 * rv2;
     EXPECT_EQ(rv2 * rm1[CVM0+2], rv1[CVM0+2]) << "rmatrix * rvector";
     rv2 = rv1 * rm1;
     EXPECT_FLOAT_EQ(static_cast<float>(rv1 * rm1(CVM0+1)), static_cast<float>(rv2[CVM0+1])) << "rvector * rmatrix";
-    cv1.resize (3);
-    cv2.resize (2);
+    cv1.resize(3);
+    cv2.resize(2);
     cv1 = cm1 * cv2;
     EXPECT_FLOAT_EQ(static_cast<float>((cv2 * cm1[CVM0+2]).real()),
         static_cast<float>(cv1[CVM0+2].real())) << "cmatrix * cvector";
@@ -1807,12 +1807,12 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(static_cast<float>((cv1 * cm1(CVM0+1)).imag()), 
         static_cast<float>(cv2[CVM0+1].imag()), spp<TP>(1.e-7,0.1)) << "cvector * cmatrix";
 
-    rv2.resize (3);
+    rv2.resize(3);
     rv2 = srm4 * rv1;
     EXPECT_FLOAT_EQ(static_cast<float>(rv1 * srm4[CVM0+2]), static_cast<float>(rv2[CVM0+2])) << "srmatrix * rvector";
     rv2 = rv1 * srm4;
     EXPECT_FLOAT_EQ(static_cast<float>(rv1 * srm4(CVM0+2)), static_cast<float>(rv2[CVM0+2])) << "rvector * srmatrix";
-    cv2.resize (3);
+    cv2.resize(3);
     cv2 = scm4 * cv1;
     EXPECT_FLOAT_EQ(static_cast<float>((cv1 * scm4[CVM0+2]).real()),
         static_cast<float>(cv2[CVM0+2].real())) << "scmatrix * cvector";
@@ -1844,22 +1844,22 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(static_cast<float>((cv1 * scbm1(CVM0+2)).imag()),
         static_cast<float>(cv2[CVM0+2].imag()), s<TP>()) << "cvector * scbmatrix";
 
-    rv2.resize (2);
-    rm1 = rv1.rank1update (rv2);
+    rv2.resize(2);
+    rm1 = rv1.rank1update(rv2);
     EXPECT_EQ(rv1[CVM0+2] * rv2[CVM0],rm1(CVM0+2,CVM0)) << "rank1update";
-    rm1.rank1update (rv1, rv2);
+    rm1.rank1update(rv1, rv2);
     EXPECT_EQ(rv1[CVM0+2] * rv2[CVM0+1],rm1(CVM0+2,CVM0+1)) << "rank1update";
 
-    cv2.resize (2);
+    cv2.resize(2);
     cv1.normalize();
     cv2.normalize();
-    cm1 = cv1.rank1update_u (cv2);
+    cm1 = cv1.rank1update_u(cv2);
     EXPECT_EQ(cv1[CVM0+2] * cv2[CVM0],cm1(CVM0+2,CVM0)) << "rank1update_u";
-    cm1.rank1update_u (cv1, cv2);
+    cm1.rank1update_u(cv1, cv2);
     EXPECT_EQ(cv1[CVM0+2] * cv2[CVM0+1],cm1(CVM0+2,CVM0+1)) << "rank1update_u";
-    cm1 = cv1.rank1update_c (cv2);
+    cm1 = cv1.rank1update_c(cv2);
     EXPECT_EQ(cv1[CVM0+2] * std::conj(cv2[CVM0]),cm1(CVM0+2,CVM0)) << "rank1update_c";
-    cm1.rank1update_c (cv1, cv2);
+    cm1.rank1update_c(cv1, cv2);
     EXPECT_EQ(cv1[CVM0+2] * std::conj(cv2[CVM0+1]),cm1(CVM0+2,CVM0+1)) << "rank1update_c";
 
     srm4.assign(this->a3);
@@ -1888,9 +1888,9 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(std::norm(dtc_expected), std::norm(dtc), s<TP>()) << "complex det";
 
     r1 = 2.;
-    rv1.resize (4);
-    rm1.resize (4, 4);
-    srbm1.resize (4);
+    rv1.resize(4);
+    rm1.resize(4, 4);
+    srbm1.resize(4);
     rv1.set(1.);
     rm1 << basic_eye_real<TP>(4);
     srm4 << basic_eye_real<TP>(4);
@@ -1970,21 +1970,21 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     basic_scmatrix<TP,TPC> ec = basic_eye_complex<TP,TPC>(6);
     EXPECT_EQ(TPC(1,0), ec(CVM0+5,CVM0+5)) << "basic_eye_complex<TP,TPC>";
 
-    rv2.resize (4);
+    rv2.resize(4);
     basic_srmatrix<TP> rmU{4}, rmVH{4};
-    rv1 = srm4.svd (rmU, rmVH);
-    rv2.svd (srm4, rmU, rmVH);
+    rv1 = srm4.svd(rmU, rmVH);
+    rv2.svd(srm4, rmU, rmVH);
 //        EXPECT_TRUE(rv1 == rv2) << "srmatrix svd";
     EXPECT_EQ(0.,(rv1 - rv2).norm()) << "srmatrix svd";
     srm1 << basic_srmatrix<TP>{rv1};
     EXPECT_NEAR(0., (srm4 * ~rmVH - rmU * srm1).norm(), sp<TP>()) << "srmatrix svd";
     EXPECT_NEAR(0., (~srm4 * rmU - ~(srm1 * rmVH)).norm(), sp<TP>()) << "srmatrix svd";
 
-    rv1 = srbm2.svd (rmU, rmVH);
-    rv2.svd (srbm2);
+    rv1 = srbm2.svd(rmU, rmVH);
+    rv2.svd(srbm2);
 
     EXPECT_NEAR(0., (rv1 - rv2).norm(), sp<TP>()) << "srbmatrix svd";
-    rv2.svd (srbm2, rmU, rmVH);
+    rv2.svd(srbm2, rmU, rmVH);
     srm1 << basic_srmatrix<TP>{rv1};
     EXPECT_NEAR(0., (srbm2 * ~rmVH - rmU * srm1).norm(), sp<TP>()) << "srbmatrix svd";
     EXPECT_NEAR(0., (~srbm2 * rmU - ~(srm1 * rmVH)).norm(), sp<TP>()) << "srbmatrix svd";
@@ -2095,12 +2095,12 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
         }
     }
 
-    rv1.resize (3);
-    rv2.resize (3);
+    rv1.resize(3);
+    rv2.resize(3);
     rmU.resize(3);
     rmVH.resize(4);
-    rv1 = rm6.svd (rmU, rmVH);
-    rv2.svd (rm6, rmU, rmVH);
+    rv1 = rm6.svd(rmU, rmVH);
+    rv2.svd(rm6, rmU, rmVH);
     EXPECT_TRUE(rv1 == rv2) << "srmatrix svd";
 
     singValM << rm6;
@@ -2112,11 +2112,11 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(0.,(~rm6 * rmU - ~(singValM * rmVH)).norm(),sp<TP>()) << "rmatrix svd";
 
 
-    rv1.resize (4);
-    rv2.resize (4);
+    rv1.resize(4);
+    rv2.resize(4);
     basic_scmatrix<TP,TPC> cmU{4}, cmVH{4};
-    rv1 = scm1.svd (cmU, cmVH);
-    rv2.svd (scm1, cmU, cmVH);
+    rv1 = scm1.svd(cmU, cmVH);
+    rv2.svd(scm1, cmU, cmVH);
     EXPECT_TRUE(rv1 == rv2) << "scmatrix svd";
     cv1 << basic_cvector<TP,TPC>{rv1};
     scm << basic_scmatrix<TP,TPC>{cv1};
@@ -2124,10 +2124,10 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(0.,(~scm1 * cmU - ~(scm * cmVH)).norm(),sp<TP>()) << "scmatrix svd";
 
     scbm1(CVM0+3, CVM0+2)=-cr1;
-    rv1 = scbm1.svd (cmU, cmVH);
-    rv2.svd (scbm1);
+    rv1 = scbm1.svd(cmU, cmVH);
+    rv2.svd(scbm1);
     EXPECT_NEAR(0.,(rv1 - rv2).norm(),sp<TP>()) << "scbmatrix svd";
-    rv2.svd (scbm1, cmU, cmVH);
+    rv2.svd(scbm1, cmU, cmVH);
     scm1 << basic_scmatrix<TP,TPC>{basic_srmatrix<TP>{rv1}};
     EXPECT_NEAR(0.,(scbm1 * ~cmVH - cmU * scm1).norm(),sp<TP>()) << "scbmatrix svd";
     EXPECT_NEAR(0.,(~scbm1 * cmU - ~(scm1 * cmVH)).norm(),sp<TP>()) << "scbmatrix svd";
@@ -2138,88 +2138,88 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
         srm4 *=     -1.;
         srm4(CVM0+2, CVM0+2) = 1.;
         srm4(CVM0+3, CVM0+3) = 1.;
-        rv.resize (4);
+        rv.resize(4);
         srm4.normalize();
 
-        rv.solve (srm4, rv1);
+        rv.solve(srm4, rv1);
         EXPECT_NEAR(0,(srm4 * rv - rv1).norm(),sp<TP>()) << "srmatrix solve";
-        rv.solve_tran (srm4, rv1);
+        rv.solve_tran(srm4, rv1);
         EXPECT_NEAR(0,(rv * srm4 - rv1).norm(),sp<TP>()) << "srmatrix solve transposed";
 
-        rv = srm4.solve (rv1);
+        rv = srm4.solve(rv1);
         EXPECT_NEAR(0,(srm4 * rv - rv1).norm(),sp<TP>()) << "srmatrix solve";
-        rv = srm4.solve_tran (rv1);
+        rv = srm4.solve_tran(rv1);
         EXPECT_NEAR(0,(rv * srm4 - rv1).norm(),sp<TP>()) << "srmatrix solve transposed";
 
-        rv.solve (srbm2, rv1);
+        rv.solve(srbm2, rv1);
         EXPECT_NEAR(0,(srbm2 * rv - rv1).norm(),sp<TP>()) << "srbmatrix solve";
-        rv.solve_tran (srbm2, rv1);
+        rv.solve_tran(srbm2, rv1);
         EXPECT_NEAR(0,(rv * srbm2 - rv1).norm(),sp<TP>()) << "srbmatrix solve transposed";
 
-        rv = srbm2.solve (rv1);
+        rv = srbm2.solve(rv1);
         EXPECT_NEAR(0,(srbm2 * rv - rv1).norm(),sp<TP>()) << "srbmatrix solve";
-        rv = srbm2.solve_tran (rv1);
+        rv = srbm2.solve_tran(rv1);
         EXPECT_NEAR(0,(rv * srbm2 - rv1).norm(),sp<TP>()) << "srbmatrix solve transposed";
 
         basic_rmatrix<TP> rmB{4, 5}, rmX{4, 5};
         rmB.randomize(-3., 4.);
 
-        rmX.solve (srm4, rmB);
+        rmX.solve(srm4, rmB);
         EXPECT_NEAR(0,(srm4 * rmX - rmB).norm(),sp<TP>()) << "srmatrix solve for matrix B";
-        rmX.solve_tran (srm4, rmB);
+        rmX.solve_tran(srm4, rmB);
         EXPECT_NEAR(0,(~srm4 * rmX - rmB).norm(),sp<TP>()) << "srmatrix solve for matrix B transposed";
         EXPECT_NEAR(0,(~rmX * srm4 - ~rmB).norm(),sp<TP>()) << "srmatrix solve for matrix B transposed";
 
-        rmX = srm4.solve (rmB);
+        rmX = srm4.solve(rmB);
         EXPECT_NEAR(0,(srm4 * rmX - rmB).norm(),sp<TP>()) << "srmatrix solve for matrix B";
-        rmX = srm4.solve_tran (rmB);
+        rmX = srm4.solve_tran(rmB);
         EXPECT_NEAR(0,(~srm4 * rmX - rmB).norm(),sp<TP>()) << "srmatrix solve for matrix B transposed";
         EXPECT_NEAR(0,(~rmX * srm4 - ~rmB).norm(),sp<TP>()) << "srmatrix solve for matrix B transposed";
 
-        rmX.solve (srbm2, rmB);
+        rmX.solve(srbm2, rmB);
         EXPECT_NEAR(0,(srbm2 * rmX - rmB).norm(),sp<TP>()) << "srbmatrix solve for matrix B";
-        rmX.solve_tran (srbm2, rmB);
+        rmX.solve_tran(srbm2, rmB);
         EXPECT_NEAR(0,(~srbm2 * rmX - rmB).norm(),sp<TP>()) << "srbmatrix solve  for matrix B transposed";
         EXPECT_NEAR(0,(~rmX * srbm2 - ~rmB).norm(),sp<TP>()) << "srbmatrix solve  for matrix B transposed";
 
-        rmX = srbm2.solve (rmB);
+        rmX = srbm2.solve(rmB);
         EXPECT_NEAR(0,(srbm2 * rmX - rmB).norm(),sp<TP>()) << "srbmatrix solve for matrix B";
-        rmX = srbm2.solve_tran (rmB);
+        rmX = srbm2.solve_tran(rmB);
         EXPECT_NEAR(0,(~srbm2 * rmX - rmB).norm(),sp<TP>()) << "srbmatrix solve  for matrix B transposed";
         EXPECT_NEAR(0,(~rmX * srbm2 - ~rmB).norm(),sp<TP>()) << "srbmatrix solve  for matrix B transposed";
 
         scm1.assign(this->c2);
         scm1(CVM0+2, CVM0+2) = TPC(1,-1);
         scm1(CVM0+3, CVM0+3) = TPC(1,-1);
-        cv.resize (4);
-        cv1.resize (4);
+        cv.resize(4);
+        cv1.resize(4);
 
-        cv.solve (scm1, cv1);
+        cv.solve(scm1, cv1);
         EXPECT_NEAR(0,(scm1 * cv - cv1).norm(),sp<TP>()) << "scmatrix solve";
-        cv.solve_tran (scm1, cv1);
+        cv.solve_tran(scm1, cv1);
         EXPECT_NEAR(0,(cv * scm1 - cv1).norm(),sp<TP>()) << "scmatrix solve transposed";
-        cv.solve_conj (scm1, cv1);
+        cv.solve_conj(scm1, cv1);
         EXPECT_NEAR(0,(~scm1 * cv - cv1).norm(),sp<TP>()) << "scmatrix solve conjugated";
 
-        cv = scm1.solve (cv1);
+        cv = scm1.solve(cv1);
         EXPECT_NEAR(0,(scm1 * cv - cv1).norm(),sp<TP>()) << "scmatrix solve";
-        cv = scm1.solve_tran (cv1);
+        cv = scm1.solve_tran(cv1);
         EXPECT_NEAR(0,(cv * scm1 - cv1).norm(),sp<TP>()) << "scmatrix solve transposed";
-        cv = scm1.solve_conj (cv1);
+        cv = scm1.solve_conj(cv1);
         EXPECT_NEAR(0,(~scm1 * cv - cv1).norm(),sp<TP>()) << "scmatrix solve conjugated";
 
-        cv.solve (scbm1, cv1);
+        cv.solve(scbm1, cv1);
         EXPECT_NEAR(0,(scbm1 * cv - cv1).norm(),sp<TP>()) << "scbmatrix solve";
-        cv.solve_tran (scbm1, cv1);
+        cv.solve_tran(scbm1, cv1);
         EXPECT_NEAR(0,(cv * scbm1 - cv1).norm(),sp<TP>()) << "scbmatrix solve transposed";
-        cv.solve_conj (scbm1, cv1);
+        cv.solve_conj(scbm1, cv1);
         EXPECT_NEAR(0,(~scbm1 * cv - cv1).norm(),sp<TP>()) << "scbmatrix solve conjugated";
 
-        cv = scbm1.solve (cv1);
+        cv = scbm1.solve(cv1);
         EXPECT_NEAR(0,(scbm1 * cv - cv1).norm(),sp<TP>()) << "scbmatrix solve";
-        cv = scbm1.solve_tran (cv1);
+        cv = scbm1.solve_tran(cv1);
         EXPECT_NEAR(0,(cv * scbm1 - cv1).norm(),sp<TP>()) << "scbmatrix solve transposed";
-        cv = scbm1.solve_conj (cv1);
+        cv = scbm1.solve_conj(cv1);
         EXPECT_NEAR(0,(~scbm1 * cv - cv1).norm(),sp<TP>()) << "scbmatrix solve conjugated";
 
         basic_cmatrix<TP,TPC> cmB{4, 5}, cmX{4, 5};
@@ -2227,37 +2227,37 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
         cmB.randomize_imag(-5., 2.);
         scm1.randomize_real(-3., 4.);
         scm1.randomize_imag(-2., 4.);
-        cmX.solve (scm1, cmB);
+        cmX.solve(scm1, cmB);
         EXPECT_NEAR(0,(scm1 * cmX - cmB).norm(),sp<TP>()) << "scmatrix solve for matrix B";
-        cmX = scm1.solve (cmB);
+        cmX = scm1.solve(cmB);
         EXPECT_NEAR(0,(scm1 * cmX - cmB).norm(),sp<TP>()) << "scmatrix solve for matrix B";
-        cmX.solve_tran (scm1, cmB);
+        cmX.solve_tran(scm1, cmB);
         EXPECT_NEAR(0,(!cmX * scm1 - !cmB).norm(),sp<TP>()) << "scmatrix solve for matrix B transposed";
         EXPECT_NEAR(0,(!scm1 * cmX - cmB).norm(),sp<TP>()) << "scmatrix solve for matrix B transposed";
-        cmX = scm1.solve_tran (cmB);
+        cmX = scm1.solve_tran(cmB);
         EXPECT_NEAR(0,(!cmX * scm1 - !cmB).norm(),sp<TP>()) << "scmatrix solve for matrix B transposed";
         EXPECT_NEAR(0,(!scm1 * cmX - cmB).norm(),sp<TP>()) << "scmatrix solve for matrix B transposed";
-        cmX = scm1.solve_conj (cmB);
+        cmX = scm1.solve_conj(cmB);
         EXPECT_NEAR(0,(~cmX * scm1 - ~cmB).norm(),sp<TP>()) << "scmatrix solve for matrix B conjugated";
         EXPECT_NEAR(0,(~scm1 * cmX - cmB).norm(),sp<TP>()) << "scmatrix solve for matrix B conjugated";
 
         basic_scbmatrix<TP,TPC> scbm{4, 1, 2};
         scbm.randomize_real(-3., 4.);
         scbm.randomize_imag(-2., 4.);
-        cmX.solve (scbm, cmB);
+        cmX.solve(scbm, cmB);
         EXPECT_NEAR(0,(scbm * cmX - cmB).norm(),sp<TP>()) << "scbmatrix solve for matrix B";
-        cmX = scbm.solve (cmB);
+        cmX = scbm.solve(cmB);
         EXPECT_NEAR(0,(scbm * cmX - cmB).norm(),sp<TP>()) << "scbmatrix solve for matrix B";
-        cmX.solve_tran (scbm, cmB);
+        cmX.solve_tran(scbm, cmB);
         EXPECT_NEAR(0,(!cmX * scbm - !cmB).norm(),sp<TP>()) << "scbmatrix solve for matrix B transposed";
         EXPECT_NEAR(0,(!scbm * cmX - cmB).norm(),sp<TP>()) << "scbmatrix solve for matrix B transposed";
-        cmX = scbm.solve_tran (cmB);
+        cmX = scbm.solve_tran(cmB);
         EXPECT_NEAR(0,(!cmX * scbm - !cmB).norm(),sp<TP>()) << "scbmatrix solve for matrix B transposed";
         EXPECT_NEAR(0,(!scbm * cmX - cmB).norm(),sp<TP>()) << "scbmatrix solve for matrix B transposed";
-        cmX.solve_conj (scbm, cmB);
+        cmX.solve_conj(scbm, cmB);
         EXPECT_NEAR(0,(~cmX * scbm - ~cmB).norm(),sp<TP>()) << "scbmatrix solve for matrix B conjugated";
         EXPECT_NEAR(0,(~scbm * cmX - cmB).norm(),sp<TP>()) << "scbmatrix solve for matrix B conjugated";
-        cmX = scbm.solve_conj (cmB);
+        cmX = scbm.solve_conj(cmB);
         EXPECT_NEAR(0,(~cmX * scbm - ~cmB).norm(),sp<TP>()) << "scbmatrix solve for matrix B conjugated";
         EXPECT_NEAR(0,(~scbm * cmX - cmB).norm(),sp<TP>()) << "scbmatrix solve for matrix B conjugated";
 
@@ -2265,20 +2265,20 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
         basic_schmatrix<TP,TPC> schm{4};
         schm.randomize_real(-5., 1.);   // 6.1: fixed non-positive definite bug
         schm.randomize_imag(-2., 4.);
-        cmX.solve (schm, cmB);
+        cmX.solve(schm, cmB);
         EXPECT_NEAR(0,(schm * cmX - cmB).norm(),sp<TP>()) << "schmatrix solve for matrix B";
-        cmX = schm.solve (cmB);
+        cmX = schm.solve(cmB);
         EXPECT_NEAR(0,(schm * cmX - cmB).norm(),sp<TP>()) << "schmatrix solve for matrix B";
-        cmX.solve_tran (schm, cmB);
+        cmX.solve_tran(schm, cmB);
         EXPECT_NEAR(0,(!cmX * schm - !cmB).norm(),sp<TP>()) << "schmatrix solve for matrix B transposed";
         EXPECT_NEAR(0,(!schm * cmX - cmB).norm(),sp<TP>()) << "schmatrix solve for matrix B transposed";
-        cmX = schm.solve_tran (cmB);
+        cmX = schm.solve_tran(cmB);
         EXPECT_NEAR(0,(!cmX * schm - !cmB).norm(),sp<TP>()) << "schmatrix solve for matrix B transposed";
         EXPECT_NEAR(0,(!schm * cmX - cmB).norm(),sp<TP>()) << "schmatrix solve for matrix B transposed";
-        cmX.solve_conj (schm, cmB);
+        cmX.solve_conj(schm, cmB);
         EXPECT_NEAR(0,(~cmX * schm - ~cmB).norm(),sp<TP>()) << "schmatrix solve for matrix B conjugated";
         EXPECT_NEAR(0,(~schm * cmX - cmB).norm(),sp<TP>()) << "schmatrix solve for matrix B conjugated";
-        cmX = schm.solve_conj (cmB);
+        cmX = schm.solve_conj(cmB);
         EXPECT_NEAR(0,(~cmX * schm - ~cmB).norm(),sp<TP>()) << "schmatrix solve for matrix B conjugated";
         EXPECT_NEAR(0,(~schm * cmX - cmB).norm(),sp<TP>()) << "schmatrix solve for matrix B conjugated";
     }
@@ -2295,8 +2295,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     srm(CVM0+1, CVM0) = 0.11; srm(CVM0+1,CVM0+1) = -2.9; srm(CVM0+1, CVM0+2) = -8.4;
     srm(CVM0+2, CVM0) = 0.;   srm(CVM0+2,CVM0+1) = 2.91; srm(CVM0+2, CVM0+2) = 8.2;
 
-    cv.eig (srm, scm);
-    cv1 = srm.eig (scm_);
+    cv.eig(srm, scm);
+    cv1 = srm.eig(scm_);
 //        EXPECT_NEAR(0.,(cv - cv1).norm(),s<TP>()) << "srmatrix eig";
     EXPECT_NEAR(0,(basic_scmatrix<TP,TPC>{srm} * scm(CVM0) - scm(CVM0) * cv(CVM0)).norm(),sf<TP>()) << "srmatrix eig";
     EXPECT_NEAR(0,(basic_scmatrix<TP,TPC>{srm} * scm(CVM0+1) - scm(CVM0+1) * cv(CVM0+1)).norm(),sf<TP>()) << "srmatrix eig";
@@ -2305,8 +2305,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(0,(basic_scmatrix<TP,TPC>{srm} * scm_(CVM0+1) - scm_(CVM0+1) * cv1(CVM0+1)).norm(),sf<TP>()) << "srmatrix eig";
     EXPECT_NEAR(0,(basic_scmatrix<TP,TPC>{srm} * scm_(CVM0+2) - scm_(CVM0+2) * cv1(CVM0+2)).norm(),sf<TP>()) << "srmatrix eig";
 
-    cv.eig (srm, scm, false);
-    cv1 = srm.eig (scm_, false);
+    cv.eig(srm, scm, false);
+    cv1 = srm.eig(scm_, false);
 //        EXPECT_NEAR(0.,(cv - cv1).norm(),sf<TP>()) << "srmatrix eig, left";
     EXPECT_NEAR(0,(~scm(CVM0) * basic_scmatrix<TP,TPC>{srm} - ~scm(CVM0) * cv(CVM0)).norm(),sf<TP>()) << "srmatrix eig, left";
     EXPECT_NEAR(0,(~scm(CVM0+1) * basic_scmatrix<TP,TPC>{srm} - ~scm(CVM0+1) * cv(CVM0+1)).norm(),sf<TP>()) << "srmatrix eig, left";
@@ -2316,8 +2316,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(0,(~scm_(CVM0+2) * basic_scmatrix<TP,TPC>{srm} - ~scm_(CVM0+2) * cv1(CVM0+2)).norm(),sf<TP>()) << "srmatrix eig, left";
 
     srm(CVM0+1, CVM0+1) = 2.9;
-    cv.eig (srm, scm);
-    cv1 = srm.eig (scm_);
+    cv.eig(srm, scm);
+    cv1 = srm.eig(scm_);
 //        EXPECT_NEAR(0.,(cv - cv1).norm(),sf<TP>()) << "scmatrix eig";
     EXPECT_NEAR(0,(basic_scmatrix<TP,TPC>{srm} * scm(CVM0) - scm(CVM0) * cv(CVM0)).norm(),sf<TP>()) << "srmatrix eig";
     EXPECT_NEAR(0,(basic_scmatrix<TP,TPC>{srm} * scm(CVM0+1) - scm(CVM0+1) * cv(CVM0+1)).norm(),sf<TP>()) << "srmatrix eig";
@@ -2326,8 +2326,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(0,(basic_scmatrix<TP,TPC>{srm} * scm_(CVM0+1) - scm_(CVM0+1) * cv1(CVM0+1)).norm(),sf<TP>()) << "srmatrix eig";
     EXPECT_NEAR(0,(basic_scmatrix<TP,TPC>{srm} * scm_(CVM0+2) - scm_(CVM0+2) * cv1(CVM0+2)).norm(),sf<TP>()) << "srmatrix eig";
 
-    cv.eig (srm, scm, false);
-    cv1 = srm.eig (scm_, false);
+    cv.eig(srm, scm, false);
+    cv1 = srm.eig(scm_, false);
 //        EXPECT_NEAR(0.,(cv - cv1).norm(),sf<TP>()) << "scmatrix eig, left";
     EXPECT_NEAR(0,(~scm(CVM0) * basic_scmatrix<TP,TPC>{srm} - ~scm(CVM0) * cv(CVM0)).norm(),sf<TP>()) << "srmatrix eig, left";
     EXPECT_NEAR(0,(~scm(CVM0+1) * basic_scmatrix<TP,TPC>{srm} - ~scm(CVM0+1) * cv(CVM0+1)).norm(),sf<TP>()) << "srmatrix eig, left";
@@ -2337,8 +2337,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(0,(~scm_(CVM0+2) * basic_scmatrix<TP,TPC>{srm} - ~scm_(CVM0+2) * cv1(CVM0+2)).norm(),sf<TP>()) << "srmatrix eig, left";
 
     scm1.resize  (3);
-    cv.eig (scm1, scm);
-    cv1 = scm1.eig (scm_);
+    cv.eig(scm1, scm);
+    cv1 = scm1.eig(scm_);
 //        EXPECT_NEAR(0.,(cv - cv1).norm(),sp<TP>()) << "scmatrix eig";
     EXPECT_NEAR(0,(scm1 * scm(CVM0) - scm(CVM0) * cv(CVM0)).norm(),sp<TP>()) << "scmatrix eig";
     EXPECT_NEAR(0,(scm1 * scm(CVM0+1) - scm(CVM0+1) * cv(CVM0+1)).norm(),sp<TP>()) << "scmatrix eig";
@@ -2347,8 +2347,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(0,(scm1 * scm_(CVM0+1) - scm_(CVM0+1) * cv1(CVM0+1)).norm(),sp<TP>()) << "scmatrix eig";
     EXPECT_NEAR(0,(scm1 * scm_(CVM0+2) - scm_(CVM0+2) * cv1(CVM0+2)).norm(),sp<TP>()) << "scmatrix eig";
 
-    cv.eig (scm1, scm, false);
-    cv1 = scm1.eig (scm_ , false);
+    cv.eig(scm1, scm, false);
+    cv1 = scm1.eig(scm_ , false);
 //        EXPECT_NEAR(0.,(cv - cv1).norm(),sp<TP>()) << "scmatrix eig, left";
     EXPECT_NEAR(0,(~scm(CVM0) * scm1 - ~scm(CVM0) * cv(CVM0)).norm(),sp<TP>()) << "scmatrix eig, left";
     EXPECT_NEAR(0,(~scm(CVM0+1) * scm1 - ~scm(CVM0+1) * cv(CVM0+1)).norm(),sp<TP>()) << "scmatrix eig, left";
@@ -2363,8 +2363,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cv1.resize  (4);
 
 
-    cv.eig (srbm2, scm);
-    cv1 = srbm2.eig (scm_);
+    cv.eig(srbm2, scm);
+    cv1 = srbm2.eig(scm_);
 //        EXPECT_NEAR(cv1, cv,sp<TP>()) << "srbmatrix eig vectors";
 //        EXPECT_NEAR(0.,(cv - cv1).norm(),sp<TP>()) << "srbmatrix eig";
     EXPECT_NEAR(0,(basic_scmatrix<TP,TPC>{srbm2} * scm(CVM0) - scm(CVM0) * cv(CVM0)).norm(),sp<TP>()) << "srbmatrix eig";
@@ -2376,8 +2376,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(0,(basic_scmatrix<TP,TPC>{srbm2} * scm_(CVM0+2) - scm_(CVM0+2) * cv1(CVM0+2)).norm(),sp<TP>()) << "srbmatrix eig";
     EXPECT_NEAR(0,(basic_scmatrix<TP,TPC>{srbm2} * scm_(CVM0+3) - scm_(CVM0+3) * cv1(CVM0+3)).norm(),sp<TP>()) << "srbmatrix eig";
 
-    cv.eig (scbm2, scm);
-    cv1 = scbm2.eig (scm_);
+    cv.eig(scbm2, scm);
+    cv1 = scbm2.eig(scm_);
 //        EXPECT_NEAR(cv1, cv,sp<TP>()) << "scbmatrix eig vectors";
 //        EXPECT_NEAR(0.,(cv - cv1).norm(),sp<TP>()) << "scbmatrix eig";
     EXPECT_NEAR(0,(scbm2 * scm(CVM0) - scm(CVM0) * cv(CVM0)).norm(),sp<TP>()) << "scbmatrix eig";
@@ -2399,8 +2399,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     B.set(CVM0+2, CVM0, 1.00000000000000e+003); B.set(CVM0+2,CVM0+1, 1.38811133749142e+000); B.set(CVM0+2, CVM0+2, 3.00000000000000e+000);
     B.set(CVM0+3, CVM0, 1.94335587248799e+000); B.set(CVM0+3,CVM0+1, 2.22097813998627e+000); B.set(CVM0+3, CVM0+2, 2.49860040748456e+000); B.set(CVM0+3, CVM0+3, 4.00000000000000e+000);
 
-    b.eig (B, EV);
-    x = B.eig ();
+    b.eig(B, EV);
+    x = B.eig();
 
     EXPECT_NEAR(0.,(x - b).norm(),sp<TP>()) << "srsmatrix eig";
     EXPECT_NEAR(0,(B * EV(CVM0) - EV(CVM0) * x(CVM0)).norm(),sp<TP>()) << "srsmatrix eig";
@@ -2427,7 +2427,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cr1 = cv1[CVM0+1];
     cv << cv1.conj();
     EXPECT_EQ(conj(cr1),cv1(CVM0+1)) << "cvector::conj";
-    cv.conj (cv1);
+    cv.conj(cv1);
     EXPECT_EQ(cr1,cv(CVM0+1)) << "cvector::conj";
     cv1 = ~cv;
     EXPECT_EQ(conj(cr1),cv1(CVM0+1)) << "cvector ~";
@@ -2436,7 +2436,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cm << cm1.conj();
     EXPECT_EQ(conj(cr1),cm1(CVM0+2,CVM0+1)) << "cmatrix::conj";
 
-    cm.conj (cm1);
+    cm.conj(cm1);
     EXPECT_EQ(cr1,cm(CVM0+1,CVM0+2)) << "cmatrix::conj";
     cm.resize(2, 3);
     cm1.resize(3, 2);
@@ -2446,7 +2446,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cr1 = scm1(CVM0+1, CVM0+2);
     scm << scm1.conj();
     EXPECT_EQ(conj(cr1),scm1(CVM0+2,CVM0+1)) << "scmatrix::conj";
-    scm.conj (scm1);
+    scm.conj(scm1);
     EXPECT_EQ(cr1,scm(CVM0+1,CVM0+2)) << "scmatrix::conj";
     scm1 = ~scm;
     EXPECT_EQ(conj(cr1),scm1(CVM0+2,CVM0+1)) << "scmatrix ~";
@@ -2454,7 +2454,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cr1 = scbm1(CVM0+1, CVM0+2);
     scbm << scbm1.conj();
     EXPECT_EQ(conj(cr1),scbm1(CVM0+2,CVM0+1)) << "scbmatrix::conj";
-    scbm.conj (scbm1);
+    scbm.conj(scbm1);
     EXPECT_EQ(cr1,scbm(CVM0+1,CVM0+2)) << "scbmatrix::conj";
     scbm1 = ~scbm;
     EXPECT_EQ(conj(cr1),scbm1(CVM0+2,CVM0+1)) << "scbmatrix ~";
@@ -2492,7 +2492,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     srbm.resize(4);
     srbm.set(r1);
-    scbm1.resize_lu (1, 2);
+    scbm1.resize_lu(1, 2);
     cr1 = scbm1(CVM0, CVM0+1);
     scbm1.assign_real(srbm);
     EXPECT_EQ(r1,scbm1(CVM0,CVM0+1).real()) << "scbmatrix::assign_real";
@@ -2505,61 +2505,61 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     rm.normalize();
     rm(CVM0+1, CVM0+2) = -1.1;
     rm(CVM0, CVM0+1) = 1.e-9;
-    EXPECT_EQ(CVM0+1,rm.rowofmax ()) << "rmatrix::rowofmax";
+    EXPECT_EQ(CVM0+1,rm.rowofmax()) << "rmatrix::rowofmax";
 
-    EXPECT_EQ(CVM0+2,rm.colofmax ()) << "rmatrix::colofmax";
-    EXPECT_EQ(CVM0,rm.rowofmin ()) << "rmatrix::rowofmin";
-    EXPECT_EQ(CVM0+1,rm.colofmin ()) << "rmatrix::colofmin";
-    EXPECT_EQ(2,rm.msize ()) << "rmatrix::msize";
-    EXPECT_EQ(3,rm.nsize ()) << "rmatrix::nsize";
-    rm1 << rm.swap_rows (CVM0, CVM0+1);
+    EXPECT_EQ(CVM0+2,rm.colofmax()) << "rmatrix::colofmax";
+    EXPECT_EQ(CVM0,rm.rowofmin()) << "rmatrix::rowofmin";
+    EXPECT_EQ(CVM0+1,rm.colofmin()) << "rmatrix::colofmin";
+    EXPECT_EQ(2,rm.msize()) << "rmatrix::msize";
+    EXPECT_EQ(3,rm.nsize()) << "rmatrix::nsize";
+    rm1 << rm.swap_rows(CVM0, CVM0+1);
     EXPECT_EQ(TP(-1.1),rm1(CVM0,CVM0+2)) << "rmatrix::swap_rows";
-    rm1.swap_cols (CVM0, CVM0+1);
+    rm1.swap_cols(CVM0, CVM0+1);
     EXPECT_EQ(TP(1.e-9),rm1(CVM0+1,CVM0)) << "rmatrix::swap_cols";
 
     srm.set(1.);
     srm.normalize();
     srm(CVM0+1, CVM0+2) = -1.1;
     srm(CVM0, CVM0+1) = 1.e-9;
-    EXPECT_EQ(CVM0+1,srm.rowofmax ()) << "srmatrix::rowofmax";
-    EXPECT_EQ(CVM0+2,srm.colofmax ()) << "srmatrix::colofmax";
-    EXPECT_EQ(CVM0,srm.rowofmin ()) << "srmatrix::rowofmin";
-    EXPECT_EQ(CVM0+1,srm.colofmin ()) << "srmatrix::colofmin";
-    EXPECT_EQ(3,srm.msize ()) << "srmatrix::msize";
-    EXPECT_EQ(3,srm.nsize ()) << "srmatrix::nsize";
-    srm1 << srm.swap_rows (CVM0, CVM0+1);
+    EXPECT_EQ(CVM0+1,srm.rowofmax()) << "srmatrix::rowofmax";
+    EXPECT_EQ(CVM0+2,srm.colofmax()) << "srmatrix::colofmax";
+    EXPECT_EQ(CVM0,srm.rowofmin()) << "srmatrix::rowofmin";
+    EXPECT_EQ(CVM0+1,srm.colofmin()) << "srmatrix::colofmin";
+    EXPECT_EQ(3,srm.msize()) << "srmatrix::msize";
+    EXPECT_EQ(3,srm.nsize()) << "srmatrix::nsize";
+    srm1 << srm.swap_rows(CVM0, CVM0+1);
     EXPECT_EQ(TP(-1.1),srm1(CVM0,CVM0+2)) << "srmatrix::swap_rows";
-    srm1.swap_cols (CVM0, CVM0+1);
+    srm1.swap_cols(CVM0, CVM0+1);
     EXPECT_EQ(TP(1.e-9),srm1(CVM0+1,CVM0)) << "srmatrix::swap_cols";
 
     cm.set(TPC(1.,1.));
     cm.normalize();
     cm(CVM0+1,CVM0+2) = TPC(1.1,1.1);
     cm(CVM0, CVM0+1) = TPC(1.e-9,0.);
-    EXPECT_EQ(CVM0+1,cm.rowofmax ()) << "cmatrix::rowofmax";
-    EXPECT_EQ(CVM0+2,cm.colofmax ()) << "cmatrix::colofmax";
-    EXPECT_EQ(CVM0,cm.rowofmin ()) << "cmatrix::rowofmin";
-    EXPECT_EQ(CVM0+1,cm.colofmin ()) << "cmatrix::colofmin";
-    EXPECT_EQ(2,cm.msize ()) << "cmatrix::msize";
-    EXPECT_EQ(3,cm.nsize ()) << "cmatrix::nsize";
-    cm1 << cm.swap_rows (CVM0, CVM0+1);
+    EXPECT_EQ(CVM0+1,cm.rowofmax()) << "cmatrix::rowofmax";
+    EXPECT_EQ(CVM0+2,cm.colofmax()) << "cmatrix::colofmax";
+    EXPECT_EQ(CVM0,cm.rowofmin()) << "cmatrix::rowofmin";
+    EXPECT_EQ(CVM0+1,cm.colofmin()) << "cmatrix::colofmin";
+    EXPECT_EQ(2,cm.msize()) << "cmatrix::msize";
+    EXPECT_EQ(3,cm.nsize()) << "cmatrix::nsize";
+    cm1 << cm.swap_rows(CVM0, CVM0+1);
     EXPECT_EQ(TPC(1.1,1.1),cm1(CVM0,CVM0+2)) << "cmatrix::swap_rows";
-    cm1.swap_cols (CVM0, CVM0+1);
+    cm1.swap_cols(CVM0, CVM0+1);
     EXPECT_EQ(TPC(1.e-9,0.),cm1(CVM0+1,CVM0)) << "cmatrix::swap_cols";
 
     scm.set(TPC(1.,1.));
     scm.normalize();
     scm(CVM0+1,CVM0+2) = TPC(1.1,1.1);
     scm(CVM0, CVM0+1) = TPC(1.e-9,0.);
-    EXPECT_EQ(CVM0+1,scm.rowofmax ()) << "scmatrix::rowofmax";
-    EXPECT_EQ(CVM0+2,scm.colofmax ()) << "scmatrix::colofmax";
-    EXPECT_EQ(CVM0,scm.rowofmin ()) << "scmatrix::rowofmin";
-    EXPECT_EQ(CVM0+1,scm.colofmin ()) << "scmatrix::colofmin";
-    EXPECT_EQ(3,scm.msize ()) << "scmatrix::msize";
-    EXPECT_EQ(3,scm.nsize ()) << "scmatrix::nsize";
-    scm1 << scm.swap_rows (CVM0, CVM0+1);
+    EXPECT_EQ(CVM0+1,scm.rowofmax()) << "scmatrix::rowofmax";
+    EXPECT_EQ(CVM0+2,scm.colofmax()) << "scmatrix::colofmax";
+    EXPECT_EQ(CVM0,scm.rowofmin()) << "scmatrix::rowofmin";
+    EXPECT_EQ(CVM0+1,scm.colofmin()) << "scmatrix::colofmin";
+    EXPECT_EQ(3,scm.msize()) << "scmatrix::msize";
+    EXPECT_EQ(3,scm.nsize()) << "scmatrix::nsize";
+    scm1 << scm.swap_rows(CVM0, CVM0+1);
     EXPECT_EQ(TPC(1.1,1.1),scm1(CVM0,CVM0+2)) << "scmatrix::swap_rows";
-    scm1.swap_cols (CVM0, CVM0+1);
+    scm1.swap_cols(CVM0, CVM0+1);
     EXPECT_EQ(TPC(1.e-9,0.),scm1(CVM0+1,CVM0)) << "scmatrix::swap_cols";
 
     srbm.diag(0) = rv;
@@ -2567,23 +2567,23 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     srbm(CVM0+1, CVM0+2) = -1.1;
     srbm(CVM0, CVM0+1) = 1.e-7;
 
-    EXPECT_EQ(CVM0+1,srbm.rowofmax ()) << "srbmatrix::rowofmax";
-    EXPECT_EQ(CVM0+2,srbm.colofmax ()) << "srbmatrix::colofmax";
-    EXPECT_EQ(CVM0+2,srbm.rowofmin ()) << "srbmatrix::rowofmin";
-    EXPECT_EQ(CVM0,srbm.colofmin ()) << "srbmatrix::colofmin";
-    EXPECT_EQ(4,srbm.msize ()) << "srbmatrix::msize";
-    EXPECT_EQ(4,srbm.nsize ()) << "srbmatrix::nsize";
+    EXPECT_EQ(CVM0+1,srbm.rowofmax()) << "srbmatrix::rowofmax";
+    EXPECT_EQ(CVM0+2,srbm.colofmax()) << "srbmatrix::colofmax";
+    EXPECT_EQ(CVM0+2,srbm.rowofmin()) << "srbmatrix::rowofmin";
+    EXPECT_EQ(CVM0,srbm.colofmin()) << "srbmatrix::colofmin";
+    EXPECT_EQ(4,srbm.msize()) << "srbmatrix::msize";
+    EXPECT_EQ(4,srbm.nsize()) << "srbmatrix::nsize";
 
     scbm.diag(0).set(TPC(1.,1.));
     scbm.normalize();
     scbm(CVM0+1,CVM0+2) = TPC(2.,1.);
     scbm(CVM0,CVM0+1) = TPC(-1.e-10,-1.e-10);
-    EXPECT_EQ(CVM0+1,scbm.rowofmax ()) << "scbmatrix::rowofmax";
-    EXPECT_EQ(CVM0+2,scbm.colofmax ()) << "scbmatrix::colofmax";
-    EXPECT_EQ(CVM0+3,scbm.rowofmin ()) << "scbmatrix::rowofmin";
-    EXPECT_EQ(CVM0,scbm.colofmin ()) << "scbmatrix::colofmin";
-    EXPECT_EQ(4,scbm.msize ()) << "scbmatrix::msize";
-    EXPECT_EQ(4,scbm.nsize ()) << "scbmatrix::nsize";
+    EXPECT_EQ(CVM0+1,scbm.rowofmax()) << "scbmatrix::rowofmax";
+    EXPECT_EQ(CVM0+2,scbm.colofmax()) << "scbmatrix::colofmax";
+    EXPECT_EQ(CVM0+3,scbm.rowofmin()) << "scbmatrix::rowofmin";
+    EXPECT_EQ(CVM0,scbm.colofmin()) << "scbmatrix::colofmin";
+    EXPECT_EQ(4,scbm.msize()) << "scbmatrix::msize";
+    EXPECT_EQ(4,scbm.nsize()) << "scbmatrix::nsize";
 
 
     for (int i = 0; i < 100; ++i) {
@@ -2595,30 +2595,30 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     rm2.set(-0.34);
     rm2(CVM0+1, CVM0+2) = 0.;
 
-    EXPECT_EQ(2,rm2.rank ()) << "rmatrix::rank";
+    EXPECT_EQ(2,rm2.rank()) << "rmatrix::rank";
     rm2.assign(this->a1);
-    EXPECT_EQ(4,rm2.rank ()) << "rmatrix::rank";
+    EXPECT_EQ(4,rm2.rank()) << "rmatrix::rank";
 
     srm2.assign(this->a1);
     srm2[CVM0+1].set(0.);
-    EXPECT_EQ(2,srm2.rank ()) << "srmatrix::rank";
+    EXPECT_EQ(2,srm2.rank()) << "srmatrix::rank";
     srm2.diag(0).set(0.);
-    EXPECT_EQ(2,srm2.rank ()) << "srmatrix::rank";
+    EXPECT_EQ(2,srm2.rank()) << "srmatrix::rank";
 
-    cm2.resize (3, 4);
+    cm2.resize(3, 4);
     cm2.assign(this->c1);
-    EXPECT_EQ(3,cm2.rank ()) << "cmatrix::rank";
+    EXPECT_EQ(3,cm2.rank()) << "cmatrix::rank";
 
     scm2.assign(this->c1);
-    EXPECT_EQ(3,scm2.rank ()) << "scmatrix::rank";
+    EXPECT_EQ(3,scm2.rank()) << "scmatrix::rank";
     scm2.diag(0).set(0.);
-    EXPECT_EQ(3,scm2.rank ()) << "scmatrix::rank";
+    EXPECT_EQ(3,scm2.rank()) << "scmatrix::rank";
 
     srbm.assign(this->a1);
-    EXPECT_EQ(4,srbm.rank ()) << "srbmatrix::rank";
+    EXPECT_EQ(4,srbm.rank()) << "srbmatrix::rank";
 
     scbm.assign(this->c1);
-    EXPECT_EQ(4,scbm.rank ()) << "scbmatrix::rank";
+    EXPECT_EQ(4,scbm.rank()) << "scbmatrix::rank";
 
 
     r1 = -8.76;
@@ -2707,23 +2707,23 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     rm.assign(this->a2);
     rm1 << rm.transpose();
     EXPECT_EQ(this->a2[1],rm(CVM0,CVM0+1)) << "rmatrix::transpose";
-    rm1.resize (rm.nsize(),rm.msize());
-    rm1.transpose (rm);
+    rm1.resize(rm.nsize(),rm.msize());
+    rm1.transpose(rm);
     EXPECT_EQ(this->a2[2],rm1(CVM0,CVM0+1)) << "rmatrix::transpose";
 
     srm.assign(this->a2);
     srm1 << srm.transpose();
     EXPECT_EQ(this->a2[1],srm(CVM0,CVM0+1)) << "srmatrix::transpose";
-    srm1.transpose (srm);
+    srm1.transpose(srm);
     EXPECT_EQ(this->a2[3],srm1(CVM0,CVM0+1)) << "srmatrix::transpose";
 
-    srbm.resize_lu (2, 1);
+    srbm.resize_lu(2, 1);
     srbm.assign(this->a2);
     srbm1 << srbm.transpose();
     EXPECT_EQ(this->a2[2],srbm(CVM0,CVM0+1)) << "srbmatrix::transpose";
     srbm.transpose();
     srbm.assign(this->a2);
-    srbm1.transpose (srbm);
+    srbm1.transpose(srbm);
     EXPECT_EQ(this->a2[2],srbm1(CVM0,CVM0+1)) << "srbmatrix::transpose";
 
     scbm1 = scbm.assign(this->c1);
@@ -2792,11 +2792,11 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     iarray aPivots(3);
     basic_srmatrix<TP> mLU{3}, mLU2{3}, mLo{3}, mUp{3};
 
-    mLU = srm.low_up (aPivots);
-    mLU2.low_up (srm, aPivots);
+    mLU = srm.low_up(aPivots);
+    mLU2.low_up(srm, aPivots);
     EXPECT_TRUE(mLU == mLU2) << "srmatrix::low_up";
 
-    mLo.identity ();
+    mLo.identity();
     mLo(CVM0+1, CVM0) = mLU(CVM0+1, CVM0);
     mLo(CVM0+2, CVM0) = mLU(CVM0+2, CVM0);
     mLo(CVM0+2, CVM0+1) = mLU(CVM0+2, CVM0+1);
@@ -2810,17 +2810,17 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     mLU = mLo * mUp;
     for (int l = CVM0+2; l >= CVM0; --l) {
-        mLU.swap_rows (l,aPivots[l] - (1 - CVM0));
+        mLU.swap_rows(l,aPivots[l] - (1 - CVM0));
     }
     EXPECT_NEAR(0,(srm - mLU).norminf(),s<TP>()) << "srmatrix::low_up";
 
 
     basic_scmatrix<TP,TPC> cmLU{3}, cmLU2{3}, cmLo{3}, cmUp{3};
-    cmLU = scm.low_up (aPivots);
-    cmLU2.low_up (scm, aPivots);
+    cmLU = scm.low_up(aPivots);
+    cmLU2.low_up(scm, aPivots);
     EXPECT_TRUE(cmLU == cmLU2) << "scmatrix::low_up";
 
-    cmLo.identity ();
+    cmLo.identity();
     cmLo(CVM0+1, CVM0) = cmLU(CVM0+1, CVM0);
     cmLo(CVM0+2, CVM0) = cmLU(CVM0+2, CVM0);
     cmLo(CVM0+2, CVM0+1) = cmLU(CVM0+2, CVM0+1);
@@ -2835,7 +2835,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     cmLU = cmLo * cmUp;
     for (int l = CVM0+2; l >= CVM0; --l) {
-            cmLU.swap_rows (l,aPivots[l] - (1 - CVM0));
+            cmLU.swap_rows(l,aPivots[l] - (1 - CVM0));
     }
     EXPECT_NEAR(0,(scm - cmLU).norminf(),s<TP>()) << "scmatrix::low_up";
 
@@ -2859,8 +2859,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     rv(CVM0+9) = 3;
     rv(CVM0+10) = 3.2;
 
-    srm1.polynom (srm, rv);
-    srm2 << srm.polynom (rv);
+    srm1.polynom(srm, rv);
+    srm2 << srm.polynom(rv);
     EXPECT_TRUE(srm1 == srm2) << "srmatrix::polynom";
     EXPECT_NEAR(1.415106245372072e+004, srm1(CVM0,CVM0),spp<TP>(1.e-10,0.1)) << "srmatrix::polynom";
     EXPECT_NEAR(8.018578436580816e+002, srm1(CVM0,CVM0+1),spp<TP>(1.e-10,0.1)) << "srmatrix::polynom";
@@ -2873,7 +2873,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(8.075071634102441e+003, srm1(CVM0+2,CVM0+2),spp<TP>(1.e-10,0.1)) << "srmatrix::polynom";
 
     rv.resize(3);
-    srm1.polynom (srm, rv);
+    srm1.polynom(srm, rv);
     EXPECT_NEAR(1.001400000000000e+001, srm1(CVM0,CVM0),spp<TP>(1.e-10,0.1)) << "srmatrix::polynom";
     EXPECT_NEAR(-9.960000000000001e-001, srm1(CVM0,CVM0+1),spp<TP>(1.e-10,0.1)) << "srmatrix::polynom";
     EXPECT_NEAR(-1.053000000000000e+000, srm1(CVM0,CVM0+2),spp<TP>(1.e-10,0.1)) << "srmatrix::polynom";
@@ -2909,7 +2909,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     scm(CVM0+2, CVM0+1) = TPC(-1.2e+000);
     scm(CVM0+2, CVM0+2) = TPC(-9.e-001,-5.4);
 
-    scm1.polynom (scm, cv);
+    scm1.polynom(scm, cv);
 
     EXPECT_NEAR(std::abs(TPC(5.264016832618990e+006,-1.051212804982833e+007)), std::abs(scm1(CVM0, CVM0)), spp<TP>(1.e-5,100.)) << "scmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(9.386518437203571e+006,-9.534002545240149e+006)), std::abs(scm1(CVM0, CVM0+1)), spp<TP>(1.e-5,100.)) << "scmatrix::polynom";
@@ -2921,7 +2921,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(std::abs(TPC(2.832544852276585e+007,-4.473797233313387e+007)), std::abs(scm1(CVM0+2, CVM0+1)), spp<TP>(1.e-5,100.)) << "scmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.291773725514465e+008,1.634454865648127e+008)), std::abs(scm1(CVM0+2, CVM0+2)), spp<TP>(1.e-5,100.)) << "scmatrix::polynom";
 
-    scm2 << scm.polynom (cv);
+    scm2 << scm.polynom(cv);
     EXPECT_NEAR(0.,(scm1.normalize() - scm2.normalize()).norm(),sp<TP>()) << "scmatrix::polynom";
 
     srbm.resize_lu(1, 0);
@@ -2930,7 +2930,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     {
         srbm(CVM0, CVM0+1) = 1.;
     }
-    catch (cvmexception e)
+    catch(cvmexception e)
     {
         if (e.cause() == CVM_READ_ONLY_ACCESS) bThrew = true;
     }
@@ -2969,7 +2969,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     {
         scbm(CVM0, CVM0+1) = 1.;
     }
-    catch (cvmexception e)
+    catch(cvmexception e)
     {
         if (e.cause() == CVM_READ_ONLY_ACCESS) bThrew = true;
     }
@@ -3005,22 +3005,22 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     rv << rv2 << rv1;
     rv2.normalize();
 
-    rv1.gemv (true, srm, r1, rv2, r2);
+    rv1.gemv(true, srm, r1, rv2, r2);
     rv = rv2 * srm * r1 + r2 * rv;
     EXPECT_NEAR(0.,(rv - rv1).norm(),sp<TP>()) << "rvector::gemv";
 
     rv = rv1;
-    rv1.gemv (false, srm, r1, rv2, r2);
+    rv1.gemv(false, srm, r1, rv2, r2);
     rv = srm * rv2 * r1 + r2 * rv;
     EXPECT_NEAR(0.,(rv - rv1).norm(),sp<TP>()) << "rvector::gemv";
 
     rv = rv1;
-    rv1.gbmv (true, srbm, r1, rv2, r2);
+    rv1.gbmv(true, srbm, r1, rv2, r2);
     rv = rv2 * srbm * r1 + r2 * rv;
     EXPECT_NEAR(0.,(rv - rv1).norm(),sp<TP>()) << "rvector::gbmv";
 
     rv = rv1;
-    rv1.gbmv (false, srbm, r1, rv2, r2);
+    rv1.gbmv(false, srbm, r1, rv2, r2);
     rv = srbm * rv2 * r1 + r2 * rv;
     EXPECT_NEAR(0.,(rv - rv1).norm(),sp<TP>()) << "rvector::gbmv";
 
@@ -3028,22 +3028,22 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cv << cv2;
     cv2.normalize();
 
-    cv1.gemv (true, scm, cr1, cv2, cr2);
+    cv1.gemv(true, scm, cr1, cv2, cr2);
     cv = cv2 * scm * cr1 + cr2 * cv;
     EXPECT_NEAR(0.,(cv - cv1).norm(),sp<TP>()) << "cvector::gemv";
 
     cv = cv1;
-    cv1.gemv (false, scm, cr1, cv2, cr2);
+    cv1.gemv(false, scm, cr1, cv2, cr2);
     cv = scm * cv2 * cr1 + cr2 * cv;
     EXPECT_NEAR(0.,(cv - cv1).norm(),sp<TP>()) << "cvector::gemv";
 
     cv = cv1;
-    cv1.gbmv (true, scbm, cr1, cv2, cr2);
+    cv1.gbmv(true, scbm, cr1, cv2, cr2);
     cv = cv2 * scbm * cr1 + cr2 * cv;
     EXPECT_NEAR(0.,(cv - cv1).norm(),sp<TP>()) << "cvector::gemv";
 
     cv = cv1;
-    cv1.gbmv (false, scbm, cr1, cv2, cr2);
+    cv1.gbmv(false, scbm, cr1, cv2, cr2);
 
     cv = scbm * cv2 * cr1 + cr2 * cv;
     EXPECT_NEAR(0.,(cv.normalize() - cv1.normalize()).norm(),sp<TP>()) << "cvector::gemv";
@@ -3126,7 +3126,7 @@ TYPED_TEST(InitializationTest, TestVectorAssignReal) {
 }
 
 TYPED_TEST(InitializationTest, TestVectorIntRealCtr) {
-    basic_rvector<TP> v (5, 1.5);
+    basic_rvector<TP> v(5, 1.5);
     EXPECT_EQ(TP(1.5), v[CVM0+2]) << "rvector(int,real)";
 }
 
@@ -3163,8 +3163,8 @@ TYPED_TEST(InitializationTest, TestVectorAssignImagComplex) {
 }
 
 TYPED_TEST(InitializationTest, TestMatrixLdReal) {
-    basic_rmatrix<TP> m (100, 200);
-    basic_srmatrix<TP> ms (m, 30, 40, 5); // 5x5 submatrix
+    basic_rmatrix<TP> m(100, 200);
+    basic_srmatrix<TP> ms(m, 30, 40, 5); // 5x5 submatrix
     EXPECT_EQ(100, ms.ld()) << "srmatrix::ld";
 }
 
@@ -3305,7 +3305,7 @@ TYPED_TEST(InitializationTest, TestDiagHermitianComplex) {
 TYPED_TEST(InitializationTest, TestResizeBandComplex) {
     TP a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
     basic_scbmatrix<TP,TPC> m((TPC*)a, 3, 1, 0);
-    m.resize_lu (0, 1);
+    m.resize_lu(0, 1);
     m.diag(1).set(TPC(9.,9.));
     EXPECT_EQ(TPC(9.,9.), m(CVM0, CVM0+1)) << "scbmatrix::resize_lu";
     EXPECT_EQ(TPC(0.,0.), m(CVM0+1, CVM0)) << "scbmatrix::resize_lu";
@@ -3314,7 +3314,7 @@ TYPED_TEST(InitializationTest, TestResizeBandComplex) {
 
 TYPED_TEST(InitializationTest, TestRealImagBandComplex) {
     TP a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.};
-    basic_scbmatrix<TP,TPC> m ((TPC*)a, 3, 1, 0);
+    basic_scbmatrix<TP,TPC> m((TPC*)a, 3, 1, 0);
     EXPECT_NEAR(TP(5.), m.real()(CVM0+1, CVM0+1), s<TP>()) << "scbmatrix::real";
     EXPECT_NEAR(TP(6.), m.imag()(CVM0+1, CVM0+1), s<TP>()) << "scbmatrix::imag";
 }
@@ -3368,7 +3368,7 @@ TYPED_TEST(InitializationTest, TestDiagComplex) {
 TYPED_TEST(InitializationTest, TestBandAssignReal) {
     basic_srmatrix<TP> s(9);
     basic_srbmatrix<TP> m(3, 0, 1);
-    for (int i = 1; i <= 9; ++i) {
+    for(int i = 1; i <= 9; ++i) {
         s[i - (1 - CVM0)].set(TP(i));
     }
     m.assign(s(CVM0+8));     // should be 1, 2, ..9
@@ -3532,7 +3532,7 @@ TYPED_TEST(InitializationTest, TestCoverage) {
     try {
         hm.set_imag(-4.17);
     }
-    catch (cvmexception&)
+    catch(cvmexception&)
     {
         ex = true;
     }

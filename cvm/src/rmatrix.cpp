@@ -20,10 +20,10 @@ __gemm<float, basic_rmatrix<float> >
      basic_rmatrix<float>& mRes,
      float dBeta)
 {
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-    SGEMM (bTrans1 ? Chars::pT() : Chars::pN(), 1, bTrans2 ? Chars::pT() : Chars::pN(), 1,
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    SGEMM(bTrans1 ? Chars::pT() : Chars::pN(), 1, bTrans2 ? Chars::pT() : Chars::pN(), 1,
 #else
-    SGEMM (bTrans1 ? Chars::pT() : Chars::pN(),    bTrans2 ? Chars::pT() : Chars::pN(),
+    SGEMM(bTrans1 ? Chars::pT() : Chars::pN(),    bTrans2 ? Chars::pT() : Chars::pN(),
 #endif
            bTrans1 ? ml._pn() : ml._pm(),
            bTrans2 ? mr._pm() : mr._pn(),
@@ -44,10 +44,10 @@ __gemm<double, basic_rmatrix<double> >
      basic_rmatrix<double>& mRes,
      double dBeta)
 {
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-    DGEMM (bTrans1 ? Chars::pT() : Chars::pN(), 1, bTrans2 ? Chars::pT() : Chars::pN(), 1,
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    DGEMM(bTrans1 ? Chars::pT() : Chars::pN(), 1, bTrans2 ? Chars::pT() : Chars::pN(), 1,
 #else
-    DGEMM (bTrans1 ? Chars::pT() : Chars::pN(),    bTrans2 ? Chars::pT() : Chars::pN(),
+    DGEMM(bTrans1 ? Chars::pT() : Chars::pN(),    bTrans2 ? Chars::pT() : Chars::pN(),
 #endif
            bTrans1 ? ml._pn() : ml._pm(),
            bTrans2 ? mr._pm() : mr._pn(),
@@ -69,12 +69,12 @@ __symm<float, basic_srsmatrix<float>, basic_rmatrix<float> >
      basic_rmatrix<float>& mRes,
      float dBeta)
 {
-    SSYMM (bLeft ? Chars::pL() : Chars::pR(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    SSYMM(bLeft ? Chars::pL() : Chars::pR(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            mRes._pm(), mRes._pn(),
@@ -95,12 +95,12 @@ __symm<double, basic_srsmatrix<double>, basic_rmatrix<double>  >
      basic_rmatrix<double>& mRes,
      double dBeta)
 {
-    DSYMM (bLeft ? Chars::pL() : Chars::pR(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    DSYMM(bLeft ? Chars::pL() : Chars::pR(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            mRes._pm(), mRes._pn(),
@@ -119,12 +119,12 @@ __syrk<float, basic_srsmatrix<float> >
     const float* pA, tint ldA,
     float beta, basic_srsmatrix<float>& m)
 {
-    SSYRK (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    SSYRK(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            bTransp ? Chars::pT() : Chars::pN(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), &k, &alpha, pA, &ldA, &beta, m, m._pld());
@@ -138,12 +138,12 @@ __syrk<double, basic_srsmatrix<double> >
     const double* pA, tint ldA,
     double beta, basic_srsmatrix<double>& m)
 {
-    DSYRK (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    DSYRK(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            bTransp ? Chars::pT() : Chars::pN(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), &k, &alpha, pA, &ldA, &beta, m, m._pld());
@@ -158,12 +158,12 @@ __syr2k<float, basic_srsmatrix<float> >
     const float* pB, tint ldB,
     float beta, basic_srsmatrix<float>& m)
 {
-    SSYR2K (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    SSYR2K(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            bTransp ? Chars::pT() : Chars::pN(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), &k, &alpha, pA, &ldA, pB, &ldB, &beta, m, m._pld());
@@ -178,12 +178,12 @@ __syr2k<double, basic_srsmatrix<double> >
     const double* pB, tint ldB,
     double beta, basic_srsmatrix<double>& m)
 {
-    DSYR2K (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    DSYR2K(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            bTransp ? Chars::pT() : Chars::pN(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), &k, &alpha, pA, &ldA, pB, &ldB, &beta, m, m._pld());
@@ -195,7 +195,7 @@ CVM_API void
 __qre<basic_rmatrix<float>, basic_srmatrix<float> >
     (const basic_rmatrix<float>& mArg, 
     basic_rmatrix<float>& mQ, 
-    basic_srmatrix<float>& mR) throw (cvmexception)
+    basic_srmatrix<float>& mR) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -203,7 +203,7 @@ __qre<basic_rmatrix<float>, basic_srmatrix<float> >
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_rvector<float> vTau (nK);
+    basic_rvector<float> vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -241,7 +241,7 @@ CVM_API void
 __qre<basic_rmatrix<double>, basic_srmatrix<double> >
     (const basic_rmatrix<double>& mArg, 
     basic_rmatrix<double>& mQ, 
-    basic_srmatrix<double>& mR) throw (cvmexception)
+    basic_srmatrix<double>& mR) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -249,7 +249,7 @@ __qre<basic_rmatrix<double>, basic_srmatrix<double> >
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_rvector<double> vTau (nK);
+    basic_rvector<double> vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -287,19 +287,19 @@ CVM_API void
 __qrf<basic_rmatrix<float>, basic_srmatrix<float> >
     (const basic_rmatrix<float>& mArg, 
     basic_srmatrix<float>& mQ, 
-    basic_rmatrix<float>& mR) throw (cvmexception)
+    basic_rmatrix<float>& mR) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
     const tint nK = _cvm_min<tint>(nM, nN);
 
     // unlike "economy" mode, we need a copy here since Q will be m x m and this may bigger than original A
-    basic_rmatrix<float> mA (nM, nN <= nM ? nM : nN);
+    basic_rmatrix<float> mA(nM, nN <= nM ? nM : nN);
 
     // copy over argument matrix
-    mA.assign (CVM0, CVM0, mArg);
+    mA.assign(CVM0, CVM0, mArg);
 
-    basic_rvector<float> vTau (nK);
+    basic_rvector<float> vTau(nK);
 
     tint row, col;
     tint lWork = -1;
@@ -333,7 +333,7 @@ __qrf<basic_rmatrix<float>, basic_srmatrix<float> >
 
     // is Q big enough to have all conents of mA ?
     if (nN <= nM)
-        mQ.assign (CVM0, CVM0, mA);
+        mQ.assign(CVM0, CVM0, mA);
     else
         for (row = CVM0; row < nM + CVM0; ++row)
             for (col = CVM0; col < nM + CVM0; ++col)
@@ -346,19 +346,19 @@ CVM_API void
 __qrf<basic_rmatrix<double>, basic_srmatrix<double> >
     (const basic_rmatrix<double>& mArg, 
     basic_srmatrix<double>& mQ, 
-    basic_rmatrix<double>& mR) throw (cvmexception)
+    basic_rmatrix<double>& mR) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
     const tint nK = _cvm_min<tint>(nM, nN);
 
     // unlike "economy" mode, we need a copy here since Q will be m x m and this may bigger than original A
-    basic_rmatrix<double> mA (nM, nN <= nM ? nM : nN);
+    basic_rmatrix<double> mA(nM, nN <= nM ? nM : nN);
 
     // copy over argument matrix
-    mA.assign (CVM0, CVM0, mArg);
+    mA.assign(CVM0, CVM0, mArg);
 
-    basic_rvector<double> vTau (nK);
+    basic_rvector<double> vTau(nK);
 
     tint row, col;
     tint lWork = -1;
@@ -392,7 +392,7 @@ __qrf<basic_rmatrix<double>, basic_srmatrix<double> >
 
     // is Q big enough to have all conents of mA ?
     if (nN <= nM)
-        mQ.assign (CVM0, CVM0, mA);
+        mQ.assign(CVM0, CVM0, mA);
     else
         for (row = CVM0; row < nM + CVM0; ++row)
             for (col = CVM0; col < nM + CVM0; ++col)
@@ -407,7 +407,7 @@ CVM_API void
 __rqe<basic_rmatrix<float>, basic_srmatrix<float> >
     (const basic_rmatrix<float>& mArg, 
     basic_srmatrix<float>& mR,
-    basic_rmatrix<float>& mQ) throw (cvmexception)
+    basic_rmatrix<float>& mQ) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -415,7 +415,7 @@ __rqe<basic_rmatrix<float>, basic_srmatrix<float> >
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
 
-    basic_rvector<float> vTau (nM);
+    basic_rvector<float> vTau(nM);
 
     tint row, col;
     tint lWork = -1;
@@ -439,12 +439,12 @@ __rqe<basic_rmatrix<float>, basic_srmatrix<float> >
 
     // calculate size of workspace for finding Q that is m x n
     lWork = -1;
-    SORGRQ (&nM, &nN, &nM, mQ, mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    SORGRQ(&nM, &nN, &nM, mQ, mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q that is m x n
-    SORGRQ (&nM, &nN, &nM, mQ, mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
+    SORGRQ(&nM, &nN, &nM, mQ, mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 }
 
@@ -455,7 +455,7 @@ CVM_API void
 __rqe<basic_rmatrix<double>, basic_srmatrix<double> >
     (const basic_rmatrix<double>& mArg, 
     basic_srmatrix<double>& mR,
-    basic_rmatrix<double>& mQ) throw (cvmexception)
+    basic_rmatrix<double>& mQ) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -463,7 +463,7 @@ __rqe<basic_rmatrix<double>, basic_srmatrix<double> >
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
 
-    basic_rvector<double> vTau (nM);
+    basic_rvector<double> vTau(nM);
 
     tint row, col;
     tint lWork = -1;
@@ -487,12 +487,12 @@ __rqe<basic_rmatrix<double>, basic_srmatrix<double> >
 
     // calculate size of workspace for finding Q that is m x n
     lWork = -1;
-    DORGRQ (&nM, &nN, &nM, mQ, mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    DORGRQ(&nM, &nN, &nM, mQ, mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q that is m x n
-    DORGRQ (&nM, &nN, &nM, mQ, mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
+    DORGRQ(&nM, &nN, &nM, mQ, mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 }
 
@@ -503,18 +503,18 @@ CVM_API void
 __rqf<basic_rmatrix<float>, basic_srmatrix<float> >
     (const basic_rmatrix<float>& mArg, 
     basic_rmatrix<float>& mR,
-    basic_srmatrix<float>& mQ) throw (cvmexception)
+    basic_srmatrix<float>& mQ) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
 
     // unlike "economy" mode, we need a copy here since Q will be n x n and this may be bigger than original A
-    basic_rmatrix<float> mA (nN, nN);
+    basic_rmatrix<float> mA(nN, nN);
 
     // copy over argument matrix
-    mA.assign (CVM0, CVM0, mArg);
+    mA.assign(CVM0, CVM0, mArg);
 
-    basic_rvector<float> vTau (nM);
+    basic_rvector<float> vTau(nM);
 
     tint row, col;
     tint lWork = -1;
@@ -538,12 +538,12 @@ __rqf<basic_rmatrix<float>, basic_srmatrix<float> >
 
     // calculate size of workspace for finding Q that is n x n
     lWork = -1;
-    SORGRQ (&nM, &nN, &nM, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    SORGRQ(&nM, &nN, &nM, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q that is n x n
-    SORGRQ (&nM, &nN, &nM, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
+    SORGRQ(&nM, &nN, &nM, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     for (row = CVM0; row < nM + CVM0; ++row)
@@ -558,18 +558,18 @@ CVM_API void
 __rqf<basic_rmatrix<double>, basic_srmatrix<double> >
     (const basic_rmatrix<double>& mArg, 
     basic_rmatrix<double>& mR,
-    basic_srmatrix<double>& mQ) throw (cvmexception)
+    basic_srmatrix<double>& mQ) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
 
     // unlike "economy" mode, we need a copy here since Q will be n x n and this may be bigger than original A
-    basic_rmatrix<double> mA (nN, nN);
+    basic_rmatrix<double> mA(nN, nN);
 
     // copy over argument matrix
-    mA.assign (CVM0, CVM0, mArg);
+    mA.assign(CVM0, CVM0, mArg);
 
-    basic_rvector<double> vTau (nM);
+    basic_rvector<double> vTau(nM);
 
     tint row, col;
     tint lWork = -1;
@@ -593,12 +593,12 @@ __rqf<basic_rmatrix<double>, basic_srmatrix<double> >
 
     // calculate size of workspace for finding Q that is n x n
     lWork = -1;
-    DORGRQ (&nM, &nN, &nM, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    DORGRQ(&nM, &nN, &nM, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q that is n x n
-    DORGRQ (&nM, &nN, &nM, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
+    DORGRQ(&nM, &nN, &nM, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     for (row = CVM0; row < nM + CVM0; ++row)
@@ -613,7 +613,7 @@ CVM_API void
 __lqe<basic_rmatrix<float>, basic_srmatrix<float> >
     (const basic_rmatrix<float>& mArg, 
     basic_srmatrix<float>& mL, 
-    basic_rmatrix<float>& mQ) throw (cvmexception)
+    basic_rmatrix<float>& mQ) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -621,7 +621,7 @@ __lqe<basic_rmatrix<float>, basic_srmatrix<float> >
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_rvector<float> vTau (nK);
+    basic_rvector<float> vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -644,12 +644,12 @@ __lqe<basic_rmatrix<float>, basic_srmatrix<float> >
 
     // calculate size of workspace for finding Q
     lWork = -1;
-    SORGLQ (&nK, &nN, &nK, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    SORGLQ(&nK, &nN, &nK, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q
-    SORGLQ (&nK, &nN, &nK, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
+    SORGLQ(&nK, &nN, &nK, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 }
 
@@ -658,7 +658,7 @@ CVM_API void
 __lqe<basic_rmatrix<double>, basic_srmatrix<double> >
     (const basic_rmatrix<double>& mArg, 
     basic_srmatrix<double>& mL, 
-    basic_rmatrix<double>& mQ) throw (cvmexception)
+    basic_rmatrix<double>& mQ) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -666,7 +666,7 @@ __lqe<basic_rmatrix<double>, basic_srmatrix<double> >
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_rvector<double> vTau (nK);
+    basic_rvector<double> vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -689,12 +689,12 @@ __lqe<basic_rmatrix<double>, basic_srmatrix<double> >
 
     // calculate size of workspace for finding Q
     lWork = -1;
-    DORGLQ (&nK, &nN, &nK, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    DORGLQ(&nK, &nN, &nK, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q
-    DORGLQ (&nK, &nN, &nK, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
+    DORGLQ(&nK, &nN, &nK, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 }
 
@@ -704,19 +704,19 @@ CVM_API void
 __lqf<basic_rmatrix<float>, basic_srmatrix<float> >
     (const basic_rmatrix<float>& mArg, 
     basic_rmatrix<float>& mL, 
-    basic_srmatrix<float>& mQ) throw (cvmexception)
+    basic_srmatrix<float>& mQ) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
     const tint nK = _cvm_min<tint>(nM, nN);
 
     // unlike "economy" mode, we need a copy here since Q will be n x n and this may bigger than original A
-    basic_rmatrix<float> mA (nM <= nN ? nN : nM, nN);
+    basic_rmatrix<float> mA(nM <= nN ? nN : nM, nN);
 
     // copy over argument matrix
-    mA.assign (CVM0, CVM0, mArg);
+    mA.assign(CVM0, CVM0, mArg);
 
-    basic_rvector<float> vTau (nK);
+    basic_rvector<float> vTau(nK);
 
     tint row, col;
     tint lWork = -1;
@@ -740,17 +740,17 @@ __lqf<basic_rmatrix<float>, basic_srmatrix<float> >
 
     // calculate size of workspace for finding Q that is m x m
     lWork = -1;
-    SORGLQ (&nN, &nN, &nK, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    SORGLQ(&nN, &nN, &nK, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q that is n x n
-    SORGLQ (&nN, &nN, &nK, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
+    SORGLQ(&nN, &nN, &nK, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     // is Q big enough to have all conents of mA ?
     if (nM <= nN)
-        mQ.assign (CVM0, CVM0, mA);
+        mQ.assign(CVM0, CVM0, mA);
     else
         for (row = CVM0; row < nN + CVM0; ++row)
             for (col = CVM0; col < nN + CVM0; ++col)
@@ -763,19 +763,19 @@ CVM_API void
 __lqf<basic_rmatrix<double>, basic_srmatrix<double> >
     (const basic_rmatrix<double>& mArg, 
     basic_rmatrix<double>& mL, 
-    basic_srmatrix<double>& mQ) throw (cvmexception)
+    basic_srmatrix<double>& mQ) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
     const tint nK = _cvm_min<tint>(nM, nN);
 
     // unlike "economy" mode, we need a copy here since Q will be n x n and this may bigger than original A
-    basic_rmatrix<double> mA (nM <= nN ? nN : nM, nN);
+    basic_rmatrix<double> mA(nM <= nN ? nN : nM, nN);
 
     // copy over argument matrix
-    mA.assign (CVM0, CVM0, mArg);
+    mA.assign(CVM0, CVM0, mArg);
 
-    basic_rvector<double> vTau (nK);
+    basic_rvector<double> vTau(nK);
 
     tint row, col;
     tint lWork = -1;
@@ -799,17 +799,17 @@ __lqf<basic_rmatrix<double>, basic_srmatrix<double> >
 
     // calculate size of workspace for finding Q that is m x m
     lWork = -1;
-    DORGLQ (&nN, &nN, &nK, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    DORGLQ(&nN, &nN, &nK, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q that is n x n
-    DORGLQ (&nN, &nN, &nK, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
+    DORGLQ(&nN, &nN, &nK, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     // is Q big enough to have all conents of mA ?
     if (nM <= nN)
-        mQ.assign (CVM0, CVM0, mA);
+        mQ.assign(CVM0, CVM0, mA);
     else
         for (row = CVM0; row < nN + CVM0; ++row)
             for (col = CVM0; col < nN + CVM0; ++col)
@@ -823,7 +823,7 @@ CVM_API void
 __qle<basic_rmatrix<float>, basic_srmatrix<float> >
     (const basic_rmatrix<float>& mArg, 
     basic_rmatrix<float>& mQ,
-    basic_srmatrix<float>& mL) throw (cvmexception)
+    basic_srmatrix<float>& mL) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -831,7 +831,7 @@ __qle<basic_rmatrix<float>, basic_srmatrix<float> >
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_rvector<float> vTau (nK);
+    basic_rvector<float> vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -854,12 +854,12 @@ __qle<basic_rmatrix<float>, basic_srmatrix<float> >
 
     // calculate size of workspace for finding Q
     lWork = -1;
-    SORGQL (&nM, &nN, &nK, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    SORGQL(&nM, &nN, &nK, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q
-    SORGQL (&nM, &nN, &nK, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
+    SORGQL(&nM, &nN, &nK, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 }
 
@@ -870,7 +870,7 @@ CVM_API void
 __qle<basic_rmatrix<double>, basic_srmatrix<double> >
     (const basic_rmatrix<double>& mArg, 
     basic_rmatrix<double>& mQ,
-    basic_srmatrix<double>& mL) throw (cvmexception)
+    basic_srmatrix<double>& mL) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -878,7 +878,7 @@ __qle<basic_rmatrix<double>, basic_srmatrix<double> >
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_rvector<double> vTau (nK);
+    basic_rvector<double> vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -901,12 +901,12 @@ __qle<basic_rmatrix<double>, basic_srmatrix<double> >
 
     // calculate size of workspace for finding Q
     lWork = -1;
-    DORGQL (&nM, &nN, &nK, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    DORGQL(&nM, &nN, &nK, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q
-    DORGQL (&nM, &nN, &nK, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
+    DORGQL(&nM, &nN, &nK, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 }
 
@@ -917,18 +917,18 @@ CVM_API void
 __qlf<basic_rmatrix<float>, basic_srmatrix<float> >
     (const basic_rmatrix<float>& mArg, 
     basic_srmatrix<float>& mQ,
-    basic_rmatrix<float>& mL) throw (cvmexception)
+    basic_rmatrix<float>& mL) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
 
     // unlike "economy" mode, we need a copy here since Q will be m x m and this may be bigger than original A
-    basic_rmatrix<float> mA (nM, nM);
+    basic_rmatrix<float> mA(nM, nM);
 
     // copy over argument matrix
-    mA.assign (CVM0, CVM0, mArg);
+    mA.assign(CVM0, CVM0, mArg);
 
-    basic_rvector<float> vTau (nN);
+    basic_rvector<float> vTau(nN);
 
     tint row, col;
     tint lWork = -1;
@@ -952,12 +952,12 @@ __qlf<basic_rmatrix<float>, basic_srmatrix<float> >
 
     // calculate size of workspace for finding Q that is n x n
     lWork = -1;
-    SORGQL (&nM, &nN, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    SORGQL(&nM, &nN, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q that is n x n
-    SORGQL (&nM, &nN, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
+    SORGQL(&nM, &nN, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     for (row = CVM0; row < nM + CVM0; ++row)
@@ -972,18 +972,18 @@ CVM_API void
 __qlf<basic_rmatrix<double>, basic_srmatrix<double> >
     (const basic_rmatrix<double>& mArg, 
     basic_srmatrix<double>& mQ,
-    basic_rmatrix<double>& mL) throw (cvmexception)
+    basic_rmatrix<double>& mL) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
 
     // unlike "economy" mode, we need a copy here since Q will be m x m and this may be bigger than original A
-    basic_rmatrix<double> mA (nM, nM);
+    basic_rmatrix<double> mA(nM, nM);
 
     // copy over argument matrix
-    mA.assign (CVM0, CVM0, mArg);
+    mA.assign(CVM0, CVM0, mArg);
 
-    basic_rvector<double> vTau (nN);
+    basic_rvector<double> vTau(nN);
 
     tint row, col;
     tint lWork = -1;
@@ -1007,12 +1007,12 @@ __qlf<basic_rmatrix<double>, basic_srmatrix<double> >
 
     // calculate size of workspace for finding Q that is n x n
     lWork = -1;
-    DORGQL (&nM, &nN, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
+    DORGQL(&nM, &nN, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork);
     if (lWork > vWork.size()) vWork.resize(lWork);
 
     // find Q that is n x n
-    DORGQL (&nM, &nN, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
+    DORGQL(&nM, &nN, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     for (row = CVM0; row < nM + CVM0; ++row)
@@ -1028,7 +1028,7 @@ __gels<basic_rmatrix<float>, basic_rvector<float> >
     basic_rmatrix<float>& mA,
     const basic_rmatrix<float>& mB,
     basic_rmatrix<float>& mX,  // output: will be resized anyway, so better pass it empty
-    basic_rvector<float>& vErr) throw (cvmexception)
+    basic_rvector<float>& vErr) throw(cvmexception)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1044,8 +1044,8 @@ __gels<basic_rmatrix<float>, basic_rvector<float> >
     mX.assign(CVM0, CVM0, mB);
 
     // calculate size of workspace
-    SGELS (trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    SGELS(trans,
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), &dWork, &lWork, &nOutInfo);
@@ -1053,8 +1053,8 @@ __gels<basic_rmatrix<float>, basic_rvector<float> >
     lWork = static_cast<tint>(dWork);
     basic_rvector<float> vWork(lWork);
 
-    SGELS (trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    SGELS(trans,
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), vWork, &lWork, &nOutInfo);
@@ -1082,7 +1082,7 @@ __gels<basic_rmatrix<double>, basic_rvector<double> >
     basic_rmatrix<double>& mA,
     const basic_rmatrix<double>& mB,
     basic_rmatrix<double>& mX,  // output: will be resized anyway, so better pass it empty
-    basic_rvector<double>& vErr) throw (cvmexception)
+    basic_rvector<double>& vErr) throw(cvmexception)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1098,8 +1098,8 @@ __gels<basic_rmatrix<double>, basic_rvector<double> >
     mX.assign(CVM0, CVM0, mB);
 
     // calculate size of workspace
-    DGELS (trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    DGELS(trans,
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), &dWork, &lWork, &nOutInfo);
@@ -1107,8 +1107,8 @@ __gels<basic_rmatrix<double>, basic_rvector<double> >
     lWork = static_cast<tint>(dWork);
     basic_rvector<double> vWork(lWork);
 
-    DGELS (trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    DGELS(trans,
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), vWork, &lWork, &nOutInfo);
@@ -1136,7 +1136,7 @@ __gelsy<float, basic_rmatrix<float> >
     const basic_rmatrix<float>& mB,
     basic_rmatrix<float>& mX,  // output: will be resized anyway, so better pass it empty
     float rcond,
-    tint& rank) throw (cvmexception)
+    tint& rank) throw(cvmexception)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1151,13 +1151,13 @@ __gelsy<float, basic_rmatrix<float> >
     mX.assign(CVM0, CVM0, mB);
 
     // calculate size of workspace
-    SGELSY (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    SGELSY(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             jpvt, &rcond, &rank, &dWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork);
     basic_rvector<float> vWork(lWork);
 
-    SGELSY (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    SGELSY(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             jpvt, &rcond, &rank, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
@@ -1171,7 +1171,7 @@ __gelsy<double, basic_rmatrix<double> >
     const basic_rmatrix<double>& mB,
     basic_rmatrix<double>& mX,  // output: will be resized anyway, so better pass it empty
     double rcond,
-    tint& rank) throw (cvmexception)
+    tint& rank) throw(cvmexception)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1186,13 +1186,13 @@ __gelsy<double, basic_rmatrix<double> >
     mX.assign(CVM0, CVM0, mB);
 
     // calculate size of workspace
-    DGELSY (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    DGELSY(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             jpvt, &rcond, &rank, &dWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork);
     basic_rvector<double> vWork(lWork);
 
-    DGELSY (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    DGELSY(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             jpvt, &rcond, &rank, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
@@ -1207,7 +1207,7 @@ __gelss<float, basic_rvector<float>, basic_rmatrix<float> >
     basic_rmatrix<float>& mX,  // output: will be resized anyway, so better pass it empty
     float rcond,
     basic_rvector<float>& vSV, // incr=1 required
-    tint& rank) throw (cvmexception)
+    tint& rank) throw(cvmexception)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1221,13 +1221,13 @@ __gelss<float, basic_rvector<float>, basic_rmatrix<float> >
     mX.assign(CVM0, CVM0, mB);
 
     // calculate size of workspace
-    SGELSS (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    SGELSS(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             vSV, &rcond, &rank, &dWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork);
     basic_rvector<float> vWork(lWork);
 
-    SGELSS (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    SGELSS(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             vSV, &rcond, &rank, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
@@ -1242,7 +1242,7 @@ __gelss<double, basic_rvector<double>, basic_rmatrix<double> >
     basic_rmatrix<double>& mX,  // output: will be resized anyway, so better pass it empty
     double rcond,
     basic_rvector<double>& vSV, // incr=1 required
-    tint& rank) throw (cvmexception)
+    tint& rank) throw(cvmexception)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1256,13 +1256,13 @@ __gelss<double, basic_rvector<double>, basic_rmatrix<double> >
     mX.assign(CVM0, CVM0, mB);
 
     // calculate size of workspace
-    DGELSS (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    DGELSS(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             vSV, &rcond, &rank, &dWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork);
     basic_rvector<double> vWork(lWork);
 
-    DGELSS (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    DGELSS(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             vSV, &rcond, &rank, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
@@ -1277,7 +1277,7 @@ __gelsd<float, basic_rvector<float>, basic_rmatrix<float> >
     basic_rmatrix<float>& mX,  // output: will be resized anyway, so better pass it empty
     float rcond,
     basic_rvector<float>& vSV, // incr=1 required
-    tint& rank) throw (cvmexception)
+    tint& rank) throw(cvmexception)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1292,14 +1292,14 @@ __gelsd<float, basic_rvector<float>, basic_rmatrix<float> >
     mX.assign(CVM0, CVM0, mB);
 
     // calculate size of workspace
-    SGELSD (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    SGELSD(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             vSV, &rcond, &rank, &dWork, &lWork, &iWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork);
     basic_rvector<float> vWork(lWork);
     basic_array<tint,tint> viWork(iWork);
 
-    SGELSD (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    SGELSD(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             vSV, &rcond, &rank, vWork, &lWork, viWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
@@ -1314,7 +1314,7 @@ __gelsd<double, basic_rvector<double>, basic_rmatrix<double> >
     basic_rmatrix<double>& mX,  // output: will be resized anyway, so better pass it empty
     double rcond,
     basic_rvector<double>& vSV, // incr=1 required
-    tint& rank) throw (cvmexception)
+    tint& rank) throw(cvmexception)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1329,14 +1329,14 @@ __gelsd<double, basic_rvector<double>, basic_rmatrix<double> >
     mX.assign(CVM0, CVM0, mB);
 
     // calculate size of workspace
-    DGELSD (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    DGELSD(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             vSV, &rcond, &rank, &dWork, &lWork, &iWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork);
     basic_rvector<double> vWork(lWork);
     basic_array<tint,tint> viWork(iWork);
 
-    DGELSD (&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+    DGELSD(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             vSV, &rcond, &rank, vWork, &lWork, viWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 

@@ -33,7 +33,7 @@
 #define _CVM_H
 
 // 5.7 ILP64 support
-#if defined (CVM_ILP64)
+#if defined(CVM_ILP64)
     using tint = long long int; //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
 #   define TINT_ZERO (0LL)
 #   define TINT_ONE  (1LL)
@@ -59,7 +59,7 @@
 #   endif
 #endif
 
-#if (_MSC_VER >= 1800) && defined(__INTEL_COMPILER)
+#if(_MSC_VER >= 1800) && defined(__INTEL_COMPILER)
 #   pragma warning(disable:4267)
 #endif
 
@@ -233,7 +233,7 @@ using CVM_PTR_WRAPPER = unsigned long;
 
 // fix for missing __builtin_clog functions
 #if defined(__INTEL_COMPILER)
-#   if defined (_GLIBCXX_USE_C99_COMPLEX)
+#   if defined(_GLIBCXX_USE_C99_COMPLEX)
 #       undef _GLIBCXX_USE_C99_COMPLEX
 #       define _GLIBCXX_USE_C99_COMPLEX 0
 #   endif
@@ -607,7 +607,7 @@ CVM_API void __gelsd(TM& mA, const TM& mB, TM& mX, TR rcond, TV& vSV, tint& rank
 // 8.1 Generalized Eigenvalue Problem
 template<typename TSRM, typename TSCM, typename TRV, typename TCV>
 CVM_API void __ggev(TSRM& mA, TSRM& mB, TCV& vAlpha, TRV& vBeta,
-                    TSCM* mEigVectLeft, TSCM* mEigVectRight) throw (cvmexception);
+                    TSCM* mEigVectLeft, TSCM* mEigVectRight) throw(cvmexception);
 
 
 template<typename T>
@@ -2962,7 +2962,7 @@ prints
 
 //    deprecated since 5.4.2 due to its incosistency with STL counterpart
 //
-//    void reserve(size_type n) throw (cvmexception)
+//    void reserve(size_type n) throw(cvmexception)
 //    {
 //        this->_resize(tint(n));
 //    }
@@ -28194,7 +28194,7 @@ protected:
 #ifdef CVM_USE_POOL_MANAGER
     void _btransp() throw(cvmexception)
 #else
-    void _btransp(std::shared_ptr<TC>& mp)throw (cvmexception)
+    void _btransp(std::shared_ptr<TC>& mp) throw(cvmexception)
 #endif
     {
         TC* mpd = _pb();

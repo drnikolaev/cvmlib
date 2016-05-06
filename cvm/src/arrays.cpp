@@ -71,28 +71,28 @@ template<>
 CVM_API float __norm<float, float>(const float* mpd, tint nSize, tint nIncr)
 {
     CVM_ASSERT(mpd, ((nSize - CVM0) * nIncr + CVM0) * sizeof(float))
-    return SNRM2 (&nSize, mpd, &nIncr);
+    return SNRM2(&nSize, mpd, &nIncr);
 }
 
 template<>
 CVM_API double __norm<double, double>(const double* mpd, tint nSize, tint nIncr)
 {
     CVM_ASSERT(mpd, ((nSize - CVM0) * nIncr + CVM0) * sizeof(double))
-    return DNRM2 (&nSize, mpd, &nIncr);
+    return DNRM2(&nSize, mpd, &nIncr);
 }
 
 template<>
 CVM_API float __norm<float, std::complex<float> >(const std::complex<float>* mpd, tint nSize, tint nIncr)
 {
     CVM_ASSERT(mpd, ((nSize - CVM0) * nIncr + CVM0) * sizeof(std::complex<float>))
-    return SCNRM2 (&nSize, mpd, &nIncr);
+    return SCNRM2(&nSize, mpd, &nIncr);
 }
 
 template<>
 CVM_API double __norm<double, std::complex<double> >(const std::complex<double>* mpd, tint nSize, tint nIncr)
 {
     CVM_ASSERT(mpd, ((nSize - CVM0) * nIncr + CVM0) * sizeof(std::complex<double>))
-    return DZNRM2 (&nSize, mpd, &nIncr);
+    return DZNRM2(&nSize, mpd, &nIncr);
 }
 
 template<>

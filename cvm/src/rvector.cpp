@@ -14,13 +14,13 @@ CVM_NAMESPACE_BEG
 template<>
 CVM_API float __dot<float> (const float* mpd, tint mnSize, tint mnIncr, const float* pd, tint nIncr)
 {
-    return SDOT (&mnSize, mpd, &mnIncr, pd, &nIncr);
+    return SDOT(&mnSize, mpd, &mnIncr, pd, &nIncr);
 }
 
 template<>
 CVM_API double __dot<double> (const double* mpd, tint mnSize, tint mnIncr, const double* pd, tint nIncr)
 {
-    return DDOT (&mnSize, mpd, &mnIncr, pd, &nIncr);
+    return DDOT(&mnSize, mpd, &mnIncr, pd, &nIncr);
 }
 
 template<>
@@ -33,11 +33,11 @@ __gemv<float, basic_rmatrix<float>, basic_rvector<float> >
     float dBeta,
     basic_rvector<float>& vRes)
 {
-    SGEMV (bLeft ? Chars::pT() : Chars::pN(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+    SGEMV(bLeft ? Chars::pT() : Chars::pN(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+          1,
 #endif
-           m._pm(), m._pn(), &dAlpha, m._pd(), m._pldm(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
+          m._pm(), m._pn(), &dAlpha, m._pd(), m._pldm(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
 }
 
 template<>
@@ -50,11 +50,11 @@ __gemv<double, basic_rmatrix<double>, basic_rvector<double> >
     double dBeta,
     basic_rvector<double>& vRes)
 {
-    DGEMV (bLeft ? Chars::pT() : Chars::pN(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+    DGEMV(bLeft ? Chars::pT() : Chars::pN(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+          1,
 #endif
-           m._pm(), m._pn(), &dAlpha, m._pd(), m._pldm(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
+          m._pm(), m._pn(), &dAlpha, m._pd(), m._pldm(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
 }
 
 template<>
@@ -67,11 +67,11 @@ __gbmv<float, basic_srbmatrix<float>, basic_rvector<float> >
     float dBeta,
     basic_rvector<float>& vRes)
 {
-    SGBMV (bLeft ? Chars::pT() : Chars::pN(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+    SGBMV(bLeft ? Chars::pT() : Chars::pN(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+          1,
 #endif
-           m._pm(), m._pn(), m._pl(), m._pu(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
+          m._pm(), m._pn(), m._pl(), m._pu(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
 }
 
 template<>
@@ -84,11 +84,11 @@ __gbmv<double, basic_srbmatrix<double>, basic_rvector<double> >
     double dBeta,
     basic_rvector<double>& vRes)
 {
-    DGBMV (bLeft ? Chars::pT() : Chars::pN(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+    DGBMV(bLeft ? Chars::pT() : Chars::pN(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+          1,
 #endif
-           m._pm(), m._pn(), m._pl(), m._pu(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
+          m._pm(), m._pn(), m._pl(), m._pu(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
 }
 
 template<>
@@ -100,11 +100,11 @@ __symv<float, basic_srsmatrix<float>, basic_rvector<float> >
     float dBeta,
     basic_rvector<float>& vRes)
 {
-    SSYMV (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+    SSYMV(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+          1,
 #endif
-           m._pm(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
+          m._pm(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
 }
 
 template<>
@@ -116,11 +116,11 @@ __symv<double, basic_srsmatrix<double>, basic_rvector<double> >
     double dBeta,
     basic_rvector<double>& vRes)
 {
-    DSYMV (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+    DSYMV(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+          1,
 #endif
-           m._pm(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
+          m._pm(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
 }
 
 template<>
@@ -129,7 +129,7 @@ __svd<float, basic_rmatrix<float>, basic_srmatrix<float> >
     (float* pd, tint nSize, tint nIncr, 
     const basic_rmatrix<float>& mArg,
     basic_srmatrix<float>* mU,
-    basic_srmatrix<float>* mVH) throw (cvmexception)
+    basic_srmatrix<float>* mVH) throw(cvmexception)
 {
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     const tint nM = mArg.msize();
@@ -143,57 +143,57 @@ __svd<float, basic_rmatrix<float>, basic_srmatrix<float> >
 
     _check_ne(CVM_SIZESMISMATCH, m, nSize);
 
-    basic_rvector<float> mD (nSize);
-    mD.assign (pd, nIncr);
+    basic_rvector<float> mD(nSize);
+    mD.assign(pd, nIncr);
 
-    basic_rvector<float> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_rvector<float> vTauQ (m);
-    basic_rvector<float> vTauP (m);
-    basic_rmatrix<float> mA (mArg);
+    basic_rvector<float> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_rvector<float> vTauQ(m);
+    basic_rvector<float> vTauP(m);
+    basic_rmatrix<float> mA(mArg);
     float dwork;
 
-    SGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
+    SGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork);
-    basic_rvector<float> vwork (lwork);
-    SGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
+    basic_rvector<float> vwork(lwork);
+    SGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     if (bSimple)
     {
         if (m4 > vwork.size()) vwork.resize(m4);
-        SBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+        SBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+               1,
 #endif
-                &m,
-                &zero, &zero, &zero,
-                mD, vOffDiag,
-                nullptr, &one, nullptr, &one, nullptr, &one,
-                vwork, &nOutInfo);
+               &m,
+               &zero, &zero, &zero,
+               mD, vOffDiag,
+               nullptr, &one, nullptr, &one, nullptr, &one,
+               vwork, &nOutInfo);
     }
     else
     {
-        basic_rmatrix<float> Q (mA);
-        basic_rmatrix<float> P (mA);
+        basic_rmatrix<float> Q(mA);
+        basic_rmatrix<float> P(mA);
 
         if (nM > nN) Q.resize(nM, nM);
         if (nM < nN) P.resize(nN, nN);
 
         lwork = -1;
-        SORGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+        SORGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+               1,
 #endif
-                &nM, &nM, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                &dwork, &lwork, &nOutInfo);
+               &nM, &nM, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         lwork = static_cast<tint>(dwork);
         if (lwork > vwork.size()) vwork.resize(lwork);
 
-        SORGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        SORGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &nM, &nN,
@@ -203,8 +203,8 @@ __svd<float, basic_rmatrix<float>, basic_srmatrix<float> >
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = -1;
-        SORGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        SORGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nN, &nN, &nM,
@@ -215,8 +215,8 @@ __svd<float, basic_rmatrix<float>, basic_srmatrix<float> >
         lwork = static_cast<tint>(dwork);
         if (lwork > vwork.size()) vwork.resize(lwork);
 
-        SORGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        SORGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nN, &nN, &nM,
@@ -226,8 +226,8 @@ __svd<float, basic_rmatrix<float>, basic_srmatrix<float> >
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         if (m4 > vwork.size()) vwork.resize(m4);
-        SBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        SBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m,
@@ -252,7 +252,7 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
     (double* pd, tint nSize, tint nIncr, 
     const basic_rmatrix<double>& mArg,
     basic_srmatrix<double>* mU,
-    basic_srmatrix<double>* mVH) throw (cvmexception)
+    basic_srmatrix<double>* mVH) throw(cvmexception)
 {
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     const tint nM = mArg.msize();
@@ -266,26 +266,26 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
 
     _check_ne(CVM_SIZESMISMATCH, m, nSize);
 
-    basic_rvector<double> mD (nSize);
-    mD.assign (pd, nIncr);
+    basic_rvector<double> mD(nSize);
+    mD.assign(pd, nIncr);
 
-    basic_rvector<double> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_rvector<double> vTauQ (m);
-    basic_rvector<double> vTauP (m);
-    basic_rmatrix<double> mA (mArg);
+    basic_rvector<double> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_rvector<double> vTauQ(m);
+    basic_rvector<double> vTauP(m);
+    basic_rmatrix<double> mA(mArg);
     double dwork;
 
-    DGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
+    DGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork);
     basic_rvector<double> vwork(lwork);
-    DGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
+    DGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     if (bSimple)
     {
         if (m4 > vwork.size()) vwork.resize(m4);
-        DBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m,
@@ -296,15 +296,15 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
     }
     else
     {
-        basic_rmatrix<double> Q (mA);
-        basic_rmatrix<double> P (mA);
+        basic_rmatrix<double> Q(mA);
+        basic_rmatrix<double> P(mA);
 
         if (nM > nN) Q.resize(nM, nM);
         if (nM < nN) P.resize(nN, nN);
 
         lwork = -1;
-        DORGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DORGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &nM, &nN,
@@ -315,8 +315,8 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
         lwork = static_cast<tint>(dwork);
         if (lwork > vwork.size()) vwork.resize(lwork);
 
-        DORGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DORGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &nM, &nN,
@@ -326,8 +326,8 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = -1;
-        DORGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DORGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nN, &nN, &nM,
@@ -338,8 +338,8 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
         lwork = static_cast<tint>(dwork);
         if (lwork > vwork.size()) vwork.resize(lwork);
 
-        DORGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DORGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nN, &nN, &nM,
@@ -349,8 +349,8 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         if (m4 > vwork.size()) vwork.resize(m4);
-        DBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m,
@@ -376,7 +376,7 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
     (float* pd, tint nSize, tint nIncr,
     const basic_cmatrix<float, std::complex<float> >& mArg,
     basic_scmatrix<float, std::complex<float> >* mU,
-    basic_scmatrix<float, std::complex<float> >* mVH) throw (cvmexception)
+    basic_scmatrix<float, std::complex<float> >* mVH) throw(cvmexception)
 {
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     const tint nM = mArg.msize();
@@ -389,26 +389,26 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
 
     _check_ne(CVM_SIZESMISMATCH, m, nSize);
 
-    basic_rvector<float> mD (nSize);
-    mD.assign (pd, nIncr);
+    basic_rvector<float> mD(nSize);
+    mD.assign(pd, nIncr);
 
-    basic_rvector<float> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_cvector<float, std::complex<float> > vTauQ (m);
-    basic_cvector<float, std::complex<float> > vTauP (m);
-    basic_cmatrix<float, std::complex<float> > mA (mArg);
-    basic_rvector<float> rwork (m * 4);
+    basic_rvector<float> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_cvector<float, std::complex<float> > vTauQ(m);
+    basic_cvector<float, std::complex<float> > vTauP(m);
+    basic_cmatrix<float, std::complex<float> > mA(mArg);
+    basic_rvector<float> rwork(m * 4);
     std::complex<float> dwork;
 
-    CGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
+    CGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork.real());
-    basic_cvector<float, std::complex<float> > vwork (lwork);
-    CGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
+    basic_cvector<float, std::complex<float> > vwork(lwork);
+    CGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     if (bSimple)
     {
-        CBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        CBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m,
@@ -419,15 +419,15 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
     }
     else
     {
-        basic_cmatrix<float, std::complex<float> > Q (mA);
-        basic_cmatrix<float, std::complex<float> > P (mA);
+        basic_cmatrix<float, std::complex<float> > Q(mA);
+        basic_cmatrix<float, std::complex<float> > P(mA);
 
         if (nM > nN) Q.resize(nM, nM);
         if (nM < nN) P.resize(nN, nN);
 
         lwork = -1;
-        CUNGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        CUNGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &nM, &nN,
@@ -438,8 +438,8 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
         lwork = static_cast<tint>(dwork.real());
         if (lwork > vwork.size()) vwork.resize(lwork);
 
-        CUNGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        CUNGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &nM, &nN,
@@ -449,8 +449,8 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = -1;
-        CUNGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        CUNGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nN, &nN, &nM,
@@ -461,8 +461,8 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
         lwork = static_cast<tint>(dwork.real());
         if (lwork > vwork.size()) vwork.resize(lwork);
 
-        CUNGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        CUNGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nN, &nN, &nM,
@@ -471,8 +471,8 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
                 vwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-        CBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        CBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m,
@@ -497,7 +497,7 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
     (double* pd, tint nSize, tint nIncr,
     const basic_cmatrix<double, std::complex<double> >& mArg,
     basic_scmatrix<double, std::complex<double> >* mU,
-    basic_scmatrix<double, std::complex<double> >* mVH) throw (cvmexception)
+    basic_scmatrix<double, std::complex<double> >* mVH) throw(cvmexception)
 {
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     const tint nM = mArg.msize();
@@ -510,26 +510,26 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
 
     _check_ne(CVM_SIZESMISMATCH, m, nSize);
 
-    basic_rvector<double> mD (nSize);
-    mD.assign (pd, nIncr);
+    basic_rvector<double> mD(nSize);
+    mD.assign(pd, nIncr);
 
-    basic_rvector<double> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_cvector<double, std::complex<double> > vTauQ (m);
-    basic_cvector<double, std::complex<double> > vTauP (m);
-    basic_cmatrix<double, std::complex<double> > mA (mArg);
-    basic_rvector<double> rwork (m * 4);
+    basic_rvector<double> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_cvector<double, std::complex<double> > vTauQ(m);
+    basic_cvector<double, std::complex<double> > vTauP(m);
+    basic_cmatrix<double, std::complex<double> > mA(mArg);
+    basic_rvector<double> rwork(m * 4);
     std::complex<double> dwork;
 
-    ZGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
+    ZGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork.real());
-    basic_cvector<double, std::complex<double> > vwork (lwork);
-    ZGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
+    basic_cvector<double, std::complex<double> > vwork(lwork);
+    ZGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     if (bSimple)
     {
-        ZBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        ZBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m,
@@ -540,15 +540,15 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
     }
     else
     {
-        basic_cmatrix<double, std::complex<double> > Q (mA);
-        basic_cmatrix<double, std::complex<double> > P (mA);
+        basic_cmatrix<double, std::complex<double> > Q(mA);
+        basic_cmatrix<double, std::complex<double> > P(mA);
 
         if (nM > nN) Q.resize(nM, nM);
         if (nM < nN) P.resize(nN, nN);
 
         lwork = -1;
-        ZUNGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        ZUNGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &nM, &nN,
@@ -559,8 +559,8 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
         lwork = static_cast<tint>(dwork.real());
         if (lwork > vwork.size()) vwork.resize(lwork);
 
-        ZUNGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        ZUNGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &nM, &nN,
@@ -570,8 +570,8 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = -1;
-        ZUNGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        ZUNGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nN, &nN, &nM,
@@ -582,8 +582,8 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
         lwork = static_cast<tint>(dwork.real());
         if (lwork > vwork.size()) vwork.resize(lwork);
 
-        ZUNGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        ZUNGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nN, &nN, &nM,
@@ -592,8 +592,8 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
                 vwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-        ZBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        ZBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m,
@@ -619,7 +619,7 @@ __svd<float, basic_srbmatrix<float>, basic_srmatrix<float> >
     (float* pd, tint nSize, tint nIncr,
     const basic_srbmatrix<float>& mArg,
     basic_srmatrix<float>* mU,
-    basic_srmatrix<float>* mVH) throw (cvmexception)
+    basic_srmatrix<float>* mVH) throw(cvmexception)
 {
     const tint zero(0);
     const tint m = mArg.msize();
@@ -629,18 +629,18 @@ __svd<float, basic_srbmatrix<float>, basic_srmatrix<float> >
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     tint nOutInfo = 0;
 
-    basic_rvector<float> mD (nSize);
-    mD.assign (pd, nIncr);
+    basic_rvector<float> mD(nSize);
+    mD.assign(pd, nIncr);
 
-    basic_rvector  <float> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_srmatrix <float> mQ       (bSimple ? 1 : m);
-    basic_srmatrix <float> mPT      (bSimple ? 1 : m);
-    basic_srmatrix <float> mC       (1);
-    basic_rvector  <float> vwork    (m * 4); // 2*max(M,N), but M==N, then sharing it with 4*N
-    basic_srbmatrix<float> mA       (mArg);
+    basic_rvector  <float> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_srmatrix <float> mQ(bSimple ? 1 : m);
+    basic_srmatrix <float> mPT(bSimple ? 1 : m);
+    basic_srmatrix <float> mC(1);
+    basic_rvector  <float> vwork(m * 4); // 2*max(M,N), but M==N, then sharing it with 4*N
+    basic_srbmatrix<float> mA(mArg);
 
-    SGBBRD (bSimple ? Chars::pN() : Chars::pB(), 
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    SGBBRD(bSimple ? Chars::pN() : Chars::pB(), 
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
@@ -651,8 +651,8 @@ __svd<float, basic_srbmatrix<float>, basic_srmatrix<float> >
             vwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    SBDSQR (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    SBDSQR(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -682,7 +682,7 @@ __svd<double, basic_srbmatrix<double>, basic_srmatrix<double> >
     (double* pd, tint nSize, tint nIncr,
     const basic_srbmatrix<double>& mArg,
     basic_srmatrix<double>* mU,
-    basic_srmatrix<double>* mVH) throw (cvmexception)
+    basic_srmatrix<double>* mVH) throw(cvmexception)
 {
     const tint zero(0);
     const tint m = mArg.msize();
@@ -692,18 +692,18 @@ __svd<double, basic_srbmatrix<double>, basic_srmatrix<double> >
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     tint nOutInfo = 0;
 
-    basic_rvector<double> mD (nSize);
-    mD.assign (pd, nIncr);
+    basic_rvector<double> mD(nSize);
+    mD.assign(pd, nIncr);
 
-    basic_rvector  <double> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_srmatrix <double> mQ       (bSimple ? 1 : m);
-    basic_srmatrix <double> mPT      (bSimple ? 1 : m);
-    basic_srmatrix <double> mC       (1);
-    basic_rvector  <double> vwork    (m * 4); // 2*max(M,N), but M==N, so sharing it with 4*N
-    basic_srbmatrix<double> mA       (mArg);
+    basic_rvector  <double> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_srmatrix <double> mQ(bSimple ? 1 : m);
+    basic_srmatrix <double> mPT(bSimple ? 1 : m);
+    basic_srmatrix <double> mC(1);
+    basic_rvector  <double> vwork(m * 4); // 2*max(M,N), but M==N, so sharing it with 4*N
+    basic_srbmatrix<double> mA(mArg);
 
-    DGBBRD (bSimple ? Chars::pN() : Chars::pB(), 
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    DGBBRD(bSimple ? Chars::pN() : Chars::pB(), 
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
@@ -714,8 +714,8 @@ __svd<double, basic_srbmatrix<double>, basic_srmatrix<double> >
             vwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    DBDSQR (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    DBDSQR(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -746,7 +746,7 @@ __svd<float, basic_scbmatrix<float, std::complex<float> >, basic_scmatrix<float,
     (float* pd, tint nSize, tint nIncr,
     const basic_scbmatrix<float, std::complex<float> >& mArg,
     basic_scmatrix<float, std::complex<float> >* mU,
-    basic_scmatrix<float, std::complex<float> >* mVH) throw (cvmexception)
+    basic_scmatrix<float, std::complex<float> >* mVH) throw(cvmexception)
 {
     const tint zero(0);
     const tint m = mArg.msize();
@@ -756,19 +756,19 @@ __svd<float, basic_scbmatrix<float, std::complex<float> >, basic_scmatrix<float,
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     tint nOutInfo = 0;
 
-    basic_rvector<float> mD (nSize);
-    mD.assign (pd, nIncr);
+    basic_rvector<float> mD(nSize);
+    mD.assign(pd, nIncr);
 
-    basic_rvector  <float> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_scmatrix <float, std::complex<float> > mQ (bSimple ? 1 : m);
-    basic_scmatrix <float, std::complex<float> > mPT (bSimple ? 1 : m);
-    basic_scmatrix <float, std::complex<float> > mC (1);
-    basic_cvector  <float, std::complex<float> > vwork (m);
-    basic_scbmatrix<float, std::complex<float> > mA (mArg);
-    basic_rvector  <float> vrwork (m * 4); // max(M,N), but M==N, so sharing it with 4*N
+    basic_rvector  <float> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_scmatrix <float, std::complex<float> > mQ(bSimple ? 1 : m);
+    basic_scmatrix <float, std::complex<float> > mPT(bSimple ? 1 : m);
+    basic_scmatrix <float, std::complex<float> > mC(1);
+    basic_cvector  <float, std::complex<float> > vwork(m);
+    basic_scbmatrix<float, std::complex<float> > mA(mArg);
+    basic_rvector  <float> vrwork(m * 4); // max(M,N), but M==N, so sharing it with 4*N
 
-    CGBBRD (bSimple ? Chars::pN() : Chars::pB(), 
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    CGBBRD(bSimple ? Chars::pN() : Chars::pB(), 
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
@@ -779,8 +779,8 @@ __svd<float, basic_scbmatrix<float, std::complex<float> >, basic_scmatrix<float,
             vwork, vrwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    CBDSQR (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    CBDSQR(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -810,7 +810,7 @@ __svd<double, basic_scbmatrix<double, std::complex<double> >, basic_scmatrix<dou
     (double* pd, tint nSize, tint nIncr,
     const basic_scbmatrix<double, std::complex<double> >& mArg,
     basic_scmatrix<double, std::complex<double> >* mU,
-    basic_scmatrix<double, std::complex<double> >* mVH) throw (cvmexception)
+    basic_scmatrix<double, std::complex<double> >* mVH) throw(cvmexception)
 {
     const tint zero(0);
     const tint m = mArg.msize();
@@ -820,19 +820,19 @@ __svd<double, basic_scbmatrix<double, std::complex<double> >, basic_scmatrix<dou
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     tint nOutInfo = 0;
 
-    basic_rvector<double> mD (nSize);
-    mD.assign (pd, nIncr);
+    basic_rvector<double> mD(nSize);
+    mD.assign(pd, nIncr);
 
-    basic_rvector  <double> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_scmatrix <double, std::complex<double> > mQ (bSimple ? 1 : m);
-    basic_scmatrix <double, std::complex<double> > mPT (bSimple ? 1 : m);
-    basic_scmatrix <double, std::complex<double> > mC (1);
-    basic_cvector  <double, std::complex<double> > vwork (m);
-    basic_scbmatrix<double, std::complex<double> > mA (mArg);
-    basic_rvector  <double> vrwork (m * 4); // max(M,N), but M==N, so sharing it with 4*N
+    basic_rvector  <double> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_scmatrix <double, std::complex<double> > mQ(bSimple ? 1 : m);
+    basic_scmatrix <double, std::complex<double> > mPT(bSimple ? 1 : m);
+    basic_scmatrix <double, std::complex<double> > mC(1);
+    basic_cvector  <double, std::complex<double> > vwork(m);
+    basic_scbmatrix<double, std::complex<double> > mA(mArg);
+    basic_rvector  <double> vrwork(m * 4); // max(M,N), but M==N, so sharing it with 4*N
 
-    ZGBBRD (bSimple ? Chars::pN() : Chars::pB(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    ZGBBRD(bSimple ? Chars::pN() : Chars::pB(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
@@ -843,9 +843,9 @@ __svd<double, basic_scbmatrix<double, std::complex<double> >, basic_scmatrix<dou
             vwork, vrwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    basic_rvector<double> vwork2 (m * 4);
-    ZBDSQR (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    basic_rvector<double> vwork2(m * 4);
+    ZBDSQR(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -876,7 +876,7 @@ __eig<basic_rvector<float>, basic_srsmatrix<float>, basic_srmatrix<float> >
     (basic_rvector<float>& vRes,
     const basic_srsmatrix<float>& mArg,
     basic_srmatrix<float>* mEigVect,
-    bool /*bRightVect*/) throw (cvmexception)
+    bool /*bRightVect*/) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     _check_ne(CVM_SIZESMISMATCH, nM, vRes.size());
@@ -888,39 +888,39 @@ __eig<basic_rvector<float>, basic_srsmatrix<float>, basic_srmatrix<float> >
         if (bEigVect)
         {
             const float one(1.F);
-            mEigVect -> resize (1);
-            (*mEigVect)[CVM0].set (one);
+            mEigVect -> resize(1);
+            (*mEigVect)[CVM0].set(one);
         }
     }
     else
     {
         const char* pcJob = bEigVect ? Chars::pV() : Chars::pN();
-        basic_srsmatrix<float> mA (mArg);
+        basic_srsmatrix<float> mA(mArg);
         tint lwork = -1, liwork = -1;
         float work_size = 0.;
         tint iwork_size = 0;
         tint nOutInfo = 0;
 
-        SSYEVD (pcJob,
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        SSYEVD(pcJob,
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 Chars::pU(),
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 &nM, mA, mA._pld(), vRes, &work_size, &lwork, &iwork_size, &liwork, &nOutInfo);
         lwork  = static_cast<tint> (work_size);
         liwork = iwork_size;
-        basic_rvector<float> work (lwork);
-        basic_array<tint,tint> iwork (liwork);
+        basic_rvector<float> work(lwork);
+        basic_array<tint,tint> iwork(liwork);
 
-        SSYEVD (pcJob,
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        SSYEVD(pcJob,
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 Chars::pU(),
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 &nM, mA, mA._pld(), vRes, work, &lwork, iwork, &liwork, &nOutInfo);
@@ -940,7 +940,7 @@ __eig<basic_rvector<double>, basic_srsmatrix<double>, basic_srmatrix<double> >
     (basic_rvector<double>& vRes,
     const basic_srsmatrix<double>& mArg,
     basic_srmatrix<double>* mEigVect,
-    bool /*bRightVect*/) throw (cvmexception)
+    bool /*bRightVect*/) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     _check_ne(CVM_SIZESMISMATCH, nM, vRes.size());
@@ -952,39 +952,39 @@ __eig<basic_rvector<double>, basic_srsmatrix<double>, basic_srmatrix<double> >
         if (bEigVect)
         {
             const double one(1.);
-            mEigVect -> resize (1);
-            (*mEigVect)[CVM0].set (one);
+            mEigVect -> resize(1);
+            (*mEigVect)[CVM0].set(one);
         }
     }
     else
     {
         const char* pcJob = bEigVect ? Chars::pV() : Chars::pN();
-        basic_srsmatrix<double> mA (mArg);
+        basic_srsmatrix<double> mA(mArg);
         tint lwork = -1, liwork = -1;
         double work_size = 0.;
         tint iwork_size = 0;
         tint nOutInfo = 0;
 
-        DSYEVD (pcJob,
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DSYEVD(pcJob,
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 Chars::pU(),
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 &nM, mA, mA._pld(), vRes, &work_size, &lwork, &iwork_size, &liwork, &nOutInfo);
         lwork  = static_cast<tint> (work_size);
         liwork = iwork_size;
-        basic_rvector<double> work (lwork);
-        basic_array<tint,tint> iwork (liwork);
+        basic_rvector<double> work(lwork);
+        basic_array<tint,tint> iwork(liwork);
 
-        DSYEVD (pcJob,
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DSYEVD(pcJob,
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 Chars::pU(),
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 &nM, mA, mA._pld(), vRes, work, &lwork, iwork, &liwork, &nOutInfo);
@@ -1005,7 +1005,7 @@ __eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float> >, basic_
     (basic_rvector<float>& vRes,
     const basic_schmatrix<float, std::complex<float> >& mArg,
     basic_scmatrix<float, std::complex<float> >* mEigVect,
-    bool /*bRightVect*/) throw (cvmexception)
+    bool /*bRightVect*/) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     _check_ne(CVM_SIZESMISMATCH, nM, vRes.size());
@@ -1016,42 +1016,42 @@ __eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float> >, basic_
         vRes[CVM0] = 1.F;
         if (bEigVect)
         {
-            mEigVect -> resize (1);
-            (*mEigVect)[CVM0].set (mArg(CVM0,CVM0));
+            mEigVect -> resize(1);
+            (*mEigVect)[CVM0].set(mArg(CVM0,CVM0));
         }
     }
     else
     {
         const char* pcJob = bEigVect ? Chars::pV() : Chars::pN();
-        basic_schmatrix<float, std::complex<float> > mA (mArg);
+        basic_schmatrix<float, std::complex<float> > mA(mArg);
         tint lwork = -1, lrwork = -1, liwork = -1;
         std::complex<float> work_size;
         float rwork_size = 0.;
         tint iwork_size = 0;
         tint nOutInfo = 0;
 
-        CHEEVD (pcJob,
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        CHEEVD(pcJob,
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 Chars::pU(),
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 &nM, mA, mA._pld(), vRes, &work_size, &lwork, &rwork_size, &lrwork, &iwork_size, &liwork, &nOutInfo);
         lwork  = static_cast<tint> (work_size.real());
         lrwork = static_cast<tint> (rwork_size);
         liwork = iwork_size;
-        basic_cvector<float, std::complex<float> > work (lwork);
-        basic_rvector<float> rwork (lrwork);
-        basic_array<tint,tint> iwork (liwork);
+        basic_cvector<float, std::complex<float> > work(lwork);
+        basic_rvector<float> rwork(lrwork);
+        basic_array<tint,tint> iwork(liwork);
 
-        CHEEVD (pcJob,
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        CHEEVD(pcJob,
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 Chars::pU(),
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 &nM, mA, mA._pld(), vRes, work, &lwork, rwork, &lrwork, iwork, &liwork, &nOutInfo);
@@ -1071,7 +1071,7 @@ __eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double> >, bas
     (basic_rvector<double>& vRes,
     const basic_schmatrix<double, std::complex<double> >& mArg,
     basic_scmatrix<double, std::complex<double> >* mEigVect,
-    bool /*bRightVect*/) throw (cvmexception)
+    bool /*bRightVect*/) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     _check_ne(CVM_SIZESMISMATCH, nM, vRes.size());
@@ -1082,42 +1082,42 @@ __eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double> >, bas
         vRes[CVM0] = 1.;
         if (bEigVect)
         {
-            mEigVect -> resize (1);
-            (*mEigVect)[CVM0].set (mArg(CVM0,CVM0));
+            mEigVect -> resize(1);
+            (*mEigVect)[CVM0].set(mArg(CVM0,CVM0));
         }
     }
     else
     {
         const char* pcJob = bEigVect ? Chars::pV() : Chars::pN();
-        basic_schmatrix<double, std::complex<double> > mA (mArg);
+        basic_schmatrix<double, std::complex<double> > mA(mArg);
         tint lwork = -1, lrwork = -1, liwork = -1;
         std::complex<double> work_size;
         double rwork_size = 0.;
         tint iwork_size = 0;
         tint nOutInfo = 0;
 
-        ZHEEVD (pcJob,
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        ZHEEVD(pcJob,
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 Chars::pU(),
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 &nM, mA, mA._pld(), vRes, &work_size, &lwork, &rwork_size, &lrwork, &iwork_size, &liwork, &nOutInfo);
         lwork  = static_cast<tint> (work_size.real());
         lrwork = static_cast<tint> (rwork_size);
         liwork = iwork_size;
-        basic_cvector<double, std::complex<double> > work (lwork);
-        basic_rvector<double> rwork (lrwork);
-        basic_array<tint,tint> iwork (liwork);
+        basic_cvector<double, std::complex<double> > work(lwork);
+        basic_rvector<double> rwork(lrwork);
+        basic_array<tint,tint> iwork(liwork);
 
-        ZHEEVD (pcJob,
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        ZHEEVD(pcJob,
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 Chars::pU(),
-    #if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
     #endif
                 &nM, mA, mA._pld(), vRes, work, &lwork, rwork, &lrwork, iwork, &liwork, &nOutInfo);
@@ -1132,12 +1132,12 @@ __eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double> >, bas
 }
 //! @endcond
 
-// pseudo (generalized) inversion routines
+// pseudo(generalized) inversion routines
 template<>
 CVM_API void
 __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
     (basic_rmatrix<float>& mX,
-    const basic_rmatrix<float>& mArg, float threshold) throw (cvmexception)
+    const basic_rmatrix<float>& mArg, float threshold) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -1145,17 +1145,17 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
     tint lwork    = -1; // to calculate lwork
     tint nOutInfo = 0;
 
-    basic_rvector<float> mD       (m);
-    basic_rvector<float> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_rvector<float> vTauQ    (m);
-    basic_rvector<float> vTauP    (m);
-    basic_rmatrix<float> mA       (mArg);
+    basic_rvector<float> mD(m);
+    basic_rvector<float> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_rvector<float> vTauQ(m);
+    basic_rvector<float> vTauP(m);
+    basic_rmatrix<float> mA(mArg);
     float dwork;
 
-    SGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
+    SGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork);
     basic_rvector<float> vwork(lwork);
-    SGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
+    SGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     const tint zero(0);
@@ -1165,13 +1165,13 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
     // for m > n case we care about m-by-n matrix U and n-by-n matrix VH
     // for m < n case we care about m-by-m matrix U and m-by-n matrix VH
     // however, the whole matrix A is needed to start computations
-    basic_rmatrix<float> Q (mA);
-    basic_rmatrix<float> P (mA);
+    basic_rmatrix<float> Q(mA);
+    basic_rmatrix<float> P(mA);
 
     {
         lwork = -1;
-        SORGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        SORGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &m, &nN,
@@ -1182,8 +1182,8 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
 
         lwork = static_cast<tint>(dwork);
         basic_rvector<float> vwork3(lwork);
-        SORGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        SORGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &m, &nN,
@@ -1195,8 +1195,8 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
 
     {
         lwork = -1;
-        SORGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        SORGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m, &nN, &nM,
@@ -1207,8 +1207,8 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
 
         lwork = static_cast<tint>(dwork);
         basic_rvector<float> vwork3(lwork);
-        SORGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        SORGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m, &nN, &nM,
@@ -1218,9 +1218,9 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
-    basic_rvector<float> vwork2 (m * 4);
-    SBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    basic_rvector<float> vwork2(m * 4);
+    SBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -1242,14 +1242,14 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
             P[i].set(0.F);
         }
     }
-    mX.mult (~P, ~Q);
+    mX.mult(~P, ~Q);
 }
 
 template<>
 CVM_API void
 __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
     (basic_rmatrix<double>& mX,
-    const basic_rmatrix<double>& mArg, double threshold) throw (cvmexception)
+    const basic_rmatrix<double>& mArg, double threshold) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -1257,17 +1257,17 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
     tint lwork    = -1; // to calculate lwork
     tint nOutInfo = 0;
 
-    basic_rvector<double> mD       (m);
-    basic_rvector<double> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_rvector<double> vTauQ    (m);
-    basic_rvector<double> vTauP    (m);
-    basic_rmatrix<double> mA       (mArg);
+    basic_rvector<double> mD(m);
+    basic_rvector<double> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_rvector<double> vTauQ(m);
+    basic_rvector<double> vTauP(m);
+    basic_rmatrix<double> mA(mArg);
     double dwork;
 
-    DGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
+    DGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork);
     basic_rvector<double> vwork(lwork);
-    DGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
+    DGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     const tint zero(0);
@@ -1277,13 +1277,13 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
     // for m > n case we care about m-by-n matrix U and n-by-n matrix VH
     // for m < n case we care about m-by-m matrix U and m-by-n matrix VH
     // however, the whole matrix A is needed to start computations
-    basic_rmatrix<double> Q (mA);
-    basic_rmatrix<double> P (mA);
+    basic_rmatrix<double> Q(mA);
+    basic_rmatrix<double> P(mA);
 
     {
         lwork = -1;
-        DORGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DORGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &m, &nN,
@@ -1295,8 +1295,8 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
 
         lwork = static_cast<tint>(dwork);
         basic_rvector<double> vwork3(lwork);
-        DORGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DORGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &m, &nN,
@@ -1308,8 +1308,8 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
 
     {
         lwork = -1;
-        DORGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DORGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m, &nN, &nM,
@@ -1320,8 +1320,8 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
 
         lwork = static_cast<tint>(dwork);
         basic_rvector<double> vwork3(lwork);
-        DORGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        DORGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m, &nN, &nM,
@@ -1331,9 +1331,9 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
-    basic_rvector<double> vwork2 (m * 4);
-    DBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    basic_rvector<double> vwork2(m * 4);
+    DBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -1355,7 +1355,7 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
             P[i].set(0.);
         }
     }
-    mX.mult (~P, ~Q);
+    mX.mult(~P, ~Q);
 }
 
 //! @cond SPECIALIZATIONS
@@ -1363,7 +1363,7 @@ template<>
 CVM_API void
 __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, std::complex<float> > >
     (basic_cmatrix<float, std::complex<float> >& mX, 
-    const basic_cmatrix<float, std::complex<float> >& mArg, float threshold) throw (cvmexception)
+    const basic_cmatrix<float, std::complex<float> >& mArg, float threshold) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -1371,17 +1371,17 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
     tint lwork    = -1; // to calculate lwork
     tint nOutInfo = 0;
 
-    basic_rvector<float> mD (m);
-    basic_rvector<float> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_cvector<float, std::complex<float> > vTauQ (m);
-    basic_cvector<float, std::complex<float> > vTauP (m);
-    basic_cmatrix<float, std::complex<float> > mA (mArg);
+    basic_rvector<float> mD(m);
+    basic_rvector<float> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_cvector<float, std::complex<float> > vTauQ(m);
+    basic_cvector<float, std::complex<float> > vTauP(m);
+    basic_cmatrix<float, std::complex<float> > mA(mArg);
     std::complex<float> dwork;
 
-    CGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
+    CGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork.real());
     basic_cvector<float, std::complex<float> > vwork(lwork);
-    CGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
+    CGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     const tint zero(0);
@@ -1391,13 +1391,13 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
     // for m > n case we care about m-by-n matrix U and n-by-n matrix VH
     // for m < n case we care about m-by-m matrix U and m-by-n matrix VH
     // however, the whole matrix A is needed to start computations
-    basic_cmatrix<float, std::complex<float> > Q (mA);
-    basic_cmatrix<float, std::complex<float> > P (mA);
+    basic_cmatrix<float, std::complex<float> > Q(mA);
+    basic_cmatrix<float, std::complex<float> > P(mA);
 
     {
         lwork = -1;
-        CUNGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        CUNGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &m, &nN,
@@ -1407,9 +1407,9 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = static_cast<tint>(dwork.real());
-        basic_cvector<float, std::complex<float> > vwork3 (lwork);
-        CUNGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        basic_cvector<float, std::complex<float> > vwork3(lwork);
+        CUNGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &m, &nN,
@@ -1421,8 +1421,8 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
 
     {
         lwork = -1;
-        CUNGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        CUNGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m, &nN, &nM,
@@ -1432,9 +1432,9 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     
         lwork = static_cast<tint>(dwork.real());
-        basic_cvector<float, std::complex<float> > vwork3 (lwork);
-        CUNGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        basic_cvector<float, std::complex<float> > vwork3(lwork);
+        CUNGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m, &nN, &nM,
@@ -1444,9 +1444,9 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
-    basic_rvector<float> vwork2 (m * 4);
-    CBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    basic_rvector<float> vwork2(m * 4);
+    CBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -1468,14 +1468,14 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
             P[i].set(0.F);
         }
     }
-    mX.mult (~P, ~Q);
+    mX.mult(~P, ~Q);
 }
 
 template<>
 CVM_API void
 __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<double, std::complex<double> > >
     (basic_cmatrix<double, std::complex<double> >& mX,
-    const basic_cmatrix<double, std::complex<double> >& mArg, double threshold) throw (cvmexception)
+    const basic_cmatrix<double, std::complex<double> >& mArg, double threshold) throw(cvmexception)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -1483,17 +1483,17 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
     tint lwork    = -1; // to calculate lwork
     tint nOutInfo = 0;
 
-    basic_rvector<double> mD (m);
-    basic_rvector<double> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_cvector<double, std::complex<double> > vTauQ (m);
-    basic_cvector<double, std::complex<double> > vTauP (m);
-    basic_cmatrix<double, std::complex<double> > mA (mArg);
+    basic_rvector<double> mD(m);
+    basic_rvector<double> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_cvector<double, std::complex<double> > vTauQ(m);
+    basic_cvector<double, std::complex<double> > vTauP(m);
+    basic_cmatrix<double, std::complex<double> > mA(mArg);
     std::complex<double> dwork;
 
-    ZGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
+    ZGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork.real());
     basic_cvector<double, std::complex<double> > vwork(lwork);
-    ZGEBRD (&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
+    ZGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     const tint zero(0);
@@ -1503,13 +1503,13 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
     // for m > n case we care about m-by-n matrix U and n-by-n matrix VH
     // for m < n case we care about m-by-m matrix U and m-by-n matrix VH
     // however, the whole matrix A is needed to start computations
-    basic_cmatrix<double, std::complex<double> > Q (mA);
-    basic_cmatrix<double, std::complex<double> > P (mA);
+    basic_cmatrix<double, std::complex<double> > Q(mA);
+    basic_cmatrix<double, std::complex<double> > P(mA);
 
     {
         lwork = -1;
-        ZUNGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        ZUNGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &m, &nN,
@@ -1519,9 +1519,9 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     
         lwork = static_cast<tint>(dwork.real());
-        basic_cvector<double, std::complex<double> > vwork3 (lwork);
-        ZUNGBR (Chars::pQ(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        basic_cvector<double, std::complex<double> > vwork3(lwork);
+        ZUNGBR(Chars::pQ(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &nM, &m, &nN,
@@ -1533,8 +1533,8 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
 
     {
         lwork = -1;
-        ZUNGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        ZUNGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m, &nN, &nM,
@@ -1544,9 +1544,9 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = static_cast<tint>(dwork.real());
-        basic_cvector<double, std::complex<double> > vwork3 (lwork);
-        ZUNGBR (Chars::pP(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+        basic_cvector<double, std::complex<double> > vwork3(lwork);
+        ZUNGBR(Chars::pP(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                 1,
 #endif
                 &m, &nN, &nM,
@@ -1556,9 +1556,9 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
-    basic_rvector<double> vwork2 (m * 4);
-    ZBDSQR (nM >= nN ? Chars::pU() : Chars::pL(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    basic_rvector<double> vwork2(m * 4);
+    ZBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -1580,7 +1580,7 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
             P[i].set(0.);
         }
     }
-    mX.mult (~P, ~Q);
+    mX.mult(~P, ~Q);
 }
 //! @endcond
 
@@ -1588,22 +1588,22 @@ template<>
 CVM_API void
 __pinv<float, basic_srbmatrix<float>, basic_rmatrix<float> >
     (basic_rmatrix<float>& mX, 
-    const basic_srbmatrix<float>& mArg, float threshold) throw (cvmexception)
+    const basic_srbmatrix<float>& mArg, float threshold) throw(cvmexception)
 {
     const tint zero(0);
     const tint m = mArg.msize();
     tint nOutInfo = 0;
 
-    basic_rvector  <float> mD       (m);
-    basic_rvector  <float> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_srmatrix <float> mQ       (m);
-    basic_srmatrix <float> mPT      (m);
-    basic_srmatrix <float> mC       (1);
-    basic_rvector  <float> vwork    (2 * m);
-    basic_srbmatrix<float> mA       (mArg);
+    basic_rvector  <float> mD(m);
+    basic_rvector  <float> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_srmatrix <float> mQ(m);
+    basic_srmatrix <float> mPT(m);
+    basic_srmatrix <float> mC(1);
+    basic_rvector  <float> vwork(2 * m);
+    basic_srbmatrix<float> mA(mArg);
 
-    SGBBRD (Chars::pB(), 
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    SGBBRD(Chars::pB(), 
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
@@ -1614,9 +1614,9 @@ __pinv<float, basic_srbmatrix<float>, basic_rmatrix<float> >
             vwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    basic_rvector<float> vwork2 (m * 4);
-    SBDSQR (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    basic_rvector<float> vwork2(m * 4);
+    SBDSQR(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -1639,29 +1639,29 @@ __pinv<float, basic_srbmatrix<float>, basic_rmatrix<float> >
             mPT[i].set(0.F);
         }
     }
-    mX.mult (~mPT, ~mQ);
+    mX.mult(~mPT, ~mQ);
 }
 
 template<>
 CVM_API void
 __pinv<double, basic_srbmatrix<double>, basic_rmatrix<double> >
     (basic_rmatrix<double>& mX, 
-    const basic_srbmatrix<double>& mArg, double threshold) throw (cvmexception)
+    const basic_srbmatrix<double>& mArg, double threshold) throw(cvmexception)
 {
     const tint zero(0);
     const tint m = mArg.msize();
     tint nOutInfo = 0;
 
-    basic_rvector  <double> mD       (m);
-    basic_rvector  <double> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_srmatrix <double> mQ       (m);
-    basic_srmatrix <double> mPT      (m);
-    basic_srmatrix <double> mC       (1);
-    basic_rvector  <double> vwork    (2 * m);
-    basic_srbmatrix<double> mA       (mArg);
+    basic_rvector  <double> mD(m);
+    basic_rvector  <double> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_srmatrix <double> mQ(m);
+    basic_srmatrix <double> mPT(m);
+    basic_srmatrix <double> mC(1);
+    basic_rvector  <double> vwork(2 * m);
+    basic_srbmatrix<double> mA(mArg);
 
-    DGBBRD (Chars::pB(), 
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    DGBBRD(Chars::pB(), 
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
@@ -1672,9 +1672,9 @@ __pinv<double, basic_srbmatrix<double>, basic_rmatrix<double> >
             vwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    basic_rvector<double> vwork2 (m * 4);
-    DBDSQR (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    basic_rvector<double> vwork2(m * 4);
+    DBDSQR(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -1697,7 +1697,7 @@ __pinv<double, basic_srbmatrix<double>, basic_rmatrix<double> >
             mPT[i].set(0.);
         }
     }
-    mX.mult (~mPT, ~mQ);
+    mX.mult(~mPT, ~mQ);
 }
 
 
@@ -1706,23 +1706,23 @@ template<>
 CVM_API void
 __pinv<float, basic_scbmatrix<float, std::complex<float> >, basic_cmatrix<float, std::complex<float> > >
     (basic_cmatrix<float, std::complex<float> >& mX, 
-    const basic_scbmatrix<float, std::complex<float> >& mArg, float threshold) throw (cvmexception)
+    const basic_scbmatrix<float, std::complex<float> >& mArg, float threshold) throw(cvmexception)
 {
     const tint zero(0);
     const tint m = mArg.msize();
     tint nOutInfo = 0;
 
-    basic_rvector  <float> mD (m);
-    basic_rvector  <float> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_scmatrix <float, std::complex<float> > mQ (m);
-    basic_scmatrix <float, std::complex<float> > mPT (m);
-    basic_scmatrix <float, std::complex<float> > mC (1);
-    basic_cvector  <float, std::complex<float> > vwork (2 * m);
-    basic_scbmatrix<float, std::complex<float> > mA (mArg);
-    basic_rvector  <float> vRwork (m);
+    basic_rvector  <float> mD(m);
+    basic_rvector  <float> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_scmatrix <float, std::complex<float> > mQ(m);
+    basic_scmatrix <float, std::complex<float> > mPT(m);
+    basic_scmatrix <float, std::complex<float> > mC(1);
+    basic_cvector  <float, std::complex<float> > vwork(2 * m);
+    basic_scbmatrix<float, std::complex<float> > mA(mArg);
+    basic_rvector  <float> vRwork(m);
 
-    CGBBRD (Chars::pB(), 
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    CGBBRD(Chars::pB(), 
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
@@ -1733,9 +1733,9 @@ __pinv<float, basic_scbmatrix<float, std::complex<float> >, basic_cmatrix<float,
             vwork, vRwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    basic_rvector<float> vwork2 (m * 4);
-    CBDSQR (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    basic_rvector<float> vwork2(m * 4);
+    CBDSQR(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -1758,30 +1758,30 @@ __pinv<float, basic_scbmatrix<float, std::complex<float> >, basic_cmatrix<float,
             mPT[i].set(0.F);
         }
     }
-    mX.mult (~mPT, ~mQ);
+    mX.mult(~mPT, ~mQ);
 }
 
 template<>
 CVM_API void
 __pinv<double, basic_scbmatrix<double, std::complex<double> >, basic_cmatrix<double, std::complex<double> > >
     (basic_cmatrix<double, std::complex<double> >& mX, 
-    const basic_scbmatrix<double, std::complex<double> >& mArg, double threshold) throw (cvmexception)
+    const basic_scbmatrix<double, std::complex<double> >& mArg, double threshold) throw(cvmexception)
 {
     const tint zero(0);
     const tint m = mArg.msize();
     tint nOutInfo = 0;
 
-    basic_rvector  <double> mD (m);
-    basic_rvector  <double> vOffDiag (_cvm_max<tint>(1, m - 1));
-    basic_scmatrix <double, std::complex<double> > mQ (m);
-    basic_scmatrix <double, std::complex<double> > mPT (m);
-    basic_scmatrix <double, std::complex<double> > mC (1);
-    basic_cvector  <double, std::complex<double> > vwork (2 * m);
-    basic_rvector  <double> vRwork (m);
-    basic_scbmatrix<double, std::complex<double> > mA (mArg);
+    basic_rvector  <double> mD(m);
+    basic_rvector  <double> vOffDiag(_cvm_max<tint>(1, m - 1));
+    basic_scmatrix <double, std::complex<double> > mQ(m);
+    basic_scmatrix <double, std::complex<double> > mPT(m);
+    basic_scmatrix <double, std::complex<double> > mC(1);
+    basic_cvector  <double, std::complex<double> > vwork(2 * m);
+    basic_rvector  <double> vRwork(m);
+    basic_scbmatrix<double, std::complex<double> > mA(mArg);
 
-    ZGBBRD (Chars::pB(), 
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    ZGBBRD(Chars::pB(), 
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
@@ -1792,9 +1792,9 @@ __pinv<double, basic_scbmatrix<double, std::complex<double> >, basic_cmatrix<dou
             vwork, vRwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    basic_rvector<double> vwork2 (m * 4);
-    ZBDSQR (Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+    basic_rvector<double> vwork2(m * 4);
+    ZBDSQR(Chars::pU(),
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
             1,
 #endif
             &m,
@@ -1817,7 +1817,7 @@ __pinv<double, basic_scbmatrix<double, std::complex<double> >, basic_cmatrix<dou
             mPT[i].set(0.);
         }
     }
-    mX.mult (~mPT, ~mQ);
+    mX.mult(~mPT, ~mQ);
 }
 //! @endcond
 

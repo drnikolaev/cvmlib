@@ -75,7 +75,7 @@ TYPED_TEST(BlasTest, TestMatrixSumComplex) {
     const basic_cmatrix<TP,TPC> ma {(TPC*) a, 2, 3};
     basic_cmatrix<TP,TPC> mb {2, 3};
     basic_cmatrix<TP,TPC> m {2, 3};
-    mb.set (TPC(1.,1.));
+    mb.set(TPC(1.,1.));
     
     EXPECT_EQ(TPC(8.,9.),m.sum(ma, mb)(CVM0+1,CVM0+1)) << "cmatrix::sum";
     EXPECT_EQ(TPC(11.,12.),m.sum(m, mb)(CVM0,CVM0+2)) << "cmatrix::sum";
@@ -87,7 +87,7 @@ TYPED_TEST(BlasTest, TestMatrixDiffComplex) {
     const basic_cmatrix<TP,TPC> ma {(TPC*) a, 2, 3};
     basic_cmatrix<TP,TPC> mb {2, 3};
     basic_cmatrix<TP,TPC> m {2, 3};
-    mb.set (TPC(1.,1.));
+    mb.set(TPC(1.,1.));
     
     EXPECT_EQ(TPC(6.,7.),m.diff(ma, mb)(CVM0+1,CVM0+1)) << "cmatrix::diff";
     EXPECT_EQ(TPC(7.,8.),m.diff(m, mb)(CVM0,CVM0+2)) << "cmatrix::diff";
@@ -273,7 +273,7 @@ TYPED_TEST(BlasTest, TestSymmetricMatrixPolynom1) {
         TP(-0.45), TP(45.), TP(-30.), TP(10.), TP(3.), TP(3.2)};
     const basic_rvector<TP> v(av, 11);
     const basic_srsmatrix<TP> m(a, 3);
-    const basic_srsmatrix<TP> mp = m.polynom (v);
+    const basic_srsmatrix<TP> mp = m.polynom(v);
     EXPECT_NEAR(TP(6.212740000000001e+004), mp(CVM0, CVM0), spp<TP>(1.e-10,4.e-3)) << "srsmatrix::polynom";
     EXPECT_NEAR(TP(2.399800000000000e+004), mp(CVM0+1, CVM0), sp<TP>()) << "srsmatrix::polynom";
     EXPECT_NEAR(TP(3.410055000000000e+004), mp(CVM0+2, CVM0), sp<TP>()) << "srsmatrix::polynom";
@@ -293,7 +293,7 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom1) {
         TP(-0.45), TP(45.), TP(-30.), TP(10.), TP(3.), TP(1.13)};
     const basic_rvector<TP> vr{re, 11};
     basic_schmatrix<TP,TPC> mp{3};
-    mp.polynom (m, vr);
+    mp.polynom(m, vr);
     EXPECT_NEAR(std::abs(TPC(1.231954875800000e+008,0.)),
                 std::abs(mp(CVM0, CVM0)), s<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.417932391600000e+008,7.089661958000000e+007)),
@@ -323,7 +323,7 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom2) {
     TP im[] = {0.5, -2, 0, 1, 3, -3., 30., 0., -9., 0., 1.};
     const basic_cvector<TP,TPC> vc{re, im, 11};
     basic_scmatrix<TP,TPC> mp{3};
-    mp.polynom (m, vc);
+    mp.polynom(m, vc);
     EXPECT_NEAR(std::abs(TPC(1.231954875800000e+008,6.128500650000000e+007)),
                 std::abs(mp(CVM0, CVM0)), s<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.065249031600000e+008,1.414332915800000e+008)),

@@ -1,7 +1,7 @@
 C                  CVM Class Library
 C                  http://cvmlib.com
 C
-C          Copyright Sergei Nikolaev 1992-2013
+C          Copyright Sergei Nikolaev 1992-2016
 C Distributed under the Boost Software License, Version 1.0.
 C    (See accompanying file LICENSE_1_0.txt or copy at
 C          http://www.boost.org/LICENSE_1_0.txt)
@@ -21,7 +21,8 @@ CDEC$ ENDIF
       IF (M .GT. 0 .AND. N .GT. 1) THEN
           NPOLY  = (FLOOR (DFLOAT (N - 1) /
      1              DFLOAT (CEILING (DSQRT (DFLOAT (N - 1)))))
-     2                                               + 2) * M * M
+     2              + 2) * M * M
       ENDIF
       RETURN
       END !FUNCTION NPOLY
+

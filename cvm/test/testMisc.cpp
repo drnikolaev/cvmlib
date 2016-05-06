@@ -22,7 +22,7 @@ TYPED_TEST(MiscTest, TestPrintProxy) {
     basic_rmatrix<TP> m(1,1);
     m(CVM0,CVM0) = 1.234;
     char buf[32];
-#if defined (_MSC_VER) && !defined(__INTEL_COMPILER)
+#if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
     sprintf_s(buf, sizeof(buf), "%.3f", m(CVM0,CVM0).val());  // use .val to printf type_proxy!
 #else
     sprintf(buf, "%.3f", m(CVM0,CVM0).val());  // use .val to printf type_proxy!

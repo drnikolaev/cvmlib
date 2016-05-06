@@ -12,7 +12,7 @@
 
 CVM_NAMESPACE_BEG
 
-#if defined (CVM_STD_MUTEX)
+#if defined(CVM_STD_MUTEX)
 std::mutex cvm_mutex;
 #else
 CriticalSection emCS;
@@ -32,7 +32,7 @@ CVM_API ErrMessages& ErrMessages::ErrMessagesInstance()
 CVM_API ErrMessages::ErrMessages()
     : msUnknown("Unknown exception"), mmMsg()
 {
-#if defined (CVM_STD_MUTEX)
+#if defined(CVM_STD_MUTEX)
     std::unique_lock<std::mutex> l(cvm_mutex);
 #else
     Lock l(emCS);
@@ -51,7 +51,7 @@ CVM_API ErrMessages::ErrMessages()
     mmMsg.insert(pair_Msg(CVM_NOTPOSITIVEDIAG, "The diagonal element " CVM_TINT_FORMAT " of the matrix is nonpositive. Equilibration failed"));
     mmMsg.insert(pair_Msg(CVM_CONVERGENCE_ERROR, "Method failed to converge: %s at %s:%d"));
     mmMsg.insert(pair_Msg(CVM_DIVISIONBYZERO, "Attempt to divide by zero"));
-#if defined (WIN32) || defined (_WIN32)
+#if defined(WIN32) || defined(_WIN32)
     mmMsg.insert(pair_Msg(CVM_SEMAPHOREERROR, "Critical Section access error"));
 #else
     mmMsg.insert(pair_Msg(CVM_SEMAPHOREERROR, "Semaphore access error"));
@@ -91,7 +91,7 @@ CVM_API ErrMessages::ErrMessages()
 
 CVM_API bool ErrMessages::_add(int nNewCause, const char* szNewMessage)
 {
-#if defined (CVM_STD_MUTEX)
+#if defined(CVM_STD_MUTEX)
     std::unique_lock<std::mutex> l(cvm_mutex);
 #else
     Lock l(emCS);
@@ -315,7 +315,7 @@ CVM_API tint __cholesky<basic_srmatrix<float> >
 {
     tint nOutInfo = 0;
     SPOTRF(Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), m, m._pld(), &nOutInfo);
@@ -328,7 +328,7 @@ CVM_API tint __cholesky<basic_srmatrix<double> >
 {
     tint nOutInfo = 0;
     DPOTRF(Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), m, m._pld(), &nOutInfo);
@@ -341,7 +341,7 @@ CVM_API tint __cholesky<basic_scmatrix<float, std::complex<float> > >
 {
     tint nOutInfo = 0;
     CPOTRF(Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), m, m._pld(), &nOutInfo);
@@ -354,7 +354,7 @@ CVM_API tint __cholesky<basic_scmatrix<double, std::complex<double> > >
 {
     tint nOutInfo = 0;
     ZPOTRF(Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), m, m._pld(), &nOutInfo);
@@ -369,7 +369,7 @@ CVM_API void __bunch_kaufman<basic_srmatrix<float> >
     const tint lwork = m.msize()* 64;
     basic_rvector<float> work(lwork);
     SSYTRF(Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), m, m._pld(), nPivots, work, &lwork, &nOutInfo);
@@ -386,7 +386,7 @@ CVM_API void __bunch_kaufman<basic_srmatrix<double> >
     const tint lwork = m.msize()* 64;
     basic_rvector<double> work(lwork);
     DSYTRF(Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), m, m._pld(), nPivots, work, &lwork, &nOutInfo);
@@ -403,7 +403,7 @@ CVM_API void __bunch_kaufman<basic_scmatrix<float, std::complex<float> > >
     const tint lwork = m.msize()* 64;
     basic_cvector<float, std::complex<float> > work(lwork);
     CHETRF(Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), m, m._pld(), nPivots, work, &lwork, &nOutInfo);
@@ -420,7 +420,7 @@ CVM_API void __bunch_kaufman<basic_scmatrix<double, std::complex<double> > >
     const tint lwork = m.msize()* 64;
     basic_cvector<double, std::complex<double> > work(lwork);
     ZHETRF(Chars::pU(),
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
            1,
 #endif
            m._pm(), m, m._pld(), nPivots, work, &lwork, &nOutInfo);

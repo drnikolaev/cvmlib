@@ -768,7 +768,7 @@ inline std::string __format_vars(const string_array& a, bool emptyBraces = true)
 // MAC is missing isalpha while linking...
 inline int is_alpha(int c)
 {
-#if defined (MAC)
+#if defined(MAC)
     if ((c >= 0141 && c <= 0172) || (c >= 0101 && c <= 0132)) {
         return 1;
     }
@@ -889,7 +889,7 @@ public:
     
 #define CFUN_CREATOR_DEF(f) \
     struct CreatorF##f : public Creator { \
-        BasePointer create (const std::string& sBody, size_t nLeft, \
+        BasePointer create(const std::string& sBody, size_t nLeft, \
                             size_t nBodyLength, const string_array& saVars, \
                             const string_array& saParameters, const string_array& saMeanings) \
                             const override { \
@@ -1005,7 +1005,7 @@ Parses incoming strings and instantiates function object
 
         int nLevel = 0;
         for (i = nBodyLength - 1; i < CFUN_NOT_FOUND; --i) {
-            switch (sBody[i]) {
+            switch(sBody[i]) {
             case CFUN_O_PARENTH:
                 ++nLevel;
                 break;
@@ -1043,7 +1043,7 @@ Parses incoming strings and instantiates function object
         }
 
         for (i = nBodyLength - 1; i < CFUN_NOT_FOUND; --i) {
-            switch (sBody[i]) {
+            switch(sBody[i]) {
             case CFUN_O_PARENTH:
                 ++nLevel;
                 break;
@@ -1072,7 +1072,7 @@ Parses incoming strings and instantiates function object
         }
 
         for (i = 0; i < nBodyLength; ++i) {
-            switch (sBody[i]) {
+            switch(sBody[i]) {
             case CFUN_O_PARENTH:
                 ++nLevel;
                 break;
