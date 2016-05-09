@@ -71,18 +71,18 @@ __symm<float, basic_srsmatrix<float>, basic_rmatrix<float> >
 {
     SSYMM(bLeft ? Chars::pL() : Chars::pR(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           Chars::pU(),
+          Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           mRes._pm(), mRes._pn(),
-           &dAlpha,
-           ml._pd(), ml._pld(),
-           mr._pd(), mr._pld(),
-           &dBeta,
-           mRes, mRes._pld());
+          mRes._pm(), mRes._pn(),
+          &dAlpha,
+          ml._pd(), ml._pld(),
+          mr._pd(), mr._pld(),
+          &dBeta,
+          mRes, mRes._pld());
 }
 
 template<>
@@ -97,18 +97,18 @@ __symm<double, basic_srsmatrix<double>, basic_rmatrix<double>  >
 {
     DSYMM(bLeft ? Chars::pL() : Chars::pR(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           Chars::pU(),
+          Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           mRes._pm(), mRes._pn(),
-           &dAlpha,
-           ml._pd(), ml._pld(),
-           mr._pd(), mr._pld(),
-           &dBeta,
-           mRes, mRes._pld());
+          mRes._pm(), mRes._pn(),
+          &dAlpha,
+          ml._pd(), ml._pld(),
+          mr._pd(), mr._pld(),
+          &dBeta,
+          mRes, mRes._pld());
 }
 
 template <>
@@ -121,13 +121,13 @@ __syrk<float, basic_srsmatrix<float> >
 {
     SSYRK(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           bTransp ? Chars::pT() : Chars::pN(),
+          bTransp ? Chars::pT() : Chars::pN(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           m._pm(), &k, &alpha, pA, &ldA, &beta, m, m._pld());
+          m._pm(), &k, &alpha, pA, &ldA, &beta, m, m._pld());
 }
 
 template <>
@@ -140,13 +140,13 @@ __syrk<double, basic_srsmatrix<double> >
 {
     DSYRK(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           bTransp ? Chars::pT() : Chars::pN(),
+          bTransp ? Chars::pT() : Chars::pN(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           m._pm(), &k, &alpha, pA, &ldA, &beta, m, m._pld());
+          m._pm(), &k, &alpha, pA, &ldA, &beta, m, m._pld());
 }
 
 template <>
@@ -1046,18 +1046,20 @@ __gels<basic_rmatrix<float>, basic_rvector<float> >
     // calculate size of workspace
     SGELS(trans,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), &dWork, &lWork, &nOutInfo);
+          &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+          &dWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork);
     basic_rvector<float> vWork(lWork);
 
     SGELS(trans,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), vWork, &lWork, &nOutInfo);
+          &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+          vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     // collecting residuals if applicable
@@ -1100,18 +1102,20 @@ __gels<basic_rmatrix<double>, basic_rvector<double> >
     // calculate size of workspace
     DGELS(trans,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), &dWork, &lWork, &nOutInfo);
+          &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+          &dWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork);
     basic_rvector<double> vWork(lWork);
 
     DGELS(trans,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), vWork, &lWork, &nOutInfo);
+          &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+          vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     // collecting residuals if applicable

@@ -154,7 +154,6 @@ __cond_num<float, basic_scmatrix<float, std::complex<float> > >
 
     const float rNorm = mA.norminf();
     CGETRF (&mnM, &mnM, mA, mA._pld(), iwork, &nOutInfo);
-
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     if (nOutInfo == 0)
     {
@@ -163,7 +162,7 @@ __cond_num<float, basic_scmatrix<float, std::complex<float> > >
 #else
         CGECON(Chars::pI(),
 #endif
-                &mnM, mA, mA._pld(), &rNorm, &dCond, work, rwork, &nOutInfo);
+               &mnM, mA, mA._pld(), &rNorm, &dCond, work, rwork, &nOutInfo);
     }
 }
 
@@ -182,7 +181,6 @@ __cond_num<double, basic_scmatrix<double, std::complex<double> > >
 
     const double rNorm = mA.norminf();
     ZGETRF (&mnM, &mnM, mA, mA._pld(), iwork, &nOutInfo);
-
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     if (nOutInfo == 0)
     {
@@ -191,7 +189,7 @@ __cond_num<double, basic_scmatrix<double, std::complex<double> > >
 #else
         ZGECON(Chars::pI(),
 #endif
-                &mnM, mA, mA._pld(), &rNorm, &dCond, work, rwork, &nOutInfo);
+               &mnM, mA, mA._pld(), &rNorm, &dCond, work, rwork, &nOutInfo);
     }
 }
 
@@ -292,9 +290,9 @@ __inv<basic_schmatrix<float, std::complex<float> > >
         {
             CPOTRI(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                    1,
+                   1,
 #endif
-                    &nM, m, m._pld(), &nOutInfo);
+                   &nM, m, m._pld(), &nOutInfo);
             _check_negative(CVM_WRONGMKLARG, nOutInfo);
             _check_positive(CVM_WRONGCHOLESKYFACTOR, nOutInfo);
         }
@@ -303,9 +301,9 @@ __inv<basic_schmatrix<float, std::complex<float> > >
             basic_cvector<float, std::complex<float> > vWork(nM);
             CHETRI(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                    1,
+                   1,
 #endif
-                    &nM, m, m._pld(), nPivots, vWork, &nOutInfo);
+                   &nM, m, m._pld(), nPivots, vWork, &nOutInfo);
             _check_negative(CVM_WRONGMKLARG, nOutInfo);
             _check_positive(CVM_WRONGBUNCHKAUFMANFACTOR, nOutInfo);
         }
@@ -341,9 +339,9 @@ __inv<basic_schmatrix<double, std::complex<double> > >
         {
             ZPOTRI(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                    1,
+                   1,
 #endif
-                    &nM, m, m._pld(), &nOutInfo);
+                   &nM, m, m._pld(), &nOutInfo);
             _check_negative(CVM_WRONGMKLARG, nOutInfo);
             _check_positive(CVM_WRONGCHOLESKYFACTOR, nOutInfo);
         }
@@ -352,9 +350,9 @@ __inv<basic_schmatrix<double, std::complex<double> > >
             basic_cvector<double, std::complex<double> > vWork(nM);
             ZHETRI(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                    1,
+                   1,
 #endif
-                    &nM, m, m._pld(), nPivots, vWork, &nOutInfo);
+                   &nM, m, m._pld(), nPivots, vWork, &nOutInfo);
             _check_negative(CVM_WRONGMKLARG, nOutInfo);
             _check_positive(CVM_WRONGBUNCHKAUFMANFACTOR, nOutInfo);
         }
@@ -425,24 +423,22 @@ __solve<float, std::complex<float>, basic_scmatrix<float, std::complex<float> > 
 
     CGETRS(transp,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &mnM, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
-
+           &mnM, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     CGERFS(transp,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &mnM, &nrhs,
-            m, m._pld(),
-            mLU, mLU._pld(),
-            nPivots,
-            pB, &ldB,
-            pX, &ldX,
-            vFerr, vBerr, vWork, rWork, &nOutInfo);
-
+           &mnM, &nrhs,
+           m, m._pld(),
+           mLU, mLU._pld(),
+           nPivots,
+           pB, &ldB,
+           pX, &ldX,
+           vFerr, vBerr, vWork, rWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     dErr = vFerr.norminf();
 }
@@ -482,24 +478,22 @@ __solve<double, std::complex<double>, basic_scmatrix<double, std::complex<double
 
     ZGETRS(transp,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &mnM, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
-
+           &mnM, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     ZGERFS(transp,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &mnM, &nrhs,
-            m, m._pld(),
-            mLU, mLU._pld(),
-            nPivots,
-            pB, &ldB,
-            pX, &ldX,
-            vFerr, vBerr, vWork, rWork, &nOutInfo);
-
+           &mnM, &nrhs,
+           m, m._pld(),
+           mLU, mLU._pld(),
+           nPivots,
+           pB, &ldB,
+           pX, &ldX,
+           vFerr, vBerr, vWork, rWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     dErr = vFerr.norminf();
 }
@@ -541,24 +535,22 @@ __solve<float, std::complex<float>, basic_scbmatrix<float, std::complex<float> >
 
     CGBTRS(transp,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &mnM, &mnKL, &mnKU, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
-
+           &mnM, &mnKL, &mnKU, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     CGBRFS(transp,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &mnM, &mnKL, &mnKU, &nrhs,
-            m, m._pld(),
-            mLU, mLU._pld(),
-            nPivots,
-            pB, &ldB,
-            pX, &ldX,
-            vFerr, vBerr, vWork, rWork, &nOutInfo);
-
+           &mnM, &mnKL, &mnKU, &nrhs,
+           m, m._pld(),
+           mLU, mLU._pld(),
+           nPivots,
+           pB, &ldB,
+           pX, &ldX,
+           vFerr, vBerr, vWork, rWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     dErr = vFerr.norminf();
 }
@@ -600,24 +592,22 @@ __solve<double, std::complex<double>, basic_scbmatrix<double, std::complex<doubl
 
     ZGBTRS(transp,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &mnM, &mnKL, &mnKU, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
-
+           &mnM, &mnKL, &mnKU, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     ZGBRFS(transp,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &mnM, &mnKL, &mnKU, &nrhs,
-            m, m._pld(),
-            mLU, mLU._pld(),
-            nPivots,
-            pB, &ldB,
-            pX, &ldB,
-            vFerr, vBerr, vWork, rWork, &nOutInfo);
-
+           &mnM, &mnKL, &mnKU, &nrhs,
+           m, m._pld(),
+           mLU, mLU._pld(),
+           nPivots,
+           pB, &ldB,
+           pX, &ldB,
+           vFerr, vBerr, vWork, rWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     dErr = vFerr.norminf();
 }
@@ -664,45 +654,45 @@ __solve<float, std::complex<float>, basic_schmatrix<float, std::complex<float> >
     {
         CPOTRS(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nrhs, mLU, mLU._pld(), pX, &ldX, &nOutInfo);
+               &nM, &nrhs, mLU, mLU._pld(), pX, &ldX, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         CPORFS(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nrhs, 
-                m, m._pld(),
-                mLU, mLU._pld(),
-                pB, &ldB,
-                pX, &ldX,
-                vFerr, vBerr, 
-                vWork, vrWork, &nOutInfo);
+               &nM, &nrhs, 
+               m, m._pld(),
+               mLU, mLU._pld(),
+               pB, &ldB,
+               pX, &ldX,
+               vFerr, vBerr, 
+               vWork, vrWork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
     else
     {
         CHETRS(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
+               &nM, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         CHERFS(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nrhs,
-                m, m._pld(),
-                mLU, mLU._pld(),
-                nPivots,
-                pB, &ldB,
-                pX, &ldX,
-                vFerr, vBerr, 
-                vWork, vrWork, &nOutInfo);
+               &nM, &nrhs,
+               m, m._pld(),
+               mLU, mLU._pld(),
+               nPivots,
+               pB, &ldB,
+               pX, &ldX,
+               vFerr, vBerr, 
+               vWork, vrWork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
@@ -748,45 +738,45 @@ __solve<double, std::complex<double>, basic_schmatrix<double, std::complex<doubl
     {
         ZPOTRS(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nrhs, mLU, mLU._pld(), pX, &ldX, &nOutInfo);
+               &nM, &nrhs, mLU, mLU._pld(), pX, &ldX, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         ZPORFS(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nrhs, 
-                m, m._pld(),
-                mLU, mLU._pld(),
-                pB, &ldB,
-                pX, &ldX,
-                vFerr, vBerr, 
-                vWork, vrWork, &nOutInfo);
+               &nM, &nrhs, 
+               m, m._pld(),
+               mLU, mLU._pld(),
+               pB, &ldB,
+               pX, &ldX,
+               vFerr, vBerr, 
+               vWork, vrWork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
     else
     {
         ZHETRS(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
+               &nM, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         ZHERFS(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nrhs,
-                m, m._pld(),
-                mLU, mLU._pld(),
-                nPivots,
-                pB, &ldB,
-                pX, &ldX,
-                vFerr, vBerr, 
-                vWork, vrWork, &nOutInfo);
+               &nM, &nrhs,
+               m, m._pld(),
+               mLU, mLU._pld(),
+               nPivots,
+               pB, &ldB,
+               pX, &ldX,
+               vFerr, vBerr, 
+               vWork, vrWork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 

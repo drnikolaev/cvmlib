@@ -153,7 +153,6 @@ __cond_num<float, basic_srmatrix<float> >
 
     const float rNorm = mA.norminf();
     SGETRF (&mnM, &mnM, mA, mA._pld(), iwork, &nOutInfo);
-
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     if (nOutInfo == 0)
     {
@@ -179,7 +178,6 @@ __cond_num<double, basic_srmatrix<double> >
 
     const double rNorm = mA.norminf();
     DGETRF (&mnM, &mnM, mA, mA._pld(), iwork, &nOutInfo);
-
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     if (nOutInfo == 0)
     {
@@ -426,9 +424,9 @@ __solve<float, float, basic_srbmatrix<float> >
 
     SGBTRS(transp,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &mnM, &mnKL, &mnKU, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
+           &mnM, &mnKL, &mnKU, &nrhs, mLU, mLU._pld(), nPivots, pX, &ldX, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     SGBRFS(transp,

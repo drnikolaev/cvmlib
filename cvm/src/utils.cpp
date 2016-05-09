@@ -373,7 +373,6 @@ CVM_API void __bunch_kaufman<basic_srmatrix<float> >
            1,
 #endif
            m._pm(), m, m._pld(), nPivots, work, &lwork, &nOutInfo);
-
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_SINGULARMATRIX, nOutInfo);
 }
@@ -390,7 +389,6 @@ CVM_API void __bunch_kaufman<basic_srmatrix<double> >
            1,
 #endif
            m._pm(), m, m._pld(), nPivots, work, &lwork, &nOutInfo);
-
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_SINGULARMATRIX, nOutInfo);
 }
@@ -407,7 +405,6 @@ CVM_API void __bunch_kaufman<basic_scmatrix<float, std::complex<float> > >
            1,
 #endif
            m._pm(), m, m._pld(), nPivots, work, &lwork, &nOutInfo);
-
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_SINGULARMATRIX, nOutInfo);
 }
@@ -424,7 +421,6 @@ CVM_API void __bunch_kaufman<basic_scmatrix<double, std::complex<double> > >
            1,
 #endif
            m._pm(), m, m._pld(), nPivots, work, &lwork, &nOutInfo);
-
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_SINGULARMATRIX, nOutInfo);
 }

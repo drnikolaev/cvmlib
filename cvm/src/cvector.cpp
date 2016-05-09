@@ -64,9 +64,9 @@ __gemv<std::complex<float>, basic_cmatrix<float, std::complex<float> >, basic_cv
 {
     CGEMV(bLeft ? Chars::pT() : Chars::pN(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           m._pm(), m._pn(), &dAlpha, m._pd(), m._pldm(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
+          m._pm(), m._pn(), &dAlpha, m._pd(), m._pldm(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
 }
 
 template<>
@@ -81,9 +81,9 @@ __gemv<std::complex<double>, basic_cmatrix<double, std::complex<double> >, basic
 {
     ZGEMV(bLeft ? Chars::pT() : Chars::pN(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           m._pm(), m._pn(), &dAlpha, m._pd(), m._pldm(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
+          m._pm(), m._pn(), &dAlpha, m._pd(), m._pldm(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
 }
 
 template<>
@@ -98,9 +98,9 @@ __gbmv<std::complex<float>, basic_scbmatrix<float, std::complex<float> >, basic_
 {
     CGBMV(bLeft ? Chars::pT() : Chars::pN(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           m._pm(), m._pn(), m._pl(), m._pu(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
+          m._pm(), m._pn(), m._pl(), m._pu(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
 }
 
 template<>
@@ -115,9 +115,9 @@ __gbmv<std::complex<double>, basic_scbmatrix<double, std::complex<double> >, bas
 {
     ZGBMV(bLeft ? Chars::pT() : Chars::pN(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           m._pm(), m._pn(), m._pl(), m._pu(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
+          m._pm(), m._pn(), m._pl(), m._pu(), &dAlpha, m, m._pld(), v, v._pincr(), &dBeta, vRes, vRes._pincr());
 }
 
 template<>
@@ -825,7 +825,7 @@ basic_scmatrix<float, std::complex<float> >* mEigVectRight) throw(cvmexception)
 #endif
           jobvr,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-        1,
+          1,
 #endif
           &n, mA, mA._pld(), mB, mB._pld(),
           alphar, alphai, vBeta,

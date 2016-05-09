@@ -1966,11 +1966,11 @@ TYPED_TEST(LapackTest, TestSolveHermitian) {
     b.randomize_imag(-2., 1.);
 
     x = hm.solve(b);
-    EXPECT_NEAR(TP(0), (hm * x - b).norm(), sp<TP>()) << "schmatrix solve";
+    EXPECT_NEAR(TP(0), (hm * x - b).norm(), spp<TP>()) << "schmatrix solve";
     TP err;
     x = hm.solve(b, err);
-    EXPECT_NEAR(TP(0), (hm * x - b).norm(), sp<TP>()) << "schmatrix solve";
-    EXPECT_NEAR(TP(0), err, sp<TP>()) << "schmatrix solve";
+    EXPECT_NEAR(TP(0), (hm * x - b).norm(), spp<TP>()) << "schmatrix solve";
+    EXPECT_NEAR(TP(0), err, spp<TP>()) << "schmatrix solve";
 
     basic_cmatrix<TP,TPC> mb(5, 6), mx(5, 6);
     mb.randomize_real(-4., 9.);
@@ -2073,7 +2073,7 @@ TYPED_TEST(LapackTest, TestGenEigReal) {
         if (fabs(beta[CVM0+i]) > spp<TP>()) {
             EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(a) * eigVectRight(CVM0+i) -
                     (alpha[CVM0+i] / beta[CVM0+i]) * basic_scmatrix<TP,TPC>(b) * eigVectRight(CVM0+i)).norm(),
-                    sp<TP>()) << "srmatrix right geneig";
+                    spp<TP>()) << "srmatrix right geneig";
         }
     }
 

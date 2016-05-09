@@ -72,18 +72,18 @@ __hemm<std::complex<float>, basic_schmatrix<float, std::complex<float> >, basic_
 {
     CHEMM(bLeft ? Chars::pL() : Chars::pR(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           Chars::pU(),
+          Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           mRes._pm(), mRes._pn(),
-           &dAlpha,
-           ml._pd(), ml._pld(),
-           mr._pd(), mr._pld(),
-           &dBeta,
-           mRes, mRes._pld());
+          mRes._pm(), mRes._pn(),
+          &dAlpha,
+          ml._pd(), ml._pld(),
+          mr._pd(), mr._pld(),
+          &dBeta,
+          mRes, mRes._pld());
 }
 
 template<>
@@ -98,18 +98,18 @@ __hemm<std::complex<double>, basic_schmatrix<double, std::complex<double> >, bas
 {
     ZHEMM(bLeft ? Chars::pL() : Chars::pR(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           Chars::pU(),
+          Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           mRes._pm(), mRes._pn(),
-           &dAlpha,
-           ml._pd(), ml._pld(),
-           mr._pd(), mr._pld(),
-           &dBeta,
-           mRes, mRes._pld());
+          mRes._pm(), mRes._pn(),
+          &dAlpha,
+          ml._pd(), ml._pld(),
+          mr._pd(), mr._pld(),
+          &dBeta,
+          mRes, mRes._pld());
 }
 
 template <>
@@ -122,13 +122,13 @@ __herk<float, std::complex<float>, basic_schmatrix<float, std::complex<float> > 
 {
     CHERK(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           bTransp ? Chars::pC() : Chars::pN(),
+          bTransp ? Chars::pC() : Chars::pN(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           m._pm(), &k, &alpha, pA, &ldA, &beta, m, m._pld());
+          m._pm(), &k, &alpha, pA, &ldA, &beta, m, m._pld());
 }
 
 template <>
@@ -141,13 +141,13 @@ __herk<double, std::complex<double>, basic_schmatrix<double, std::complex<double
 {
     ZHERK(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           bTransp ? Chars::pC() : Chars::pN(),
+          bTransp ? Chars::pC() : Chars::pN(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           m._pm(), &k, &alpha, pA, &ldA, &beta, m, m._pld());
+          m._pm(), &k, &alpha, pA, &ldA, &beta, m, m._pld());
 }
 
 template <>
@@ -1046,18 +1046,20 @@ __gels<basic_cmatrix<float, std::complex<float> >, basic_cvector<float, std::com
     // calculate size of workspace
     CGELS(trans,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), &dWork, &lWork, &nOutInfo);
+          &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+          &dWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork.real());
     basic_cvector<float, std::complex<float> > vWork(lWork);
 
     CGELS(trans,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), vWork, &lWork, &nOutInfo);
+          &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+          vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     // collecting residuals if applicable
@@ -1097,18 +1099,20 @@ __gels<basic_cmatrix<double, std::complex<double> >, basic_cvector<double, std::
     // calculate size of workspace
     ZGELS(trans,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), &dWork, &lWork, &nOutInfo);
+          &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+          &dWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork.real());
     basic_cvector<double, std::complex<double> > vWork(lWork);
 
     ZGELS(trans,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-           1,
+          1,
 #endif
-           &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(), vWork, &lWork, &nOutInfo);
+          &nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
+          vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     // collecting residuals if applicable

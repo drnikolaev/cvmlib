@@ -194,48 +194,48 @@ __svd<float, basic_rmatrix<float>, basic_srmatrix<float> >
 
         SORGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nM, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                vwork, &lwork, &nOutInfo);
+               &nM, &nM, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               vwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = -1;
         SORGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nN, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                &dwork, &lwork, &nOutInfo);
+               &nN, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         lwork = static_cast<tint>(dwork);
         if (lwork > vwork.size()) vwork.resize(lwork);
 
         SORGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nN, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                vwork, &lwork, &nOutInfo);
+               &nN, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               vwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         if (m4 > vwork.size()) vwork.resize(m4);
         SBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m,
-                &nN, &nM,
-                &zero,
-                mD, vOffDiag,
-                P, P._pld(), Q, Q._pld(), nullptr, &one,
-                vwork, &nOutInfo);
+               &m,
+               &nN, &nM,
+               &zero,
+               mD, vOffDiag,
+               P, P._pld(), Q, Q._pld(), nullptr, &one,
+               vwork, &nOutInfo);
 
         (*mU)  = basic_srmatrix<float>(Q.resize(nM, nM));
         (*mVH) = basic_srmatrix<float>(P.resize(nN, nN));
@@ -286,13 +286,13 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
         if (m4 > vwork.size()) vwork.resize(m4);
         DBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m,
-                &zero, &zero, &zero,
-                mD, vOffDiag,
-                nullptr, &one, nullptr, &one, nullptr, &one,
-                vwork, &nOutInfo);
+               &m,
+               &zero, &zero, &zero,
+               mD, vOffDiag,
+               nullptr, &one, nullptr, &one, nullptr, &one,
+               vwork, &nOutInfo);
     }
     else
     {
@@ -305,60 +305,60 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
         lwork = -1;
         DORGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nM, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                &dwork, &lwork, &nOutInfo);
+               &nM, &nM, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         lwork = static_cast<tint>(dwork);
         if (lwork > vwork.size()) vwork.resize(lwork);
 
         DORGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nM, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                vwork, &lwork, &nOutInfo);
+               &nM, &nM, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               vwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = -1;
         DORGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nN, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                &dwork, &lwork, &nOutInfo);
+               &nN, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         lwork = static_cast<tint>(dwork);
         if (lwork > vwork.size()) vwork.resize(lwork);
 
         DORGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nN, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                vwork, &lwork, &nOutInfo);
+               &nN, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               vwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         if (m4 > vwork.size()) vwork.resize(m4);
         DBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m,
-                &nN, &nM,
-                &zero,
-                mD, vOffDiag,
-                P, P._pld(), Q, Q._pld(), nullptr, &one,
-                vwork, &nOutInfo);
+               &m,
+               &nN, &nM,
+               &zero,
+               mD, vOffDiag,
+               P, P._pld(), Q, Q._pld(), nullptr, &one,
+               vwork, &nOutInfo);
 
         (*mU)  = basic_srmatrix<double>(Q.resize(nM, nM));
         (*mVH) = basic_srmatrix<double>(P.resize(nN, nN));
@@ -409,13 +409,13 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
     {
         CBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m,
-                &zero, &zero, &zero,
-                mD, vOffDiag,
-                nullptr, &one, nullptr, &one, nullptr, &one,
-                rwork, &nOutInfo);
+               &m,
+               &zero, &zero, &zero,
+               mD, vOffDiag,
+               nullptr, &one, nullptr, &one, nullptr, &one,
+               rwork, &nOutInfo);
     }
     else
     {
@@ -428,59 +428,59 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
         lwork = -1;
         CUNGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nM, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                &dwork, &lwork, &nOutInfo);
+               &nM, &nM, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         lwork = static_cast<tint>(dwork.real());
         if (lwork > vwork.size()) vwork.resize(lwork);
 
         CUNGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nM, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                vwork, &lwork, &nOutInfo);
+               &nM, &nM, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               vwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = -1;
         CUNGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nN, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                &dwork, &lwork, &nOutInfo);
+               &nN, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         lwork = static_cast<tint>(dwork.real());
         if (lwork > vwork.size()) vwork.resize(lwork);
 
         CUNGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nN, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                vwork, &lwork, &nOutInfo);
+               &nN, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               vwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         CBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m,
-                &nN, &nM, 
-                &zero,
-                mD, vOffDiag,
-                P, P._pld(), Q, Q._pld(), nullptr, &one,
-                rwork, &nOutInfo);
+               &m,
+               &nN, &nM, 
+               &zero,
+               mD, vOffDiag,
+               P, P._pld(), Q, Q._pld(), nullptr, &one,
+               rwork, &nOutInfo);
 
         (*mU)  = basic_scmatrix<float, std::complex<float> >(Q.resize(nM, nM));
         (*mVH) = basic_scmatrix<float, std::complex<float> >(P.resize(nN, nN));
@@ -530,13 +530,13 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
     {
         ZBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m,
-                &zero, &zero, &zero,
-                mD, vOffDiag,
-                nullptr, &one, nullptr, &one, nullptr, &one,
-                rwork, &nOutInfo);
+               &m,
+               &zero, &zero, &zero,
+               mD, vOffDiag,
+               nullptr, &one, nullptr, &one, nullptr, &one,
+               rwork, &nOutInfo);
     }
     else
     {
@@ -549,59 +549,59 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
         lwork = -1;
         ZUNGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nM, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                &dwork, &lwork, &nOutInfo);
+               &nM, &nM, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         lwork = static_cast<tint>(dwork.real());
         if (lwork > vwork.size()) vwork.resize(lwork);
 
         ZUNGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &nM, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                vwork, &lwork, &nOutInfo);
+               &nM, &nM, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               vwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = -1;
         ZUNGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nN, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                &dwork, &lwork, &nOutInfo);
+               &nN, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         lwork = static_cast<tint>(dwork.real());
         if (lwork > vwork.size()) vwork.resize(lwork);
 
         ZUNGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nN, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                vwork, &lwork, &nOutInfo);
+               &nN, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               vwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         ZBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m,
-                &nN, &nM, 
-                &zero,
-                mD, vOffDiag,
-                P, P._pld(), Q, Q._pld(), nullptr, &one,
-                rwork, &nOutInfo);
+               &m,
+               &nN, &nM, 
+               &zero,
+               mD, vOffDiag,
+               P, P._pld(), Q, Q._pld(), nullptr, &one,
+               rwork, &nOutInfo);
 
         (*mU)  = basic_scmatrix<double, std::complex<double> >(Q.resize(nM, nM));
         (*mVH) = basic_scmatrix<double, std::complex<double> >(P.resize(nN, nN));
@@ -641,29 +641,29 @@ __svd<float, basic_srbmatrix<float>, basic_srmatrix<float> >
 
     SGBBRD(bSimple ? Chars::pN() : Chars::pB(), 
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
-            mD, vOffDiag,
-            mQ, mQ._pm(),
-            mPT, mPT._pm(),
-            mC, mC._pm(), 
-            vwork, &nOutInfo);
+           mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
+           mD, vOffDiag,
+           mQ, mQ._pm(),
+           mPT, mPT._pm(),
+           mC, mC._pm(), 
+           vwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     SBDSQR(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            bSimple ? &zero : &m,
-            bSimple ? &zero : &m,
-            &zero,
-            mD, vOffDiag,
-            mPT, mPT._pm(),
-            mQ, mQ._pm(),
-            mC, mC._pm(), 
-            vwork, &nOutInfo);
+           &m,
+           bSimple ? &zero : &m,
+           bSimple ? &zero : &m,
+           &zero,
+           mD, vOffDiag,
+           mPT, mPT._pm(),
+           mQ, mQ._pm(),
+           mC, mC._pm(), 
+           vwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "SBDSQR", __FILE__, __LINE__);
 
@@ -704,29 +704,29 @@ __svd<double, basic_srbmatrix<double>, basic_srmatrix<double> >
 
     DGBBRD(bSimple ? Chars::pN() : Chars::pB(), 
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
-            mD, vOffDiag,
-            mQ, mQ._pm(),
-            mPT, mPT._pm(),
-            mC, mC._pm(), 
-            vwork, &nOutInfo);
+           mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
+           mD, vOffDiag,
+           mQ, mQ._pm(),
+           mPT, mPT._pm(),
+           mC, mC._pm(), 
+           vwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     DBDSQR(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            bSimple ? &zero : &m,
-            bSimple ? &zero : &m,
-            &zero,
-            mD, vOffDiag,
-            mPT, mPT._pm(),
-            mQ, mQ._pm(),
-            mC, mC._pm(), 
-            vwork, &nOutInfo);
+           &m,
+           bSimple ? &zero : &m,
+           bSimple ? &zero : &m,
+           &zero,
+           mD, vOffDiag,
+           mPT, mPT._pm(),
+           mQ, mQ._pm(),
+           mC, mC._pm(), 
+           vwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "DBDSQR", __FILE__, __LINE__);
 
@@ -769,29 +769,29 @@ __svd<float, basic_scbmatrix<float, std::complex<float> >, basic_scmatrix<float,
 
     CGBBRD(bSimple ? Chars::pN() : Chars::pB(), 
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
-            mD, vOffDiag,
-            mQ, mQ._pm(),
-            mPT, mPT._pm(),
-            mC, mC._pm(), 
-            vwork, vrwork, &nOutInfo);
+           mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
+           mD, vOffDiag,
+           mQ, mQ._pm(),
+           mPT, mPT._pm(),
+           mC, mC._pm(), 
+           vwork, vrwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     CBDSQR(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            bSimple ? &zero : &m,
-            bSimple ? &zero : &m,
-            &zero,
-            mD, vOffDiag,
-            mPT, mPT._pm(),
-            mQ, mQ._pm(),
-            mC, mC._pm(), 
-            vrwork, &nOutInfo);
+           &m,
+           bSimple ? &zero : &m,
+           bSimple ? &zero : &m,
+           &zero,
+           mD, vOffDiag,
+           mPT, mPT._pm(),
+           mQ, mQ._pm(),
+           mC, mC._pm(), 
+           vrwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "CBDSQR", __FILE__, __LINE__);
 
@@ -833,30 +833,30 @@ __svd<double, basic_scbmatrix<double, std::complex<double> >, basic_scmatrix<dou
 
     ZGBBRD(bSimple ? Chars::pN() : Chars::pB(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
-            mD, vOffDiag,
-            mQ, mQ._pm(),
-            mPT, mPT._pm(),
-            mC, mC._pm(),
-            vwork, vrwork, &nOutInfo);
+           mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
+           mD, vOffDiag,
+           mQ, mQ._pm(),
+           mPT, mPT._pm(),
+           mC, mC._pm(),
+           vwork, vrwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     basic_rvector<double> vwork2(m * 4);
     ZBDSQR(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            bSimple ? &zero : &m,
-            bSimple ? &zero : &m,
-            &zero,
-            mD, vOffDiag,
-            mPT, mPT._pm(),
-            mQ, mQ._pm(),
-            mC, mC._pm(),
-            vrwork, &nOutInfo);
+           &m,
+           bSimple ? &zero : &m,
+           bSimple ? &zero : &m,
+           &zero,
+           mD, vOffDiag,
+           mPT, mPT._pm(),
+           mQ, mQ._pm(),
+           mC, mC._pm(),
+           vrwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "ZBDSQR", __FILE__, __LINE__);
 
@@ -903,13 +903,13 @@ __eig<basic_rvector<float>, basic_srsmatrix<float>, basic_srmatrix<float> >
 
         SSYEVD(pcJob,
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                Chars::pU(),
+               Chars::pU(),
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                &nM, mA, mA._pld(), vRes, &work_size, &lwork, &iwork_size, &liwork, &nOutInfo);
+               &nM, mA, mA._pld(), vRes, &work_size, &lwork, &iwork_size, &liwork, &nOutInfo);
         lwork  = static_cast<tint> (work_size);
         liwork = iwork_size;
         basic_rvector<float> work(lwork);
@@ -917,13 +917,13 @@ __eig<basic_rvector<float>, basic_srsmatrix<float>, basic_srmatrix<float> >
 
         SSYEVD(pcJob,
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                Chars::pU(),
+               Chars::pU(),
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                &nM, mA, mA._pld(), vRes, work, &lwork, iwork, &liwork, &nOutInfo);
+               &nM, mA, mA._pld(), vRes, work, &lwork, iwork, &liwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "SSYEVD", __FILE__, __LINE__);
 
@@ -967,13 +967,13 @@ __eig<basic_rvector<double>, basic_srsmatrix<double>, basic_srmatrix<double> >
 
         DSYEVD(pcJob,
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                Chars::pU(),
+               Chars::pU(),
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                &nM, mA, mA._pld(), vRes, &work_size, &lwork, &iwork_size, &liwork, &nOutInfo);
+               &nM, mA, mA._pld(), vRes, &work_size, &lwork, &iwork_size, &liwork, &nOutInfo);
         lwork  = static_cast<tint> (work_size);
         liwork = iwork_size;
         basic_rvector<double> work(lwork);
@@ -981,13 +981,13 @@ __eig<basic_rvector<double>, basic_srsmatrix<double>, basic_srmatrix<double> >
 
         DSYEVD(pcJob,
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                Chars::pU(),
+               Chars::pU(),
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                &nM, mA, mA._pld(), vRes, work, &lwork, iwork, &liwork, &nOutInfo);
+               &nM, mA, mA._pld(), vRes, work, &lwork, iwork, &liwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "DSYEVD", __FILE__, __LINE__);
 
@@ -1032,13 +1032,15 @@ __eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float> >, basic_
 
         CHEEVD(pcJob,
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                Chars::pU(),
+               Chars::pU(),
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                &nM, mA, mA._pld(), vRes, &work_size, &lwork, &rwork_size, &lrwork, &iwork_size, &liwork, &nOutInfo);
+               &nM, mA, mA._pld(),
+               vRes, &work_size, &lwork, &rwork_size, &lrwork,
+               &iwork_size, &liwork, &nOutInfo);
         lwork  = static_cast<tint> (work_size.real());
         lrwork = static_cast<tint> (rwork_size);
         liwork = iwork_size;
@@ -1048,13 +1050,15 @@ __eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float> >, basic_
 
         CHEEVD(pcJob,
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                Chars::pU(),
+               Chars::pU(),
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                &nM, mA, mA._pld(), vRes, work, &lwork, rwork, &lrwork, iwork, &liwork, &nOutInfo);
+               &nM, mA, mA._pld(),
+               vRes, work, &lwork, rwork, &lrwork,
+               iwork, &liwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "CHEEVD", __FILE__, __LINE__);
 
@@ -1098,13 +1102,15 @@ __eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double> >, bas
 
         ZHEEVD(pcJob,
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                Chars::pU(),
+               Chars::pU(),
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                &nM, mA, mA._pld(), vRes, &work_size, &lwork, &rwork_size, &lrwork, &iwork_size, &liwork, &nOutInfo);
+               &nM, mA, mA._pld(), vRes,
+               &work_size, &lwork, &rwork_size, &lrwork,
+               &iwork_size, &liwork, &nOutInfo);
         lwork  = static_cast<tint> (work_size.real());
         lrwork = static_cast<tint> (rwork_size);
         liwork = iwork_size;
@@ -1114,13 +1120,15 @@ __eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double> >, bas
 
         ZHEEVD(pcJob,
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                Chars::pU(),
+               Chars::pU(),
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
     #endif
-                &nM, mA, mA._pld(), vRes, work, &lwork, rwork, &lrwork, iwork, &liwork, &nOutInfo);
+               &nM, mA, mA._pld(), vRes,
+               work, &lwork, rwork, &lrwork,
+               iwork, &liwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "ZHEEVD", __FILE__, __LINE__);
 
@@ -1172,24 +1180,24 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
         lwork = -1;
         SORGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &m, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                &dwork, &lwork, &nOutInfo);
+               &nM, &m, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = static_cast<tint>(dwork);
         basic_rvector<float> vwork3(lwork);
         SORGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &m, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                vwork3, &lwork, &nOutInfo);
+               &nM, &m, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               vwork3, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
@@ -1197,38 +1205,38 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
         lwork = -1;
         SORGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                &dwork, &lwork, &nOutInfo);
+               &m, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = static_cast<tint>(dwork);
         basic_rvector<float> vwork3(lwork);
         SORGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                vwork3, &lwork, &nOutInfo);
+               &m, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               vwork3, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
     basic_rvector<float> vwork2(m * 4);
     SBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            &nN, &nM,
-            &zero,
-            mD, vOffDiag,
-            P, P._pld(), Q, Q._pld(), nullptr, &one,
-            vwork2, &nOutInfo);
+           &m,
+           &nN, &nM,
+           &zero,
+           mD, vOffDiag,
+           P, P._pld(), Q, Q._pld(), nullptr, &one,
+           vwork2, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "SBDSQR", __FILE__, __LINE__);
 
@@ -1284,25 +1292,24 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
         lwork = -1;
         DORGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &m, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                &dwork, &lwork, &nOutInfo);
+               &nM, &m, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
             
-
         lwork = static_cast<tint>(dwork);
         basic_rvector<double> vwork3(lwork);
         DORGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &m, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                vwork3, &lwork, &nOutInfo);
+               &nM, &m, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               vwork3, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
@@ -1310,38 +1317,38 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
         lwork = -1;
         DORGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                &dwork, &lwork, &nOutInfo);
+               &m, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = static_cast<tint>(dwork);
         basic_rvector<double> vwork3(lwork);
         DORGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                vwork3, &lwork, &nOutInfo);
+               &m, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               vwork3, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
     basic_rvector<double> vwork2(m * 4);
     DBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            &nN, &nM,
-            &zero,
-            mD, vOffDiag,
-            P, P._pld(), Q, Q._pld(), nullptr, &one,
-            vwork2, &nOutInfo);
+           &m,
+           &nN, &nM,
+           &zero,
+           mD, vOffDiag,
+           P, P._pld(), Q, Q._pld(), nullptr, &one,
+           vwork2, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "DBDSQR", __FILE__, __LINE__);
 
@@ -1398,24 +1405,24 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
         lwork = -1;
         CUNGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &m, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                &dwork, &lwork, &nOutInfo);
+               &nM, &m, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = static_cast<tint>(dwork.real());
         basic_cvector<float, std::complex<float> > vwork3(lwork);
         CUNGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &m, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                vwork3, &lwork, &nOutInfo);
+               &nM, &m, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               vwork3, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
@@ -1423,38 +1430,38 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
         lwork = -1;
         CUNGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                &dwork, &lwork, &nOutInfo);
+               &m, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     
         lwork = static_cast<tint>(dwork.real());
         basic_cvector<float, std::complex<float> > vwork3(lwork);
         CUNGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                vwork3, &lwork, &nOutInfo);
+               &m, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               vwork3, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
     basic_rvector<float> vwork2(m * 4);
     CBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            &nN, &nM,
-            &zero,
-            mD, vOffDiag,
-            P, P._pld(), Q, Q._pld(), nullptr, &one,
-            vwork2, &nOutInfo);
+           &m,
+           &nN, &nM,
+           &zero,
+           mD, vOffDiag,
+           P, P._pld(), Q, Q._pld(), nullptr, &one,
+           vwork2, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "CBDSQR", __FILE__, __LINE__);
 
@@ -1510,24 +1517,24 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
         lwork = -1;
         ZUNGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &m, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                &dwork, &lwork, &nOutInfo);
+               &nM, &m, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     
         lwork = static_cast<tint>(dwork.real());
         basic_cvector<double, std::complex<double> > vwork3(lwork);
         ZUNGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &nM, &m, &nN,
-                Q, Q._pld(),
-                vTauQ,
-                vwork3, &lwork, &nOutInfo);
+               &nM, &m, &nN,
+               Q, Q._pld(),
+               vTauQ,
+               vwork3, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
@@ -1535,38 +1542,38 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
         lwork = -1;
         ZUNGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                &dwork, &lwork, &nOutInfo);
+               &m, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               &dwork, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = static_cast<tint>(dwork.real());
         basic_cvector<double, std::complex<double> > vwork3(lwork);
         ZUNGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-                1,
+               1,
 #endif
-                &m, &nN, &nM,
-                P, P._pld(),
-                vTauP,
-                vwork3, &lwork, &nOutInfo);
+               &m, &nN, &nM,
+               P, P._pld(),
+               vTauP,
+               vwork3, &lwork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     }
 
     basic_rvector<double> vwork2(m * 4);
     ZBDSQR(nM >= nN ? Chars::pU() : Chars::pL(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            &nN, &nM,
-            &zero,
-            mD, vOffDiag,
-            P, P._pld(), Q, Q._pld(), nullptr, &one,
-            vwork2, &nOutInfo);
+           &m,
+           &nN, &nM,
+           &zero,
+           mD, vOffDiag,
+           P, P._pld(), Q, Q._pld(), nullptr, &one,
+           vwork2, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "ZBDSQR", __FILE__, __LINE__);
 
@@ -1604,30 +1611,27 @@ __pinv<float, basic_srbmatrix<float>, basic_rmatrix<float> >
 
     SGBBRD(Chars::pB(), 
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
-            mD, vOffDiag,
-            mQ, mQ._pm(),
-            mPT, mPT._pm(),
-            mC, mC._pm(), 
-            vwork, &nOutInfo);
+           mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
+           mD, vOffDiag,
+           mQ, mQ._pm(),
+           mPT, mPT._pm(),
+           mC, mC._pm(), 
+           vwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     basic_rvector<float> vwork2(m * 4);
     SBDSQR(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            &m,
-            &m,
-            &zero,
-            mD, vOffDiag,
-            mPT, mPT._pm(),
-            mQ, mQ._pm(),
-            mC, mC._pm(), 
-            vwork2, &nOutInfo);
+           &m, &m, &m, &zero,
+           mD, vOffDiag,
+           mPT, mPT._pm(),
+           mQ, mQ._pm(),
+           mC, mC._pm(), 
+           vwork2, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "SBDSQR", __FILE__, __LINE__);
 
@@ -1662,30 +1666,27 @@ __pinv<double, basic_srbmatrix<double>, basic_rmatrix<double> >
 
     DGBBRD(Chars::pB(), 
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
-            mD, vOffDiag,
-            mQ, mQ._pm(),
-            mPT, mPT._pm(),
-            mC, mC._pm(), 
-            vwork, &nOutInfo);
+           mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
+           mD, vOffDiag,
+           mQ, mQ._pm(),
+           mPT, mPT._pm(),
+           mC, mC._pm(), 
+           vwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     basic_rvector<double> vwork2(m * 4);
     DBDSQR(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            &m,
-            &m,
-            &zero,
-            mD, vOffDiag,
-            mPT, mPT._pm(),
-            mQ, mQ._pm(),
-            mC, mC._pm(), 
-            vwork2, &nOutInfo);
+           &m, &m, &m, &zero,
+           mD, vOffDiag,
+           mPT, mPT._pm(),
+           mQ, mQ._pm(),
+           mC, mC._pm(), 
+           vwork2, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "DBDSQR", __FILE__, __LINE__);
 
@@ -1723,30 +1724,27 @@ __pinv<float, basic_scbmatrix<float, std::complex<float> >, basic_cmatrix<float,
 
     CGBBRD(Chars::pB(), 
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
-            mD, vOffDiag,
-            mQ, mQ._pm(),
-            mPT, mPT._pm(),
-            mC, mC._pm(), 
-            vwork, vRwork, &nOutInfo);
+           mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
+           mD, vOffDiag,
+           mQ, mQ._pm(),
+           mPT, mPT._pm(),
+           mC, mC._pm(), 
+           vwork, vRwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     basic_rvector<float> vwork2(m * 4);
     CBDSQR(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            &m,
-            &m,
-            &zero,
-            mD, vOffDiag,
-            mPT, mPT._pm(),
-            mQ, mQ._pm(),
-            mC, mC._pm(), 
-            vwork2, &nOutInfo);
+           &m, &m, &m, &zero,
+           mD, vOffDiag,
+           mPT, mPT._pm(),
+           mQ, mQ._pm(),
+           mC, mC._pm(), 
+           vwork2, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "CBDSQR", __FILE__, __LINE__);
 
@@ -1782,30 +1780,27 @@ __pinv<double, basic_scbmatrix<double, std::complex<double> >, basic_cmatrix<dou
 
     ZGBBRD(Chars::pB(), 
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
-            mD, vOffDiag,
-            mQ, mQ._pm(),
-            mPT, mPT._pm(),
-            mC, mC._pm(), 
-            vwork, vRwork, &nOutInfo);
+           mA._pm(), mA._pn(), &zero, mA._pl(), mA._pu(), mA, mA._pld(),
+           mD, vOffDiag,
+           mQ, mQ._pm(),
+           mPT, mPT._pm(),
+           mC, mC._pm(), 
+           vwork, vRwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     basic_rvector<double> vwork2(m * 4);
     ZBDSQR(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
-            1,
+           1,
 #endif
-            &m,
-            &m,
-            &m,
-            &zero,
-            mD, vOffDiag,
-            mPT, mPT._pm(),
-            mQ, mQ._pm(),
-            mC, mC._pm(), 
-            vwork2, &nOutInfo);
+           &m, &m, &m, &zero,
+           mD, vOffDiag,
+           mPT, mPT._pm(),
+           mQ, mQ._pm(),
+           mC, mC._pm(), 
+           vwork2, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "ZBDSQR", __FILE__, __LINE__);
 
