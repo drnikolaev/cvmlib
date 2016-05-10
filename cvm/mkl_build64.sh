@@ -4,8 +4,8 @@ LIBDIR=../lib64
 FILESET='LIC* libcvm_em64t.* libcvm_em64t_debug.* regtest_cvm_em64t regtest_cvm_em64t_debug'
 FILESET_ILP64='LIC* libcvm_em64t_ilp64.* libcvm_em64t_ilp64_debug.* regtest_cvm_em64t_ilp64 regtest_cvm_em64t_ilp64_debug'
 
-source /opt/intelf/bin/compilervars.sh intel64
 source /opt/intel/bin/compilervars.sh intel64
+source /opt/intelf/bin/compilervars.sh intel64
 LD_LIBRARY_PATH_ORIG=${LD_LIBRARY_PATH}
 
 pushd $LIBDIR
