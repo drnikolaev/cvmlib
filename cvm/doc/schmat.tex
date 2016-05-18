@@ -174,7 +174,7 @@ schmatrix::schmatrix (TC* pD, int nMN, TR tol = cvmMachSp());
 creates  $n\times n$ \verb"scmatrix" object where $n$ is passed in
 \verb"nMN" parameter.
 Unlike others, this constructor \textit{does not allocate  memory}.
-It just shares  memory with  array pointed to by \verb"pD".
+It just shares  memory with an array pointed to by \verb"pD".
 Constructor throws  \GOT{cvmexception}{cvmexception}
 if the matrix created doesn't appear to be hermitian (tolerance is set by
 parameter \verb'tol') or in case of non-positive size passed. 
@@ -212,7 +212,7 @@ schmatrix::schmatrix (const TC* pD, int nMN, TR tol = cvmMachSp());
 \end{verbatim}
 creates  $n\times n$ \verb"scmatrix" object where $n$ is passed in
 \verb"nMN" parameter
-and copies $n*n$ elements of  array \verb"pD" to it \GOT{by colums}{SubSubSectionStorage}.
+and copies $n*n$ elements of an array  \verb"pD" to it \GOT{by colums}{SubSubSectionStorage}.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 if the matrix created doesn't appear to be hermitian (tolerance is set by
 parameter \verb'tol') or in case of non-positive size passed. 
@@ -288,7 +288,7 @@ Constructor%
 \begin{verbatim}
 explicit schmatrix::schmatrix (const cmatrix& m, TR tol = cvmMachSp())
 \end{verbatim}
-creates  \verb"schmatrix" object as a copy of matrix \verb"m".
+creates  \verb"schmatrix" object as a copy of a matrix \verb"m".
 It's assumed that $m\times n$ matrix \verb"m" must have equal
 sizes, i.e. $m = n$ is satisfied and it has to be  hermitian one
 (tolerance is set by parameter \verb'tol').
@@ -504,7 +504,7 @@ Indexing operator%
 \begin{verbatim}
 TC schmatrix::operator () (int im, int in) const throw (cvmexception);
 \end{verbatim}
-returns value of element of calling hermitian matrix located on
+returns value of element of a calling hermitian matrix located on
 \verb"im"-row and \verb"in"-th column. 
 Operator is \Based.
 It throws \GOT{cvmexception}{cvmexception}
@@ -540,7 +540,7 @@ Indexing operator%
 \begin{verbatim}
 const cvector schmatrix::operator () (int i) const throw (cvmexception);
 \end{verbatim}
-provides access to \hbox{$i$-th} column of calling hermitian matrix.
+provides access to \hbox{$i$-th} column of a calling hermitian matrix.
 Unlike \GO{scmatrix::operator~()}{scmatrix.operator ()},
 this operator creates only \emph{copy} of a column and therefore
 it returns
@@ -579,7 +579,7 @@ Indexing operator%
 \begin{verbatim}
 const cvector schmatrix::operator [] (int i) const throw (cvmexception);
 \end{verbatim}
-provides access to \hbox{$i$-th} row of calling hermitian matrix.
+provides access to \hbox{$i$-th} row of a calling hermitian matrix.
 Unlike \GO{scmatrix::operator~[]}{scmatrix.operator []},
 this operator creates only \emph{copy} of a column and therefore
 it returns
@@ -618,7 +618,7 @@ Functions%
 \begin{verbatim}
 const cvector schmatrix::diag (int i) const throw (cvmexception);
 \end{verbatim}
-provide access to \hbox{$i$-th} diagonal of calling matrix,
+provide access to \hbox{$i$-th} diagonal of a calling matrix,
 where $i=0$ for main diagonal, $i<0$ for lower diagonals 
 and $i>0$ for upper ones.
 Unlike \GO{cmatrix::diag}{cmatrix.diag},
@@ -664,13 +664,13 @@ Function%
 \begin{verbatim}
 const srsmatrix schmatrix::real () const;
 \end{verbatim}
-creates  object of type \verb"const srsmatrix"
+creates an object of type \verb"const srsmatrix"
 as  real part
-of  calling hermitian matrix.
+of a calling hermitian matrix.
 Please note that, unlike
 \GO{cvector::real}{cvector.real}, this
 function creates new object \emph{not sharing}  memory
-with  real part of  calling matrix, i.e.
+with  real part of a calling matrix, i.e.
 the matrix returned is \emph{not  l-value}.
 See also
 \GOT{srsmatrix}{srsmatrix},
@@ -706,13 +706,13 @@ Function%
 \begin{verbatim}
 const srmatrix schmatrix::imag () const;
 \end{verbatim}
-creates  object of type \verb"const srmatrix"
+creates an object of type \verb"const srmatrix"
 as imaginary part
-of  calling matrix.
+of a calling matrix.
 Please note that, unlike
 \GO{cvector::imag}{cvector.imag}, this
 function creates new object \emph{not sharing}  memory
-with  imaginary part of calling matrix, i.e.
+with  imaginary part of a calling matrix, i.e.
 the matrix returned is \emph{not  l-value}.
 See also
 \GOT{srmatrix}{srmatrix},
@@ -748,9 +748,9 @@ Operator%
 schmatrix& schmatrix::operator = (const schmatrix& m)
 throw (cvmexception);
 \end{verbatim}
-sets  every element of  calling hermitian matrix to  value of
+sets  every element of a calling hermitian matrix to a value of
 appropriate element of  hermitian matrix \verb"m"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of different matrix sizes.
@@ -792,10 +792,10 @@ throw (cvmexception);
 schmatrix& schmatrix::assign (const TC* pD, TR tol = cvmMachSp())
 throw (cvmexception);
 \end{verbatim}
-sets every element of  calling hermitian matrix to  value of
+sets every element of a calling hermitian matrix to a value of
 appropriate element of  vector~\verb'v'
 or  array pointed to by~\verb"pD"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 In first version it's assumed that vector passed is long
 enough to fill calling matrix. Function throws \GOT{cvmexception}{cvmexception} 
@@ -831,9 +831,9 @@ Function%
 schmatrix& schmatrix::assign (int nRowCol, const schmatrix& m)
 throw (cvmexception);
 \end{verbatim}
-sets main sub-matrix of  calling hermitian matrix beginning with \Based row
+sets main sub-matrix of a calling hermitian matrix beginning with \Based row
 \verb"nRowCol" to  hermitian matrix \verb"m" and
-returns  reference to the matrix changed.
+returns a reference to the matrix changed.
 Function throws 
  \GOT{cvmexception}{cvmexception} if \verb"nRowCol"
 is not positive or matrix \verb"m" doesn't fit.
@@ -868,14 +868,14 @@ Function%
 schmatrix& schmatrix::set (int nRow, int nCol, TC z) throw (cvmexception);
 \end{verbatim}
 sets an element located on \verb"nRow"'s row (\Based)
-and \verb"nCol"'s column (\Based) to  value of
+and \verb"nCol"'s column (\Based) to a value of
 parameter \verb"z" and
 an element located
 on \verb"nCol"'s row
-and \verb"nRow"'s column to  value of
+and \verb"nRow"'s column to a value of
 parameter \verb"z" conjugated (keeping
  calling matrix to be hermitian).
-Function returns  reference to
+Function returns a reference to
 the matrix changed.
 It throws \GOT{cvmexception}{cvmexception}
 if any of parameters passed
@@ -913,15 +913,15 @@ Function%
 schmatrix& schmatrix::set_diag (int i, const cvector& v)
 throw (cvmexception);
 \end{verbatim}
-sets  \hbox{$i$-th} diagonal of  calling hermitian matrix,
+sets  \hbox{$i$-th} diagonal of a calling hermitian matrix,
 $i<0$ for lower diagonals 
 and $i>0$ for upper ones, to be equal to  complex vector
 passed in parameter \verb"v".
 Function also sets $-i$-th diagonal to
-be equal to  vector \verb"v" conjugated,
+be equal to a vector \verb"v" conjugated,
 thus keeping calling matrix to be hermitian.
 Parameter \verb"i" is \emph{not} \Based.
-Function returns  reference to
+Function returns a reference to
 the matrix changed
 and throws \GOT{cvmexception}{cvmexception}
 if parameter \verb"i" passed
@@ -961,10 +961,10 @@ Function%
 schmatrix& schmatrix::set_main_diag (const rvector& v)
 throw (cvmexception);
 \end{verbatim}
-sets  main diagonal of  calling hermitian 
+sets  main diagonal of a calling hermitian 
 matrix to be equal to  real vector
 passed in parameter \verb"v".
-Function returns  reference to
+Function returns a reference to
 the matrix changed.
 It throws \GOT{cvmexception}{cvmexception}
 if vector \verb"v" passed has  size not equal to
@@ -1000,9 +1000,9 @@ Function%
 schmatrix& schmatrix::assign_real (const srsmatrix& m) 
 throw (cvmexception);
 \end{verbatim}
-sets real part of  calling hermitian matrix to be equal to
+sets real part of a calling hermitian matrix to be equal to
 real symmetric matrix \verb"m".
-Function returns reference to
+Function returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1035,10 +1035,10 @@ Function%
 \begin{verbatim}
 schmatrix& schmatrix::set_real (TR d);
 \end{verbatim}
-sets every element of  real part of  calling 
+sets every element of  real part of a calling 
 hermitian matrix to be equal to
  real number \verb"d".
-Function returns  reference to
+Function returns a reference to
 the matrix changed.
 See also \GOT{schmatrix}{schmatrix}.
 Example:
@@ -1067,8 +1067,8 @@ Function%
 \begin{verbatim}
 schmatrix& schmatrix::resize (int nNewMN) throw (cvmexception);
 \end{verbatim}
-changes  size of  calling hermitian matrix to \verb"nNewMN" by \verb"nNewMN"
-and returns  reference to
+changes  size of a calling hermitian matrix to \verb"nNewMN" by \verb"nNewMN"
+and returns a reference to
 the matrix changed. In case of increasing of its size, calling matrix
 is filled up with zeroes. 
 Function throws  \GOT{cvmexception}{cvmexception}
@@ -1175,7 +1175,7 @@ schmatrix& schmatrix::operator << (const schmatrix& m)
 throw (cvmexception);
 \end{verbatim}
 destroys  calling hermitian matrix, creates  new one as a copy of \verb"m"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of memory allocation failure.
@@ -1216,8 +1216,8 @@ Operator%
 schmatrix schmatrix::operator + (const schmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"schmatrix" as  sum of
- calling hermitian matrix and  hermitian matrix \verb"m".
+creates an object of type \verb"schmatrix" as a sum of
+a calling hermitian matrix and  hermitian matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes 
 of the operands.
@@ -1251,8 +1251,8 @@ Operator%
 schmatrix schmatrix::operator - (const schmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"schmatrix" as  difference of
- calling hermitian matrix and  hermitian matrix \verb"m".
+creates an object of type \verb"schmatrix" as a difference of
+a calling hermitian matrix and  hermitian matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes 
 of the operands.
@@ -1287,9 +1287,9 @@ Function%
 schmatrix& schmatrix::sum (const schmatrix& m1, const schmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of addition of
-hermitian matrices \verb"m1" and \verb"m2"  to  calling hermitian matrix
-and returns  reference to
+assigns the result of addition of
+hermitian matrices \verb"m1" and \verb"m2"  to a calling hermitian matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes 
@@ -1327,9 +1327,9 @@ Function%
 schmatrix& schmatrix::diff (const schmatrix& m1, const schmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of subtraction of
-hermitian matrices \verb"m1" and \verb"m2" to  calling hermitian matrix
-and returns  reference to
+assigns the result of subtraction of
+hermitian matrices \verb"m1" and \verb"m2" to a calling hermitian matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes 
@@ -1367,8 +1367,8 @@ Operator%
 schmatrix& schmatrix::operator += (const schmatrix& m) 
 throw (cvmexception);
 \end{verbatim}
-adds  hermitian matrix \verb"m" to  calling hermitian matrix 
-and returns  reference to
+adds  hermitian matrix \verb"m" to a calling hermitian matrix 
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes 
@@ -1414,7 +1414,7 @@ schmatrix& schmatrix::operator -= (const schmatrix& m)
 throw (cvmexception);
 \end{verbatim}
 subtracts  hermitian matrix \verb"m" from  calling hermitian matrix
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes 
@@ -1458,8 +1458,8 @@ Operator%
 \begin{verbatim}
 schmatrix schmatrix::operator - () const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"schmatrix" as
- calling hermitian matrix multiplied by $-1$.
+creates an object of type \verb"schmatrix" as
+a calling hermitian matrix multiplied by $-1$.
 See also \GOT{schmatrix}{schmatrix}.
 Example:
 \begin{Verbatim}
@@ -1487,8 +1487,8 @@ Operator%
 schmatrix& schmatrix::operator ++ ();
 schmatrix& schmatrix::operator ++ (int);
 \end{verbatim}
-adds identity matrix to  calling hermitian matrix
-and returns  reference to
+adds identity matrix to a calling hermitian matrix
+and returns a reference to
 the matrix changed.
 See also \GOT{schmatrix}{schmatrix}.
 Example:
@@ -1524,7 +1524,7 @@ schmatrix& schmatrix::operator -- ();
 schmatrix& schmatrix::operator -- (int);
 \end{verbatim}
 subtracts identity matrix from  calling hermitian matrix
-and returns  reference to
+and returns a reference to
 the matrix changed.
 See also \GOT{schmatrix}{schmatrix}.
 Example:
@@ -1559,8 +1559,8 @@ Operator%
 \begin{verbatim}
 schmatrix schmatrix::operator * (TR d) const;
 \end{verbatim}
-creates  object of type \verb"schmatrix" as  product of
- calling hermitian matrix and  real number~\verb"d".
+creates an object of type \verb"schmatrix" as a product of
+a calling hermitian matrix and  real number~\verb"d".
 See also \GOT{schmatrix::ope\-ra\-tor~*=~}{schmatrix.operator *= (TR)},
 \GOT{schmatrix}{schmatrix}.
 Example:
@@ -1588,8 +1588,8 @@ Operator%
 \begin{verbatim}
 schmatrix schmatrix::operator / (TR d) const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"schmatrix" as  quotient of
- calling hermitian matrix and  real number~\verb"d". It throws
+creates an object of type \verb"schmatrix" as a quotient of
+a calling hermitian matrix and  real number~\verb"d". It throws
  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less than the
 \GO{smallest normalized positive number}{Utilities.cvmMachMin}.
@@ -1620,8 +1620,8 @@ Operator%
 \begin{verbatim}
 scmatrix schmatrix::operator * (TC z) const;
 \end{verbatim}
-creates  object of type \verb"scmatrix" as  product of
- calling hermitian matrix and  complex number~\verb"z".
+creates an object of type \verb"scmatrix" as a product of
+a calling hermitian matrix and  complex number~\verb"z".
 See also \GOT{schmatrix}{schmatrix}.
 Example:
 \begin{Verbatim}
@@ -1648,8 +1648,8 @@ Operator%
 \begin{verbatim}
 scmatrix schmatrix::operator / (TC z) const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scmatrix" as  quotient of
- calling hermitian matrix and  complex number~\verb"z". 
+creates an object of type \verb"scmatrix" as a quotient of
+a calling hermitian matrix and  complex number~\verb"z". 
 It throws
  \GOT{cvmexception}{cvmexception}
 if \verb"z" has  absolute value equal or less than the
@@ -1681,7 +1681,7 @@ Operator%
 schmatrix& schmatrix::operator *= (TR d);
 \end{verbatim}
 multiplies  calling hermitian matrix by  real number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 See also \GOT{schmatrix::operator~*~}{schmatrix.operator * (TR)},
 \GOT{schmatrix}{schmatrix}.
@@ -1712,7 +1712,7 @@ Operator%
 schmatrix& schmatrix::operator /= (TR d) throw (cvmexception);
 \end{verbatim}
 divides  calling hermitian matrix by  real number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less
@@ -1818,7 +1818,7 @@ schmatrix& schmatrix::transpose (const schmatrix& m) throw (cvmexception);
 schmatrix& schmatrix::transpose () throw (cvmexception);
 \end{verbatim}
 implement complex hermitian matrix transposition (\emph{not} conjugation).
-First operator creates  object of type \verb"schmatrix" as
+First operator creates an object of type \verb"schmatrix" as
  transposed calling matrix
 (it throws  
 \GOT{cvmexception}{cvmexception}
@@ -1877,11 +1877,11 @@ Operator%
 cvector schmatrix::operator * (const cvector& v) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cvector"
-as  product of  calling hermitian matrix and  vector \verb"v".
+creates an object of type \verb"cvector"
+as a product of a calling hermitian matrix and a vector \verb"v".
 It throws  \GOT{cvmexception}{cvmexception}
-if  number of columns of  calling matrix
-differs from  size of  vector \verb"v".
+if  number of columns of a calling matrix
+differs from  size of a vector \verb"v".
 Use \GOT{cvector::mult}{cvector.mult (const cmatrix&, const cvector&)}
 in order to avoid new object creation.
 See also
@@ -1918,11 +1918,11 @@ Operator%
 cmatrix schmatrix::operator * (const cmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cmatrix"
-as  product of  calling hermitian matrix and  matrix \verb"m".
+creates an object of type \verb"cmatrix"
+as a product of a calling hermitian matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
-if  number of columns of  calling matrix
-differs from  number of rows of  matrix \verb"m".
+if  number of columns of a calling matrix
+differs from  number of rows of a matrix \verb"m".
 Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
  new object creation.
 See also
@@ -1962,8 +1962,8 @@ Operator%
 scmatrix schmatrix::operator * (const scmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scmatrix"
-as  product of  calling hermitian matrix and  matrix \verb"m".
+creates an object of type \verb"scmatrix"
+as a product of a calling hermitian matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 if the operands have different sizes.
 Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
@@ -2007,7 +2007,7 @@ cvector operator / (const cvector& vB) const throw (cvmexception);
 \end{verbatim}
 returns solution $x$ of linear equation
 $A*x=b$ where calling matrix is square hermitian matrix $A$
-and vector $b$ is passed in parameter \verb"vB".
+and a vector $b$ is passed in parameter \verb"vB".
 This operator throws exception 
 of type \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes
@@ -2085,7 +2085,7 @@ First operation for the second version
 is performed if \verb"bTransp" passed
 is \verb"false" and second one otherwise.
 Function
-returns  reference to the matrix changed and throws
+returns a reference to the matrix changed and throws
  \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes of the operands.
 See also
@@ -2192,7 +2192,7 @@ First operation for the second version
 is performed if \verb"bTransp" passed
 is \verb"false" and second one otherwise.
 Function
-returns  reference to the matrix changed and throws
+returns a reference to the matrix changed and throws
  \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes of the operands.
 See also
@@ -2298,7 +2298,7 @@ schmatrix schmatrix::inv () const throw (cvmexception);
 implement hermitian matrix inversion.
 The first version sets  calling hermitian matrix to be equal to 
  hermitian matrix \verb"m" inverted and the second one
-creates  object of type \verb"schmatrix" as inverted calling matrix.
+creates an object of type \verb"schmatrix" as inverted calling matrix.
 Functions throw  \GOT{cvmexception}{cvmexception} 
 in case of inappropriate
 sizes of the operands or when  matrix to be inverted is close to
@@ -2344,7 +2344,7 @@ throw (cvmexception);
 schmatrix schmatrix::exp (TR tol = cvmMachSp ()) const
 throw (cvmexception);
 \end{verbatim}
-compute  exponent of  calling hermitian matrix using Pad\'e approximation
+compute  exponent of a calling hermitian matrix using Pad\'e approximation
 defined as
 \begin{equation*}
 R_{pq}(z)=D_{pq}(z)^{-1}N_{pq}(z)=1+z+\dots+z^p/p!\,,
@@ -2354,7 +2354,7 @@ where
 N_{pq}(z)&=\sum_{k=0}^p\frac{(p+q-k)!p!}{(p+q)!k!(q-k)!}z^k,\\
 D_{pq}(z)&=\sum_{k=0}^q\frac{(p+q-k)!p!}{(p+q)!k!(q-k)!}(-z)^k
 \end{align*}
-along with  matrix normalizing as described in
+along with a matrix normalizing as described in
 \GO{\cite{Golub}}{biblio}, p.~572.
 Functions use \verb"ZMEXP" (or \verb"CMEXP" for \verb"float" version)
 \FORTRAN subroutine implementing the algorithm.
@@ -2362,8 +2362,8 @@ The first version sets  calling hermitian matrix to be equal to
  exponent of  hermitian matrix \verb"m" and returns 
  reference to the matrix
 changed. The second version
-creates  object of type \verb"schmatrix" as 
-exponent of  calling matrix.
+creates an object of type \verb"schmatrix" as 
+exponent of a calling matrix.
 The algorithm uses parameter \verb"tol"
 as $\varepsilon(p,q)$ in order to choose constants $p$ and $q$
 so that
@@ -2471,8 +2471,8 @@ compute matrix polynomial equal to
 The first version sets calling hermitian matrix to be equal 
 to the polynomial of hermitian matrix \verb"m"
 and the second one
-creates object of type \verb"schmatrix" as the 
-polynomial of calling symmetric matrix.
+creates an object of type \verb"schmatrix" as the 
+polynomial of a calling symmetric matrix.
 Functions use \verb"ZPOLY" (or \verb"CPOLY" for \verb"float" version)
 \FORTRAN subroutine implementing the Horner's algorithm.
 Functions throw  \GOT{cvmexception}{cvmexception} 
@@ -2550,7 +2550,7 @@ rvector schmatrix::eig () const throw (cvmexception);
 solve the
 \GO{symmetric eigenvalue problem}{rvector.eig}
 and return  real vector with eigenvalues
-of  calling hermitian matrix.
+of a calling hermitian matrix.
 The first version
 sets  output parameter \verb"mEigVect" to be equal
 to  square matrix containing orthogonal
@@ -2618,8 +2618,8 @@ where $U$ is upper triangular matrix.
 It utilizes one of \verb"?POTRF" routines of the
 \URL{LAPACK library}{http://www.netlib.org/lapack}.
 Function
-creates  object of type \verb"scmatrix" as 
- factorization of  calling matrix.
+creates an object of type \verb"scmatrix" as 
+ factorization of a calling matrix.
 It throws \GOT{cvmexception}{cvmexception} 
 in case of convergence error.
 See also
@@ -2662,7 +2662,7 @@ Function%
 \begin{verbatim}
 scmatrix schmatrix::bunch_kaufman () throw (cvmexception);
 \end{verbatim}
-forms the Bunch-Kaufman factorization of  calling hermitian matrix 
+forms the Bunch-Kaufman factorization of a calling hermitian matrix 
 (cited from the MKL library documentation):
 \begin{equation*}
 A=PUDU^HP^H,
@@ -2676,8 +2676,8 @@ blocks corresponding to the $2$-by-$2$ blocks of $D$.
 It utilizes one of \verb"?HETRF" routines of the
 \URL{LAPACK library}{http://www.netlib.org/lapack}.
 Function
-creates  object of type \verb"scmatrix" as 
- factorization of  calling matrix.
+creates an object of type \verb"scmatrix" as 
+ factorization of a calling matrix.
 It throws \GOT{cvmexception}{cvmexception} 
 in case of convergence error.
 See also
@@ -2700,7 +2700,7 @@ Function%
 schmatrix& schmatrix::identity();
 \end{verbatim}
 sets  calling hermitian matrix to be equal to identity matrix
-and returns  reference to
+and returns a reference to
 the matrix changed. 
 See also \GOT{schmatrix}{schmatrix}.
 Example:
@@ -2734,9 +2734,9 @@ Function%
 \begin{verbatim}
 schmatrix& schmatrix::vanish();
 \end{verbatim}
-sets every element of  calling hermitian 
+sets every element of a calling hermitian 
 matrix to be equal to zero
-and returns  reference to
+and returns a reference to
 the matrix changed.
 See also \GOT{schmatrix}{schmatrix}.
 Example:
@@ -2770,11 +2770,11 @@ Function%
 \begin{verbatim}
 schmatrix& schmatrix::randomize_real (TR dFrom, TR dTo);
 \end{verbatim}
-fills  real part of  calling hermitian matrix with 
+fills  real part of a calling hermitian matrix with 
 pseudo-random numbers distributed between
 \verb"dFrom" and \verb"dTo" keeping it to be hermitian.
 Function
-returns  reference to the matrix changed.
+returns a reference to the matrix changed.
 See also
 \GOT{schmatrix}{schmatrix}.
 Example:
@@ -2800,11 +2800,11 @@ Function%
 \begin{verbatim}
 schmatrix& schmatrix::randomize_imag (TR dFrom, TR dTo);
 \end{verbatim}
-fills  imaginary part of  calling hermitian matrix with 
+fills  imaginary part of a calling hermitian matrix with 
 pseudo-random numbers distributed between
 \verb"dFrom" and \verb"dTo" keeping it to be hermitian.
 Function
-returns  reference to the matrix changed.
+returns a reference to the matrix changed.
 See also
 \GOT{schmatrix}{schmatrix}.
 Example:

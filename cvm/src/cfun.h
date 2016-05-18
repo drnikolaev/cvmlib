@@ -886,7 +886,7 @@ public:
     using BasePointer = std::shared_ptr<BaseFunction<T>>; //!< Shared pointer to BaseFunction
 
 //! @cond INTERNAL
-    
+
 #define CFUN_CREATOR_DEF(f) \
     struct CreatorF##f : public Creator { \
         BasePointer create(const std::string& sBody, size_t nLeft, \
@@ -900,8 +900,7 @@ public:
 
 #define CFUN_CREATOR_INST(F,f) \
     mmap.emplace(F, std::unique_ptr<Creator>(new CreatorF##f()));
-    
-    
+
 private:
     struct Creator {
         virtual BasePointer create(const std::string& sBody, size_t nLeft,
@@ -5294,7 +5293,7 @@ prints
 /**
 @brief Variables
 
-Returns constant referense to array of variables.
+Returns constant referense to an array of variables.
 \par Example:
 \code
 rfunction rf("{x,y} cos(x)*sin(y)");
@@ -5305,7 +5304,7 @@ prints
 \code
 x y
 \endcode
-@return Referernce to array of strings.
+@return Referernce to an array of strings.
 */
     const string_array& vars() const {
         return mvars;
@@ -5745,7 +5744,7 @@ prints
 @brief Simplifier
 
 Simplifies basic_function for fatsest numerical computation
-possible and returns reference to the object changed.
+possible and returns a reference to the object changed.
 \par Example:
 \code
 using namespace cvm;
@@ -5772,7 +5771,7 @@ prints
 /**
 @brief Assignment operator
 
-Assigns basic_function object to calling one by performing deep
+Assigns basic_function object to a calling one by performing deep
 copying. No verifications made, it just copies over and returns
 reference to the object changed.
 \par Example:
@@ -5821,9 +5820,9 @@ prints
 /**
 @brief Assignment operator
 
-Assigns real or complex number to calling basic_function object
+Assigns real or complex number to a calling basic_function object
 and makes it to be constant function of variables originally
-set. Returns reference to the object changed.
+set. Returns a reference to the object changed.
 \par Example:
 \code
 using namespace cvm;
@@ -5884,7 +5883,7 @@ prints
 /**
 @brief Addition operator
 
-Creates basic_function object as sum of calling function and
+Creates basic_function object as a sum of a calling function and
 function referred by <tt>rf</tt>. Operator throws \ref
 cvmexception if lists of variables don't match.
 \par Example:
@@ -5918,7 +5917,7 @@ prints
 /**
 @brief Subtraction operator
 
-Creates basic_function object as difference of calling function
+Creates basic_function object as a difference of a calling function
 and function referred by <tt>rf</tt>. Operator throws \ref
 cvmexception if lists of variables don't match.
 \par Example:
@@ -5952,7 +5951,7 @@ prints
 /**
 @brief Multiplication operator
 
-Creates basic_function object as product of calling function
+Creates basic_function object as a product of a calling function
 and function referred by <tt>rf</tt>. Operator throws \ref
 cvmexception if lists of variables don't match.
 \par Example:
@@ -6062,8 +6061,8 @@ prints
 /**
 @brief Increment operator
 
-Adds to calling basic_function
-function referred by <tt>rf</tt> and returns reference to the
+Adds to a calling basic_function
+function referred by <tt>rf</tt> and returns a reference to the
 object changed. Operator throws
 \ref cvmexception if lists of variables don't match.
 \par Example:
@@ -6103,7 +6102,7 @@ prints
 @brief Decrement operator
 
 Subtracts from calling basic_function
-function referred by <tt>rf</tt> and returns reference to the
+function referred by <tt>rf</tt> and returns a reference to the
 object changed. Operator throws
 \ref cvmexception if lists of variables don't match.
 \par Example:
@@ -6143,7 +6142,7 @@ prints
 @brief Multiply and assign operator
 
 Multiplies calling basic_function
-by function referred by <tt>rf</tt> and returns reference to the
+by function referred by <tt>rf</tt> and returns a reference to the
 object changed. Operator throws
 \ref cvmexception if lists of variables don't match.
 \par Example:
@@ -6187,7 +6186,7 @@ prints
 @brief Divide and assign operator
 
 Divides calling basic_function
-by function referred by <tt>rf</tt> and returns reference to the
+by function referred by <tt>rf</tt> and returns a reference to the
 object changed. Operator throws
 \ref cvmexception if lists of variables don't match.
 \par Example:
@@ -6230,7 +6229,7 @@ prints
 /**
 @brief Addition operator
 
-Creates basic_function object as sum of calling function and
+Creates basic_function object as a sum of a calling function and
 real or complex number referred by <tt>d</tt>.
 \par Example:
 \code
@@ -6256,7 +6255,7 @@ prints
 /**
 @brief Subtraction operator
 
-Creates basic_function object as difference of calling function
+Creates basic_function object as a difference of a calling function
 and
 real or complex number referred by <tt>d</tt>.
 \par Example:
@@ -6283,7 +6282,7 @@ prints
 /**
 @brief Multiplication operator
 
-Creates basic_function object as product of calling function
+Creates basic_function object as a product of a calling function
 and
 real or complex number referred by <tt>d</tt>.
 \par Example:
@@ -6314,7 +6313,7 @@ prints
 /**
 @brief Division operator
 
-Creates basic_function object as division of calling function
+Creates basic_function object as division of a calling function
 by real or complex number referred by <tt>d</tt>.
 \par Example:
 \code
@@ -6344,7 +6343,7 @@ prints
 /**
 @brief Power to operator
 
-Creates basic_function object as power of calling function
+Creates basic_function object as power of a calling function
 to real or complex number referred by <tt>d</tt>.
 \par Example:
 \code
@@ -6370,7 +6369,7 @@ prints
 /**
 @brief Increment operator
 
-Adds to calling basic_function
+Adds to a calling basic_function
 real or complex number referred by <tt>d</tt> and returns
 reference to the object changed.
 \par Example:
@@ -6596,7 +6595,7 @@ prints
 /**
 @brief Exponent
 
-Creates basic_function object as exponent of calling function.
+Creates basic_function object as exponent of a calling function.
 \par Example:
 \code
 using namespace cvm;
@@ -6689,7 +6688,7 @@ prints
 @brief Common (base 10) logarithm
 
 Creates basic_function object as common (base 10) logarithm of
-calling function.
+a calling function.
 \par Example:
 \code
 using namespace cvm;
@@ -6720,7 +6719,7 @@ prints
 @brief Sine
 
 Creates basic_function object as sine of
-calling function.
+a calling function.
 \par Example:
 \code
 using namespace cvm;
@@ -6751,7 +6750,7 @@ prints
 @brief Cosine
 
 Creates basic_function object as cosine of
-calling function.
+a calling function.
 \par Example:
 \code
 using namespace cvm;
@@ -6781,7 +6780,7 @@ prints
 /**
 @brief Tangent
 
-Creates basic_function object as tangent of calling function.
+Creates basic_function object as tangent of a calling function.
 \par Example:
 \code
 using namespace cvm;
@@ -6811,7 +6810,7 @@ prints
 /**
 @brief Arcsine
 
-Creates basic_function object as arcsine of calling function.
+Creates basic_function object as arcsine of a calling function.
 \par Example:
 \code
 using namespace cvm;
@@ -6841,7 +6840,7 @@ prints
 /**
 @brief Arc cosine
 
-Creates basic_function object as arc cosine of calling function.
+Creates basic_function object as arc cosine of a calling function.
 \par Example:
 \code
 using namespace cvm;
@@ -7206,9 +7205,9 @@ prints
 @brief Immediate If function
 
 Creates basic_function object as Immediate If function of
-calling basic_function
+a calling basic_function
 and functions referred by <tt>rfNeg</tt> and <tt>rfNotNeg</tt>.
-For complex numbers real part of calling function is used only.
+For complex numbers real part of a calling function is used only.
 Function throws
 \ref cvmexception if variables don't match.
 \f[
@@ -7272,7 +7271,7 @@ prints
 /**
 @brief Addition operator (left sided)
 
-Creates basic_function object as sum of real or complex number referred by <tt>d</tt>
+Creates basic_function object as a sum of real or complex number referred by <tt>d</tt>
 and function referred by <tt>rf</tt>.
 \par Example:
 \code
@@ -7299,7 +7298,7 @@ prints
 /**
 @brief Subtraction operator (left sided)
 
-Creates basic_function object as difference of real or complex number referred by <tt>d</tt>
+Creates basic_function object as a difference of real or complex number referred by <tt>d</tt>
 and function referred by <tt>rf</tt>.
 \par Example:
 \code
@@ -7326,7 +7325,7 @@ prints
 /**
 @brief Multiplication operator (left sided)
 
-Creates basic_function object as product of real or complex number referred by <tt>d</tt>
+Creates basic_function object as a product of real or complex number referred by <tt>d</tt>
 and function referred by <tt>rf</tt>.
 \par Example:
 \code
@@ -7486,7 +7485,7 @@ inline void _copy(size_t nSize,
 /**
 @brief Generalized array of functions class (not end-user)
 
-\c T type stands for \ref treal or \ref tcomplex. Please use inherited verctor and matrix classes.
+\c T type stands for \ref treal or \ref tcomplex. Please use inherited verctor and a matrix classes.
 This one provides some member functions which are common for all arrays.
 @see basic_fvector
 @see basic_fmatrix
@@ -7533,7 +7532,7 @@ public:
     /**
      * @brief Copy constructor
      *
-     * Creates function array as a copy of array \c a.
+     * Creates function array as a copy of an array  \c a.
      * @param[in] a Function array to copy.
      */
     FArray(const FArray& a)
@@ -7643,7 +7642,7 @@ zero based).
 /**
 @brief Reference to element (l-value, \e zero-based)
 
-Returns reference to array's element by its index 
+Returns a reference to array's element by its index 
 (\e zero based).
 @param[in] n Index of element to return reference to.
 @return basic_function<T>
@@ -7655,7 +7654,7 @@ Returns reference to array's element by its index
 /**
 @brief Numerical value
 
-Returns numerical value of array of functions of no variables.
+Returns numerical value of an array  of functions of no variables.
 Arrays' dimensions are not verified.
 \par Example:
 \code
@@ -7691,7 +7690,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of array of functions of one variable.
+Returns numerical value of an array  of functions of one variable.
 Arrays' dimensions are not verified.
 \par Example:
 \code
@@ -7729,7 +7728,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of array of functions of two variables.
+Returns numerical value of an array  of functions of two variables.
 Arrays' dimensions are not verified.
 \par Example:
 \code
@@ -7771,7 +7770,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of array of functions of three variables.
+Returns numerical value of an array  of functions of three variables.
 Arrays' dimensions are not verified.
 \par Example:
 \code
@@ -7815,7 +7814,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of array of functions for given values of
+Returns numerical value of an array  of functions for given values of
 variables. Arrays' dimensions are not verified.
 \par Example:
 \code
@@ -8133,7 +8132,7 @@ prints
 /**
 @brief Copy Constructor
 
-Creates copy of vector of functions referred by <tt>fv</tt>.
+Creates copy of a vector of functions referred by <tt>fv</tt>.
 @param[in] fv Vector of functions (\ref rfvector or \ref cfvector) to copy from.
 */
     basic_fvector(const basic_fvector& fv)
@@ -8152,7 +8151,7 @@ Creates copy of vector of functions referred by <tt>fv</tt>.
 /**
 @brief Assignment operator
 
-Assigns basic_fvector object to calling one or throws \ref cvmexception
+Assigns basic_fvector object to a calling one or throws \ref cvmexception
 if objects have different sizes.
 \par Example:
 \code
@@ -8176,7 +8175,7 @@ prints
 {x,y} x+y+1 {x,y} x*y {x,y} x^y
 {x,y} x+y+(1,0) {x,y} x*y {x,y} x^y
 \endcode
-@param[in] fv Const reference to vector of functions to assign.
+@param[in] fv Const reference to a vector of functions to assign.
 @return Reference to changed calling vector.
 */
     basic_fvector& operator = (const basic_fvector& fv) throw(cvmexception)
@@ -8226,7 +8225,7 @@ prints
 1
 1
 \endcode
-@param[in] fv Const reference to vector of functions to compare with.
+@param[in] fv Const reference to a vector of functions to compare with.
 @return boolean value.
 */
     bool operator == (const basic_fvector& fv) const {
@@ -8263,7 +8262,7 @@ prints
 0
 0
 \endcode
-@param[in] fv Const reference to vector of functions to compare with.
+@param[in] fv Const reference to a vector of functions to compare with.
 @return boolean value.
 */
     bool operator != (const basic_fvector& fv) const {
@@ -8273,7 +8272,7 @@ prints
 /**
 @brief Replacement operator
 
-Assigns basic_fvector object to calling one without checking anything.
+Assigns basic_fvector object to a calling one without checking anything.
 \par Example:
 \code
 using namespace cvm;
@@ -8296,7 +8295,7 @@ prints
 {x,y} x+y+1 {x,y} x*y {x,y} x^y
 {x,y} x+y+(1,0) {x,y} x*y {x,y} x^y
 \endcode
-@param[in] fv Const reference to vector of functions to replace by.
+@param[in] fv Const reference to a vector of functions to replace by.
 @return Reference to changed calling vector.
 */
     basic_fvector& operator <<(const basic_fvector& fv)
@@ -8345,7 +8344,7 @@ prints
 @brief Simplifier
 
 Simplifies basic_fvector for fatsest numerical computation
-possible and returns reference to the object changed.
+possible and returns a reference to the object changed.
 \par Example:
 \code
 using namespace cvm;
@@ -8372,7 +8371,7 @@ prints
 /**
 @brief Addition operator
 
-Creates basic_fvector object as sum of calling vector and
+Creates basic_fvector object as a sum of a calling vector and
 vector referred by <tt>fv</tt>. Operator throws \ref
 cvmexception if sizes of vectors or lists of variables don't match.
 \par Example:
@@ -8400,7 +8399,7 @@ prints
 {x,y} x+y {x,y} x+y+x*y
 {x,y} x+y {x,y} x+y+x*y
 \endcode
-@param[in] fv Const reference to vector to add.
+@param[in] fv Const reference to a vector to add.
 @return %Vector of functions object.
 */
     basic_fvector operator + (const basic_fvector& fv) const throw(cvmexception)
@@ -8414,7 +8413,7 @@ prints
 /**
 @brief Subtraction operator
 
-Creates basic_fvector object as difference of calling vector and
+Creates basic_fvector object as a difference of a calling vector and
 vector referred by <tt>fv</tt>. Operator throws \ref
 cvmexception if sizes of vectors or lists of variables don't match.
 \par Example:
@@ -8442,7 +8441,7 @@ prints
 {x,y} x-y {x,y} x+y-x*y
 {x,y} x-y {x,y} x+y-x*y
 \endcode
-@param[in] fv Const reference to vector to subtract.
+@param[in] fv Const reference to a vector to subtract.
 @return %Vector of functions object.
 */
     basic_fvector operator - (const basic_fvector& fv) const throw(cvmexception)
@@ -8456,8 +8455,8 @@ prints
 /**
 @brief Increment operator
 
-Adds to calling basic_fvector
-vector of functions referred by <tt>fv</tt> and returns reference to the
+Adds to a calling basic_fvector
+vector of functions referred by <tt>fv</tt> and returns a reference to the
 object changed. Operator throws \ref
 cvmexception if sizes of vectors or lists of variables don't match.
 \par Example:
@@ -8487,7 +8486,7 @@ prints
 {x,y} x+y {x,y} x+y+x*y
 {x,y} x+y {x,y} x+y+x*y
 \endcode
-@param[in] fv Const reference to vector to add.
+@param[in] fv Const reference to a vector to add.
 @return Reference to changed calling vector.
 */
     basic_fvector& operator += (const basic_fvector& fv) throw(cvmexception)
@@ -8501,7 +8500,7 @@ prints
 @brief Decrement operator
 
 Subtracts from calling basic_fvector
-vector of functions referred by <tt>fv</tt> and returns reference to the
+vector of functions referred by <tt>fv</tt> and returns a reference to the
 object changed. Operator throws \ref
 cvmexception if sizes of vectors or lists of variables don't match.
 \par Example:
@@ -8531,7 +8530,7 @@ prints
 {x,y} x-y {x,y} x+y-x*y
 {x,y} x-y {x,y} x+y-x*y
 \endcode
-@param[in] fv Const reference to vector to add.
+@param[in] fv Const reference to a vector to add.
 @return Reference to changed calling vector.
 */
     basic_fvector& operator -= (const basic_fvector& fv) throw(cvmexception)
@@ -8544,7 +8543,7 @@ prints
 /**
 @brief Multiplication operator
 
-Creates basic_fvector object as product of calling vector
+Creates basic_fvector object as a product of a calling vector
 and function referred by <tt>f</tt>. Operator throws \ref
 cvmexception if lists of variables don't match.
 \par Example:
@@ -8585,7 +8584,7 @@ prints
 /**
 @brief Division operator
 
-Creates basic_fvector object as division of calling vector
+Creates basic_fvector object as division of a calling vector
 by function referred by <tt>f</tt>. Operator throws \ref
 cvmexception if lists of variables don't match.
 \par Example:
@@ -8626,7 +8625,7 @@ prints
 /**
 @brief Multiplication operator
 
-Creates basic_fvector object as product of calling vector
+Creates basic_fvector object as a product of a calling vector
 and real or complex number referred by <tt>d</tt>.
 \par Example:
 \code
@@ -8665,7 +8664,7 @@ prints
 /**
 @brief Division operator
 
-Creates basic_fvector object as division of calling vector
+Creates basic_fvector object as division of a calling vector
 by real or complex number referred by <tt>d</tt>.
 \par Example:
 \code
@@ -8705,7 +8704,7 @@ prints
 @brief Multiply and assign operator
 
 Multiplies calling vector of functions
-by function referred by <tt>f</tt> and returns reference to the
+by function referred by <tt>f</tt> and returns a reference to the
 object changed. Operator throws
 \ref cvmexception if lists of variables don't match.
 \par Example:
@@ -8750,7 +8749,7 @@ prints
 @brief Divide and assign operator
 
 Divides calling vector of functions
-by function referred by <tt>f</tt> and returns reference to the
+by function referred by <tt>f</tt> and returns a reference to the
 object changed. Operator throws
 \ref cvmexception if lists of variables don't match.
 \par Example:
@@ -8795,7 +8794,7 @@ prints
 @brief Multiply and assign operator
 
 Multiplies calling vector of functions
-by real or complex number referred by <tt>d</tt> and returns reference to the
+by real or complex number referred by <tt>d</tt> and returns a reference to the
 object changed.
 \par Example:
 \code
@@ -8839,7 +8838,7 @@ prints
 @brief Divide and assign operator
 
 Divides calling vector of functions
-by real or complex number referred by <tt>d</tt> and returns reference to the
+by real or complex number referred by <tt>d</tt> and returns a reference to the
 object changed.
 \par Example:
 \code
@@ -8882,8 +8881,8 @@ prints
 /**
 @brief Scalar product
 
-Creates basic_function object as scalar product of calling vector
-and vector referred by <tt>fv</tt>. Operator throws
+Creates basic_function object as scalar product of a calling vector
+and a vector referred by <tt>fv</tt>. Operator throws
 \ref cvmexception if sizes of vectors or lists of variables don't match.
 \par Example:
 \code
@@ -8926,7 +8925,7 @@ prints
 /**
 @brief Vector by matrix product
 
-Creates basic_fvector object as product of calling vector
+Creates basic_fvector object as a product of a calling vector
 and matrix of functions referred by <tt>fm</tt>. Operator throws
 \ref cvmexception if sizes of objects or lists of variables don't match.
 \par Example:
@@ -8979,8 +8978,8 @@ prints
 /**
 @brief Vector by matrix product
 
-Sets basic_fvector object to be equal to product of vector of functions referred by <tt>fv</tt>
-and matrix of functions referred by <tt>fm</tt> and returns reference to the object changed.
+Sets basic_fvector object to be equal to product of a vector of functions referred by <tt>fv</tt>
+and matrix of functions referred by <tt>fm</tt> and returns a reference to the object changed.
 Function throws
 \ref cvmexception if sizes of objects or lists of variables don't match.
 \par Example:
@@ -9037,8 +9036,8 @@ prints
 /**
 @brief %Matrix by vector product
 
-Sets basic_fvector object to be equal to product of matrix of functions referred by <tt>fm</tt>
-and vector of functions referred by <tt>fv</tt> and returns reference to the object changed.
+Sets basic_fvector object to be equal to product of a matrix of functions referred by <tt>fm</tt>
+and a vector of functions referred by <tt>fv</tt> and returns a reference to the object changed.
 FUnction throws
 \ref cvmexception if sizes of objects or lists of variables don't match.
 \par Example:
@@ -9095,7 +9094,7 @@ prints
 /**
 @brief Jacobi matrix
 
-Creates basic_fmatrix object as Jacobi matrix of calling vector of functions.
+Creates basic_fmatrix object as Jacobi matrix of a calling vector of functions.
 First variable to compute partial derivatives is set by <tt>nfrom</tt> index (0-based,
 0 by default), the number of variables to use is set by <tt>vars</tt> argument (0 for all, default).
 Number of rows of the Jacobi matrix built is equal to vector's size,
@@ -9172,7 +9171,7 @@ prints
 /**
 @brief Jacobi matrix
 
-Computes Jacobi matrix of calling vector of functions and sets <tt>fmj</tt> basic_fmatrix object to it.
+Computes Jacobi matrix of a calling vector of functions and sets <tt>fmj</tt> basic_fmatrix object to it.
 First variable to compute partial derivatives is set by <tt>nfrom</tt> index (0-based,
 0 by default), the number of variables to use is set by <tt>vars</tt> argument (0 for all, default).
 Number of rows of the Jacobi matrix built must be equal to vector's size,
@@ -9277,7 +9276,7 @@ prints
 {x,y} x {x,y} x+y {x,y} x*y+(1,0)
 \endcode
 @param[in] os Reference to output stream.
-@param[in] fv Const reference to vector of functions to print.
+@param[in] fv Const reference to a vector of functions to print.
 @return Reference to output stream.
 */
     friend std::ostream& operator <<(std::ostream& os, const basic_fvector<T>& fv)
@@ -9463,7 +9462,7 @@ prints
 /**
 @brief Copy Constructor
 
-Creates copy of vector of functions referred by <tt>fv</tt>.
+Creates copy of a vector of functions referred by <tt>fv</tt>.
 @param[in] fv Vector of functions (\ref rfvector or \ref cfvector) to copy from.
 */
     basic_rfvector(const BaseFVector& fv)
@@ -9482,7 +9481,7 @@ Creates copy of vector of functions referred by <tt>fv</tt>.
 /**
 @brief Numerical value
 
-Returns numerical value of vector of functions of no variables.
+Returns numerical value of a vector of functions of no variables.
 \par Example:
 \code
 using namespace cvm;
@@ -9516,7 +9515,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of vector of functions of one variable.
+Returns numerical value of a vector of functions of one variable.
 \par Example:
 \code
 using namespace cvm;
@@ -9552,7 +9551,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of vector of functions of two variables.
+Returns numerical value of a vector of functions of two variables.
 \par Example:
 \code
 using namespace cvm;
@@ -9589,7 +9588,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of vector of functions of three variables.
+Returns numerical value of a vector of functions of three variables.
 \par Example:
 \code
 using namespace cvm;
@@ -9627,7 +9626,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of array of functions for given values of
+Returns numerical value of an array  of functions for given values of
 variables. Array's dimension is not verified.
 \par Example:
 \code
@@ -9809,7 +9808,7 @@ prints
 /**
 @brief Copy Constructor
 
-Creates copy of vector of functions referred by <tt>fv</tt>.
+Creates copy of a vector of functions referred by <tt>fv</tt>.
 @param[in] fv Vector of functions (\ref rfvector or \ref cfvector) to copy from.
 */
     basic_cfvector(const BaseFVector& fv)
@@ -9828,7 +9827,7 @@ Creates copy of vector of functions referred by <tt>fv</tt>.
 /**
 @brief Numerical value
 
-Returns numerical value of vector of functions of no variables.
+Returns numerical value of a vector of functions of no variables.
 \par Example:
 \code
 using namespace cvm;
@@ -9861,7 +9860,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of vector of functions of one variable.
+Returns numerical value of a vector of functions of one variable.
 \par Example:
 \code
 using namespace cvm;
@@ -9897,7 +9896,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of vector of functions of two variables.
+Returns numerical value of a vector of functions of two variables.
 \par Example:
 \code
 using namespace cvm;
@@ -9934,7 +9933,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of vector of functions of three variables.
+Returns numerical value of a vector of functions of three variables.
 \par Example:
 \code
 using namespace cvm;
@@ -9972,7 +9971,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of array of functions for given values of
+Returns numerical value of an array  of functions for given values of
 variables. Array's dimension is not verified.
 \par Example:
 \code
@@ -10190,7 +10189,7 @@ prints
 /**
 @brief Copy Constructor
 
-Creates copy of matrix of functions referred by <tt>fm</tt>.
+Creates copy of a matrix of functions referred by <tt>fm</tt>.
 @param[in] fm %Matrix of functions (\ref rfmatrix or \ref cfmatrix) to copy from.
 */
     basic_fmatrix(const basic_fmatrix& fm)
@@ -10209,7 +10208,7 @@ Creates copy of matrix of functions referred by <tt>fm</tt>.
 /**
 @brief Number of rows
 
-Returns number of rows of calling matrix.
+Returns number of rows of a calling matrix.
 \par Example:
 \code
 using namespace cvm;
@@ -10223,7 +10222,7 @@ prints
 3
 3
 \endcode
-@return Number of columns of calling matrix of functions.
+@return Number of columns of a calling matrix of functions.
 */
     size_t msize() const {
         return mM;
@@ -10232,7 +10231,7 @@ prints
 /**
 @brief Number of columns
 
-Returns number of columns of calling matrix.
+Returns number of columns of a calling matrix.
 \par Example:
 \code
 using namespace cvm;
@@ -10246,7 +10245,7 @@ prints
 4
 4
 \endcode
-@return Number of rows of calling matrix of functions.
+@return Number of rows of a calling matrix of functions.
 */
     size_t nsize() const {
         return mN;
@@ -10257,7 +10256,7 @@ prints
 /**
 @brief Assignment operator
 
-Assigns basic_fmatrix object to calling one or throws \ref cvmexception
+Assigns basic_fmatrix object to a calling one or throws \ref cvmexception
 if objects have different sizes.
 \par Example:
 \code
@@ -10282,7 +10281,7 @@ prints
 {x} x {x} x^(3,0)
 {x} x^(2,0) {x} x^(4,0)
 \endcode
-@param[in] fm Const reference to matrix of functions to assign.
+@param[in] fm Const reference to a matrix of functions to assign.
 @return Reference to changed calling matrix.
 */
     basic_fmatrix& operator = (const basic_fmatrix& fm) throw(cvmexception)
@@ -10305,7 +10304,7 @@ prints
 /**
 @brief Reference to element (l-value)
 
-Operator provides access to a particular element of calling matrix of functions by its row and column index.
+Operator provides access to a particular element of a calling matrix of functions by its row and column index.
 <strong>Indexes passed are 0-based.
 This is different from core classes indexing like \ref basic_rmatrix indexing.</strong>
 That's because function arrays are based on std::vector implementation having 0-based indexing.
@@ -10359,7 +10358,7 @@ prints
 /**
 @brief Value of element (\e not l-value)
 
-Operator returns value of a particular element of calling matrix of functions by its row and column index.
+Operator returns value of a particular element of a calling matrix of functions by its row and column index.
 <strong>Indexes passed are 0-based.
 This is different from core classes indexing like \ref basic_rmatrix indexing.</strong>
 That's because function arrays are based on std::vector implementation having 0-based indexing.
@@ -10421,7 +10420,7 @@ prints
 1
 1
 \endcode
-@param[in] fm Const reference to matrix of functions to compare with.
+@param[in] fm Const reference to a matrix of functions to compare with.
 @return boolean value.
 */
     bool operator == (const basic_fmatrix& fm) const {
@@ -10458,7 +10457,7 @@ prints
 0
 0
 \endcode
-@param[in] fm Const reference to matrix of functions to compare with.
+@param[in] fm Const reference to a matrix of functions to compare with.
 @return boolean value.
 */
     bool operator != (const basic_fmatrix& fm) const {
@@ -10468,7 +10467,7 @@ prints
 /**
 @brief Replacement operator
 
-Assigns basic_fmatrix object to calling one without checking anything.
+Assigns basic_fmatrix object to a calling one without checking anything.
 \par Example:
 \code
 using namespace cvm;
@@ -10493,7 +10492,7 @@ prints
 {x} x {x} x^(3,0)
 {x} x^(2,0) {x} x^(4,0)
 \endcode
-@param[in] fm Const reference to matrix of functions to replace by.
+@param[in] fm Const reference to a matrix of functions to replace by.
 @return Reference to changed calling matrix.
 */
     basic_fmatrix& operator<<(const basic_fmatrix& fm) {
@@ -10552,7 +10551,7 @@ prints
 @brief Simplifier
 
 Simplifies basic_fmatrix for fatsest numerical computation
-possible and returns reference to the object changed.
+possible and returns a reference to the object changed.
 \par Example:
 \code
 using namespace cvm;
@@ -10584,7 +10583,7 @@ prints
 /**
 @brief Addition operator
 
-Creates basic_fmatrix object as sum of calling matrix and
+Creates basic_fmatrix object as a sum of a calling matrix and
 matrix referred by <tt>fm</tt>. Operator throws \ref
 cvmexception if sizes of matrices or lists of variables don't match.
 \par Example:
@@ -10615,7 +10614,7 @@ prints
 {x,y} x+y
 {x,y} x+y+x*y
 \endcode
-@param[in] fm Const reference to matrix to add.
+@param[in] fm Const reference to a matrix to add.
 @return %Matrix of functions object.
 */
     basic_fmatrix operator + (const basic_fmatrix& fm) const throw(cvmexception)
@@ -10629,7 +10628,7 @@ prints
 /**
 @brief Subtraction operator
 
-Creates basic_fmatrix object as difference of calling matrix and
+Creates basic_fmatrix object as a difference of a calling matrix and
 matrix referred by <tt>fm</tt>. Operator throws \ref
 cvmexception if sizes of matrices or lists of variables don't match.
 \par Example:
@@ -10660,7 +10659,7 @@ prints
 {x,y} x-y
 {x,y} x+y-x*y
 \endcode
-@param[in] fm Const reference to matrix to subtract.
+@param[in] fm Const reference to a matrix to subtract.
 @return %Matrix of functions object.
 */
     basic_fmatrix operator - (const basic_fmatrix& fm) const throw(cvmexception)
@@ -10674,7 +10673,7 @@ prints
 /**
 @brief Increment operator
 
-Adds to calling basic_fmatrix
+Adds to a calling basic_fmatrix
 matrix of functions referred by <tt>fm</tt> and returns
 reference to the object changed. Operator throws \ref
 cvmexception if sizes of matrices or lists of variables don't
@@ -10709,7 +10708,7 @@ prints
 {x,y} y+x
 {x,y} x*y+x+y
 \endcode
-@param[in] fm Const reference to matrix to add.
+@param[in] fm Const reference to a matrix to add.
 @return Reference to changed calling matrix.
 */
     basic_fmatrix& operator += (const basic_fmatrix& fm) throw(cvmexception)
@@ -10757,7 +10756,7 @@ prints
 {x,y} y-x
 {x,y} x*y-x+y
 \endcode
-@param[in] fm Const reference to matrix to subtract.
+@param[in] fm Const reference to a matrix to subtract.
 @return Reference to changed calling matrix.
 */
     basic_fmatrix& operator -= (const basic_fmatrix& fm) throw(cvmexception)
@@ -10770,7 +10769,7 @@ prints
 /**
 @brief Multiplication operator
 
-Creates basic_fmatrix object as product of calling matrix
+Creates basic_fmatrix object as a product of a calling matrix
 and function referred by <tt>f</tt>. Operator throws \ref
 cvmexception if lists of variables don't match.
 \par Example:
@@ -10820,7 +10819,7 @@ prints
 /**
 @brief Division operator
 
-Creates basic_fmatrix object as division of calling matrix
+Creates basic_fmatrix object as division of a calling matrix
 by function referred by <tt>f</tt>. Operator throws \ref
 cvmexception if lists of variables don't match.
 \par Example:
@@ -10870,7 +10869,7 @@ prints
 /**
 @brief Multiplication operator
 
-Creates basic_fmatrix object as product of calling matrix
+Creates basic_fmatrix object as a product of a calling matrix
 and real or complex number referred by <tt>d</tt>.
 \par Example:
 \code
@@ -10917,7 +10916,7 @@ prints
 /**
 @brief Division operator
 
-Creates basic_fmatrix object as division of calling matrix
+Creates basic_fmatrix object as division of a calling matrix
 by real or complex number referred by <tt>d</tt>.
 \par Example:
 \code
@@ -10965,7 +10964,7 @@ prints
 @brief Multiply and assign operator
 
 Multiplies calling matrix of functions
-by function referred by <tt>f</tt> and returns reference to the
+by function referred by <tt>f</tt> and returns a reference to the
 object changed. Operator throws
 \ref cvmexception if lists of variables don't match.
 \par Example:
@@ -11010,7 +11009,7 @@ prints
 @brief Divide and assign operator
 
 Divides calling matrix of functions
-by function referred by <tt>f</tt> and returns reference to the
+by function referred by <tt>f</tt> and returns a reference to the
 object changed. Operator throws
 \ref cvmexception if lists of variables don't match.
 \par Example:
@@ -11056,7 +11055,7 @@ prints
 @brief Multiply and assign operator
 
 Multiplies calling matrix of functions
-by real or complex number referred by <tt>d</tt> and returns reference to the
+by real or complex number referred by <tt>d</tt> and returns a reference to the
 object changed.
 \par Example:
 \code
@@ -11099,7 +11098,7 @@ prints
 @brief Divide and assign operator
 
 Divides calling matrix of functions
-by real or complex number referred by <tt>d</tt> and returns reference to the
+by real or complex number referred by <tt>d</tt> and returns a reference to the
 object changed.
 \par Example:
 \code
@@ -11142,7 +11141,7 @@ prints
 @brief Row as \em not l-value
 
 Operator creates \ref basic_fvector object as a copy of \c
-nRow-th row (0-based) of calling matrix.
+nRow-th row (0-based) of a calling matrix.
 <strong>Note: index passed is 0-based.
 This is different from core classes indexing like
 \ref basic_rmatrix indexing.</strong>
@@ -11193,7 +11192,7 @@ prints
 @brief Column as \em not l-value
 
 Operator creates \ref basic_fvector object as a copy of \c
-nCol-th column (0-based) of calling matrix.
+nCol-th column (0-based) of a calling matrix.
 <strong>Note: index passed is 0-based.
 This is different from core classes indexing like
 \ref basic_rmatrix indexing.</strong>
@@ -11244,8 +11243,8 @@ prints
 @brief Row assignment
 
 Function assigns \ref basic_fvector object referred by
-<tt>fv</tt> to nRow-th row (0-based) of calling matrix and
-   returns reference to the object changed.
+<tt>fv</tt> to nRow-th row (0-based) of a calling matrix and
+   returns a reference to the object changed.
 <strong>Note: index passed is 0-based.
 This is different from core classes indexing like
 \ref basic_rmatrix indexing.</strong>
@@ -11299,8 +11298,8 @@ prints
 @brief Column assignment
 
 Function assigns \ref basic_fvector object referred by
-<tt>fv</tt> to nCol-th column (0-based) of calling matrix and
-   returns reference to the object changed.
+<tt>fv</tt> to nCol-th column (0-based) of a calling matrix and
+   returns a reference to the object changed.
 <strong>Note: index passed is 0-based.
 This is different from core classes indexing like
 \ref basic_rmatrix indexing.</strong>
@@ -11353,9 +11352,9 @@ prints
 /**
 @brief %Matrix by vector product
 
-Creates basic_fvector object as product of calling matrix of
+Creates basic_fvector object as a product of a calling matrix of
 functions
-and vector of functions referred by <tt>fv</tt>.
+and a vector of functions referred by <tt>fv</tt>.
 Operator throws
 \ref cvmexception if sizes of objects or lists of variables don't match.
 \par Example:
@@ -11410,7 +11409,7 @@ prints
 /**
 @brief %Matrix by matrix product
 
-Creates basic_fmatrix object as product of calling matrix of
+Creates basic_fmatrix object as a product of a calling matrix of
 functions
 and matrix of functions referred by <tt>fm</tt>.
 Operator throws
@@ -11478,7 +11477,7 @@ prints
 @brief %Matrix by matrix product
 
 Sets calling basic_fmatrix object to be product of matrices referred by <tt>fmA</tt>
-and <tt>fmB</tt> and returns reference to the object changed. Function throws
+and <tt>fmB</tt> and returns a reference to the object changed. Function throws
 \ref cvmexception if sizes of objects or lists of variables don't match.
 \par Example:
 \code
@@ -11572,7 +11571,7 @@ prints
 {x,y} x^(2,0) {x,y} y^(2,0)
 \endcode
 @param[in] os Reference to output stream.
-@param[in] fm Const reference to matrix of functions to print.
+@param[in] fm Const reference to a matrix of functions to print.
 @return Reference to output stream.
 */
     friend std::ostream& operator <<(std::ostream& os, const basic_fmatrix<T>& fm)
@@ -11747,7 +11746,7 @@ prints
 /**
 @brief Copy Constructor
 
-Creates copy of matrix of functions referred by <tt>fm</tt>.
+Creates copy of a matrix of functions referred by <tt>fm</tt>.
 @param[in] fm %Matrix of functions (or \ref rfmatrix) to copy from.
 */
     basic_rfmatrix(const BaseFMatrix& fm)
@@ -11766,7 +11765,7 @@ Creates copy of matrix of functions referred by <tt>fm</tt>.
 /**
 @brief Numerical value
 
-Returns numerical value of matrix of functions of no variables.
+Returns numerical value of a matrix of functions of no variables.
 \par Example:
 \code
 using namespace cvm;
@@ -11806,7 +11805,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of matrix of functions of one variable.
+Returns numerical value of a matrix of functions of one variable.
 \par Example:
 \code
 using namespace cvm;
@@ -11847,7 +11846,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of matrix of functions of two variables.
+Returns numerical value of a matrix of functions of two variables.
 \par Example:
 \code
 using namespace cvm;
@@ -11889,7 +11888,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of matrix of functions of three variables.
+Returns numerical value of a matrix of functions of three variables.
 \par Example:
 \code
 using namespace cvm;
@@ -11932,7 +11931,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of matrix of functions for given values of
+Returns numerical value of a matrix of functions for given values of
 variables. Array's dimension is not verified.
 \par Example:
 \code
@@ -12124,7 +12123,7 @@ prints
 /**
 @brief Copy Constructor
 
-Creates copy of matrix of functions referred by <tt>fm</tt>.
+Creates copy of a matrix of functions referred by <tt>fm</tt>.
 @param[in] fm %Matrix of functions (or \ref cfmatrix) to copy from.
 */
     basic_cfmatrix(const BaseFMatrix& fm)
@@ -12143,7 +12142,7 @@ Creates copy of matrix of functions referred by <tt>fm</tt>.
 /**
 @brief Numerical value
 
-Returns numerical value of matrix of functions of no variables.
+Returns numerical value of a matrix of functions of no variables.
 \par Example:
 \code
 using namespace cvm;
@@ -12183,7 +12182,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of matrix of functions of one variable.
+Returns numerical value of a matrix of functions of one variable.
 \par Example:
 \code
 using namespace cvm;
@@ -12224,7 +12223,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of matrix of functions of two variables.
+Returns numerical value of a matrix of functions of two variables.
 \par Example:
 \code
 using namespace cvm;
@@ -12266,7 +12265,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of matrix of functions of three variables.
+Returns numerical value of a matrix of functions of three variables.
 \par Example:
 \code
 using namespace cvm;
@@ -12309,7 +12308,7 @@ prints
 /**
 @brief Numerical value
 
-Returns numerical value of matrix of functions for given values of
+Returns numerical value of a matrix of functions for given values of
 variables. Array's dimension is not verified.
 \par Example:
 \code

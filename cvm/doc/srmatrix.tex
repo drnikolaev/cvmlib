@@ -182,7 +182,7 @@ srmatrix::srmatrix (TR* pD, int nMN);
 creates  $n\times n$ \verb"srmatrix" object where $n$ is passed in
 \verb"nMN" parameter.
 Unlike others, this constructor \textit{does not allocate  memory}.
-It just shares  memory with  array pointed to by \verb"pD".
+It just shares  memory with an array pointed to by \verb"pD".
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed.
 See also \GOT{srmatrix}{srmatrix}, 
@@ -216,7 +216,7 @@ srmatrix::srmatrix (const TR* pD, int nMN);
 \end{verbatim}
 creates  $n\times n$ \verb"srmatrix" object where $n$ is passed in
 \verb"nMN" parameter
-and copies $n*n$ elements of  array \verb"pD" to it \GOT{by colums}{SubSubSectionStorage}.
+and copies $n*n$ elements of an array  \verb"pD" to it \GOT{by colums}{SubSubSectionStorage}.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed.
 See also \GOT{srmatrix}{srmatrix}, 
@@ -285,7 +285,7 @@ Constructor%
 \begin{verbatim}
 srmatrix::srmatrix (const rmatrix& m);
 \end{verbatim}
-creates  \verb"srmatrix" object as a copy of matrix \verb"m".
+creates  \verb"srmatrix" object as a copy of a matrix \verb"m".
 It's assumed that $m\times n$ matrix \verb"m" must have equal
 sizes, i.e. $m = n$ is satisfied.
 Constructor throws  \GOT{cvmexception}{cvmexception}
@@ -390,7 +390,7 @@ Indexing operators%
 TR& srmatrix::operator () (int im, int in) throw (cvmexception);
 TR srmatrix::operator () (int im, int in) const throw (cvmexception);
 \end{verbatim}
-provide access to a particular element of calling matrix. The first version
+provide access to a particular element of a calling matrix. The first version
 is applicable to non-constant object.
 This version returns  \emph{l-value}
 in order to make possible write access to a particular element.
@@ -442,10 +442,10 @@ Indexing operators%
 rvector srmatrix::operator () (int i) throw (cvmexception);
 const rvector srmatrix::operator () (int i) const throw (cvmexception);
 \end{verbatim}
-provide access to \hbox{$i$-th} column of calling matrix. The first version
+provide access to \hbox{$i$-th} column of a calling matrix. The first version
 is applicable to  non-constant object and
 \emph{returns  l-value}, i.e. the vector returned shares  memory
-with \hbox{$i$-th} column of calling matrix
+with \hbox{$i$-th} column of a calling matrix
 in order to make possible write access to it.
 The second version creates  \emph{copy} of a column and therefore it's
 \emph{not  l-value}.
@@ -495,10 +495,10 @@ Indexing operators%
 rvector srmatrix::operator [] (int i) throw (cvmexception);
 const rvector srmatrix::operator [] (int i) const throw (cvmexception);
 \end{verbatim}
-provide access to \hbox{$i$-th} row of calling matrix. The first version
+provide access to \hbox{$i$-th} row of a calling matrix. The first version
 is applicable to non-constant object and
 \emph{returns  l-value}, i.e. the vector returned shares  memory
-with \hbox{$i$-th} row of calling matrix
+with \hbox{$i$-th} row of a calling matrix
 in order to make possible write access to it.
 The second version creates  \emph{copy} of a row and therefore it's
 \emph{not  l-value}.
@@ -549,9 +549,9 @@ Operator%
 srmatrix& srmatrix::operator = (const srmatrix& m)
 throw (cvmexception);
 \end{verbatim}
-sets  every element of  calling matrix to  value of
-appropriate element of  matrix \verb"m"
-and returns  reference to
+sets  every element of a calling matrix to a value of
+appropriate element of a matrix \verb"m"
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -594,10 +594,10 @@ Function%
 srmatrix& srmatrix::assign (const rvector& v) throw (cvmexception);
 srmatrix& srmatrix::assign (const TR* pD);
 \end{verbatim}
-sets every element of  calling matrix to  value of
+sets every element of a calling matrix to a value of
 appropriate element of  vector~\verb'v'
 or  array pointed to by~\verb"pD"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 In first version it's assumed that vector passed is long
 enough to fill calling matrix. Function throws \GOT{cvmexception}{cvmexception} 
@@ -636,9 +636,9 @@ Function%
 srmatrix& srmatrix::assign (int nRow, int nCol, const rmatrix& m)
 throw (cvmexception);
 \end{verbatim}
-sets sub-matrix of  calling matrix beginning with \Based row
-\verb"nRow" and column \verb"nCol" to  matrix \verb"m" and
-returns  reference to the matrix changed. Function throws 
+sets sub-matrix of a calling matrix beginning with \Based row
+\verb"nRow" and column \verb"nCol" to a matrix \verb"m" and
+returns a reference to the matrix changed. Function throws 
  \GOT{cvmexception}{cvmexception} if \verb"nRow"
 or \verb"nCol" are not positive or matrix \verb"m" doesn't fit.
 Function is \emph{redefined} in the class
@@ -675,11 +675,11 @@ Function%
 \begin{verbatim}
 srmatrix& srmatrix::set (TR x);
 \end{verbatim}
-sets every element of  calling matrix to value of
-parameter \verb"x" and returns  reference to
+sets every element of a calling matrix to a value of
+parameter \verb"x" and returns a reference to
 the matrix changed.
 Use \GOT{vanish}{srmatrix.vanish} to set every element
-of  calling matrix to be equal to zero.
+of a calling matrix to be equal to zero.
 Function is \emph{redefined} in the classes
 \GOT{srbmatrix}{srbmatrix} 
 and \GOT{srsmatrix}{srsmatrix}.
@@ -710,8 +710,8 @@ Function%
 \begin{verbatim}
 srmatrix& srmatrix::resize (int nNewMN) throw (cvmexception);
 \end{verbatim}
-changes  size of  calling matrix to \verb"nNewMN" by \verb"nNewMN"
-and returns  reference to
+changes  size of a calling matrix to \verb"nNewMN" by \verb"nNewMN"
+and returns a reference to
 the matrix changed. In case of increasing of its size, calling matrix
 is filled up with zeroes.
 Function throws  \GOT{cvmexception}{cvmexception}
@@ -758,7 +758,7 @@ srmatrix& srmatrix::operator << (const srmatrix& m)
 throw (cvmexception);
 \end{verbatim}
 destroys  calling matrix, creates  new one as a copy of \verb"m"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of memory allocation failure.
@@ -809,8 +809,8 @@ Operator%
 srmatrix srmatrix::operator + (const srmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srmatrix" as  sum of
- calling matrix and  matrix \verb"m".
+creates an object of type \verb"srmatrix" as a sum of
+a calling matrix and a matrix \verb"m".
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
 Operator is \emph{redefined} in the classes
@@ -855,8 +855,8 @@ Operator%
 srmatrix srmatrix::operator - (const srmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srmatrix" as  difference of
- calling matrix and  matrix \verb"m".
+creates an object of type \verb"srmatrix" as a difference of
+a calling matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
 Operator is \emph{redefined} in the classes
@@ -899,9 +899,9 @@ Function%
 srmatrix& srmatrix::sum (const srmatrix& m1, const srmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of addition of
-matrices \verb"m1" and \verb"m2"  to  calling matrix
-and returns  reference to
+assigns the result of addition of
+matrices \verb"m1" and \verb"m2"  to a calling matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -949,9 +949,9 @@ Function%
 srmatrix& srmatrix::diff (const srmatrix& m1, const srmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of subtraction of
-matrices \verb"m1" and \verb"m2" to  calling matrix
-and returns  reference to
+assigns the result of subtraction of
+matrices \verb"m1" and \verb"m2" to a calling matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -998,8 +998,8 @@ Operator%
 \begin{verbatim}
 srmatrix& srmatrix::operator += (const srmatrix& m) throw (cvmexception);
 \end{verbatim}
-adds  matrix \verb"m" to  calling matrix 
-and returns  reference to
+adds  matrix \verb"m" to a calling matrix 
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1051,7 +1051,7 @@ Operator%
 srmatrix& srmatrix::operator -= (const srmatrix& m) throw (cvmexception);
 \end{verbatim}
 subtracts  matrix \verb"m" from  calling matrix
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1102,8 +1102,8 @@ Operator%
 \begin{verbatim}
 srmatrix srmatrix::operator - () const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srmatrix" as
- calling matrix multiplied by $-1$.
+creates an object of type \verb"srmatrix" as
+a calling matrix multiplied by $-1$.
 Operator is \emph{redefined} in the classes
 \GOT{srbmatrix}{srbmatrix} 
 and \GOT{srsmatrix}{srsmatrix}.
@@ -1134,8 +1134,8 @@ Operator%
 srmatrix& srmatrix::operator ++ ();
 srmatrix& srmatrix::operator ++ (int);
 \end{verbatim}
-adds identity matrix to  calling matrix
-and returns  reference to
+adds identity matrix to a calling matrix
+and returns a reference to
 the matrix changed.
 Operator is \emph{redefined} in the classes
 \GOT{srbmatrix}{srbmatrix} and \GOT{srsmatrix}{srsmatrix}.
@@ -1173,7 +1173,7 @@ srmatrix& srmatrix::operator -- ();
 srmatrix& srmatrix::operator -- (int);
 \end{verbatim}
 subtracts identity matrix from  calling matrix
-and returns reference to
+and returns a reference to
 the matrix changed.
 Operator is \emph{redefined} in the classes
 \GOT{srbmatrix}{srbmatrix} and \GOT{srsmatrix}{srsmatrix}.
@@ -1209,8 +1209,8 @@ Operator%
 \begin{verbatim}
 srmatrix srmatrix::operator * (TR d) const;
 \end{verbatim}
-creates  object of type \verb"srmatrix" as  product of
- calling matrix and  number~\verb"d".
+creates an object of type \verb"srmatrix" as a product of
+a calling matrix and  number~\verb"d".
 Operator is \emph{redefined} in the classes
 \GOT{srbmatrix}{srbmatrix} 
 and \GOT{srsmatrix}{srsmatrix}.
@@ -1241,8 +1241,8 @@ Operator%
 \begin{verbatim}
 srmatrix srmatrix::operator / (TR d) const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srmatrix" as  quotient of
- calling matrix and  number~\verb"d". It throws
+creates an object of type \verb"srmatrix" as a quotient of
+a calling matrix and  number~\verb"d". It throws
  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less than the
 \GO{smallest normalized positive number}{Utilities.cvmMachMin}.
@@ -1282,7 +1282,7 @@ Operator%
 srmatrix& srmatrix::operator *= (TR d);
 \end{verbatim}
 multiplies  calling matrix by  number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator is \emph{redefined} in the classes
 \GOT{srbmatrix}{srbmatrix} 
@@ -1316,7 +1316,7 @@ Operator%
 srmatrix& srmatrix::operator /= (TR d) throw (cvmexception);
 \end{verbatim}
 divides  calling matrix by  number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less
@@ -1398,7 +1398,7 @@ srmatrix& srmatrix::transpose (const srmatrix& m) throw (cvmexception);
 srmatrix& srmatrix::transpose ();
 \end{verbatim}
 implement matrix transposition.
-First operator creates  object of type \verb"srmatrix" as
+First operator creates an object of type \verb"srmatrix" as
  transposed calling matrix
 (it throws  
 \GOT{cvmexception}{cvmexception}
@@ -1456,11 +1456,11 @@ Operator%
 rvector srmatrix::operator * (const rvector& v) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"rvector"
-as  product of  calling matrix and  vector \verb"v".
+creates an object of type \verb"rvector"
+as a product of a calling matrix and a vector \verb"v".
 It throws  \GOT{cvmexception}{cvmexception}
-if  number of columns of  calling matrix
-differs from  size of  vector \verb"v".
+if  number of columns of a calling matrix
+differs from  size of a vector \verb"v".
 Use \GOT{rvector::mult}{rvector.mult (const rmatrix&, const rvector&)}
 in order to avoid new object creation.
 Function is \emph{redefined} in the classes
@@ -1499,11 +1499,11 @@ Operator%
 rmatrix srmatrix::operator * (const rmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"rmatrix"
-as  product of  calling matrix and  matrix \verb"m".
+creates an object of type \verb"rmatrix"
+as a product of a calling matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
-if  number of columns of  calling matrix
-differs from  number of rows of  matrix \verb"m".
+if  number of columns of a calling matrix
+differs from  number of rows of a matrix \verb"m".
 Use \GOT{rmatrix::mult}{rmatrix.mult} in order to avoid
  new object creation.
 Operator is \emph{redefined} in the classes
@@ -1545,8 +1545,8 @@ Operator%
 srmatrix srmatrix::operator * (const srmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srmatrix"
-as  product of  calling matrix and  matrix \verb"m".
+creates an object of type \verb"srmatrix"
+as a product of a calling matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 if the operands have different sizes.
 Use \GOT{rmatrix::mult}{rmatrix.mult} in order to avoid
@@ -1591,7 +1591,7 @@ throw (cvmexception);
 \end{verbatim}
 sets  calling matrix to be equal to  product
 of itself and square matrix \verb"m"
-and returns  reference to
+and returns a reference to
 the object it changes.
 Operator throws \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1639,7 +1639,7 @@ Function%
 \begin{verbatim}
 srmatrix& srmatrix::swap_rows (int n1, int n2) throw (cvmexception);
 \end{verbatim}
-swaps two rows of  calling matrix and returns  reference to
+swaps two rows of a calling matrix and returns a reference to
 the matrix changed. \verb"n1" and \verb"n2" are
 numbers of rows to be swapped, 
 both are \Based).
@@ -1686,7 +1686,7 @@ Function%
 \begin{verbatim}
 srmatrix& srmatrix::swap_cols (int n1, int n2) throw (cvmexception);
 \end{verbatim}
-swaps two columns of  calling matrix and returns  reference to
+swaps two columns of a calling matrix and returns a reference to
 the matrix changed. \verb"n1" and \verb"n2" are
  numbers of columns to be swapped, 
 both are \Based).
@@ -1904,7 +1904,7 @@ rvector operator % (const rvector& vB) const throw (cvmexception);
 returns solution $x$ of  linear equation
 $A^T*x=b$ (which is equivalent to $x*A=b$) 
 where calling matrix is square matrix $A$
-and vector $b$ is passed in parameter \verb"vB".
+and a vector $b$ is passed in parameter \verb"vB".
 This operator throws exception 
 of type \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes
@@ -1952,7 +1952,7 @@ rvector operator / (const rvector& vB) const throw (cvmexception);
 \end{verbatim}
 returns solution $x$ of linear equation
 $A*x=b$ where calling matrix is square matrix $A$
-and vector $b$ is passed in parameter \verb"vB".
+and a vector $b$ is passed in parameter \verb"vB".
 This operator throws exception 
 of type \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes
@@ -2011,11 +2011,11 @@ srmatrix::solve_lu (const srmatrix& mLU, const int* pPivots,
                     const rmatrix& mB) throw (cvmexception);
 \end{verbatim}
 create  object of type \verb"rvector" or \verb"rmatrix" as
- solution $x$ or $X$ of matrix linear equation
+ solution $x$ or $X$ of a matrix linear equation
 $A*x=b$ or $A*X=B$ respectively. Here $A$ is  calling
 matrix, 
 parameter \verb"mLU" is \GO{$LU$ factorization}{srmatrix.low_up}
-of  matrix $A$, parameter \verb"pPivots" is an array of pivot numbers
+of a matrix $A$, parameter \verb"pPivots" is an array of pivot numbers
 created while factorizing the matrix $A$
 and parameters \verb"vB" and \verb"mB" are  vector $b$ and
 matrix $B$ respectively.
@@ -2107,7 +2107,7 @@ Function%
 \begin{verbatim}
 TR srmatrix::det () const throw (cvmexception);
 \end{verbatim}
-returns  determinant of  calling matrix.
+returns  determinant of a calling matrix.
 It uses the \GO{$LU$ factorization}{srmatrix.low_up} internally
 and may throw the same exceptions as the factorizer.
 Function is \emph{inherited} in the classes
@@ -2167,7 +2167,7 @@ pointed to by \verb"nPivots" so \hbox{$i$-th} row
 was interchanged with \hbox{\verb"nPivots["$i$\verb"]"-th} row.
 The first version sets  calling matrix to be equal to matrix
 \verb"m"'s $LU$ factorization and the second one
-creates  object of type \verb"srmatrix" as  calling matrix
+creates an object of type \verb"srmatrix" as  calling matrix
 $LU$ factorization.
 Functions throw \GOT{cvmexception}{cvmexception}
 in case of inappropriate
@@ -2243,7 +2243,7 @@ Function%
 TR srmatrix::cond () const throw (cvmexception);
 \end{verbatim}
 returns  condition number reciprocal of 
-calling matrix $A$ in the \GO{infinity-norm}{Array.norminf}:
+a calling matrix $A$ in the \GO{infinity-norm}{Array.norminf}:
 \begin{equation*}
 \kappa_\infty=\|A\|_\infty \|A^{-1}\|_\infty.
 \end{equation*}
@@ -2299,7 +2299,7 @@ srmatrix srmatrix::inv () const throw (cvmexception);
 implement matrix inversion.
 The first version sets  calling matrix to be equal to 
 \verb"m" inverted and the second one
-creates  object of type \verb"srmatrix" as inverted calling matrix.
+creates an object of type \verb"srmatrix" as inverted calling matrix.
 Functions throw  \GOT{cvmexception}{cvmexception} 
 in case of inappropriate
 sizes of the operands or when the matrix to be inverted is close to
@@ -2372,10 +2372,10 @@ along with the matrix normalizing as described in
 Functions use \verb"DMEXP" (or \verb"SMEXP" for \verb"float" version)
 \FORTRAN subroutine implementing the algorithm.
 The first version sets calling matrix to be equal to
-exponent of \verb"m" and returns  reference to the matrix
+exponent of \verb"m" and returns a reference to the matrix
 changed. The second version
-creates  object of type \verb"srmatrix" as 
-exponent of  calling matrix.
+creates an object of type \verb"srmatrix" as 
+exponent of a calling matrix.
 The algorithm uses parameter \verb"tol"
 as $\varepsilon(p,q)$ in order to choose constants $p$ and $q$
 so that
@@ -2468,8 +2468,8 @@ compute matrix polynomial equal to
 The first version sets  calling matrix to be equal to the polynomial of
 \verb"m"
 and the second one
-creates  object of type \verb"srmatrix" as the 
-polynomial of  calling matrix.
+creates an object of type \verb"srmatrix" as the 
+polynomial of a calling matrix.
 Functions use \verb"DPOLY" (or \verb"SPOLY" for \verb"float" version)
 \FORTRAN subroutine implementing the Horner's algorithm.
 Functions throw  \GOT{cvmexception}{cvmexception} 
@@ -2532,7 +2532,7 @@ cvector srmatrix::eig () const throw (cvmexception);
 solve the
 \GO{nonsymmetric eigenvalue problem}{cvector.eig}
 and return  complex vector with eigenvalues
-of  calling matrix.
+of a calling matrix.
 The first version
 sets  output parameter \verb"mEigVect" to be equal
 to  square matrix containing right (if parameter
@@ -2852,7 +2852,7 @@ Function%
 srmatrix& srmatrix::identity();
 \end{verbatim}
 sets  calling matrix to be equal to identity matrix
-and returns  reference to
+and returns a reference to
 the matrix changed. 
 Function is \emph{redefined} in the classes
 \GOT{srbmatrix}{srbmatrix} and
@@ -2891,8 +2891,8 @@ Function%
 \begin{verbatim}
 srmatrix& srmatrix::vanish();
 \end{verbatim}
-sets every element of  calling matrix to be equal to zero
-and returns  reference to
+sets every element of a calling matrix to be equal to zero
+and returns a reference to
 the matrix changed. This function is faster
 than
 \GOT{srmatrix::set(TR)}{srmatrix.set}
@@ -2937,7 +2937,7 @@ srmatrix& srmatrix::randomize (TR dFrom, TR dTo);
 fills  calling matrix with pseudo-random numbers distributed between
 \verb"dFrom" and \verb"dTo".
 Function
-returns  reference to the matrix changed.
+returns a reference to the matrix changed.
 See also
 \GOT{srmatrix}{srmatrix}.
 Example:

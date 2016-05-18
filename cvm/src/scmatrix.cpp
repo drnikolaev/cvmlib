@@ -276,7 +276,7 @@ __inv<basic_schmatrix<float, std::complex<float> > >
         if (_abs(mArg(CVM0,CVM0)) <= basic_cvmMachMin<float>()) {
             throw cvmexception(CVM_SINGULARMATRIX, 1);
         }
-        m(CVM0,CVM0) = 1.F / mArg(CVM0,CVM0);
+        m.set(CVM0, CVM0, 1.F / mArg(CVM0,CVM0));
     }
     else
     {
@@ -325,7 +325,7 @@ __inv<basic_schmatrix<double, std::complex<double> > >
         if (_abs(mArg(CVM0,CVM0)) <= basic_cvmMachMin<double>()) {
             throw cvmexception(CVM_SINGULARMATRIX, 1);
         }
-        m(CVM0,CVM0) = 1. / mArg(CVM0,CVM0);
+        m.set(CVM0, CVM0, 1. / mArg(CVM0,CVM0));
     }
     else
     {

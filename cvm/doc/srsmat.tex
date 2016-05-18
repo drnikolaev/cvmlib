@@ -161,7 +161,7 @@ srsmatrix::srsmatrix (TR* pD, int nMN, TR tol = cvmMachSp());
 creates  $n\times n$ \verb"srsmatrix" object where $n$ is passed in
 \verb"nMN" parameter.
 Unlike others, this constructor \textit{does not allocate  memory}.
-It just shares  memory with  array pointed to by \verb"pD".
+It just shares  memory with an array pointed to by \verb"pD".
 Constructor throws  \GOT{cvmexception}{cvmexception}
 if the matrix created doesn't appear to be symmetric 
 or in case of non-positive size passed. Symmetry tolerance is
@@ -199,7 +199,7 @@ srsmatrix::srsmatrix (const TR* pD, int nMN, TR tol = cvmMachSp());
 \end{verbatim}
 creates  $n\times n$ \verb"srsmatrix" object where $n$ is passed in
 \verb"nMN" parameter
-and copies $n*n$ elements of  array \verb"pD" to it \GOT{by colums}{SubSubSectionStorage}.
+and copies $n*n$ elements of an array  \verb"pD" to it \GOT{by colums}{SubSubSectionStorage}.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 if the matrix created doesn't appear to be symmetric 
 or in case of non-positive size passed. Symmetry tolerance is
@@ -267,7 +267,7 @@ Constructor%
 \begin{verbatim}
 explicit srsmatrix::srsmatrix (const rmatrix& m, TR tol = cvmMachSp());
 \end{verbatim}
-creates  \verb"srsmatrix" object as a copy of matrix \verb"m".
+creates  \verb"srsmatrix" object as a copy of a matrix \verb"m".
 It's assumed that $m\times n$ matrix \verb"m" must have equal
 sizes, i.e. $m = n$ is satisfied, and must be symmetric.
 Symmetry tolerance is set by parameter \verb'tol'.
@@ -365,7 +365,7 @@ Indexing operator%
 \begin{verbatim}
 TR srsmatrix::operator () (int im, int in) const throw (cvmexception);
 \end{verbatim}
-provides access to a particular element of calling matrix. 
+provides access to a particular element of a calling matrix. 
 Unlike indexing operators in other classes,
 this operator doesn't return  \emph{l-value}
 because this would make the matrix non-symmetric.
@@ -399,11 +399,11 @@ Indexing operator%
 \begin{verbatim}
 const rvector srsmatrix::operator () (int i) const throw (cvmexception);
 \end{verbatim}
-provides access to \hbox{$i$-th} column of calling matrix.
+provides access to \hbox{$i$-th} column of a calling matrix.
 Unlike indexing operators in other classes,
 this operator doesn't return  \emph{l-value}
 because this would make the matrix non-symmetric.
-Operator creates  object of class \verb"rvector"
+Operator creates an object of class \verb"rvector"
 as  \emph{copy} of a column and therefore it's
 \emph{not  l-value}.
 Operator is \Based.
@@ -434,11 +434,11 @@ Indexing operator%
 \begin{verbatim}
 const rvector srsmatrix::operator [] (int i) const throw (cvmexception);
 \end{verbatim}
-provides access to \hbox{$i$-th} row of calling matrix.
+provides access to \hbox{$i$-th} row of a calling matrix.
 Unlike indexing operators in other classes,
 this operator doesn't return  \emph{l-value}
 because this would make the matrix non-symmetric.
-Operator creates  object of class \verb"rvector"
+Operator creates an object of class \verb"rvector"
 as  \emph{copy} of a row and therefore it's
 \emph{not  l-value}.
 Operator is \Based.
@@ -469,13 +469,13 @@ Function%
 \begin{verbatim}
 const rvector srsmatrix::diag (int i) const throw (cvmexception);
 \end{verbatim}
-provides access to \hbox{$i$-th} diagonal of calling matrix,
+provides access to \hbox{$i$-th} diagonal of a calling matrix,
 where $i=0$ for main diagonal, $i<0$ for lower diagonals 
 and $i>0$ for upper ones.
 Unlike \verb"diag" function in other classes,
 this one doesn't return  \emph{l-value}
 because this would make the matrix non-symmetric.
-Function creates  object of class \verb"rvector"
+Function creates an object of class \verb"rvector"
 as  \emph{copy} of a diagonal and therefore it's
 \emph{not  l-value}.
 Function is \Based.
@@ -516,9 +516,9 @@ Operator%
 srsmatrix& srsmatrix::operator = (const srsmatrix& m)
 throw (cvmexception);
 \end{verbatim}
-sets every element of  calling symmetric matrix to  value of
+sets every element of a calling symmetric matrix to a value of
 appropriate element of symmetric matrix \verb"m"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -554,10 +554,10 @@ throw (cvmexception);
 srsmatrix& srsmatrix::assign (const TR* pD, TR tol = cvmMachSp())
 throw (cvmexception);
 \end{verbatim}
-sets every element of  calling matrix to  value of
+sets every element of a calling matrix to a value of
 appropriate element of  vector~\verb'v'
 or  array pointed to by~\verb"pD"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 In first version it's assumed that vector passed is long
 enough to fill calling matrix. Function throws \GOT{cvmexception}{cvmexception} 
@@ -592,9 +592,9 @@ Function%
 srsmatrix& srsmatrix::assign (int nRowCol, const srsmatrix& m)
 throw (cvmexception);
 \end{verbatim}
-sets main sub-matrix of  calling symmetric matrix beginning with \Based row
+sets main sub-matrix of a calling symmetric matrix beginning with \Based row
 \verb"nRowCol" to  symmetric matrix \verb"m" and
-returns  reference to the matrix changed.
+returns a reference to the matrix changed.
 Function throws 
  \GOT{cvmexception}{cvmexception} if \verb"nRowCol"
 is not positive or matrix \verb"m" doesn't fit.
@@ -632,8 +632,8 @@ Function%
 \begin{verbatim}
 srsmatrix& srsmatrix::set (TR x);
 \end{verbatim}
-sets every element of  calling matrix to  value of
-parameter \verb"x" and returns  reference to
+sets every element of a calling matrix to a value of
+parameter \verb"x" and returns a reference to
 the matrix changed.
 See also \GOT{srsmatrix}{srsmatrix}.
 Example:
@@ -663,8 +663,8 @@ srsmatrix& srsmatrix::set (int nRow, int nCol, TR x);
 sets both elements located on \verb"nRow"'s row
 and \verb"nCol"'s column and on 
 \verb"nCol"'s row
-and \verb"nRow"'s column to  value of
-parameter \verb"x" and returns  reference to
+and \verb"nRow"'s column to a value of
+parameter \verb"x" and returns a reference to
 the matrix changed (thus the matrix remains symmetric).
 Parameters passed 
 are \Based.
@@ -699,13 +699,13 @@ srsmatrix& srsmatrix::set_diag (int i, const rvector& v)
 throw (cvmexception);
 \end{verbatim}
 assigns vector \verb"v"
-to \hbox{$i$-th} diagonal of calling matrix,
+to \hbox{$i$-th} diagonal of a calling matrix,
 where $i=0$ for main diagonal, $i<0$ for lower diagonals 
 and $i>0$ for upper ones.
 If $i\not=0$, then  function assigns the vector
 to both $i$-th and $-i$-th diagonals
 (thus calling matrix remains symmetric).
-Function returns  reference to the matrix changed.
+Function returns a reference to the matrix changed.
 Parameter \verb"i" is \emph{not} \Based.
 Function throws \GOT{cvmexception}{cvmexception}
 if parameter \verb"i" is outside of 
@@ -740,8 +740,8 @@ Function%
 \begin{verbatim}
 srsmatrix& srsmatrix::resize (int nNewMN) throw (cvmexception);
 \end{verbatim}
-changes  size of  calling matrix to \verb"nNewMN" by \verb"nNewMN"
-and returns  reference to
+changes  size of a calling matrix to \verb"nNewMN" by \verb"nNewMN"
+and returns a reference to
 the matrix changed. In case of increasing of its size, calling matrix
 is filled up with zeroes.
 Function throws  \GOT{cvmexception}{cvmexception}
@@ -847,7 +847,7 @@ srsmatrix& srsmatrix::operator << (const srsmatrix& m)
 throw (cvmexception);
 \end{verbatim}
 destroys  calling matrix, creates  new one as a copy of \verb"m"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of memory allocation failure.
@@ -886,8 +886,8 @@ Operator%
 srsmatrix srsmatrix::operator + (const srsmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srsmatrix" as  sum of
- calling symmetric matrix and symmetric matrix \verb"m".
+creates an object of type \verb"srsmatrix" as a sum of
+a calling symmetric matrix and symmetric matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
 See also \GOT{srsmatrix::sum}{srsmatrix.sum}, \GOT{srsmatrix}{srsmatrix}.
@@ -923,8 +923,8 @@ Operator%
 srsmatrix srsmatrix::operator - (const srsmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srsmatrix" as  difference of
- calling symmetric matrix and symmetric matrix \verb"m".
+creates an object of type \verb"srsmatrix" as a difference of
+a calling symmetric matrix and symmetric matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
 See also \GOT{srsmatrix::diff}{srsmatrix.diff}, \GOT{srsmatrix}{srsmatrix}.
@@ -959,9 +959,9 @@ Function%
 srsmatrix& srsmatrix::sum (const srsmatrix& m1, const srsmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of addition of symmetric
-matrices \verb"m1" and \verb"m2"  to  calling symmetric matrix
-and returns  reference to
+assigns the result of addition of symmetric
+matrices \verb"m1" and \verb"m2"  to a calling symmetric matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1001,9 +1001,9 @@ Function%
 srsmatrix& srsmatrix::diff (const srsmatrix& m1, const srsmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of subtraction of
-symmetric matrices \verb"m1" and \verb"m2" to  calling symmetric matrix
-and returns  reference to
+assigns the result of subtraction of
+symmetric matrices \verb"m1" and \verb"m2" to a calling symmetric matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1043,8 +1043,8 @@ Operator%
 srsmatrix& srsmatrix::operator += (const srsmatrix& m)
 throw (cvmexception);
 \end{verbatim}
-adds symmetric matrix \verb"m" to  calling symmetric matrix 
-and returns  reference to
+adds symmetric matrix \verb"m" to a calling symmetric matrix 
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1090,7 +1090,7 @@ srsmatrix& srsmatrix::operator -= (const srsmatrix& m)
 throw (cvmexception);
 \end{verbatim}
 subtracts symmetric matrix \verb"m" from  calling symmetric matrix
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1133,8 +1133,8 @@ Operator%
 \begin{verbatim}
 srsmatrix srsmatrix::operator - () const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srsmatrix" as
- calling symmetric matrix multiplied by $-1$.
+creates an object of type \verb"srsmatrix" as
+a calling symmetric matrix multiplied by $-1$.
 See also \GOT{srsmatrix}{srsmatrix}.
 Example:
 \begin{Verbatim}
@@ -1161,8 +1161,8 @@ Operator%
 srsmatrix& srsmatrix::operator ++ ();
 srsmatrix& srsmatrix::operator ++ (int);
 \end{verbatim}
-adds identity matrix to  calling symmetric matrix
-and returns  reference to
+adds identity matrix to a calling symmetric matrix
+and returns a reference to
 the matrix changed.
 See also \GOT{srsmatrix}{srsmatrix}.
 Example:
@@ -1199,7 +1199,7 @@ srsmatrix& srsmatrix::operator -- ();
 srsmatrix& srsmatrix::operator -- (int);
 \end{verbatim}
 subtracts identity matrix from  calling symmetric matrix
-and returns  reference to
+and returns a reference to
 the matrix changed.
 See also \GOT{srsmatrix}{srsmatrix}.
 Example:
@@ -1234,8 +1234,8 @@ Operator%
 \begin{verbatim}
 srsmatrix srsmatrix::operator * (TR d) const;
 \end{verbatim}
-creates  object of type \verb"srsmatrix" as  product of
- calling symmetric matrix and  number~\verb"d".
+creates an object of type \verb"srsmatrix" as a product of
+a calling symmetric matrix and  number~\verb"d".
 See also \GOT{srsmatrix::ope\-ra\-tor~*=~}{srsmatrix.operator *= (TR)},
 \GOT{srsmatrix}{srsmatrix}.
 Example:
@@ -1262,8 +1262,8 @@ Operator%
 \begin{verbatim}
 srsmatrix srsmatrix::operator / (TR d) const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srsmatrix" as  quotient of
- calling symmetric matrix and  number~\verb"d". It throws
+creates an object of type \verb"srsmatrix" as a quotient of
+a calling symmetric matrix and  number~\verb"d". It throws
  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less than the
 \GO{smallest normalized positive number}{Utilities.cvmMachMin}.
@@ -1294,7 +1294,7 @@ Operator%
 srsmatrix& srsmatrix::operator *= (TR d);
 \end{verbatim}
 multiplies  calling symmetric matrix by  number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 See also \GOT{srsmatrix::ope\-ra\-tor~*~}{srsmatrix.operator * (TR)},
 \GOT{srsmatrix}{srsmatrix}.
@@ -1324,7 +1324,7 @@ Operator%
 srsmatrix& srsmatrix::operator /= (TR d) throw (cvmexception);
 \end{verbatim}
 divides  calling symmetric matrix by  number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less
@@ -1421,11 +1421,11 @@ Operator%
 rvector srsmatrix::operator * (const rvector& v) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"rvector"
-as  product of  calling symmetric matrix and  vector \verb"v".
+creates an object of type \verb"rvector"
+as a product of a calling symmetric matrix and a vector \verb"v".
 It throws  \GOT{cvmexception}{cvmexception}
-if  number of columns of  calling matrix
-differs from  size of  vector \verb"v".
+if  number of columns of a calling matrix
+differs from  size of a vector \verb"v".
 Use \GOT{rvector::mult}{rvector.mult (const rmatrix&, const rvector&)}
 in order to avoid new object creation.
 See also
@@ -1461,11 +1461,11 @@ Operator%
 rmatrix srsmatrix::operator * (const rmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"rmatrix"
-as  product of  calling symmetric matrix and  matrix \verb"m".
+creates an object of type \verb"rmatrix"
+as a product of a calling symmetric matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
-if  number of columns of  calling matrix
-differs from  number of rows of  matrix \verb"m".
+if  number of columns of a calling matrix
+differs from  number of rows of a matrix \verb"m".
 Use \GOT{rmatrix::mult}{rmatrix.mult} in order to avoid
  new object creation.
 See also
@@ -1503,8 +1503,8 @@ Operator%
 srmatrix srsmatrix::operator * (const srmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srmatrix"
-as  product of  calling symmetric matrix and  matrix \verb"m".
+creates an object of type \verb"srmatrix"
+as a product of a calling symmetric matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 if  operands have different sizes.
 Use \GOT{rmatrix::mult}{rmatrix.mult} in order to avoid
@@ -1554,7 +1554,7 @@ rvector operator / (const rvector& vB) const throw (cvmexception);
 \end{verbatim}
 returns solution $x$ of linear equation
 $A*x=b$ where calling matrix is square symmetric matrix $A$
-and vector $b$ is passed in parameter \verb"vB".
+and a vector $b$ is passed in parameter \verb"vB".
 This operator throws exception 
 of type \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes
@@ -1635,7 +1635,7 @@ First operation for the second version
 is performed if \verb"bTransp" passed
 is \verb"false" and second one otherwise.
 Function
-returns  reference to the matrix changed and throws
+returns a reference to the matrix changed and throws
  \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes of the operands.
 See also
@@ -1740,7 +1740,7 @@ First operation for the second version
 is performed if \verb"bTransp" passed
 is \verb"false" and second one otherwise.
 Function
-returns  reference to the matrix changed and throws
+returns a reference to the matrix changed and throws
  \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes of the operands.
 See also
@@ -1831,7 +1831,7 @@ srsmatrix srsmatrix::inv () const throw (cvmexception);
 implement symmetric matrix inversion.
 The first version sets  calling symmetric matrix to be equal to 
  symmetric matrix \verb"m" inverted and the second one
-creates  object of type \verb"srsmatrix" as inverted calling matrix.
+creates an object of type \verb"srsmatrix" as inverted calling matrix.
 Functions throw  \GOT{cvmexception}{cvmexception} 
 in case of inappropriate
 sizes of the operands or when  matrix to be inverted is close to
@@ -1877,7 +1877,7 @@ throw (cvmexception);
 srsmatrix srsmatrix::exp (TR tol = cvmMachSp()) const
 throw (cvmexception);
 \end{verbatim}
-compute  exponent of  calling symmetric matrix using Pad\'e approximation
+compute  exponent of a calling symmetric matrix using Pad\'e approximation
 defined as
 \begin{equation*}
 R_{pq}(z)=D_{pq}(z)^{-1}N_{pq}(z)=1+z+\dots+z^p/p!\,,
@@ -1887,7 +1887,7 @@ where
 N_{pq}(z)&=\sum_{k=0}^p\frac{(p+q-k)!p!}{(p+q)!k!(q-k)!}z^k,\\
 D_{pq}(z)&=\sum_{k=0}^q\frac{(p+q-k)!p!}{(p+q)!k!(q-k)!}(-z)^k
 \end{align*}
-along with  matrix normalizing as described in
+along with a matrix normalizing as described in
 \GO{\cite{Golub}}{biblio}, p.~572.
 Functions use \verb"DMEXP" (or \verb"SMEXP" for \verb"float" version)
 \FORTRAN subroutine implementing the algorithm.
@@ -1895,8 +1895,8 @@ The first version sets  calling symmetric matrix to be equal to
  exponent of symmetric matrix \verb"m" and returns 
  reference to the matrix
 changed. The second version
-creates  object of type \verb"srsmatrix" as 
-exponent of  calling matrix.
+creates an object of type \verb"srsmatrix" as 
+exponent of a calling matrix.
 The algorithm uses parameter \verb"tol"
 as $\varepsilon(p,q)$ in order to choose constants $p$ and $q$
 so that
@@ -1981,8 +1981,8 @@ compute matrix polynomial equal to
 The first version sets  calling symmetric matrix to be equal 
 to the polynomial of  symmetric matrix \verb"m"
 and the second one
-creates  object of type \verb"srsmatrix" as the 
-polynomial of calling symmetric matrix.
+creates an object of type \verb"srsmatrix" as the 
+polynomial of a calling symmetric matrix.
 Functions use \verb"DPOLY" (or \verb"SPOLY" for \verb"float" version)
 \FORTRAN subroutine implementing the Horner's algorithm.
 Functions throw  \GOT{cvmexception}{cvmexception} 
@@ -2039,7 +2039,7 @@ rvector srsmatrix::eig () const throw (cvmexception);
 solve the 
 \GO{symmetric eigenvalue problem}{rvector.eig}
 and return  real vector with eigenvalues
-of  calling symmetric matrix.
+of a calling symmetric matrix.
 The first version
 sets  output parameter \verb"mEigVect" to be equal
 to  square matrix containing orthogonal
@@ -2098,8 +2098,8 @@ where $U$ is upper triangular matrix.
 It utilizes one of \verb"?POTRF" routines of the
 \URL{LAPACK library}{http://www.netlib.org/lapack}.
 Function
-creates  object of type \verb"srmatrix" as 
- factorization of  calling matrix.
+creates an object of type \verb"srmatrix" as 
+ factorization of a calling matrix.
 Function
 throws 
  \GOT{cvmexception}{cvmexception} 
@@ -2143,7 +2143,7 @@ Function%
 \begin{verbatim}
 srmatrix srsmatrix::bunch_kaufman () throw (cvmexception);
 \end{verbatim}
-forms the Bunch-Kaufman factorization of  calling symmetric matrix 
+forms the Bunch-Kaufman factorization of a calling symmetric matrix 
 (cited from the MKL library documentation):
 \begin{equation*}
 A=PUDU^TP^T,
@@ -2157,8 +2157,8 @@ blocks corresponding to the $2$-by-$2$ blocks of $D$.
 It utilizes one of \verb"?SYTRF" routines of the
 \URL{LAPACK library}{http://www.netlib.org/lapack}.
 Function
-creates  object of type \verb"srmatrix" as 
- factorization of  calling matrix.
+creates an object of type \verb"srmatrix" as 
+ factorization of a calling matrix.
 Function throws 
  \GOT{cvmexception}{cvmexception} 
 in case of convergence error.
@@ -2183,7 +2183,7 @@ Function%
 srsmatrix& srsmatrix::identity();
 \end{verbatim}
 sets  calling symmetric matrix to be equal to identity matrix
-and returns  reference to
+and returns a reference to
 the matrix changed. 
 See also \GOT{srsmatrix}{srsmatrix}.
 Example:
@@ -2218,9 +2218,9 @@ Function%
 \begin{verbatim}
 srsmatrix& srsmatrix::vanish();
 \end{verbatim}
-sets every element of  calling symmetric 
+sets every element of a calling symmetric 
 matrix to be equal to zero
-and returns  reference to
+and returns a reference to
 the matrix changed.
 See also \GOT{srsmatrix}{srsmatrix}.
 Example:
@@ -2260,7 +2260,7 @@ fills  calling symmetric matrix with pseudo-random
 numbers distributed between
 \verb"dFrom" and \verb"dTo" keeping it to be symmetric.
 Function
-returns  reference to the matrix changed.
+returns a reference to the matrix changed.
 See also
 \GOT{srsmatrix}{srsmatrix}.
 Example:

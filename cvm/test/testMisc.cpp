@@ -116,3 +116,53 @@ TYPED_TEST(MiscTest, TestComplexByRealProxy) {
     EXPECT_NEAR(std::abs(TPC(1.606474966574294e+03,0.)), std::abs(H(CVM0+1,CVM0+1)), sp<TP>())
         << "tcomplex * type_proxy<treal>";
 }
+
+TYPED_TEST(MiscTest, TestComplexFunctionsProxy) {
+    basic_cmatrix<TP,TPC> m(2,3);
+    const TPC c1 = TPC(1.19,1.21);
+    const TPC c2 = TPC(1.23,-0.34);
+    m(CVM0,CVM0) = c1;
+    m(CVM0+1,CVM0+1) = c2;
+
+    EXPECT_EQ(c1, m(CVM0,CVM0));
+    EXPECT_EQ(c2, m(CVM0+1,CVM0+1));
+    EXPECT_EQ(real(c1), real(m(CVM0,CVM0)));
+    EXPECT_EQ(imag(c1), imag(m(CVM0,CVM0)));
+    EXPECT_EQ(abs(c1), abs(m(CVM0,CVM0)));
+    EXPECT_EQ(arg(c1), arg(m(CVM0,CVM0)));
+    EXPECT_EQ(norm(c1), norm(m(CVM0,CVM0)));
+    EXPECT_EQ(pow(c1,c2), pow(m(CVM0,CVM0), m(CVM0+1,CVM0+1)));
+    EXPECT_EQ(pow(c1,TP(3.)), pow(m(CVM0,CVM0), TP(3.)));
+    EXPECT_EQ(pow(TP(2.),c2), pow(TP(2.), m(CVM0+1,CVM0+1)));
+
+    EXPECT_EQ(conj(c1), conj(m(CVM0,CVM0)));
+    EXPECT_EQ(proj(c1), proj(m(CVM0,CVM0)));
+    EXPECT_EQ(exp(c1), exp(m(CVM0,CVM0)));
+    EXPECT_EQ(log(c1), log(m(CVM0,CVM0)));
+    EXPECT_EQ(log10(c1), log10(m(CVM0,CVM0)));
+    EXPECT_EQ(sqrt(c1), sqrt(m(CVM0,CVM0)));
+
+    EXPECT_EQ(sin(c1), sin(m(CVM0,CVM0)));
+    EXPECT_EQ(cos(c1), cos(m(CVM0,CVM0)));
+    EXPECT_EQ(tan(c1), tan(m(CVM0,CVM0)));
+    EXPECT_EQ(asin(c1), asin(m(CVM0,CVM0)));
+    EXPECT_EQ(acos(c1), acos(m(CVM0,CVM0)));
+    EXPECT_EQ(atan(c1), atan(m(CVM0,CVM0)));
+
+    EXPECT_EQ(sinh(c1), sinh(m(CVM0,CVM0)));
+    EXPECT_EQ(cosh(c1), cosh(m(CVM0,CVM0)));
+    EXPECT_EQ(tanh(c1), tanh(m(CVM0,CVM0)));
+    EXPECT_EQ(asinh(c1), asinh(m(CVM0,CVM0)));
+    EXPECT_EQ(acosh(c1), acosh(m(CVM0,CVM0)));
+    EXPECT_EQ(atanh(c1), atanh(m(CVM0,CVM0)));
+}
+
+TYPED_TEST(MiscTest, TestMatrixIndexing) {
+    basic_srsmatrix<TP> m(3);
+//    m(1,2) = TP(0.12); // COMPILATION MUST FAIL HERE
+//    EXPECT_EQ(TP(0.12), m(1,2));
+
+    basic_schmatrix<TP,TPC> mh(3);
+//    mh(1,2) = TPC(0.12, 0.34); // COMPILATION MUST FAIL HERE
+//    EXPECT_EQ(TPC(0.12, 0.34), mh(1,2));
+}

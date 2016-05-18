@@ -210,7 +210,7 @@ scmatrix::scmatrix (TC* pD, int nMN);
 creates  $n\times n$ \verb"scmatrix" object where $n$ is passed in
 \verb"nMN" parameter.
 Unlike others, this constructor \textit{does not allocate  memory}.
-It just shares  memory with  array pointed to by \verb"pD".
+It just shares  memory with an array pointed to by \verb"pD".
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed.
 See also \GOT{scmatrix}{scmatrix},
@@ -246,7 +246,7 @@ scmatrix::scmatrix (const TC* pD, int nMN);
 \end{verbatim}
 creates  $n\times n$ \verb"scmatrix" object where $n$ is passed in
 \verb"nMN" parameter
-and copies $n*n$ elements of  array \verb"pD" to it \GOT{by colums}{SubSubSectionStorage}.
+and copies $n*n$ elements of an array  \verb"pD" to it \GOT{by colums}{SubSubSectionStorage}.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed.
 See also \GOT{scmatrix}{scmatrix},
@@ -317,7 +317,7 @@ Constructor%
 \begin{verbatim}
 explicit scmatrix::scmatrix (const cmatrix& m)
 \end{verbatim}
-creates  \verb"scmatrix" object as a copy of matrix \verb"m".
+creates  \verb"scmatrix" object as a copy of a matrix \verb"m".
 It's assumed that $m\times n$ matrix \verb"m" must have equal
 sizes, i.e. $m = n$ is satisfied.
 Cnstructor throws  \GOT{cvmexception}{cvmexception}
@@ -543,7 +543,7 @@ Indexing operators%
 TC& scmatrix::operator () (int im, int in) throw (cvmexception);
 TC scmatrix::operator () (int im, int in) const throw (cvmexception);
 \end{verbatim}
-provide access to a particular element of calling matrix. The first version
+provide access to a particular element of a calling matrix. The first version
 of  operator is applicable to  non-constant object.
 This version returns \emph{l-value}
 in order to make possible write access to an element.
@@ -589,10 +589,10 @@ Indexing operators%
 cvector scmatrix::operator () (int i) throw (cvmexception);
 const rcector scmatrix::operator () (int i) const throw (cvmexception);
 \end{verbatim}
-provide access to \hbox{$i$-th} column of calling matrix. The first version
+provide access to \hbox{$i$-th} column of a calling matrix. The first version
 of  operator is applicable to  non-constant object and
 \emph{returns  l-value}, i.e.  vector returned shares  memory
-with  \hbox{$i$-th} column of calling matrix
+with  \hbox{$i$-th} column of a calling matrix
 in order to make possible write access to it.
 The second version creates  \emph{copy} of a column and therefore is
 \emph{not  l-value}.
@@ -641,10 +641,10 @@ Indexing operators%
 cvector scmatrix::operator [] (int i) throw (cvmexception);
 const cvector scmatrix::operator [] (int i) const throw (cvmexception);
 \end{verbatim}
-provide access to \hbox{$i$-th} row of calling matrix. The first version
+provide access to \hbox{$i$-th} row of a calling matrix. The first version
 is applicable to  non-constant object and
 \emph{returns  l-value}, i.e.  vector returned shares  memory
-with  \hbox{$i$-th} row of calling matrix
+with  \hbox{$i$-th} row of a calling matrix
 in order to make possible write access to it.
 The second version creates  \emph{copy} of a row and therefore is
 \emph{not  l-value}.
@@ -692,13 +692,13 @@ Function%
 \begin{verbatim}
 const srmatrix scmatrix::real () const;
 \end{verbatim}
-creates  object of type \verb"const srmatrix"
+creates an object of type \verb"const srmatrix"
 as  real part
-of  calling matrix.
+of a calling matrix.
 Please note that, unlike
 \GO{cvector::real}{cvector.real}, this
 function creates new object \emph{not sharing}  memory
-with  real part of  calling matrix, i.e.
+with  real part of a calling matrix, i.e.
  matrix returned is \emph{not  l-value}.
 Function is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} and
@@ -733,13 +733,13 @@ Function%
 \begin{verbatim}
 const srmatrix scmatrix::imag () const;
 \end{verbatim}
-creates  object of type \verb"const srmatrix"
+creates an object of type \verb"const srmatrix"
 as  imaginary part
-of  calling matrix.
+of a calling matrix.
 Please note that, unlike
 \GO{cvector::imag}{cvector.imag}, this
 function creates new object \emph{not sharing}  memory
-with  imaginary part of  calling matrix, i.e.
+with  imaginary part of a calling matrix, i.e.
  matrix returned is \emph{not  l-value}.
 Function is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} and
@@ -775,9 +775,9 @@ Operator%
 scmatrix& scmatrix::operator = (const scmatrix& m)
 throw (cvmexception);
 \end{verbatim}
-sets  every element of  calling matrix to  value of
-appropriate element of  matrix \verb"m"
-and returns  reference to
+sets  every element of a calling matrix to a value of
+appropriate element of a matrix \verb"m"
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of different matrix sizes.
@@ -819,10 +819,10 @@ Function%
 scmatrix& scmatrix::assign (const cvector& v) throw (cvmexception);
 scmatrix& scmatrix::assign (const TC* pD);
 \end{verbatim}
-sets every element of  calling matrix to  value of
+sets every element of a calling matrix to a value of
 appropriate element of  vector~\verb'v'
 or  array pointed to by~\verb"pD"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 In first version it's assumed that vector passed is long
 enough to fill calling matrix. Function throws \GOT{cvmexception}{cvmexception} 
@@ -859,9 +859,9 @@ Function%
 scmatrix& scmatrix::assign (int nRow, int nCol, const cmatrix& m)
 throw (cvmexception);
 \end{verbatim}
-sets sub-matrix of  calling matrix beginning with \Based row
-\verb"nRow" and column \verb"nCol" to  matrix \verb"m" and
-returns  reference to the matrix changed. Function throws 
+sets sub-matrix of a calling matrix beginning with \Based row
+\verb"nRow" and column \verb"nCol" to a matrix \verb"m" and
+returns a reference to the matrix changed. Function throws 
  \GOT{cvmexception}{cvmexception} if \verb"nRow"
 or \verb"nCol" are not positive or matrix \verb"m" doesn't fit.
 Function is \emph{redefined} in the class
@@ -896,11 +896,11 @@ Function%
 \begin{verbatim}
 scmatrix& scmatrix::set (TC x);
 \end{verbatim}
-sets every element of  calling matrix to  value of
-parameter \verb"x" and returns  reference to
+sets every element of a calling matrix to a value of
+parameter \verb"x" and returns a reference to
 the matrix changed.
 Use \GOT{vanish}{scmatrix.vanish} to set every element
-of  calling matrix to be equal to zero.
+of a calling matrix to be equal to zero.
 Function is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} and
 \emph{not applicable} to objects of the class
@@ -933,9 +933,9 @@ Function%
 scmatrix& scmatrix::assign_real (const srmatrix& mRe)
 throw (cvmexception);
 \end{verbatim}
-sets real part of every element of  calling matrix to  value of
-appropriate element of  matrix \verb"mRe"
-and returns  reference to
+sets real part of every element of a calling matrix to a value of
+appropriate element of a matrix \verb"mRe"
+and returns a reference to
 the matrix changed.
 Function throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -970,9 +970,9 @@ Function%
 scmatrix& scmatrix::assign_imag (const srmatrix& mIm)
 throw (cvmexception);
 \end{verbatim}
-sets imaginary part of every element of  calling matrix to  value of
-appropriate element of  matrix \verb"mIm"
-and returns  reference to
+sets imaginary part of every element of a calling matrix to a value of
+appropriate element of a matrix \verb"mIm"
+and returns a reference to
 the matrix changed.
 Function throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1006,9 +1006,9 @@ Function%
 \begin{verbatim}
 scmatrix& scmatrix::set_real (TR d);
 \end{verbatim}
-sets real part of every element of  calling matrix to  value of
+sets real part of every element of a calling matrix to a value of
 parameter \verb"d"
-and returns  reference to the matrix changed.
+and returns a reference to the matrix changed.
 Function is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} 
 and \GOT{schmatrix}{schmatrix}.
@@ -1039,9 +1039,9 @@ Function%
 \begin{verbatim}
 scmatrix& scmatrix::set_imag (TR d);
 \end{verbatim}
-sets imaginary part of every element of  calling matrix to  value of
+sets imaginary part of every element of a calling matrix to a value of
 parameter \verb"d"
-and returns  reference to the matrix changed.
+and returns a reference to the matrix changed.
 Function is \emph{redefined} in the class
 \GOT{scbmatrix}{scbmatrix} 
 and \emph{not allowed} in \GOT{schmatrix}{schmatrix}.
@@ -1072,8 +1072,8 @@ Function%
 scmatrix& scmatrix::resize (int nNewMN);
 throw (cvmexception);
 \end{verbatim}
-changes  size of  calling matrix to \verb"nNewMN" by \verb"nNewMN"
-and returns  reference to
+changes  size of a calling matrix to \verb"nNewMN" by \verb"nNewMN"
+and returns a reference to
 the matrix changed. In case of increasing of its size, the matrix
 is filled up with zeroes.
 Function throws  \GOT{cvmexception}{cvmexception}
@@ -1121,7 +1121,7 @@ scmatrix& scmatrix::operator << (const scmatrix& m)
 throw (cvmexception);
 \end{verbatim}
 destroys  calling matrix, creates  new one as a copy of \verb"m"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of memory allocation failure.
@@ -1171,8 +1171,8 @@ Operator%
 scmatrix scmatrix::operator + (const scmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scmatrix" as  sum of
- calling matrix and  matrix \verb"m".
+creates an object of type \verb"scmatrix" as a sum of
+a calling matrix and a matrix \verb"m".
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
 Operator is \emph{redefined} in the classes
@@ -1217,8 +1217,8 @@ Operator%
 scmatrix scmatrix::operator - (const scmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scmatrix" as  difference of
- calling matrix and  matrix \verb"m".
+creates an object of type \verb"scmatrix" as a difference of
+a calling matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
 Operator is \emph{redefined} in the classes
@@ -1262,9 +1262,9 @@ Function%
 scmatrix& scmatrix::sum (const scmatrix& m1, const scmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of addition of
-matrices \verb"m1" and \verb"m2"  to  calling matrix
-and returns  reference to
+assigns the result of addition of
+matrices \verb"m1" and \verb"m2"  to a calling matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1313,9 +1313,9 @@ Function%
 scmatrix& scmatrix::diff (const scmatrix& m1, const scmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of subtraction of
-matrices \verb"m1" and \verb"m2" to  calling matrix
-and returns  reference to
+assigns the result of subtraction of
+matrices \verb"m1" and \verb"m2" to a calling matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1363,8 +1363,8 @@ Operator%
 \begin{verbatim}
 scmatrix& scmatrix::operator += (const scmatrix& m) throw (cvmexception);
 \end{verbatim}
-adds  matrix \verb"m" to  calling matrix 
-and returns  reference to
+adds  matrix \verb"m" to a calling matrix 
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1417,7 +1417,7 @@ Operator%
 scmatrix& scmatrix::operator -= (const scmatrix& m) throw (cvmexception);
 \end{verbatim}
 subtracts  matrix \verb"m" from  calling matrix
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1469,8 +1469,8 @@ Operator%
 \begin{verbatim}
 scmatrix scmatrix::operator - () const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scmatrix" as
- calling matrix multiplied by $-1$.
+creates an object of type \verb"scmatrix" as
+a calling matrix multiplied by $-1$.
 Operator is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} 
 and \GOT{schmatrix}{schmatrix}.
@@ -1499,8 +1499,8 @@ Operator%
 scmatrix& scmatrix::operator ++ ();
 scmatrix& scmatrix::operator ++ (int);
 \end{verbatim}
-adds identity matrix to  calling matrix
-and returns  reference to
+adds identity matrix to a calling matrix
+and returns a reference to
 the matrix changed.
 Operator is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} and \GOT{schmatrix}{schmatrix}.
@@ -1537,7 +1537,7 @@ scmatrix& scmatrix::operator -- ();
 scmatrix& scmatrix::operator -- (int);
 \end{verbatim}
 subtracts identity matrix from  calling matrix
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} and \GOT{schmatrix}{schmatrix}.
@@ -1572,8 +1572,8 @@ Operator%
 \begin{verbatim}
 scmatrix scmatrix::operator * (TR d) const;
 \end{verbatim}
-creates  object of type \verb"scmatrix" as  product of
- calling matrix and  real number~\verb"d".
+creates an object of type \verb"scmatrix" as a product of
+a calling matrix and  real number~\verb"d".
 Operator is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} 
 and \GOT{schmatrix}{schmatrix}.
@@ -1604,8 +1604,8 @@ Operator%
 \begin{verbatim}
 scmatrix scmatrix::operator / (TR d) const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scmatrix" as  quotient of
- calling matrix and  real number~\verb"d". It throws
+creates an object of type \verb"scmatrix" as a quotient of
+a calling matrix and  real number~\verb"d". It throws
  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less than the
 \GO{smallest normalized positive number}{Utilities.cvmMachMin}.
@@ -1639,8 +1639,8 @@ Operator%
 \begin{verbatim}
 scmatrix scmatrix::operator * (TC z) const;
 \end{verbatim}
-creates  object of type \verb"scmatrix" as  product of
- calling matrix and  complex number~\verb"z".
+creates an object of type \verb"scmatrix" as a product of
+a calling matrix and  complex number~\verb"z".
 Operator is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} 
 and \GOT{schmatrix}{schmatrix}.
@@ -1672,8 +1672,8 @@ Operator%
 \begin{verbatim}
 scmatrix scmatrix::operator / (TC z) const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scmatrix" as  quotient of
- calling matrix and  complex number~\verb"z". 
+creates an object of type \verb"scmatrix" as a quotient of
+a calling matrix and  complex number~\verb"z". 
 It throws
  \GOT{cvmexception}{cvmexception}
 if \verb"z" has  absolute value equal or less than the
@@ -1710,7 +1710,7 @@ Operator%
 scmatrix& scmatrix::operator *= (TR d);
 \end{verbatim}
 multiplies  calling matrix by  real number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It's \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} 
@@ -1744,7 +1744,7 @@ Operator%
 scmatrix& scmatrix::operator /= (TR d) throw (cvmexception);
 \end{verbatim}
 divides  calling matrix by  real number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less
@@ -1783,7 +1783,7 @@ Operator%
 scmatrix& scmatrix::operator *= (TC z);
 \end{verbatim}
 multiplies  calling matrix by  complex number~\verb"z"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It's \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} 
@@ -1817,7 +1817,7 @@ Operator%
 scmatrix& scmatrix::operator /= (TC z) throw (cvmexception);
 \end{verbatim}
 divides  calling matrix by  complex number~\verb"z"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 if \verb"z" has  absolute value equal or less
@@ -1894,7 +1894,7 @@ scmatrix& scmatrix::conj (const scmatrix& m) throw (cvmexception);
 scmatrix& scmatrix::conj () throw (cvmexception);
 \end{verbatim}
 implement complex matrix conjugation.
-First operator creates  object of type \verb"scmatrix" as
+First operator creates an object of type \verb"scmatrix" as
  conjugated calling matrix
 (it throws  
 \GOT{cvmexception}{cvmexception}
@@ -1959,7 +1959,7 @@ scmatrix& scmatrix::transpose (const scmatrix& m) throw (cvmexception);
 scmatrix& scmatrix::transpose () throw (cvmexception);
 \end{verbatim}
 implement complex matrix transposition (\emph{not} conjugation).
-First operator creates  object of type \verb"scmatrix" as
+First operator creates an object of type \verb"scmatrix" as
  transposed calling matrix
 (it throws  
 \GOT{cvmexception}{cvmexception}
@@ -2024,11 +2024,11 @@ Operator%
 cvector scmatrix::operator * (const cvector& v) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cvector"
-as  product of  calling matrix and  vector \verb"v".
+creates an object of type \verb"cvector"
+as a product of a calling matrix and a vector \verb"v".
 It throws  \GOT{cvmexception}{cvmexception}
-if  number of columns of  calling matrix
-differs from  size of  vector \verb"v".
+if  number of columns of a calling matrix
+differs from  size of a vector \verb"v".
 Use \GOT{cvector::mult}{cvector.mult (const cmatrix&, const cvector&)}
 in order to avoid new object creation.
 Function is \emph{redefined} in the classes
@@ -2066,11 +2066,11 @@ Operator%
 cmatrix scmatrix::operator * (const cmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cmatrix"
-as  product of  calling matrix and  matrix \verb"m".
+creates an object of type \verb"cmatrix"
+as a product of a calling matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
-if  number of columns of  calling matrix
-differs from  number of rows of  matrix \verb"m".
+if  number of columns of a calling matrix
+differs from  number of rows of a matrix \verb"m".
 Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
  new object creation.
 Operator is \emph{redefined} in the classes
@@ -2110,8 +2110,8 @@ Operator%
 scmatrix scmatrix::operator * (const scmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scmatrix"
-as  product of  calling matrix and  matrix \verb"m".
+creates an object of type \verb"scmatrix"
+as a product of a calling matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 if the operands have different sizes.
 Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
@@ -2155,7 +2155,7 @@ throw (cvmexception);
 \end{verbatim}
 sets  calling matrix to be equal to  product
 of itself by  matrix \verb"m"
-and returns  reference to
+and returns a reference to
 the object it changes.
 Operator throws \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -2199,7 +2199,7 @@ Function%
 \begin{verbatim}
 scmatrix& scmatrix::swap_rows (int n1, int n2) throw (cvmexception);
 \end{verbatim}
-swaps two rows of  calling matrix and returns  reference to
+swaps two rows of a calling matrix and returns a reference to
 the matrix changed. \verb"n1" and \verb"n2" are
  numbers of rows to be swapped, 
 both are \Based).
@@ -2247,7 +2247,7 @@ Function%
 \begin{verbatim}
 scmatrix& scmatrix::swap_cols (int n1, int n2) throw (cvmexception);
 \end{verbatim}
-swaps two columns of  calling matrix and returns  reference to
+swaps two columns of a calling matrix and returns a reference to
 the matrix changed. \verb"n1" and \verb"n2" are
  numbers of columns to be swapped, 
 both are \Based).
@@ -2557,7 +2557,7 @@ cvector operator % (const cvector& vB) const throw (cvmexception);
 returns solution $x$ of  linear equation
 $A^T*x=b$ (which is equivalent to $x*A=b$) 
 where calling matrix is square matrix $A$
-and vector $b$ is passed in parameter \verb"vB".
+and a vector $b$ is passed in parameter \verb"vB".
 This operator throws exception 
 of type \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes
@@ -2605,7 +2605,7 @@ cvector operator / (const cvector& vB) const throw (cvmexception);
 \end{verbatim}
 returns solution $x$ of linear equation
 $A*x=b$ where calling matrix is square matrix $A$
-and vector $b$ is passed in parameter \verb"vB".
+and a vector $b$ is passed in parameter \verb"vB".
 This operator throws exception 
 of type \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes
@@ -2664,7 +2664,7 @@ scmatrix::solve_lu (const scmatrix& mLU, const int* pPivots,
                     const cmatrix& mB) throw (cvmexception);
 \end{verbatim}
 create  object of type \verb"cvector" or \verb"cmatrix" as
- solution $x$ or $X$ of matrix linear equation
+ solution $x$ or $X$ of a matrix linear equation
 $A*x=b$ or $A*X=B$ respectively. Here $A$ is  calling
 matrix, 
 parameter \verb"mLU" is \GO{$LU$ factorization}{scmatrix.low_up}
@@ -2759,7 +2759,7 @@ Function%
 \begin{verbatim}
 TC scmatrix::det () const throw (cvmexception);
 \end{verbatim}
-returns  determinant of  calling matrix.
+returns  determinant of a calling matrix.
 It uses the \GO{$LU$ factorization}{scmatrix.low_up} inside
 and may throw the same exceptions as the factorizer.
 Function is \emph{inherited} in the classes
@@ -2804,7 +2804,7 @@ throw (cvmexception);
 scmatrix scmatrix::low_up (int* nPivots) const
 throw (cvmexception);
 \end{verbatim}
-compute $LU$ factorization of  calling matrix as
+compute $LU$ factorization of a calling matrix as
 \begin{equation*}
 A=PLU
 \end{equation*}
@@ -2819,7 +2819,7 @@ pointed to by \verb"nPivots" so \hbox{$i$-th} row
 was interchanged with \hbox{\verb"nPivots["$i$\verb"]"-th} row.
 The first version sets  calling matrix to be equal to the
 \verb"m"'s $LU$ factorization and the second one
-creates  object of type \verb"scmatrix" as  calling matrix
+creates an object of type \verb"scmatrix" as  calling matrix
 $LU$ factorization.
 Functions throw \GOT{cvmexception}{cvmexception}
 in case of inappropriate
@@ -2896,7 +2896,7 @@ Function%
 TR scmatrix::cond () const throw (cvmexception);
 \end{verbatim}
 returns  condition number reciprocal of 
-calling matrix $A$ in the \GO{infinity-norm}{Array.norminf}:
+a calling matrix $A$ in the \GO{infinity-norm}{Array.norminf}:
 \begin{equation*}
 \kappa_\infty=\|A\|_\infty \|A^{-1}\|_\infty.
 \end{equation*}
@@ -2954,7 +2954,7 @@ scmatrix scmatrix::inv () const throw (cvmexception);
 implement matrix inversion.
 The first version sets  calling matrix to be equal to 
 \verb"m" inverted and the second one
-creates  object of type \verb"scmatrix" as inverted calling matrix.
+creates an object of type \verb"scmatrix" as inverted calling matrix.
 Functions throw  \GOT{cvmexception}{cvmexception} 
 in case of inappropriate
 sizes of the operands or when the matrix to be inverted is close to
@@ -3012,7 +3012,7 @@ throw (cvmexception);
 scmatrix scmatrix::exp (TR tol = cvmMachSp ()) const
 throw (cvmexception);
 \end{verbatim}
-compute  exponent of  calling matrix using Pad\'e approximation
+compute  exponent of a calling matrix using Pad\'e approximation
 defined as
 \begin{equation*}
 R_{pq}(z)=D_{pq}(z)^{-1}N_{pq}(z)=1+z+\dots+z^p/p!\,,
@@ -3027,10 +3027,10 @@ along with the matrix normalizing as described in
 Functions use \verb"ZMEXP" (or \verb"CMEXP" for \verb"float" version)
 \FORTRAN subroutine implementing the algorithm.
 The first version sets calling matrix to be equal to
- exponent of \verb"m" and returns  reference to the matrix
+ exponent of \verb"m" and returns a reference to the matrix
 changed. The second version
-creates  object of type \verb"scmatrix" as 
-exponent of  calling matrix.
+creates an object of type \verb"scmatrix" as 
+exponent of a calling matrix.
 The algorithm uses parameter \verb"tol"
 as $\varepsilon(p,q)$ in order to choose constants $p$ and $q$
 so that
@@ -3132,8 +3132,8 @@ compute matrix polynomial equal to
 The first version sets  calling matrix to be equal to the polynomial of
 \verb"m"
 and the second one
-creates  object of type \verb"scmatrix" as the 
-polynomial of  calling matrix.
+creates an object of type \verb"scmatrix" as the 
+polynomial of a calling matrix.
 Functions use \verb"ZPOLY" (or \verb"CPOLY" for \verb"float" version)
 \FORTRAN subroutine implementing the Horner's algorithm.
 Functions throw  \GOT{cvmexception}{cvmexception} 
@@ -3207,7 +3207,7 @@ cvector scmatrix::eig () const throw (cvmexception);
 solve the 
 \GO{nonsymmetric eigenvalue problem}{cvector.eig}
 and return  complex vector with eigenvalues
-of  calling matrix.
+of a calling matrix.
 The first version
 sets  output parameter \verb"mEigVect" to be equal
 to  square matrix containing right (if parameter
@@ -3528,7 +3528,7 @@ Function%
 scmatrix& scmatrix::identity();
 \end{verbatim}
 sets  calling matrix to be equal to identity matrix
-and returns  reference to
+and returns a reference to
 the matrix changed. 
 Function is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} and
@@ -3565,8 +3565,8 @@ Function%
 \begin{verbatim}
 scmatrix& scmatrix::vanish();
 \end{verbatim}
-sets every element of  calling matrix to be equal to zero
-and returns  reference to
+sets every element of a calling matrix to be equal to zero
+and returns a reference to
 the matrix changed. This function is faster
 than
 \GOT{scmatrix::set(TC)}{scmatrix.set}
@@ -3606,11 +3606,11 @@ Function%
 \begin{verbatim}
 scmatrix& scmatrix::randomize_real (TR dFrom, TR dTo);
 \end{verbatim}
-fills  real part of  calling matrix with 
+fills  real part of a calling matrix with 
 pseudo-random numbers distributed between
 \verb"dFrom" and \verb"dTo".
 Function
-returns  reference to the matrix changed.
+returns a reference to the matrix changed.
 Function is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} and
 \GOT{schmatrix}{schmatrix}.
@@ -3641,11 +3641,11 @@ Function%
 \begin{verbatim}
 scmatrix& scmatrix::randomize_imag (TR dFrom, TR dTo);
 \end{verbatim}
-fills  imaginary part of  calling matrix with 
+fills  imaginary part of a calling matrix with 
 pseudo-random numbers distributed between
 \verb"dFrom" and \verb"dTo".
 Function
-returns  reference to the matrix changed.
+returns a reference to the matrix changed.
 Function is \emph{redefined} in the classes
 \GOT{scbmatrix}{scbmatrix} and
 \GOT{schmatrix}{schmatrix}.

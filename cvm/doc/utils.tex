@@ -89,7 +89,7 @@ p[1] = 2.;
 p[2] = 3.;
 
 cvmAddRef (p);
-cvmFree (p);    // this call doesn't deallocate a memory
+cvmFree (p);    // this call doesn't deallocate memory
 cvmFree (p);    // this one does
 \end{Verbatim}
 \newpage
@@ -369,7 +369,7 @@ prints
 \textit{\textcolor{red}{The%
 \pdfdest name {SubSectionFeatures} fit{}
 memory management mechanism described below is no longer supported
-by default.} It was a good solution more than 10 years ago when memory allocation
+by default.} It was a good solution more than 20 years ago when memory allocation
 operator was relatively expensive, but now standard allocator does this job
 much faster. However, the algorithm described below may be useful as
 an error detection helper. You will need to rebuild the library in debug mode
@@ -378,11 +378,11 @@ with}
 
 Since its third release the CVM library implements
 nontrivial memory management
-which should be described in detail. Earlier a memory was being
+which should be described in detail. Earlier memory was being
 allocated using operator \verb"new" in every constructor, and
 freed with help of \verb"delete" in every destructor. Let us
-consider an operation of multiplying of vector \verb'a' by matrix
-\verb'A' and assignment of result to vector \verb'b':
+consider an operation of multiplying of a vector \verb'a' by matrix
+\verb'A' and assignment of result to a vector \verb'b':
 \begin{Verbatim}
 b = a * A;
 \end{Verbatim}
@@ -402,13 +402,13 @@ compaction) and references counting (using master or ``genius''
 pointers). I decided to implement
 a class controlling a pool in the CVM library.
 
-Pool is controlled by \verb"MemoryPool" class. It allocates a memory
+Pool is controlled by \verb"MemoryPool" class. It allocates memory
 by blocks (so-called ``outer blocks'').
 The memory block concept is implemented in a class
 \verb"MemoryBlocks". Size of an outer block equals to the nearest
 degree of $2$ of a requested number of bytes multiplied by two. This
 can be illustrated on the following example. Let us suppose that it's
-required to allocate a memory for storage of a vector consisting
+required to allocate memory for storage of a vector consisting
 of 1000 units:
 \begin{Verbatim}
 rvector v(1000);

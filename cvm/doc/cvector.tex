@@ -229,7 +229,7 @@ Constructor%
 cvector::cvector (int nSize, TC c);
 \end{verbatim}
 creates  \verb"cvector" object of size equal to \verb"nSize"
-and fills it with value of \verb"c".
+and fills it with a value of \verb"c".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed or memory allocation failure.
 See also \GOT{cvector}{cvector}.
@@ -305,7 +305,7 @@ cvector::cvector (const TC* pD, int nSize, int nIncr = 1);
 creates  \verb"cvector" object of size equal to \verb"nSize"
 and copies \verb"nSize" elements of
  array \verb"pD" to it using increment \verb"nIncr" ($1$ by default).
-The object created has increment set to $1$.
+The object created has an increment set to $1$.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed.
 See also \GOT{cvector}{cvector}, \GOT{cvector (TC*,int,int)}{cvector.cvector (TC*,int,int)}.
@@ -386,9 +386,9 @@ cvector::cvector (const TR* pRe, const TR* pIm, int nSize,
 \end{verbatim}
 creates  \verb"cvector" object
 of size equal to \verb"nSize" and copies 
-every \verb"nIncrRe"-th element of array pointed to by \verb"pRe" 
+every \verb"nIncrRe"-th element of an array  pointed to by \verb"pRe" 
 and 
-every \verb"nIncrIm"-th element of array pointed to by \verb"pIm"
+every \verb"nIncrIm"-th element of an array  pointed to by \verb"pIm"
 to real and imaginary part of the object created.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed or memory allocation failure.
@@ -470,7 +470,7 @@ cvector::cvector (const TR* pA, int nSize,
 \end{verbatim}
 creates  \verb"cvector" object
 of size equal to \verb"nSize" and copies every
-\verb"nIncr"-th element of array pointed to by \verb"pA"
+\verb"nIncr"-th element of an array  pointed to by \verb"pA"
 to  real (if \verb"bRealPart" is \verb"true")
 or imaginary (if \verb"bRealPart" is \verb"false")
 part of the object created.
@@ -506,7 +506,7 @@ explicit cvector::cvector (const rvector& v, bool bRealPart = true);
 \end{verbatim}
 creates  \verb"cvector" object
 of size equal to \verb"v.size()" and copies every
-element of  vector \verb"v"
+element of a vector \verb"v"
 to  real (if \verb"bRealPart" is \verb"true")
 or imaginary (if \verb"bRealPart" is \verb"false")
 part of the object created.
@@ -543,7 +543,7 @@ Function%
 rvector cvector::real ();
 \end{verbatim}
 creates  \GOT{rvector}{rvector} object
-of size equal to  size of  calling vector
+of size equal to  size of a calling vector
 sharing  memory with its real part.
 In other words, the vector returned is  \emph{l-value}.
 See also \GOT{cvector}{cvector}.
@@ -576,7 +576,7 @@ function%
 rvector cvector::imag ();
 \end{verbatim}
 creates  \GOT{rvector}{rvector} object
-of size equal to  size of  calling vector
+of size equal to  size of a calling vector
 sharing  memory with its imaginary part.
 In other words, the vector returned is  \emph{l-value}.
 See also \GOT{cvector}{cvector}.
@@ -608,9 +608,9 @@ Operator%
 \begin{verbatim}
 cvector& cvector::operator = (const cvector& v) throw (cvmexception);
 \end{verbatim}
-sets every element of  calling vector to be equal to
-appropriate element of  vector \verb"v"
-and returns  reference to
+sets every element of a calling vector to be equal to
+appropriate element of a vector \verb"v"
+and returns a reference to
 the vector changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different vector sizes.
@@ -647,9 +647,9 @@ Function%
 \begin{verbatim}
 cvector& cvector::assign (const TC* p, int nIncr = 1);
 \end{verbatim}
-sets every element of  calling vector to be equal to
-every \verb"nIncr"-th element of  array pointed to by parameter \verb"p"
-and returns  reference to the vector changed.
+sets every element of a calling vector to be equal to
+every \verb"nIncr"-th element of an array  pointed to by parameter \verb"p"
+and returns a reference to the vector changed.
 See also \GOT{cvector}{cvector}.
 Example:
 \begin{Verbatim}
@@ -682,10 +682,10 @@ Function%
 \begin{verbatim}
 cvector& cvector::assign (int n, const TC* p, int nIncr = 1);
 \end{verbatim}
-sets every element of  calling vector, starting from \Based \verb"n"-th one,
+sets every element of a calling vector, starting from \Based \verb"n"-th one,
 to be equal to
-every \verb"nIncr"-th element of  array pointed to by parameter \verb"p"
-and returns  reference to the vector changed.
+every \verb"nIncr"-th element of an array  pointed to by parameter \verb"p"
+and returns a reference to the vector changed.
 See also \GOT{cvector}{cvector}.
 Example:
 \begin{Verbatim}
@@ -715,11 +715,11 @@ Function%
 \begin{verbatim}
 cvector& cvector::assign (int n, const TC* p, int nSize, tint nIncr);
 \end{verbatim}
-sets every element of calling vector, starting from \Based \verb"n"-th one,
+sets every element of a calling vector, starting from \Based \verb"n"-th one,
 up to \verb"nSize" total,
 to be equal to
-every \verb"nIncr"-th element of  array pointed to by parameter \verb"p"
-and returns  reference to the vector changed.
+every \verb"nIncr"-th element of an array  pointed to by parameter \verb"p"
+and returns a reference to the vector changed.
 If \verb"n + nSize" goes beyond vector boundaries assignment stops at the last element.
 See also \GOT{cvector}{cvector}.
 Example:
@@ -745,8 +745,8 @@ Function%
 \begin{verbatim}
 cvector& cvector::assign (int n, const cvector& v) throw (cvmexception);
 \end{verbatim}
-sets every element of  calling vector's sub-vector beginning with
-\Based index \verb"n" to  vector \verb"v" and returns 
+sets every element of a calling vector's sub-vector beginning with
+\Based index \verb"n" to a vector \verb"v" and returns 
 reference to the vector changed. Function throws 
 \GOT{cvmexception}{cvmexception} if \verb"n" is not
 positive or \verb"v.size()+n-1" is greater than  calling vector's
@@ -775,9 +775,9 @@ Function%
 \begin{verbatim}
 cvector& cvector::set (TC x);
 \end{verbatim}
-sets every element of  calling vector to be equal to
+sets every element of a calling vector to be equal to
 parameter \verb"x"
-and returns  reference to the vector changed.
+and returns a reference to the vector changed.
 See also \GOT{cvector}{cvector}.
 Example:
 \begin{Verbatim}
@@ -803,9 +803,9 @@ Function%
 \begin{verbatim}
 cvector& cvector::assign_real (const rvector& vRe) throw (cvmexception);
 \end{verbatim}
-sets real part of every element of  calling vector to be equal to
-appropriate element of  vector \verb"vRe"
-and returns  reference to
+sets real part of every element of a calling vector to be equal to
+appropriate element of a vector \verb"vRe"
+and returns a reference to
 the vector changed.
 Function throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -836,9 +836,9 @@ Function%
 \begin{verbatim}
 cvector& cvector::assign_imag (const rvector& vIm) throw (cvmexception);
 \end{verbatim}
-sets imaginary part of every element of  calling vector to be equal to
-appropriate element of  vector \verb"vIm"
-and returns  reference to
+sets imaginary part of every element of a calling vector to be equal to
+appropriate element of a vector \verb"vIm"
+and returns a reference to
 the vector changed.
 Function throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -869,9 +869,9 @@ Function%
 \begin{verbatim}
 cvector& cvector::set_real (TR x);
 \end{verbatim}
-sets real part of every element of  calling vector to be equal to
+sets real part of every element of a calling vector to be equal to
 parameter \verb"x"
-and returns  reference to the vector changed.
+and returns a reference to the vector changed.
 See also \GOT{cvector}{cvector}.
 Example:
 \begin{Verbatim}
@@ -897,9 +897,9 @@ Function%
 \begin{verbatim}
 cvector& cvector::set_imag (TR x);
 \end{verbatim}
-sets imaginary part of every element of  calling vector to be equal to
+sets imaginary part of every element of a calling vector to be equal to
 parameter \verb"x"
-and returns  reference to the vector changed.
+and returns a reference to the vector changed.
 See also \GOT{cvector}{cvector}.
 Example:
 \begin{Verbatim}
@@ -924,8 +924,8 @@ Function%
 \begin{verbatim}
 cvector& cvector::resize (int nNewSize) throw (cvmexception);
 \end{verbatim}
-changes  size of  calling vector to be equal to
-\verb"nNewSize" and returns  reference to
+changes  size of a calling vector to be equal to
+\verb"nNewSize" and returns a reference to
 the vector changed.
 In case of increasing of its size, the vector
 is filled up with zeroes.
@@ -965,7 +965,7 @@ Operator%
 \begin{verbatim}
 bool cvector::operator == (const cvector& v) const;
 \end{verbatim}
-compares  calling vector with  vector \verb"v"
+compares  calling vector with a vector \verb"v"
 and returns \verb"true" if they have the same sizes
 and their appropriate elements differ by not more than the
 \GO{smallest normalized positive number}{Utilities.cvmMachMin}.
@@ -998,7 +998,7 @@ Operator%
 \begin{verbatim}
 bool cvector::operator != (const cvector& v) const;
 \end{verbatim}
-compares  calling vector with  vector \verb"v"
+compares  calling vector with a vector \verb"v"
 and returns \verb"true" if they have different sizes
 or some of their appropriate elements
 differ by more than the
@@ -1030,7 +1030,7 @@ Operator%
 cvector& cvector::operator << (const cvector& v) throw (cvmexception);
 \end{verbatim}
 destroys  calling vector, creates a new one as a copy of \verb"v"
-and returns  reference to
+and returns a reference to
 the vector changed.
 See also \GOT{cvector}{cvector}.
 Operator throws  \GOT{cvmexception}{cvmexception}
@@ -1073,8 +1073,8 @@ Operator%
 cvector cvector::operator + (const cvector& v) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cvector" as  sum of
- calling vector and  vector \verb"v".
+creates an object of type \verb"cvector" as a sum of
+a calling  vector and a vector \verb"v".
 Operator throws \GOT{cvmex\-ception}{cvmexception}
 in case of different sizes of the operands
 or memory allocation failure.
@@ -1113,8 +1113,8 @@ Operator%
 cvector cvector::operator - (const cvector& v) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cvector" as  difference of
- calling vector and  vector \verb"v".
+creates an object of type \verb"cvector" as a difference of
+a calling  vector and a vector \verb"v".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands
 or memory allocation failure.
@@ -1153,9 +1153,9 @@ Function%
 cvector& cvector::sum (const cvector& v1, const cvector& v2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of addition of
-vectors \verb"v1" and \verb"v2"  to  calling vector
-and returns  reference to
+assigns the result of addition of
+vectors \verb"v1" and \verb"v2"  to a calling vector
+and returns a reference to
 the vector changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1196,9 +1196,9 @@ Function%
 cvector& cvector::diff (const cvector& v1, const cvector& v2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of subtraction of
-vectors \verb"v1" and \verb"v2" to  calling vector
-and returns  reference to
+assigns the result of subtraction of
+vectors \verb"v1" and \verb"v2" to a calling vector
+and returns a reference to
 the vector changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1239,8 +1239,8 @@ Operator%
 \begin{verbatim}
 cvector& cvector::operator += (const cvector& v) throw (cvmexception);
 \end{verbatim}
-adds vector \verb"v" to  calling vector 
-and returns  reference to
+adds vector \verb"v" to a calling vector 
+and returns a reference to
 the vector changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1286,7 +1286,7 @@ Operator%
 cvector& cvector::operator -= (const cvector& v) throw (cvmexception);
 \end{verbatim}
 subtracts vector \verb"v" from  calling vector  
-and returns  reference to
+and returns a reference to
 the vector changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -1331,8 +1331,8 @@ Operator%
 \begin{verbatim}
 cvector cvector::operator - () const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cvector" as
- calling vector multiplied by $-1$.
+creates an object of type \verb"cvector" as
+a calling  vector multiplied by $-1$.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of memory allocation failure.
 See also \GOT{cvector}{cvector}.
@@ -1361,8 +1361,8 @@ Operator%
 \begin{verbatim}
 cvector cvector::operator * (TR d) const;
 \end{verbatim}
-creates  object of type \verb"cvector" as  product of
- calling vector and  number \verb"d".
+creates an object of type \verb"cvector" as a product of
+a calling  vector and  number \verb"d".
 See also \GOT{cvector}{cvector}.
 Example:
 \begin{Verbatim}
@@ -1389,8 +1389,8 @@ Operator%
 \begin{verbatim}
 cvector cvector::operator / (TR d) const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cvector" as  quotient of
- calling vector and  number \verb"d". Operator throws
+creates an object of type \verb"cvector" as a quotient of
+a calling  vector and  number \verb"d". Operator throws
  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less
 than the
@@ -1421,8 +1421,8 @@ Operator%
 \begin{verbatim}
 cvector cvector::operator * (TC c) const;
 \end{verbatim}
-creates  object of type \verb"cvector" as  product of
- calling vector and  complex number \verb"c".
+creates an object of type \verb"cvector" as a product of
+a calling  vector and  complex number \verb"c".
 See also \GOT{cvector}{cvector}.
 Example:
 \begin{Verbatim}
@@ -1451,8 +1451,8 @@ Operator%
 cvector cvector::operator / (TC c) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cvector" as  quotient of
- calling vector and  complex number \verb"c".
+creates an object of type \verb"cvector" as a quotient of
+a calling  vector and  complex number \verb"c".
 Operator throws
  \GOT{cvmexception}{cvmexception}
 if \verb"c" has  absolute value equal or less
@@ -1485,7 +1485,7 @@ Operator%
 cvector& cvector::operator *= (TR d);
 \end{verbatim}
 multiplies  calling vector by real number \verb"d"
-and returns  reference to
+and returns a reference to
 the vector changed.
 See also \GOT{cvector::operator *~}{cvector.operator * (TR)},
 \GOT{cvector}{cvector}.
@@ -1515,7 +1515,7 @@ Operator%
 cvector& cvector::operator /= (TR d) throw (cvmexception);
 \end{verbatim}
 divides  calling vector by real number \verb"d"
-and returns  reference to
+and returns a reference to
 the vector changed.
 It throws  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less
@@ -1549,7 +1549,7 @@ Operator%
 cvector& cvector::operator *= (TC c);
 \end{verbatim}
 multiplies  calling vector by complex number \verb"c"
-and returns  reference to
+and returns a reference to
 the vector changed.
 See also \GOT{cvector::operator *~}{cvector.operator * (TC)},
 \GOT{cvector}{cvector}.
@@ -1580,7 +1580,7 @@ Operator%
 cvector& cvector::operator /= (TC c) throw (cvmexception);
 \end{verbatim}
 divides  calling vector by complex number \verb"c"
-and returns  reference to
+and returns a reference to
 the vector changed.
 It throws  \GOT{cvmexception}{cvmexception}
 if \verb"c" has  absolute value equal or less
@@ -1649,7 +1649,7 @@ cvector& cvector::conj (const cvector& v) throw (cvmexception);
 cvector& cvector::conj ();
 \end{verbatim}
 implement complex conjugation.
-First operator creates  object of type \verb"cvector" as
+First operator creates an object of type \verb"cvector" as
  complex conjugated calling vector
 (it throws 
 \GOT{cvmexception}{cvmexception}
@@ -1690,7 +1690,7 @@ Operator%
 \begin{verbatim}
 TC cvector::operator * (const cvector& v) const throw (cvmexception);
 \end{verbatim}
-returns  scalar product of  calling vector and  vector \verb"v".
+returns  scalar product of a calling vector and a vector \verb"v".
 Operator throws 
 \GOT{cvmexception}{cvmexception}
 if the operands have different sizes.
@@ -1723,7 +1723,7 @@ Operator%
 TC cvector::operator % (const cvector& v) const throw (cvmexception);
 \end{verbatim}
 returns  scalar product of  complex conjugated
-calling vector and  vector \verb"v".
+a calling  vector and a vector \verb"v".
 Operator throws 
 \GOT{cvmexception}{cvmexception}
 if the operands have different sizes.
@@ -1758,12 +1758,12 @@ Operator%
 cvector cvector::operator * (const cmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cvector" as  product of
- calling vector and  matrix \verb"m".
+creates an object of type \verb"cvector" as a product of
+a calling vector and a matrix \verb"m".
 Operator throws 
 \GOT{cvmexception}{cvmexception}
 if the calling vector's size
-is differ from  number of rows of matrix \verb"m"'.
+is differ from  number of rows of a matrix \verb"m"'.
 See also \GOT{cvector::mult (const cvector\&, const cmatrix\&)}
 {cvector.mult (const cvector&, const cmatrix&)},
 \GOT{cvector}{cvector}, \GOT{cmatrix}{cmatrix}.
@@ -1801,8 +1801,8 @@ cvector& cvector::mult (const cvector& v, const cmatrix& m)
 throw (cvmexception);
 \end{verbatim}
 sets  calling vector to be equal to  product of  vector
-\verb"v" and matrix \verb"m"
-and returns reference to
+\verb"v" and a matrix \verb"m"
+and returns a reference to
 the object changed.
 Function throws 
 \GOT{cvmexception}{cvmexception}
@@ -1853,8 +1853,8 @@ cvector& cvector::mult (const cmatrix& m, const cvector& v)
 throw (cvmexception);
 \end{verbatim}
 sets  calling vector to be equal to  product of 
-matrix \verb"m" and vector \verb"v"
-and returns  reference to
+matrix \verb"m" and a vector \verb"v"
+and returns a reference to
 the object changed.
 Function throws 
 \GOT{cvmexception}{cvmexception}
@@ -1904,9 +1904,9 @@ Function%
 \begin{verbatim}
 cmatrix cvector::rank1update_u (const cvector& v) const;
 \end{verbatim}
-creates  object of type \GOT{cmatrix}{cmatrix}
+creates an object of type \GOT{cmatrix}{cmatrix}
 as  rank-1 update (unconjugated) of
- calling vector and  vector \verb"v".
+a calling vector and a vector \verb"v".
 The rank-1 update (unconjugated)
 of  vector-column $x$ of  size $m$ and
  vector-row $y$ of  size $n$ is defined as $m\times n$ matrix
@@ -1956,9 +1956,9 @@ Function%
 \begin{verbatim}
 cmatrix cvector::rank1update_c (const cvector& v) const;
 \end{verbatim}
-creates  object of type \GOT{cmatrix}{cmatrix}
+creates an object of type \GOT{cmatrix}{cmatrix}
 as  rank-1 update (conjugated) of
- calling vector and  complex conjugated vector \verb"v".
+a calling vector and  complex conjugated vector \verb"v".
 The rank-1 update (conjugated)
 operation of  vector-column $x$ of  size $m$ and
  complex conjugated
@@ -2033,7 +2033,7 @@ cvector::solve (const scmatrix& mA,
 set  calling vector to be equal to  solution $x$ of linear equation
 $A*x=b$ where parameter \verb"mA" is  square complex matrix $A$
 and parameter \verb"vB" is  complex vector $b$.
-Every function returns  reference to the vector changed.
+Every function returns a reference to the vector changed.
 The first version also sets output parameter \verb"dErr" to be equal
 to  norm of computation error.
 These functions throw \GOT{cvmexception}{cvmexception}
@@ -2088,7 +2088,7 @@ set calling vector to be equal to solution $x$ of linear equation
 $A^T*b=b$ (which is equivalent to $x*A=b$) 
 where parameter \verb"mA" is  square complex matrix $A$
 and parameter \verb"vB" is  complex vector $b$.
-Every function returns  reference to the vector changed.
+Every function returns a reference to the vector changed.
 The first version also sets output parameter \verb"dErr" to be equal
 to the norm of computation error.
 These functions throw \GOT{cvmexception}{cvmexception}
@@ -2147,7 +2147,7 @@ set calling vector to be equal to solution $x$ of linear equation
 $A^H*x=b$ (here $A^H$ is conjugated $A$)
 where parameter \verb"mA" is  square complex matrix $A$
 and parameter \verb"vB" is  complex vector $b$.
-Every function returns  reference to the vector changed.
+Every function returns a reference to the vector changed.
 The first version also sets output parameter \verb"dErr" to be equal
 to the norm of computation error.
 These functions throw \GOT{cvmexception}{cvmexception}
@@ -2294,7 +2294,7 @@ parameter \verb"mLU" is \GO{$LU$ factorization}{scmatrix.low_up}
 of the matrix $A$, parameter \verb"pPivots" is  array of pivot numbers
 created while factorizing the matrix $A$
 and parameter \verb"vB" is  vector $b$.
-Every function returns  reference to the vector changed.
+Every function returns a reference to the vector changed.
 The first version also sets output parameter \verb"dErr" to be equal
 to  norm of computation error.
 These functions are useful when you need to solve few linear equations
@@ -2375,7 +2375,7 @@ The system is underdetermined otherwise, and the algorithm finds its minimum nor
 In this case \verb"cErr" is set to zero. In both cases the solution computed
 satisfies $x=\pinv(A)*b$, but this algorithm is faster than pseudo inversion.
 %Matrix $A$ is passed as an argument \verb"mA".
-Function sets calling object to be the solution and returns reference to it.
+Function sets calling object to be the solution and returns a reference to it.
 It throws
  \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes of the operands.
@@ -2437,7 +2437,7 @@ output parameter using \verb"tol" tolerance.
 Internally  function uses \verb"?GELSY" LAPACK routines, see more details
 about the algorithm in those routines' documentation.
 Matrix $A$ is passed as  argument \verb"mA".
-Function sets calling object to be the solution and returns reference to it.
+Function sets calling object to be the solution and returns a reference to it.
 It throws
  \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes of the operands.
@@ -2493,7 +2493,7 @@ having $\min(m,n)$ size.
 Internally  function uses \verb"?GELSS" LAPACK routines, see more details
 about the algorithm in that routine's documentation.
 Matrix $A$ is passed as  argument \verb"mA".
-Function sets calling object to be the solution and returns reference to it.
+Function sets calling object to be the solution and returns a reference to it.
 It throws
  \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes of the operands.
@@ -2553,7 +2553,7 @@ having $\min(m,n)$ size.
 Internally  function uses \verb"?GELSD" LAPACK routines, see more details
 about the algorithm in that routine's documentation.
 Matrix $A$ is passed as  argument \verb"mA".
-Function sets calling object to be the solution and returns reference to it.
+Function sets calling object to be the solution and returns a reference to it.
 It throws
  \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes of the operands.
@@ -2914,7 +2914,7 @@ and calling vector respectively).
 First operation is performed if \verb"bLeft" passed
 is \verb"false" and second one otherwise.
 Function
-returns  reference to the vector changed and throws
+returns a reference to the vector changed and throws
  \GOT{cvmexception}{cvmexception}
 in case of inappropriate calling object sizes.
 See also
@@ -2976,7 +2976,7 @@ and calling vector respectively).
 First operation is performed if \verb"bLeft" passed
 is \verb"false" and second one otherwise.
 Function
-returns  reference to the vector changed and throws
+returns a reference to the vector changed and throws
  \GOT{cvmexception}{cvmexception}
 in case of inappropriate calling object sizes.
 See also
@@ -3025,11 +3025,11 @@ Function%
 \begin{verbatim}
 cvector& cvector::randomize_real (TR dFrom, TR dTo);
 \end{verbatim}
-fills  real part of  calling vector with
+fills  real part of a calling vector with
 pseudo-random numbers distributed between
 \verb"dFrom" and \verb"dTo".
 Function
-returns  reference to the vector changed.
+returns a reference to the vector changed.
 See also
 \GOT{cvector}{cvector}.
 Example:
@@ -3055,11 +3055,11 @@ Function%
 \begin{verbatim}
 cvector& cvector::randomize_imag (TR dFrom, TR dTo);
 \end{verbatim}
-fills  imaginary part of  calling vector with
+fills  imaginary part of a calling vector with
 pseudo-random numbers distributed between
 \verb"dFrom" and \verb"dTo".
 Function
-returns  reference to the vector changed.
+returns a reference to the vector changed.
 See also
 \GOT{cvector}{cvector}.
 Example:

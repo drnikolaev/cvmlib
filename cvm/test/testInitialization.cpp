@@ -1380,9 +1380,6 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ(this->c1[9], scbm(CVM0+1,CVM0+2));
 
 
-
-///////////////////////////////////////////////////////////////////
-
     srs2 = srs1;
     EXPECT_TRUE(srs1 == srs2) << "srsmatrix ==";
     srs2.set(CVM0+1, CVM0+2, srs2(CVM0+1,CVM0+2) + TP(0.000001));
