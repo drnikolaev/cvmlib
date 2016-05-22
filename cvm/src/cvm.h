@@ -16,11 +16,11 @@
  * of real and complex numbers. It utilizes BLAS and LAPACK Fortran libraries
  * in order to achieve the best numerical performance possible.
  * Along with basic vector and matrix arithmetic it implements different algorithms
- * including norm computations, elementary transformations, solving of linear systems
+ * including norm computations, elementary transformations, solving linear systems
  * of kind Ax=b and AX=B, singular value decomposition, matrix rank and determinant
  * computation, non-symmetric and symmetric eigenvalue problem (including Cholesky
  * and Bunch-Kaufman factorization), LU factorization, QR, RQ, LQ and QL factorizations,
- * different linear least square problems solutions, square matrix polynomials,
+ * different linear least square problems, square matrix polynomials,
  * square matrix inversion, pseudo (generalized) inversion and square matrix exponent.
  * All these algorithms are implemented for real and complex numbers.
  * Distributed under the Boost Software License, Version 1.0.
@@ -34,25 +34,25 @@
 
 // 5.7 ILP64 support
 #if defined(CVM_ILP64)
-    using tint = long long int; //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
+    using tint = long long int;  //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
 #   define TINT_ZERO (0LL)
-#   define TINT_ONE  (1LL)
+#   define TINT_ONE (1LL)
 #   define CVM_TINT_FORMAT "%lld"
 #else
-    using tint = int;           //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
+    using tint = int;  //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
 #   define TINT_ZERO (0)
-#   define TINT_ONE  (1)
+#   define TINT_ONE (1)
 #   define CVM_TINT_FORMAT "%d"
 #endif
 
 // 5.7 0-based indexing
 #if defined(CVM_ZERO_BASED)
-#   define CVM0 TINT_ZERO //!< Index base, 1  by default or 0 when \c CVM_ZERO_BASED is defined
+#   define CVM0 TINT_ZERO  //!< Index base, 1 by default or 0 when \c CVM_ZERO_BASED is defined
 #else
-#   define CVM0 TINT_ONE  //!< Index base, 1  by default or 0 when \c CVM_ZERO_BASED is defined
+#   define CVM0 TINT_ONE  //!< Index base, 1 by default or 0 when \c CVM_ZERO_BASED is defined
 #endif
 
-#if !defined(CVM_NO_MT)        // as of 5.7 it's by default
+#if !defined(CVM_NO_MT)  // as of 5.7 it's by default
 #   define CVM_MT
 #   if !defined(_PTHREADS)
 #       define _PTHREADS
@@ -63,6 +63,7 @@
 #   pragma warning(disable:4267)
 #endif
 
+#include <cmath>
 #include <array>
 #include <vector>
 #include <map>
@@ -71,9 +72,10 @@
 // MSVC++ 6.0 and higher settings
 #if defined(_MSC_VER)
 #   pragma once
-#   define WIN32_LEAN_AND_MEAN        // Exclude rarely-used stuff from Windows headers
+#   define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 #   ifndef _WIN32_WINNT
-#       define _WIN32_WINNT 0x500     // at least Win2000 is required for InitializeCriticalSectionAndSpinCount
+#       define _WIN32_WINNT 0x500  // at least Win2000 is required for 
+                                   // InitializeCriticalSectionAndSpinCount
 #   endif
 #   include <windows.h>
 #   include <process.h>
@@ -83,30 +85,29 @@
 #   if (_MSC_VER < 1400)
 #       error "Please use stable version 5.2 for older MSVC compilers"
 #   endif
-#   if (_MSC_VER >= 1700)             // since VC11 aka MS Visual Studio 2012
+#   if (_MSC_VER >= 1700)  // since VC11 aka MS Visual Studio 2012
 #       define CVM_STD_MUTEX
 #       include <mutex>
 #       include <thread>
 #   endif
-#   if (_MSC_VER >= 1800)             // since VC12 aka MS Visual Studio 2013
+#   if (_MSC_VER >= 1800)  // since VC12 aka MS Visual Studio 2013
 #       define CVM_USE_VARIADIC_TEMPLATES
 #       define CVM_USE_INITIALIZER_LISTS
 #       define CVM_USE_DELEGATING_CONSTRUCTORS
 #       include <initializer_list>
 #   endif
-#   if (_MSC_VER >= 1900)             // since VC14 aka MS Visual Studio 2015
+#   if (_MSC_VER >= 1900)  // since VC14 aka MS Visual Studio 2015
 #       define CVM_USE_USER_LITERALS
 #   endif
 
-#   if (_MSC_VER < 1900)              // before VC14 aka MS Visual Studio 2015
+#   if (_MSC_VER < 1900)  // before VC14 aka MS Visual Studio 2015
 #       define constexpr
 #   endif
-
 
 #   if (!defined(__INTEL_COMPILER) || !defined(_WIN64)) && !(_MSC_VER >= 1500 && defined(_WIN64))
 #       define CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES
 #   endif
-#   if (defined(__INTEL_COMPILER) && (_MSC_VER == 1900)) // Intel's glitch
+#   if (defined(__INTEL_COMPILER) && (_MSC_VER == 1900))  // Intel's glitch
 #       define CVM_USE_MALLOC
 #   endif
 #   if (_MSC_VER <= 1800)
@@ -135,7 +136,7 @@
 #       endif
 #   endif
 
-using CVM_LONGEST_INT = __int64; //!< Longest integer possible on this platform
+using CVM_LONGEST_INT = __int64;  //!< Longest integer possible on this platform
 
 #   if defined(_WIN64)
 using CVM_PTR_WRAPPER = unsigned long long;
@@ -164,11 +165,12 @@ using CVM_PTR_WRAPPER = unsigned long;
 #           undef __stdcall
 #       endif
 #       define __stdcall
-#       include <semaphore.h>       // Unix
+#       include <semaphore.h>  // Unix
 #   endif
 
 // 8.0 - since 4.7.0 we use new std::mutex features
-#   if !defined(__INTEL_COMPILER) && !defined(__MINGW32__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 7)
+#   if !defined(__INTEL_COMPILER) && !defined(__MINGW32__) && \
+        (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 7)
 #       define CVM_USE_DELEGATING_CONSTRUCTORS
 #       define CVM_USE_USER_LITERALS
 #       define CVM_STD_MUTEX
@@ -271,7 +273,7 @@ using CVM_PTR_WRAPPER = unsigned long;
 #define CVM_CONVERGENCE_ERROR            14 //!< Error code for "Method failed to converge: %s at %s:%d"
 #define CVM_DIVISIONBYZERO               15 //!< Error code for "Attempt to divide by zero"
 #define CVM_SEMAPHOREERROR               16 //!< Error code for "Critical Section access error" (Windows) or "Semaphore access error" (Unix)
-#define CVM_READ_ONLY_ACCESS             17 //!< Error code for "Attempt to change a read-only element"
+#define CVM_READ_ONLY_ACCESS             17 //!< Error code for "Attempt to change read-only element"
 #define CVM_SUBMATRIXACCESSERROR         18 //!< Error code for "Attempt to access non-continuous submatrix as a continuous array, see programmer's reference for details"
 #define CVM_SUBMATRIXNOTAVAILABLE        19 //!< Error code for "Submatrix instantiation is not available for class '%s', see programmer's reference for details"
 #define CVM_MATRIXNOTSYMMETRIC           20 //!< Error code for "The matrix passed doesn't appear to be symmetric"
@@ -297,7 +299,7 @@ using CVM_PTR_WRAPPER = unsigned long;
 #define CVM_MATRIX_ELEMENT_SEPARATOR     " "
 #define CVM_EOL                          std::endl
 
-using tbyte = unsigned char; //!< memory allocation quantum
+using tbyte = unsigned char;  //!< memory allocation quantum
 
 #ifdef CVM_NO_NAMESPACE
 #   define CVM_NAMESPACE
@@ -378,8 +380,8 @@ public:
 class cvmexception : public std::exception
 {
 protected:
-    int mnCause; //!< Exception code
-    mutable char mszMsg[256]; //!< Formatted message
+    int mnCause;  //!< Exception code
+    mutable char mszMsg[256];  //!< Formatted message
 
 //! @cond INTERNAL
     virtual const char* _get_message(int nCause) const {
@@ -405,7 +407,7 @@ public:
      * @param[in] nCause Error code (might be user-defined).
      * @see add()
      */
-    CVM_API explicit cvmexception(int nCause, ...); // TODO
+    CVM_API explicit cvmexception(int nCause, ...);
 
     /**
      * @brief Exception copy constructor
@@ -506,7 +508,8 @@ CVM_API void __copy_real(TC* pDm, tint mnSize, tint mnIncr, const TR* pRe, tint 
 template<typename TR, typename TC>
 CVM_API void __copy_imag(TC* pDm, tint mnSize, tint mnIncr, const TR* pRe, tint nReIncr);
 template<typename TR, typename TC>
-CVM_API void __copy2(TC* pDm, tint mnSize, tint mnIncr, const TR* pRe, const TR* pIm, tint nReIncr = 1, tint nImIncr = 1);
+CVM_API void __copy2(TC* pDm, tint mnSize, tint mnIncr, const TR* pRe, const TR* pIm,
+                     tint nReIncr = 1, tint nImIncr = 1);
 
 template<typename TC, typename TM, typename TV>
 CVM_API void __gemv(bool bLeft, const TM& m, TC dAlpha, const TV& v, TC dBeta, TV& vRes);
@@ -517,7 +520,8 @@ CVM_API void __symv(const TM& m, TR dAlpha, const TV& v, TR dBeta, TV& vRes);
 template<typename TC, typename TM, typename TV>
 CVM_API void __shmv(const TM& m, TC dAlpha, const TV& v, TC dBeta, TV& vRes);
 template<typename TC, typename TM>
-CVM_API void __gemm(const TM& ml, bool bTrans1, const TM& mr, bool bTrans2, TC dAlpha, TM& mRes, TC dBeta);
+CVM_API void __gemm(const TM& ml, bool bTrans1, const TM& mr, bool bTrans2, TC dAlpha,
+                    TM& mRes, TC dBeta);
 template<typename TR, typename TSM, typename TM>
 CVM_API void __symm(bool bLeft, const TSM& ml, const TM& mr, TR dAlpha, TM& mRes, TR dBeta);
 template<typename TC, typename TSM, typename TM>
@@ -535,7 +539,8 @@ template<typename TR, typename TC, typename TRM>
 CVM_API void __solve(const TRM& m, tint nrhs, const TC* pB, tint ldB, TC* pX, tint ldX, TR& dErr,
                      const TC* pLU, const tint* pPivots, int transp_mode) throw(cvmexception);
 template<typename TC, typename TM, typename TSM>
-CVM_API void __svd(TC* pd, tint nSize, tint nIncr, const TM& mArg, TSM* mU, TSM* mVH) throw(cvmexception);
+CVM_API void __svd(TC* pd, tint nSize, tint nIncr, const TM& mArg,
+                   TSM* mU, TSM* mVH) throw(cvmexception);
 template<typename TR, typename TM, typename TX>
 CVM_API void __pinv(TX& mX, const TM& mArg, TR threshold) throw(cvmexception);
 template<typename TV, typename TSM, typename TSCM>
@@ -562,11 +567,13 @@ CVM_API void __gerc(TM& m, const TV& vCol, const TV& vRow, TC cAlpha);
 template<typename TC, typename TSM>
 CVM_API void __syrk(bool bTransp, TC alpha, tint k, const TC* pA, tint ldA, TC beta, TSM& m);
 template<typename TC, typename TSM>
-CVM_API void __syr2k(bool bTransp, TC alpha, tint k, const TC* pA, tint ldA, const TC* pB, tint ldB, TC beta, TSM& m);
+CVM_API void __syr2k(bool bTransp, TC alpha, tint k, const TC* pA, tint ldA,
+                     const TC* pB, tint ldB, TC beta, TSM& m);
 template<typename TR, typename TC, typename TSM>
 CVM_API void __herk(bool bTransp, TR alpha, tint k, const TC* pA, tint ldA, TR beta, TSM& m);
 template<typename TR, typename TC, typename TSM>
-CVM_API void __her2k(bool bTransp, TC alpha, tint k, const TC* pA, tint ldA, const TC* pB, tint ldB, TR beta, TSM& m);
+CVM_API void __her2k(bool bTransp, TC alpha, tint k, const TC* pA, tint ldA,
+                     const TC* pB, tint ldB, TR beta, TSM& m);
 
 template<typename TM>
 CVM_API tint __cholesky(TM& m);
@@ -782,7 +789,13 @@ inline void _check_lt_ge(int err_code, T idx, T low_limit, T up_limit) throw(cvm
         throw cvmexception(err_code, idx, low_limit, up_limit);
     }
 }
-//! @endcond
+
+template<typename TR>
+inline bool _conjugated(const std::complex<TR>& v1,
+                        const std::complex<TR>& v2, TR tol) {
+    return std::abs(v1.real() - v2.real()) <= tol &&
+           std::abs(v1.imag() + v2.imag()) <= tol;
+}
 
 
 //! define this to use Memory Pool Manager (not used by default sinse version 6.0)
@@ -797,18 +810,18 @@ class MemoryBlocks
         BlockProperty(size_t nSize, tint nRefCount) : mnSize(nSize), mnRefCount(nRefCount) { }
     };
 
-    using map_Blocks = std::map<tbyte*,BlockProperty,std::less<tbyte*>>;     //!< pointer -> {size, refcount}
+    using map_Blocks = std::map<tbyte*,BlockProperty,std::less<tbyte*>>;  //!< pointer -> {size, refcount}
     using itr_Blocks = map_Blocks::iterator;
 
-    using map_FreeBs = std::multimap<size_t,tbyte*>;                           //!< size -> pointer
+    using map_FreeBs = std::multimap<size_t,tbyte*>;  //!< size -> pointer
     using itr_FreeBs = map_FreeBs::iterator;
 
-    using map_FreeIt = std::map<tbyte*,itr_FreeBs,std::less<tbyte*>>;        //!< pointer -> iterator to FreeBs
+    using map_FreeIt = std::map<tbyte*,itr_FreeBs,std::less<tbyte*>>;  //!< pointer -> iterator to FreeBs
     using itr_FreeIt = map_FreeIt::iterator;
 
-    map_FreeBs mFreeBs;                                                         //!< currently free blocks by sizes
-    map_FreeIt mFreeIt;                                                         //!< currently free blocks iterators by pointers
-    map_Blocks mBlocks;                                                         //!< currently occupied or freed blocks by pointers
+    map_FreeBs mFreeBs;  //!< currently free blocks by sizes
+    map_FreeIt mFreeIt;  //!< currently free blocks iterators by pointers
+    map_Blocks mBlocks;  //!< currently occupied or freed blocks by pointers
 
 public:
     void    AddBlock(tbyte* pBlock, size_t nBytes, bool bOccupied);
@@ -817,7 +830,7 @@ public:
 #ifdef CVM_DEBUG
     void    Assert(const void* pvBlock, size_t nBytes);
 #endif
-    void    AddNew(tbyte* pBlock, size_t nBytes);                               //!< for just allocated only, i.e. non-const
+    void    AddNew(tbyte* pBlock, size_t nBytes);  //!< for just allocated only, i.e. non-const
     tbyte*  AddRef(const tbyte* pBlock);
     tint    FreeBlock(tbyte* pBlock);
 };
@@ -835,28 +848,30 @@ class MemoryPool
         }
     };
 
-    list_blocks  mOutBlocks;                                                    //!< outer memory blocks
-    MemoryBlocks mMemoryBlocks;                                                 //!< currently existing blocks and their statuses
+    list_blocks  mOutBlocks;  //!< outer memory blocks
+    MemoryBlocks mMemoryBlocks;  //!< currently existing blocks and their statuses
 
 public:
     MemoryPool();
     ~MemoryPool();
 
     tbyte* Malloc(size_t nBytes) throw(cvmexception);
-    tbyte* AddRef(const tbyte* pd);                                             //!< increases a reference counter
-    tint   Free(tbyte*& pToFree) throw(cvmexception);                           //!< decreases a reference counter and
-                                                                                //!< returns memory back to the pool if the counter is zeroed
+    tbyte* AddRef(const tbyte* pd);  //!< increases reference counter
+    //!< decreases reference counter and returns memory back to the pool if the counter sets to zero
+    tint   Free(tbyte*& pToFree) throw(cvmexception);
 #ifdef CVM_DEBUG
-    void Assert(const void* pvBlock, size_t nBytes) {                           //!< synchronized outside
+    void Assert(const void* pvBlock, size_t nBytes) {  //!< synchronized outside
         mMemoryBlocks.Assert(pvBlock, nBytes);
     }
 #endif
-    void Clear();                                                               //!< destroys all outer blocks in reverse order
+    void Clear();  //!< destroys all outer blocks in reverse order
 };
 
 CVM_API tbyte* _cvmMalloc(size_t nBytes) throw(cvmexception);
 CVM_API tbyte* _cvmAddRef(const tbyte* pd);
 CVM_API tint   _cvmFree(tbyte*& pd);
+CVM_API void   _cvm_assert(const void* pvBlock, size_t nBytes);
+//! @endcond
 
 /**
  * @brief Memory allocator
@@ -956,60 +971,6 @@ inline void cvmZeroMemory(T* p, tint nEls) {
     memset(p, 0, nEls * sizeof(T));
 }
 
-//! @cond INTERNAL
-CVM_API void _cvm_assert(const void* pvBlock, size_t nBytes);
-
-inline float _abs(const float& v) {
-    return static_cast<float>(fabs(v));
-}
-
-inline double _abs(const double& v) {
-    return fabs(v);
-}
-
-inline long double _abs(const long double& v) {
-    return static_cast<double>(v);
-}
-
-inline float _abs(const std::complex<float>& v) {
-    return static_cast<float>(sqrt(v.real() * v.real() + v.imag() * v.imag()));
-}
-
-inline double _abs(const std::complex<double>& v) {
-    return sqrt(v.real() * v.real() + v.imag() * v.imag());
-}
-
-inline long double _abs(const std::complex<long double>& v) {
-    return sqrt(v.real() * v.real() + v.imag() * v.imag());
-}
-
-inline tint _abs(const tint& v) {
-    return v < 0 ? -v : v;
-}
-
-inline float _sqrt(const float& v) {
-    return static_cast<float>(sqrt(v));
-}
-
-inline double _sqrt(const double& v) {
-    return sqrt(v);
-}
-
-inline std::complex<float> _conjugate(const std::complex<float>& v) {
-    return std::complex<float>(v.real(), -v.imag());
-}
-
-inline std::complex<double> _conjugate(const std::complex<double>& v) {
-    return std::complex<double>(v.real(), -v.imag());
-}
-
-template<typename TR>
-inline bool _conjugated(const std::complex<TR>& v1,
-                        const std::complex<TR>& v2, TR tol) {
-    return _abs(v1.real() - v2.real()) <= tol &&
-           _abs(v1.imag() + v2.imag()) <= tol;
-}
-//! @endcond
 
 
 //! Sends proxy value to output stream
@@ -1350,8 +1311,8 @@ template<typename T, typename TR>
 class type_proxy
 {
 protected:
-    T& mT; //!< reference to value
-    bool mbReadOnly; //!< read-only flag
+    T& mT;  //!< reference to value
+    bool mbReadOnly;  //!< read-only flag
 
 public:
     /**
@@ -1471,7 +1432,7 @@ public:
      *
      * Returns pointer to a value. Throws \ref cvmexception if proxy is read-only.
      */
-    T* operator &() throw(cvmexception) {
+    T* operator & () throw(cvmexception) {
         if (mbReadOnly) throw cvmexception(CVM_READ_ONLY_ACCESS);
         return &mT;
     }
@@ -1482,7 +1443,7 @@ public:
      *
      * Returns const pointer to a value.
      */
-    const T* operator &() const {
+    const T* operator & () const {
         return &mT;
     }
 
@@ -1778,10 +1739,10 @@ inline T operator / (U u, const type_proxy<T,TR>& p) {
 template<typename T>
 class Randomizer
 {
-    T mMax; //!< maximum possible value
+    T mMax;  //!< maximum possible value
 #if !defined(CVM_NO_DEFAULT_RANDOM_ENGINE_SUPPORTED)
-    std::random_device mre; //!< standard engine
-    std::uniform_int_distribution<int> mDist; //!< standard generator
+    std::random_device mre;  //!< standard engine
+    std::uniform_int_distribution<int> mDist;  //!< standard generator
 #endif
 
     /**
@@ -1854,33 +1815,33 @@ template<typename TR, typename TC>
 class basic_array
 {
 protected:
-    tint msz; //!< Number of elements of type TC allocated
-    tint mincr; //!< Increment (distance) between elements (default is 1, i.e. elements follow each other)
+    tint msz;  //!< Number of elements of type TC allocated
+    tint mincr;  //!< Increment (distance) between elements (default is 1, i.e. elements follow each other)
 
 #ifdef CVM_USE_POOL_MANAGER
-    TC* mpd; //!< Data pointer
+    TC* mpd;  //!< Data pointer
 #else
     // In his book "Effective Modern C++" Scott Meyers claims on pages 133-134 that
-    // it's not a good idea to sore array pointers in shared_ptr in the way of shared_ptr<T[]>.
+    // it's not a good idea to store array pointers in shared_ptr in the way of shared_ptr<T[]>.
     // Well, it's not going on here. And I don't need operator[] to be defined in shared_ptr.
     // Think of mp as a pointer to chunk (or blob) of memory. Sure, this would be nice to use
     // std::vector here but I need to align mp usage with foreign pointer mpf.
-    std::shared_ptr<TC> mp; //!< native data pointer
-    TC* mpf; //!< Foreign data pointer
+    std::shared_ptr<TC> mp;  //!< native data pointer
+    TC* mpf;  //!< Foreign data pointer
 #endif
 
 public:
-    using value_type = TC; //!< STL-specific value type definition
-    using iterator = value_type*; //!< STL-specific iterator definition
-    using pointer = value_type*; //!< STL-specific value pointer definition
-    using const_iterator = const value_type*; //!< STL-specific const iterator definition
-    using const_pointer = const value_type*; //!< STL-specific const pointer definition
-    using reference = value_type&; //!< STL-specific reference definition
-    using const_reference = const value_type&; //!< STL-specific const reference definition
-    using size_type = size_t; //!< STL-specific size type definition
-    using difference_type = ptrdiff_t; //!< STL-specific difference type definition
-    using const_reverse_iterator = std::reverse_iterator<const_iterator>; //!< STL-specific const reverse iterator definition
-    using reverse_iterator = std::reverse_iterator<iterator>; //!< STL-specific reverse iterator definition
+    using value_type = TC;  //!< STL-specific value type definition
+    using iterator = value_type*;  //!< STL-specific iterator definition
+    using pointer = value_type*;  //!< STL-specific value pointer definition
+    using const_iterator = const value_type*;  //!< STL-specific const iterator definition
+    using const_pointer = const value_type*;  //!< STL-specific const pointer definition
+    using reference = value_type&;  //!< STL-specific reference definition
+    using const_reference = const value_type&;  //!< STL-specific const reference definition
+    using size_type = size_t;  //!< STL-specific size type definition
+    using difference_type = ptrdiff_t;  //!< STL-specific difference type definition
+    using const_reverse_iterator = std::reverse_iterator<const_iterator>;  //!< STL-specific const reverse iterator definition
+    using reverse_iterator = std::reverse_iterator<iterator>;  //!< STL-specific reverse iterator definition
 
 /**
 @brief Default constructor
@@ -2738,7 +2699,7 @@ prints
 */
     virtual TR norminf() const {
         CVM_ASSERT(this->get(), ((this->_indofmax() - CVM0) * this->incr() + CVM0) * sizeof(TC))
-        return _abs(this->get()[(this->_indofmax() - CVM0) * this->incr()]);
+        return std::abs(this->get()[(this->_indofmax() - CVM0) * this->incr()]);
     }
 
 /**
@@ -2780,7 +2741,7 @@ prints
         TR dNorm(0);
         const tint nSize = this->size() * this->incr();
         for (tint i = 0; i < nSize; i += this->incr()) {
-            dNorm += _abs(this->get()[i]);
+            dNorm += std::abs(this->get()[i]);
         }
         return dNorm;
     }
@@ -2840,7 +2801,7 @@ prints
     // this = this / d for real only
     void _div(TR d) throw(cvmexception) {
         static const TR one(1.);
-        if (_abs(d) <= basic_cvmMachMin<TR>()) {
+        if (std::abs(d) <= basic_cvmMachMin<TR>()) {
             throw cvmexception(CVM_DIVISIONBYZERO);
         }
         this->_scalr(one / d);
@@ -3142,7 +3103,7 @@ protected:
             bRes = true;
             if (this->get() != a.get()) {
                 for (tint i = 0; i < this->size(); ++i) {
-                    if (_abs(this->get()[i * this->incr()] - a.get()[i * a.incr()]) > basic_cvmMachMin<TR>()) {
+                    if (std::abs(this->get()[i * this->incr()] - a.get()[i * a.incr()]) > basic_cvmMachMin<TR>()) {
                         bRes = false;
                         break;
                     }
@@ -3314,8 +3275,8 @@ prints
 template<typename TR>
 class basic_rvector : public basic_array<TR,TR>
 {
-    using TC = std::complex<TR>; //!< complex number type
-    using BaseArray = basic_array<TR,TR>; //!< base class
+    using TC = std::complex<TR>;  //!< complex number type
+    using BaseArray = basic_array<TR,TR>;  //!< base class
 
 public:
     
@@ -3444,7 +3405,7 @@ It is intented to make possible the following syntax:
 rmatrix m(10, 20);
 rvector v(20);
 
-m[1] = v;       // assigns v to the 1st row of m
+m[1] = v;  // assigns v to the 1st row of m
 \endcode
      And for example this code...
 \code
@@ -5097,7 +5058,7 @@ prints
                         TR& dErr) throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, vB.size(), transpose ? mA.nsize() : mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), transpose ? mA.msize() : mA.nsize());
-        basic_rmatrix<TR> mA2(mA); // this algorithm overrides A
+        basic_rmatrix<TR> mA2(mA);  // this algorithm overrides A
         basic_rmatrix<TR> mB(vB, vB.size(), 1);
         basic_rmatrix<TR> mX;
         basic_rvector vErr(1);
@@ -5158,7 +5119,7 @@ prints
                          TR tol = basic_cvmMachSp<TR>()) throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, vB.size(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.nsize());
-        basic_rmatrix<TR> mA2(mA); // this algorithm overrides A
+        basic_rmatrix<TR> mA2(mA);  // this algorithm overrides A
         basic_rmatrix<TR> mB(vB, vB.size(), 1);
         basic_rmatrix<TR> mX;
         __gelsy(mA2, mB, mX, tol, rank);
@@ -5641,7 +5602,7 @@ try {
     std::cout << m * me(1) - me(1) * v(1);
     std::cout << m * me(2) - me(2) * v(2);
     std::cout << m * me(3) - me(3) * v(3);
-    std::cout << me(1) * me(2) << std::endl; // orthogonality check
+    std::cout << me(1) * me(2) << std::endl;  // orthogonality check
 
     schmatrix mc(3);
     scmatrix mce(3);
@@ -5654,7 +5615,7 @@ try {
     std::cout << mc * mce(1) - mce(1) * v(1);
     std::cout << mc * mce(2) - mce(2) * v(2);
     std::cout << mc * mce(3) - mce(3) * v(3);
-    std::cout << mce(1) % mce(2) << std::endl; // orthogonality check
+    std::cout << mce(1) % mce(2) << std::endl;  // orthogonality check
 }
 catch (std::exception& e) {
     std::cout << "Exception " << e.what() << std::endl;
@@ -5719,7 +5680,7 @@ try {
     std::cout << m * me(1) - me(1) * v(1);
     std::cout << m * me(2) - me(2) * v(2);
     std::cout << m * me(3) - me(3) * v(3);
-    std::cout << me(1) * me(2) << std::endl; // orthogonality check
+    std::cout << me(1) * me(2) << std::endl;  // orthogonality check
 
     schmatrix mc(3);
     scmatrix mce(3);
@@ -5732,7 +5693,7 @@ try {
     std::cout << mc * mce(1) - mce(1) * v(1);
     std::cout << mc * mce(2) - mce(2) * v(2);
     std::cout << mc * mce(3) - mce(3) * v(3);
-    std::cout << mce(1) % mce(2) << std::endl; // orthogonality check
+    std::cout << mce(1) % mce(2) << std::endl;  // orthogonality check
 }
 catch (std::exception& e) {
     std::cout << "Exception " << e.what() << std::endl;
@@ -5800,7 +5761,7 @@ try {
     std::cout << m * me(1) - me(1) * v(1);
     std::cout << m * me(2) - me(2) * v(2);
     std::cout << m * me(3) - me(3) * v(3);
-    std::cout << me(1) * me(2) << std::endl; // orthogonality check
+    std::cout << me(1) * me(2) << std::endl;  // orthogonality check
 
     schmatrix mc(3);
     scmatrix mce(3);
@@ -5813,7 +5774,7 @@ try {
     std::cout << mc * mce(1) - mce(1) * v(1);
     std::cout << mc * mce(2) - mce(2) * v(2);
     std::cout << mc * mce(3) - mce(3) * v(3);
-    std::cout << mce(1) % mce(2) << std::endl; // orthogonality check
+    std::cout << mce(1) % mce(2) << std::endl;  // orthogonality check
 }
 catch (std::exception& e) {
     std::cout << "Exception " << e.what() << std::endl;
@@ -5879,7 +5840,7 @@ try {
     std::cout << m * me(1) - me(1) * v(1);
     std::cout << m * me(2) - me(2) * v(2);
     std::cout << m * me(3) - me(3) * v(3);
-    std::cout << me(1) * me(2) << std::endl; // orthogonality check
+    std::cout << me(1) * me(2) << std::endl;  // orthogonality check
 
     schmatrix mc(3);
     scmatrix mce(3);
@@ -5892,7 +5853,7 @@ try {
     std::cout << mc * mce(1) - mce(1) * v(1);
     std::cout << mc * mce(2) - mce(2) * v(2);
     std::cout << mc * mce(3) - mce(3) * v(3);
-    std::cout << mce(1) % mce(2) << std::endl; // orthogonality check
+    std::cout << mce(1) % mce(2) << std::endl;  // orthogonality check
 }
 catch (std::exception& e) {
     std::cout << "Exception " << e.what() << std::endl;
@@ -6100,10 +6061,10 @@ private:
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, vB.size(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, sv.size(), _cvm_min<tint>(mA.msize(), mA.nsize()));
-        basic_rmatrix<TR> mA2(mA); // this algorithm overrides A
+        basic_rmatrix<TR> mA2(mA);  // this algorithm overrides A
         basic_rmatrix<TR> mB(vB, vB.size(), 1);
         basic_rmatrix<TR> mX;
-        basic_rvector<TR> sv1(sv.size()); // to ensure that incr=1
+        basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
             __gelss(mA2, mB, mX, tol, sv1, rank);
         } else {
@@ -6260,7 +6221,7 @@ It is intented to make possible the following syntax:
 cmatrix m(10, 20);
 cvector v(20);
 
-m[1] = v;       // assigns v to the 1st row of m
+m[1] = v;  // assigns v to the 1st row of m
 \endcode
      And for example this code...
 \code
@@ -8681,7 +8642,7 @@ prints
                         TC& cErr) throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, vB.size(), conjugate ? mA.nsize() : mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), conjugate ? mA.msize() : mA.nsize());
-        basic_cmatrix<TR,TC> mA2(mA); // this algorithm overrides A
+        basic_cmatrix<TR,TC> mA2(mA);  // this algorithm overrides A
         basic_cmatrix<TR,TC> mB(vB, vB.size(), 1);
         basic_cmatrix<TR,TC> mX;
         basic_cvector vErr(1);
@@ -8744,7 +8705,7 @@ prints
                          TR tol = basic_cvmMachSp<TR>()) throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, vB.size(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.nsize());
-        basic_cmatrix<TR,TC> mA2(mA); // this algorithm overrides A
+        basic_cmatrix<TR,TC> mA2(mA);  // this algorithm overrides A
         basic_cmatrix<TR,TC> mB(vB, vB.size(), 1);
         basic_cmatrix<TR,TC> mX;
         __gelsy(mA2, mB, mX, tol, rank);
@@ -9752,7 +9713,7 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& randomize_real(TR dFrom, TR dTo) {
-        __randomize_real<TC, TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
+        __randomize_real<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
         return *this;
     }
 
@@ -9780,14 +9741,14 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& randomize_imag(TR dFrom, TR dTo) {
-        __randomize_imag<TC, TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
+        __randomize_imag<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
         return *this;
     }
 
 protected:
 //! @cond INTERNAL
     void _div(TC d) throw(cvmexception) {
-        if (_abs(d) <= basic_cvmMachMin<TR>()) {
+        if (std::abs(d) <= basic_cvmMachMin<TR>()) {
             throw cvmexception(CVM_DIVISIONBYZERO);
         }
         static const TC one(1., 0.);
@@ -9795,7 +9756,7 @@ protected:
     }
 
     void _scalc(TC d) {
-        __scal<TC, TC>(this->get(), this->size(), this->incr(), d);
+        __scal<TC,TC>(this->get(), this->size(), this->incr(), d);
     }
 
     void _set_real_number(TR d) {
@@ -9831,10 +9792,10 @@ private:
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), vB.size());
         _check_ne(CVM_SIZESMISMATCH, sv.size(), _cvm_min<tint>(mA.msize(), mA.nsize()));
-        basic_cmatrix<TR,TC> mA2(mA); // this algorithm overrides A
+        basic_cmatrix<TR,TC> mA2(mA);  // this algorithm overrides A
         basic_cmatrix<TR,TC> mB(vB, vB.size(), 1);
         basic_cmatrix<TR,TC> mX;
-        basic_rvector<TR> sv1(sv.size()); // to ensure that incr=1
+        basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
             __gelss(mA2, mB, mX, tol, sv1, rank);
         } else {
@@ -9859,8 +9820,8 @@ class Matrix : public basic_array<TR,TC>
     using BaseArray = basic_array<TR,TC>;
 
 protected:
-    tint mm;   //!< Number of rows
-    tint mn;   //!< Number of columns
+    tint mm;  //!< Number of rows
+    tint mn;  //!< Number of columns
     tint mld;  //!< Leading dimension
 
 /**
@@ -10181,7 +10142,7 @@ prints
             k = j * this->ld();
             for (i = 0; i < this->msize(); ++i) {
                 CVM_ASSERT(this->get(), (k + i + 1) * sizeof(TC))
-                rSum += _abs(this->get()[k + i]);
+                rSum += std::abs(this->get()[k + i]);
             }
 
             if (rSum > rNorm) {
@@ -10200,7 +10161,7 @@ prints
 
             for (j = 0; j < this->nsize(); ++j) {
                 CVM_ASSERT(this->get(), (j * this->ld() + i + 1) * sizeof(TC))
-                rSum += _abs(this->get()[j * this->ld() + i]);
+                rSum += std::abs(this->get()[j * this->ld() + i]);
             }
 
             if (rSum > rNorm) {
@@ -10439,12 +10400,12 @@ protected:
         }
     }
 
-    virtual type_proxy<TC, TR> _ij_proxy_val(tint i, tint j) {                      // always zero based
+    virtual type_proxy<TC,TR> _ij_proxy_val(tint i, tint j) {  // always zero based
         CVM_ASSERT(this->get(), (this->ld() * j + i + 1) * sizeof(TC))
-        return type_proxy<TC, TR>(this->get()[this->ld() * j + i], false);
+        return type_proxy<TC,TR>(this->get()[this->ld() * j + i], false);
     }
 
-    virtual TC _ij_val(tint i, tint j) const {                                     // always zero based
+    virtual TC _ij_val(tint i, tint j) const {  // always zero based
         CVM_ASSERT(this->get(), (this->ld() * j + 1) * sizeof(TC))
         return this->get()[this->ld() * j + i];
     }
@@ -10606,7 +10567,7 @@ public:
         tint n = 1;
         static const TR zero(0.);
         for (tint i = 1; i < mm; ++i) {
-            __scal<TR,TC>(pd + n, mm - i, 1, zero);   // column by column
+            __scal<TR,TC>(pd + n, mm - i, 1, zero);  // column by column
             n += mld + 1;
         }
     }
@@ -10622,12 +10583,12 @@ public:
 template<typename TR>
 class basic_rmatrix : public Matrix<TR,TR>
 {
-    using TC = std::complex<TR>;           //!< complex number type
-    using BaseArray = basic_array<TR,TR>; //!< Base basic_array class
-    using BaseMatrix = Matrix<TR,TR>;     //!< Base Matrix class
-    using RVector = basic_rvector<TR>;     //!< \ref rvector class
+    using TC = std::complex<TR>;  //!< complex number type
+    using BaseArray = basic_array<TR,TR>;  //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TR>;  //!< Base Matrix class
+    using RVector = basic_rvector<TR>;  //!< \ref rvector class
 
-    friend class basic_rvector<TR>; // _multiply
+    friend class basic_rvector<TR>;  // _multiply
 
 public:
 /**
@@ -10891,7 +10852,7 @@ prints
 Operator provides access to a particular element of a calling matrix by its row and column index.
 Indexes passed are \ref CVM0 based.
 It returns \e l-value in order to make possible write access to an element.
-Operator throws \ref cvmexception if \c nRow or \c nCol is outside of boundaries.
+Operator throws \ref cvmexception if \c nRow or \c nCol is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -10934,7 +10895,7 @@ prints
 
 Operator returns value of a particular element of a calling matrix by its row and column index.
 Indexes passed are \ref CVM0 based.
-Operator throws \ref cvmexception if \c nRow or \c nCol is outside of boundaries.
+Operator throws \ref cvmexception if \c nRow or \c nCol is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -10970,7 +10931,7 @@ prints
 
 Operator provides access to \c nCol-th column (\ref CVM0 based) of a calling matrix by returning \ref rvector <b>sharing memory</b>
 with it.
-Operator throws \ref cvmexception if \c nCol is outside of boundaries.
+Operator throws \ref cvmexception if \c nCol is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -11010,7 +10971,7 @@ prints
 
 Operator provides access to \c nRow-th row (\ref CVM0 based) of a calling matrix by returning \ref rvector <b>sharing memory</b>
 with it.
-Operator throws \ref cvmexception if \c nRow is outside of boundaries.
+Operator throws \ref cvmexception if \c nRow is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -11050,7 +11011,7 @@ prints
 @brief Column as \em not l-value
 
 Operator creates \ref rvector object as a copy of \c nCol-th column (\ref CVM0 based) of a calling matrix.
-Operator throws \ref cvmexception if \c nCol is outside of boundaries.
+Operator throws \ref cvmexception if \c nCol is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -11081,7 +11042,7 @@ prints
 @brief Row as \em not l-value
 
 Operator creates \ref rvector object as a copy of \c nRow-th row (\ref CVM0 based) of a calling matrix.
-Operator throws \ref cvmexception if \c nRow is outside of boundaries.
+Operator throws \ref cvmexception if \c nRow is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -11116,7 +11077,7 @@ to \c nDiag-th diagonal of a calling matrix
 (here \c nDiag=0 for main diagonal, \c nDiag<0 for lower diagonals
 and \c nDiag>0 for upper ones) by returning \ref rvector <b>sharing memory</b>
 with it.
-Operator throws \ref cvmexception if \c nDiag is outside of boundaries.
+Operator throws \ref cvmexception if \c nDiag is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -11151,7 +11112,7 @@ prints
 Operator creates \ref rvector object as a copy of \c nDiag-th diagonal of a calling matrix
 where \c nDiag=0 for main diagonal, \c nDiag<0 for lower diagonals
 and \c nDiag>0 for upper ones.
-Operator throws \ref cvmexception if \c nDiag is outside of boundaries.
+Operator throws \ref cvmexception if \c nDiag is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -12013,7 +11974,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_rmatrix operator ~() const throw(cvmexception) {
+    basic_rmatrix operator ~ () const throw(cvmexception) {
         basic_rmatrix mRes(this->nsize(), this->msize());
         mRes._transp_m(*this);
         return mRes;
@@ -12279,7 +12240,7 @@ prints
 
 Swaps two rows of a calling matrix and returns a reference to
 the matrix changed. \c n1 and \c n2 are indexes of rows to be swapped, both are \ref CVM0 based.
-Function throws \ref cvmexception if one of the parameters is outside of boundaries.
+Function throws \ref cvmexception if one of the parameters is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -12317,7 +12278,7 @@ prints
 
 Swaps two columnss of a calling matrix and returns a reference to
 the matrix changed. \c n1 and \c n2 are indexes of columns to be swapped, both are \ref CVM0 based.
-Function throws \ref cvmexception if one of the parameters is outside of boundaries.
+Function throws \ref cvmexception if one of the parameters is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -13014,7 +12975,7 @@ prints
                        basic_rvector<TR>& vErr) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), vErr.size());
         _check_ne(CVM_SIZESMISMATCH, mB.msize(), transpose ? this->nsize() : this->msize());
-        basic_rmatrix mA(*this); // this algorithm overrides A
+        basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mX;
         __gels(transpose, mA, mB, mX, vErr);
         return mX;
@@ -13092,7 +13053,7 @@ prints
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), vErr.size());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), transpose ? mA.msize() : mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, mB.msize(), transpose ? mA.nsize() : mA.msize());
-        basic_rmatrix mA2(mA); // this algorithm overrides A
+        basic_rmatrix mA2(mA);  // this algorithm overrides A
         __gels(transpose, mA2, mB, *this, vErr);
         return *this;
     }
@@ -13161,7 +13122,7 @@ prints
     basic_rvector<TR> gels(bool transpose, const basic_rvector<TR>& vB,
                            TR& dErr) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, vB.size(), transpose ? this->nsize() : this->msize());
-        basic_rmatrix mA(*this); // this algorithm overrides A
+        basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mB(vB, vB.size(), 1);
         basic_rmatrix mX;
         basic_rvector<TR> vErr(1);
@@ -13226,7 +13187,7 @@ prints
     basic_rmatrix gelsy(const basic_rmatrix& mB, tint& rank,
                         TR tol = basic_cvmMachSp<TR>()) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
-        basic_rmatrix mA(*this); // this algorithm overrides A
+        basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mX;
         __gelsy(mA, mB, mX, tol, rank);
         return mX;
@@ -13291,7 +13252,7 @@ prints
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
-        basic_rmatrix mA2(mA); // this algorithm overrides A
+        basic_rmatrix mA2(mA);  // this algorithm overrides A
         __gelsy(mA2, mB, *this, tol, rank);
         return *this;
     }
@@ -13351,7 +13312,7 @@ prints
     basic_rvector<TR> gelsy(const basic_rvector<TR>& vB, tint& rank,
                             TR tol = basic_cvmMachSp<TR>()) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
-        basic_rmatrix mA(*this); // this algorithm overrides A
+        basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mB(vB, vB.size(), 1);
         basic_rmatrix mX;
         __gelsy(mA, mB, mX, tol, rank);
@@ -14485,7 +14446,7 @@ prints
     // where: op(x) is one of op(x) = x or op(x) = x' or op(x) = conjg(x'),
     void _gemm(bool bTrans1, const basic_rmatrix& m1,
                bool bTrans2, const basic_rmatrix& m2,
-               TR dAlpha, TR dBeta) throw(cvmexception) {     // this = m1 * m2
+               TR dAlpha, TR dBeta) throw(cvmexception) {  // this = m1 * m2
         basic_rmatrix mTmp1, mTmp2;
         const TR* pD1 = m1.get();
         const TR* pD2 = m2.get();
@@ -14725,9 +14686,9 @@ private:
                            tint& rank, TR tol) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, sv.size(), _cvm_min<tint>(this->msize(), this->nsize()));
-        basic_rmatrix mA(*this); // this algorithm overrides A
+        basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mX;
-        basic_rvector<TR> sv1(sv.size()); // to ensure that incr=1
+        basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
             __gelss(mA, mB, mX, tol, sv1, rank);
         } else {
@@ -14744,8 +14705,8 @@ private:
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, sv.size(), _cvm_min<tint>(mA.msize(), mA.nsize()));
-        basic_rmatrix mA2(mA); // this algorithm overrides A
-        basic_rvector<TR> sv1(sv.size()); // to ensure that incr=1
+        basic_rmatrix mA2(mA);  // this algorithm overrides A
+        basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
             __gelss(mA2, mB, *this, tol, sv1, rank);
         } else {
@@ -14758,10 +14719,10 @@ private:
                                tint& rank, TR tol) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
         _check_ne(CVM_SIZESMISMATCH, _cvm_min<tint>(this->msize(), this->nsize()), sv.size());
-        basic_rmatrix mA(*this); // this algorithm overrides A
+        basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mB(vB, vB.size(), 1);
         basic_rmatrix mX;
-        basic_rvector<TR> sv1(sv.size()); // to ensure that incr=1
+        basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
             __gelss(mA, mB, mX, tol, sv1, rank);
         } else {
@@ -14784,13 +14745,13 @@ private:
 template<typename TR>
 class basic_srmatrix : public basic_rmatrix<TR>, public SqMatrix<TR,TR>
 {
-    using TC = std::complex<TR>;           //!< complex number type
-    using RVector = basic_rvector<TR>;     //!< \ref rvector
+    using TC = std::complex<TR>;  //!< complex number type
+    using RVector = basic_rvector<TR>;  //!< \ref rvector
     using CVector = basic_cvector<TR,TC>;  //!< \ref cvector
     using BaseArray = basic_array<TR,TR>;  //!< Base basic_array class
-    using BaseMatrix = Matrix<TR,TR>;      //!< Base Matrix class
+    using BaseMatrix = Matrix<TR,TR>;  //!< Base Matrix class
     using BaseSqMatrix = SqMatrix<TR,TR>;  //!< Base SqMatrix class
-    using BaseRMatrix = basic_rmatrix<TR>; //!< \ref rmatrix class
+    using BaseRMatrix = basic_rmatrix<TR>;  //!< \ref rmatrix class
 
 public:
 /**
@@ -15809,7 +15770,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_srmatrix operator ~() const throw(cvmexception) {
+    basic_srmatrix operator ~ () const throw(cvmexception) {
         basic_srmatrix mRes(*this);
         return mRes.transpose();
     }
@@ -17170,7 +17131,7 @@ prints
 */
     TR cond() const throw(cvmexception) {
         TR dCondNum(0.);
-        __cond_num<TR,basic_srmatrix>(*this, dCondNum); // universal method, no need to virtualize
+        __cond_num<TR,basic_srmatrix>(*this, dCondNum);  // universal method, no need to virtualize
         return dCondNum;
     }
 
@@ -17216,7 +17177,7 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srmatrix& inv(const basic_srmatrix& m) throw(cvmexception) {
-        __inv<basic_srmatrix>(*this, m); // overridden in srsmatrix, no need to virtualize
+        __inv<basic_srmatrix>(*this, m);  // overridden in srsmatrix, no need to virtualize
         return *this;
     }
 
@@ -17262,7 +17223,7 @@ prints
 */
     basic_srmatrix inv() const throw(cvmexception) {
         basic_srmatrix mRes(this->msize());
-        __inv<basic_srmatrix>(mRes, *this); // overridden in srsmatrix, no need to virtualize
+        __inv<basic_srmatrix>(mRes, *this);  // overridden in srsmatrix, no need to virtualize
         return mRes;
     }
 
@@ -17466,7 +17427,7 @@ Matlab output:
                             const RVector& v) throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         RVector v1;
-        if (v.incr() > 1) v1 << v;   // to make sure incr = 1
+        if (v.incr() > 1) v1 << v;  // to make sure incr = 1
         __polynom<TR,RVector>(this->get(), this->ld(), this->msize(),
                               m._pd(), m._ldm(), v.incr() > 1 ? v1 : v);
         return *this;
@@ -17538,7 +17499,7 @@ Matlab output:
     basic_srmatrix polynom(const RVector& v) const {
         basic_srmatrix mRes(this->msize());
         RVector v1;
-        if (v.incr() > 1) v1 << v;   // to make sure incr = 1
+        if (v.incr() > 1) v1 << v;  // to make sure incr = 1
         __polynom<TR,RVector>(mRes.get(), mRes.ld(), this->msize(),
                               this->get(), this->ld(), v.incr() > 1 ? v1 : v);
         return mRes;
@@ -17958,7 +17919,7 @@ prints
         vX = vB;
         RVector vB1;
         RVector vX1;
-        if (vB.incr() > 1) vB1 << vB;   // to make sure incr = 1
+        if (vB.incr() > 1) vB1 << vB;  // to make sure incr = 1
         if (vX.incr() > 1) vX1 << vX;
         __solve<TR,TR, basic_srmatrix>(*this, 1, vB.incr() > 1 ? vB1 : vB, vB.size(),
                                        vX.incr() > 1 ? vX1 : vX, vX.size(),
@@ -18018,7 +17979,7 @@ protected:
     // returns diagonal which IS l-value (shares memory)
     // 0 - main, negative - low, positive - up
     RVector _diag(tint nDiag) throw(cvmexception) override {
-        const tint nD = _abs(nDiag);
+        const tint nD = std::abs(nDiag);
         _check_ge(CVM_INDEX_GE, nD, this->msize());
         return RVector(this->get() + (nDiag > 0 ? nDiag * this->ld() : nD),
                        this->msize() - nD, this->ld() + 1);
@@ -18027,7 +17988,7 @@ protected:
     // returns diagonal which is NOT l-value (creates a copy)
     // 0 - main, negative - low, positive - up
     const RVector _diag(tint nDiag) const throw(cvmexception) override {
-        const tint nD = _abs(nDiag);
+        const tint nD = std::abs(nDiag);
         _check_ge(CVM_INDEX_GE, nD, this->msize());
         return RVector(this->get() + (nDiag > 0 ? nDiag * this->ld() : nD),
                        this->msize() - nD, this->ld() + 1);
@@ -18150,12 +18111,12 @@ private:
 template<typename TR, typename TC>
 class basic_cmatrix : public Matrix<TR,TC>
 {
-    using RVector = basic_rvector<TR>;       //!< \ref rvector class
-    using CVector = basic_cvector<TR,TC>;   //!< \ref cvector class
-    using BaseArray = basic_array<TR,TC>;   //!< Base basic_array class
-    using BaseMatrix = Matrix<TR,TC>;       //!< Base Matrix class
+    using RVector = basic_rvector<TR>;  //!< \ref rvector class
+    using CVector = basic_cvector<TR,TC>;  //!< \ref cvector class
+    using BaseArray = basic_array<TR,TC>;  //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TC>;  //!< Base Matrix class
 
-    friend class basic_cvector<TR,TC>;      // for _multiply
+    friend class basic_cvector<TR,TC>;  // for _multiply
 
 public:
 /**
@@ -18529,7 +18490,7 @@ prints
 Operator provides access to a particular element of a calling matrix by its row and column index.
 Indexes passed are \ref CVM0 based.
 It returns \e l-value in order to make possible write access to an element.
-Operator throws \ref cvmexception if \c nRow or \c nCol is outside of boundaries.
+Operator throws \ref cvmexception if \c nRow or \c nCol is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -18559,7 +18520,7 @@ prints
 @param[in] nCol Column index (\ref CVM0 based).
 @return \ref type_proxy Proxy to element (l-value).
 */
-    type_proxy<TC, TR> operator () (tint nRow, tint nCol) throw(cvmexception) {
+    type_proxy<TC,TR> operator () (tint nRow, tint nCol) throw(cvmexception) {
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, CVM0, this->msize() + CVM0);
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, CVM0, this->nsize() + CVM0);
         return this->_ij_proxy_val(nRow - CVM0, nCol - CVM0);
@@ -18570,7 +18531,7 @@ prints
 
 Operator returns value of a particular element of a calling matrix by its row and column index.
 Indexes passed are \ref CVM0 based.
-Operator throws \ref cvmexception if \c nRow or \c nCol is outside of boundaries.
+Operator throws \ref cvmexception if \c nRow or \c nCol is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -18604,7 +18565,7 @@ prints
 
 Operator provides access to \c nCol-th column (\ref CVM0 based) of a calling matrix by returning
 \ref cvector <b>sharing memory</b> with it.
-Operator throws \ref cvmexception if \c nCol is outside of boundaries.
+Operator throws \ref cvmexception if \c nCol is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -18643,7 +18604,7 @@ prints
 
 Operator provides access to \c nRow-th row (\ref CVM0 based) of a calling matrix by returning
 \ref cvector <b>sharing memory</b> with it.
-Operator throws \ref cvmexception if \c nRow is outside of boundaries.
+Operator throws \ref cvmexception if \c nRow is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -18681,7 +18642,7 @@ prints
 @brief Column as \em not l-value
 
 Operator creates \ref cvector object as a copy of \c nCol-th column (\ref CVM0 based) of a calling matrix.
-Operator throws \ref cvmexception if \c nCol is outside of boundaries.
+Operator throws \ref cvmexception if \c nCol is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -18711,7 +18672,7 @@ prints
 @brief Row as \em not l-value
 
 Operator creates \ref cvector object as a copy of \c nRow-th row (\ref CVM0 based) of a calling matrix.
-Operator throws \ref cvmexception if \c nRow is outside of boundaries.
+Operator throws \ref cvmexception if \c nRow is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -18746,7 +18707,7 @@ to \c nDiag-th diagonal of a calling matrix
 (here \c nDiag=0 for main diagonal, \c nDiag<0 for lower diagonals
 and \c nDiag>0 for upper ones) by returning \ref cvector <b>sharing memory</b>
 with it.
-Operator throws \ref cvmexception if \c nDiag is outside of boundaries.
+Operator throws \ref cvmexception if \c nDiag is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -18792,7 +18753,7 @@ prints
 Operator creates \ref cvector object as a copy of \c nDiag-th diagonal of a calling matrix
 where \c nDiag=0 for main diagonal, \c nDiag<0 for lower diagonals
 and \c nDiag>0 for upper ones.
-Operator throws \ref cvmexception if \c nDiag is outside of boundaries.
+Operator throws \ref cvmexception if \c nDiag is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -19941,7 +19902,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_cmatrix operator !() const throw(cvmexception) {
+    basic_cmatrix operator ! () const throw(cvmexception) {
         basic_cmatrix mRes(this->nsize(), this->msize());
         mRes._transp_m(*this);
         return mRes;
@@ -19982,7 +19943,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_cmatrix operator ~() const throw(cvmexception) {
+    basic_cmatrix operator ~ () const throw(cvmexception) {
         basic_cmatrix mRes(this->nsize(), this->msize());
         mRes._transp_m(*this);
         __conj<TC>(mRes.get(), mRes.size(), mRes.incr());
@@ -20375,7 +20336,7 @@ prints
 
 Swaps two rows of a calling matrix and returns a reference to
 the matrix changed. \c n1 and \c n2 are indexes of rows to be swapped, both are \ref CVM0 based.
-Function throws \ref cvmexception if one of the parameters is outside of boundaries.
+Function throws \ref cvmexception if one of the parameters is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -20409,7 +20370,7 @@ prints
 
 Swaps two columnss of a calling matrix and returns a reference to
 the matrix changed. \c n1 and \c n2 are indexes of columns to be swapped, both are \ref CVM0 based.
-Function throws \ref cvmexception if one of the parameters is outside of boundaries.
+Function throws \ref cvmexception if one of the parameters is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -21219,7 +21180,7 @@ prints
                        basic_cvector<TR,TC>& vErr) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, vErr.size(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, conjugate ? this->nsize() : this->msize(), mB.msize());
-        basic_cmatrix mA(*this); // this algorithm overrides A
+        basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mX;
         __gels(conjugate, mA, mB, mX, vErr);
         return mX;
@@ -21300,7 +21261,7 @@ prints
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), vErr.size());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), conjugate ? mA.msize() : mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, mB.msize(), conjugate ? mA.nsize() : mA.msize());
-        basic_cmatrix mA2(mA); // this algorithm overrides A
+        basic_cmatrix mA2(mA);  // this algorithm overrides A
         __gels(conjugate, mA2, mB, *this, vErr);
         return *this;
     }
@@ -21374,7 +21335,7 @@ prints
                               const basic_cvector<TR,TC>& vB,
                               TC& dErr) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, conjugate ? this->nsize() : this->msize(), vB.size());
-        basic_cmatrix mA(*this); // this algorithm overrides A
+        basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mB(vB, vB.size(), 1);
         basic_cmatrix mX;
         basic_cvector<TR,TC> vErr(1);
@@ -21442,7 +21403,7 @@ prints
     basic_cmatrix gelsy(const basic_cmatrix& mB, tint& rank,
                         TR tol = basic_cvmMachSp<TR>()) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
-        basic_cmatrix mA(*this); // this algorithm overrides A
+        basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mX;
         __gelsy(mA, mB, mX, tol, rank);
         return mX;
@@ -21510,7 +21471,7 @@ prints
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
-        basic_cmatrix mA2(mA); // this algorithm overrides A
+        basic_cmatrix mA2(mA);  // this algorithm overrides A
         __gelsy(mA2, mB, *this, tol, rank);
         return *this;
     }
@@ -21573,7 +21534,7 @@ prints
     basic_cvector<TR,TC> gelsy(const basic_cvector<TR,TC>& vB, tint& rank,
                                TR tol = basic_cvmMachSp<TR>()) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
-        basic_cmatrix mA(*this); // this algorithm overrides A
+        basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mB(vB, vB.size(), 1);
         basic_cmatrix mX;
         __gelsy(mA, mB, mX, tol, rank);
@@ -22804,7 +22765,7 @@ prints
 
 //! @cond INTERNAL
     void _div(TC d) throw(cvmexception) {
-        if (_abs(d) <= basic_cvmMachMin<TR>()) {
+        if (std::abs(d) <= basic_cvmMachMin<TR>()) {
             throw cvmexception(CVM_DIVISIONBYZERO);
         }
         static const TC one(1., 0.);
@@ -22862,9 +22823,9 @@ prints
 
     virtual void _scalc(TC d) {
         if (this->_continuous()) {
-            __scal<TC, TC>(this->get(), this->size(), this->incr(), d);
+            __scal<TC,TC>(this->get(), this->size(), this->incr(), d);
         } else for (tint i = 0; i < this->nsize(); ++i) {
-            __scal<TC, TC>(this->get() + this->ld() * i, this->msize(), this->incr(), d);
+            __scal<TC,TC>(this->get() + this->ld() * i, this->msize(), this->incr(), d);
         }
     }
 
@@ -22977,17 +22938,17 @@ protected:
 
     virtual void _randomize_real(TR dFrom, TR dTo) {
         if (this->_continuous()) {
-            __randomize_real<TC, TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
+            __randomize_real<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
         } else for (tint i = 0; i < this->nsize(); ++i) {
-            __randomize_real<TC, TR>(this->get() + this->ld() * i, this->msize(), this->incr(), dFrom, dTo);
+            __randomize_real<TC,TR>(this->get() + this->ld() * i, this->msize(), this->incr(), dFrom, dTo);
         }
     }
 
     virtual void _randomize_imag(TR dFrom, TR dTo) {
         if (this->_continuous()) {
-            __randomize_imag<TC, TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
+            __randomize_imag<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
         } else for (tint i = 0; i < this->nsize(); ++i) {
-            __randomize_imag<TC, TR>(this->get() + this->ld() * i, this->msize(), this->incr(), dFrom, dTo);
+            __randomize_imag<TC,TR>(this->get() + this->ld() * i, this->msize(), this->incr(), dFrom, dTo);
         }
     }
 
@@ -23086,9 +23047,9 @@ private:
                            tint& rank, TR tol) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, _cvm_min<tint>(this->msize(), this->nsize()), sv.size());
-        basic_cmatrix mA(*this); // this algorithm overrides A
+        basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mX;
-        basic_rvector<TR> sv1(sv.size()); // to ensure that incr=1
+        basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
             __gelss(mA, mB, mX, tol, sv1, rank);
         } else {
@@ -23105,8 +23066,8 @@ private:
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, _cvm_min<tint>(mA.msize(), mA.nsize()), sv.size());
-        basic_cmatrix mA2(mA); // this algorithm overrides A
-        basic_rvector<TR> sv1(sv.size()); // to ensure that incr=1
+        basic_cmatrix mA2(mA);  // this algorithm overrides A
+        basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
             __gelss(mA2, mB, *this, tol, sv1, rank);
         } else {
@@ -23120,10 +23081,10 @@ private:
                                   tint& rank, TR tol) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
         _check_ne(CVM_SIZESMISMATCH, _cvm_min<tint>(this->msize(), this->nsize()), sv.size());
-        basic_cmatrix mA(*this); // this algorithm overrides A
+        basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mB(vB, vB.size(), 1);
         basic_cmatrix mX;
-        basic_rvector<TR> sv1(sv.size()); // to ensure that incr=1
+        basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
             __gelss(mA, mB, mX, tol, sv1, rank);
         } else {
@@ -23146,11 +23107,11 @@ private:
 template<typename TR, typename TC>
 class basic_scmatrix : public basic_cmatrix<TR,TC>, public SqMatrix<TR,TC>
 {
-    using CVector = basic_cvector<TR,TC>;       //!< \ref cvector
-    using BaseArray = basic_array<TR,TC>;       //!< Base basic_array class
-    using BaseMatrix = Matrix<TR,TC>;           //!< Base Matrix class
-    using BaseSqMatrix = SqMatrix<TR,TC>;       //!< Base SqMatrix class
-    using BaseCMatrix = basic_cmatrix<TR,TC>;   //!< \ref cmatrix
+    using CVector = basic_cvector<TR,TC>;  //!< \ref cvector
+    using BaseArray = basic_array<TR,TC>;  //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TC>;  //!< Base Matrix class
+    using BaseSqMatrix = SqMatrix<TR,TC>;  //!< Base SqMatrix class
+    using BaseCMatrix = basic_cmatrix<TR,TC>;  //!< \ref cmatrix
 
 public:
 /**
@@ -24521,7 +24482,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_scmatrix operator !() const throw(cvmexception) {
+    basic_scmatrix operator ! () const throw(cvmexception) {
         basic_scmatrix mRes(*this);
         return mRes.transpose();
     }
@@ -24563,7 +24524,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_scmatrix operator ~() const throw(cvmexception) {
+    basic_scmatrix operator ~ () const throw(cvmexception) {
         basic_scmatrix mRes(*this);
         return mRes.conj();
     }
@@ -26335,7 +26296,7 @@ prints
 */
     TR cond() const throw(cvmexception) {
         TR dCondNum(0.);
-        __cond_num<TR,basic_scmatrix>(*this, dCondNum); // universal method, no need to virtualize
+        __cond_num<TR,basic_scmatrix>(*this, dCondNum);  // universal method, no need to virtualize
         return dCondNum;
     }
 
@@ -26668,7 +26629,7 @@ Matlab output:
                             const CVector& v) throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         CVector v1;
-        if (v.incr() > 1) v1 << v;   // to make sure incr = 1
+        if (v.incr() > 1) v1 << v;  // to make sure incr = 1
         __polynom<TC, CVector>(this->get(), this->ld(), this->msize(), m._pd(), m._ldm(), v.incr() > 1 ? v1 : v);
         return *this;
     }
@@ -26754,7 +26715,7 @@ Matlab output:
     basic_scmatrix polynom(const CVector& v) const {
         basic_scmatrix mRes(this->msize());
         CVector v1;
-        if (v.incr() > 1) v1 << v;   // to make sure incr = 1
+        if (v.incr() > 1) v1 << v;  // to make sure incr = 1
         __polynom<TC, CVector>(mRes.get(), mRes.ld(), this->msize(), this->get(), this->ld(), v.incr() > 1 ? v1 : v);
         return mRes;
     }
@@ -27172,7 +27133,7 @@ prints
         vX = vB;
         CVector vB1;
         CVector vX1;
-        if (vB.incr() > 1) vB1 << vB;   // to make sure incr = 1
+        if (vB.incr() > 1) vB1 << vB;  // to make sure incr = 1
         if (vX.incr() > 1) vX1 << vX;
         __solve<TR,TC, basic_scmatrix>(*this, 1, vB.incr() > 1 ? vB1 : vB, vB.size(), vX.incr() > 1 ? vX1 : vX, vX.size(),
                                         dErr, pLU, pPivots, transp_mode);
@@ -27233,7 +27194,7 @@ protected:
     // returns diagonal which IS l-value (shares memory)
     // 0 - main, negative - low, positive - up
     CVector _diag(tint nDiag) throw(cvmexception) override {
-        const tint nD = _abs(nDiag);
+        const tint nD = std::abs(nDiag);
         _check_ge(CVM_INDEX_GE, nD, this->msize());
         return CVector(this->get() + (nDiag > 0 ? nDiag * this->ld() : nD), this->msize() - nD, this->ld() + 1);
     }
@@ -27241,7 +27202,7 @@ protected:
     // returns diagonal which IS NOT l-value (creates a copy)
     // 0 - main, negative - low, positive - up
     const CVector _diag(tint nDiag) const throw(cvmexception) override {
-        const tint nD = _abs(nDiag);
+        const tint nD = std::abs(nDiag);
         _check_ge(CVM_INDEX_GE, nD, this->msize());
         return CVector(this->get() + (nDiag > 0 ? nDiag * this->ld() : nD), this->msize() - nD, this->ld() + 1);
     }
@@ -27385,8 +27346,8 @@ template<typename TR, typename TC>
 class BandMatrix
 {
 protected:
-    tint mkl; //!< Number of sub-diagonals
-    tint mku; //!< Number of super-diagonals
+    tint mkl;  //!< Number of sub-diagonals
+    tint mku;  //!< Number of super-diagonals
 
     //! internal protected constructor
     BandMatrix()
@@ -27521,7 +27482,7 @@ protected:
 
             nLen += nShift;
             for (i = nShift + 1; i <= nLen; ++i) {
-                rSum += _abs(rv[i - (1 - CVM0)]);
+                rSum += std::abs(rv[i - (1 - CVM0)]);
             }
 
             if (rSum > rNorm) {
@@ -27547,7 +27508,7 @@ protected:
 
             nLen += nShift;
             for (j = nShift + 1; j <= nLen; ++j) {
-                rSum += _abs(rv[j - (1 - CVM0)]);
+                rSum += std::abs(rv[j - (1 - CVM0)]);
             }
 
             if (rSum > rNorm) {
@@ -27562,13 +27523,13 @@ protected:
     }
 
     // zero based
-    type_proxy<TC, TR> _b_ij_proxy_val(tint i, tint j) {
+    type_proxy<TC,TR> _b_ij_proxy_val(tint i, tint j) {
         static const TC zero = TC(0.);
         TC* pd = _pb();
         const tint nA = j - this->usize();
         CVM_ASSERT(pd, (i + j * (1 + this->lsize() + this->usize()) - nA + 1) * sizeof(TC))
-        return(nA < 0 || i >= nA) && i <= this->lsize() + j ? type_proxy<TC, TR>(pd[i + j * (1 + this->lsize() + this->usize()) - nA], false) :
-                                                              type_proxy<TC, TR>(zero, true);
+        return(nA < 0 || i >= nA) && i <= this->lsize() + j ? type_proxy<TC,TR>(pd[i + j * (1 + this->lsize() + this->usize()) - nA], false) :
+                                                              type_proxy<TC,TR>(zero, true);
     }
 
     // zero based
@@ -27870,19 +27831,19 @@ CVM library implements square band matrices only, therefore \f$m=n\f$ is satisfi
 template<typename TR>
 class basic_srbmatrix : public basic_srmatrix<TR>, public BandMatrix<TR,TR>
 {
-    using TC = std::complex<TR>;                //!< complex number type
-    using RVector = basic_rvector<TR>;          //!< \ref rvector
-    using CVector = basic_cvector<TR,TC>;      //!< \ref cvector
-    using BaseArray = basic_array<TR,TR>;      //!< Base basic_array class
-    using BaseMatrix = Matrix<TR,TR>;          //!< Base Matrix class
-    using BaseRMatrix = basic_rmatrix<TR>;      //!< Base \ref rmatrix class
-    using BaseSRMatrix = basic_srmatrix<TR>;    //!< Base \ref srmatrix class
+    using TC = std::complex<TR>;  //!< complex number type
+    using RVector = basic_rvector<TR>;  //!< \ref rvector
+    using CVector = basic_cvector<TR,TC>;  //!< \ref cvector
+    using BaseArray = basic_array<TR,TR>;  //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TR>;  //!< Base Matrix class
+    using BaseRMatrix = basic_rmatrix<TR>;  //!< Base \ref rmatrix class
+    using BaseSRMatrix = basic_srmatrix<TR>;  //!< Base \ref srmatrix class
     using BaseBandMatrix = BandMatrix<TR,TR>;  //!< Base BandMatrix class
 
     friend class basic_scbmatrix<TR,TC>;  // basic_scbmatrix constructor
 
 protected:
-    mutable BaseSRMatrix mSM;   //!< Temporary storage for square matrix enclosing band one (if needed)
+    mutable BaseSRMatrix mSM;  //!< Temporary storage for square matrix enclosing band one (if needed)
 
 public:
 /**
@@ -28438,7 +28399,7 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srbmatrix& operator << (const basic_srbmatrix& m) throw(cvmexception) {
-        this->_check_ld(); // submatrix replacement is obviously not possible
+        this->_check_ld();  // submatrix replacement is obviously not possible
 #ifdef CVM_USE_POOL_MANAGER
         this->_b_replace(m);
 #else
@@ -28935,7 +28896,7 @@ prints
     }
 
     // transposed Matrix
-    basic_srbmatrix operator ~() const throw(cvmexception) {
+    basic_srbmatrix operator ~ () const throw(cvmexception) {
         basic_srbmatrix mRes(*this);
         return mRes.transpose();
     }
@@ -29223,7 +29184,7 @@ prints
             dNorm += d * d;
         }
 
-        return _sqrt(dNorm);
+        return std::sqrt(dNorm);
     }
 
     TR norm1() const override {
@@ -29288,7 +29249,7 @@ prints
         vX = vB;
         RVector vB1;
         RVector vX1;
-        if (vB.incr() > 1) vB1 << vB; // to make sure incr = 1
+        if (vB.incr() > 1) vB1 << vB;  // to make sure incr = 1
         if (vX.incr() > 1) vX1 << vX;
         __solve<TR,TR, basic_srbmatrix>(*this, 1, vB.incr() > 1 ? vB1 : vB, vB.size(),
                                         vX.incr() > 1 ? vX1 : vX, vX.size(),
@@ -29423,7 +29384,7 @@ protected:
     }
 
     RVector _diag(tint nDiag) throw(cvmexception) override {
-        const tint nD = _abs(nDiag);
+        const tint nD = std::abs(nDiag);
         if (nDiag < 0) {
             _check_gt(CVM_INDEX_GT, nD, this->lsize());
         }
@@ -29435,7 +29396,7 @@ protected:
     }
 
     const RVector _diag(tint nDiag) const throw(cvmexception) override {
-        const tint nD = _abs(nDiag);
+        const tint nD = std::abs(nDiag);
         if (nDiag < 0) {
             _check_gt(CVM_INDEX_GT, nD, this->lsize());
         }
@@ -29525,7 +29486,7 @@ protected:
     }
 
     void _scalr(TR d) override {
-        __scal<TR,TR>(this->get(), this->size(), this->incr(), d); // zero tails are supposed here
+        __scal<TR,TR>(this->get(), this->size(), this->incr(), d);  // zero tails are supposed here
     }
 
     void _mult(const BaseRMatrix& m1,
@@ -29599,15 +29560,15 @@ CVM library implements square band matrices only, therefore \f$m=n\f$ is satisfi
 template<typename TR, typename TC>
 class basic_scbmatrix : public basic_scmatrix<TR,TC>, public BandMatrix<TR,TC>
 {
-    using CVector = basic_cvector<TR,TC>;       //!< \ref cvector
-    using BaseArray = basic_array<TR,TC>;       //!< Base basic_array class
-    using BaseMatrix = Matrix<TR,TC>;           //!< Base Matrix class
-    using BaseCMatrix = basic_cmatrix<TR,TC>;   //!< Base \ref cmatrix class
-    using BaseSCMatrix = basic_scmatrix<TR,TC>; //!< Base \ref scmatrix class
-    using BaseBandMatrix = BandMatrix<TR,TC>;   //!< Base BandMatrix class
+    using CVector = basic_cvector<TR,TC>;  //!< \ref cvector
+    using BaseArray = basic_array<TR,TC>;  //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TC>;  //!< Base Matrix class
+    using BaseCMatrix = basic_cmatrix<TR,TC>;  //!< Base \ref cmatrix class
+    using BaseSCMatrix = basic_scmatrix<TR,TC>;  //!< Base \ref scmatrix class
+    using BaseBandMatrix = BandMatrix<TR,TC>;  //!< Base BandMatrix class
 
 protected:
-    mutable BaseSCMatrix mSM;   //!< Temporary storage for square matrix enclosing band one (if needed)
+    mutable BaseSCMatrix mSM;  //!< Temporary storage for square matrix enclosing band one (if needed)
 
 public:
 /**
@@ -30331,7 +30292,7 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scbmatrix& operator << (const basic_scbmatrix& m) throw(cvmexception) {
-        this->_check_ld(); // submatrix replacement is obviously not possible
+        this->_check_ld();  // submatrix replacement is obviously not possible
 #ifdef CVM_USE_POOL_MANAGER
         this->_b_replace(m);
 #else
@@ -30726,13 +30687,13 @@ prints
     }
 
     // 6.1: transposed (not conjugated) matrix
-    basic_scbmatrix operator !() const throw(cvmexception) {
+    basic_scbmatrix operator ! () const throw(cvmexception) {
         basic_scbmatrix mRes(*this);
         return mRes.transpose();
     }
 
     // hermitian conjugated matrix
-    basic_scbmatrix operator ~() const throw(cvmexception) {
+    basic_scbmatrix operator ~ () const throw(cvmexception) {
         basic_scbmatrix mRes(*this);
         return mRes.conj();
     }
@@ -31086,7 +31047,7 @@ prints
             d = const_cast<basic_scbmatrix*>(this)->diag(i).norm();
             dNorm += d * d;
         }
-        return _sqrt(dNorm);
+        return std::sqrt(dNorm);
     }
 
     TR norm1() const override {
@@ -31148,7 +31109,7 @@ prints
         vX = vB;
         CVector vB1;
         CVector vX1;
-        if (vB.incr() > 1) vB1 << vB; // to make sure incr = 1
+        if (vB.incr() > 1) vB1 << vB;  // to make sure incr = 1
         if (vX.incr() > 1) vX1 << vX;
         __solve<TR,TC,
             basic_scbmatrix>(*this, 1,
@@ -31242,7 +31203,7 @@ protected:
         this->mld = nLD;
     }
 
-    const TC* _pp(const BaseMatrix& m) const override { // for _msum _mdiff etc.
+    const TC* _pp(const BaseMatrix& m) const override {  // for _msum _mdiff etc.
         return m.get();
     }
 
@@ -31285,7 +31246,7 @@ protected:
     }
 
     CVector _diag(tint nDiag) throw(cvmexception) override {
-        const tint nD = _abs(nDiag);
+        const tint nD = std::abs(nDiag);
         if (nDiag < 0) {
             _check_gt(CVM_INDEX_GT, nD, this->lsize());
         }
@@ -31297,7 +31258,7 @@ protected:
     }
 
     const CVector _diag(tint nDiag) const throw(cvmexception) override {
-        const tint nD = _abs(nDiag);
+        const tint nD = std::abs(nDiag);
         if (nDiag < 0) {
             _check_gt(CVM_INDEX_GT, nD, this->lsize());
         }
@@ -31333,7 +31294,7 @@ protected:
     }
 
     // zero based
-    type_proxy<TC, TR> _ij_proxy_val(tint i, tint j) override {
+    type_proxy<TC,TR> _ij_proxy_val(tint i, tint j) override {
         return this->_b_ij_proxy_val(i, j);
     }
 
@@ -31383,7 +31344,7 @@ protected:
 
     void _scalc(TC d) override {
         // zero tails are
-        __scal<TC, TC>(this->get(), this->size(), this->incr(), d);
+        __scal<TC,TC>(this->get(), this->size(), this->incr(), d);
     }
 
     void _mult(const BaseCMatrix& m1, const BaseCMatrix& m2) throw(cvmexception) override {
@@ -31441,12 +31402,12 @@ protected:
 template<typename TR>
 class basic_srsmatrix : public basic_srmatrix<TR>
 {
-    using RVector = basic_rvector<TR>;       //!< \ref rvector
-    using BaseArray = basic_array<TR,TR>;   //!< Base basic_array class
-    using BaseMatrix = Matrix<TR,TR>;       //!< Base Martrix class
-    using BaseSqMatrix = SqMatrix<TR,TR>;   //!< Base SqMatrix class
-    using BaseRMatrix = basic_rmatrix<TR>;   //!< \ref rmatrix class
-    using BaseSRMatrix = basic_srmatrix<TR>; //!< \ref crmatrix class
+    using RVector = basic_rvector<TR>;  //!< \ref rvector
+    using BaseArray = basic_array<TR,TR>;  //!< Base basic_array class
+    using BaseMatrix = Matrix<TR,TR>;  //!< Base Martrix class
+    using BaseSqMatrix = SqMatrix<TR,TR>;  //!< Base SqMatrix class
+    using BaseRMatrix = basic_rmatrix<TR>;  //!< \ref rmatrix class
+    using BaseSRMatrix = basic_srmatrix<TR>;  //!< \ref crmatrix class
 
 public:
 /**
@@ -31956,7 +31917,7 @@ where \f$i=0\f$ for main diagonal, \f$i<0\f$ for lower diagonals and \f$i>0\f$ f
 If \f$i\not=0\f$, then function assigns the vector to both \f$i\f$-th and \f$-i\f$-th diagonals
 (thus calling matrix remains symmetric).
 Function returns a reference to the matrix changed.
-Function throws \ref cvmexception if parameter \c nDiag is outside of boundaries or if
+Function throws \ref cvmexception if parameter \c nDiag is out of boundaries or if
 vector \c vDiag passed has size not equal to <c>msize()-abs(nDiag)</c>.
 \par Example:
 \code
@@ -32409,27 +32370,27 @@ prints
         return *this;
     }
 
-    /**
-       @brief Does nothing and returns a copy of a calling symmetric
-              matrix.
-     */
+/**
+  @brief Does nothing and returns a copy of a calling symmetric
+         matrix.
+ */
     basic_srsmatrix operator ~ () const {
         return *this;
     }
 
-    /** 
-      @brief Assigns symmetric matrix \c m to a calling one and returns 
-      a reference to the matrix changed.
-    */
+/**
+  @brief Assigns symmetric matrix \c m to a calling one and returns 
+  a reference to the matrix changed.
+*/
     basic_srsmatrix& transpose(const basic_srsmatrix& m) throw(cvmexception) {
         (*this) = m;
         return *this;
     }
 
-    /** 
-      @brief Does nothing and returns a reference to a calling
-      symmetric matrix.
-    */
+/** 
+  @brief Does nothing and returns a reference to a calling
+  symmetric matrix.
+*/
     basic_srsmatrix& transpose() {
         return *this;
     }
@@ -32552,7 +32513,7 @@ prints
 */
     basic_srsmatrix& syrk(TR alpha, const RVector& v, TR beta) throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v.size());
-        RVector vc(v);   // has to guarantee incr to be 1
+        RVector vc(v);  // has to guarantee incr to be 1
         __syrk<TR,basic_srsmatrix>(false, alpha, 1, vc, vc.size(), beta, *this);
         this->_flip();
         return *this;
@@ -32677,7 +32638,7 @@ prints
                            const RVector& v2, TR beta) throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v1.size());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v2.size());
-        RVector v1c(v1); // has to guarantee incr to be 1
+        RVector v1c(v1);  // has to guarantee incr to be 1
         RVector v2c(v2);
         __syr2k<TR,basic_srsmatrix>(false, alpha, 1, v1c, v1c.size(), v2c, v2c.size(), beta, *this);
         this->_flip();
@@ -33039,7 +33000,7 @@ Matlab output:
                              const RVector& v) throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         RVector v1;
-        if (v.incr() > 1) v1 << v;   // to make sure incr = 1
+        if (v.incr() > 1) v1 << v;  // to make sure incr = 1
         __polynom<TR,RVector>(this->get(), this->ld(), this->msize(),
                               m._pd(), m._ldm(), v.incr() > 1 ? v1 : v);
         return *this;
@@ -33112,7 +33073,7 @@ Matlab output:
     basic_srsmatrix polynom(const RVector& v) const {
         basic_srsmatrix msRes(this->msize());
         RVector v1;
-        if (v.incr() > 1) v1 << v;   // to make sure incr = 1
+        if (v.incr() > 1) v1 << v;  // to make sure incr = 1
         __polynom<TR,RVector>(msRes, msRes.ld(), this->msize(), this->get(),
                               this->ld(), v.incr() > 1 ? v1 : v);
         return msRes;
@@ -33432,7 +33393,7 @@ protected:
     }
 
     void _scalr(TR d) override {
-        __scal<TR,TR>(this->get(), this->size(), this->incr(), d); // zero tails are supposed here
+        __scal<TR,TR>(this->get(), this->size(), this->incr(), d);  // zero tails are supposed here
     }
 
     void _multiply(RVector& vRes, const RVector& v, bool) const override {
@@ -33461,12 +33422,14 @@ protected:
             BaseSRMatrix::_solve(vB, vX, dErr, pLU, pPivots, transp_mode);
             return;
         }
-        RVector vB1(vB); // to make sure incr = 1 and equilibrate
+        RVector vB1(vB);  // to make sure incr = 1 and equilibrate
         RVector vScalings(this->msize());
         basic_srsmatrix m(*this);
         const bool bEquilibrated = m.equilibrate(vScalings, vB1);
         RVector vX1(vB1);
-        __solve<TR,TR, basic_srsmatrix>(m, 1, vB1, vB1.size(), vX1, vX1.size(), dErr, pLU, pPivots, 0); // no transpose
+        __solve<TR,TR,
+            basic_srsmatrix>(m, 1, vB1, vB1.size(), vX1, vX1.size(),
+                             dErr, pLU, pPivots, 0);  // no transpose
         if (bEquilibrated) {
             for (tint i = 1; i <= this->msize(); ++i) {
                 vX[i] = vX1[i] * vScalings[i];
@@ -33484,14 +33447,14 @@ protected:
             BaseSRMatrix::_solve(mB, mX, dErr, pLU, pPivots, transp_mode);
             return;
         }
-        BaseRMatrix mB1(mB); // to equilibrate
+        BaseRMatrix mB1(mB);  // to equilibrate
         RVector vScalings(this->msize());
         basic_srsmatrix m(*this);
         const bool bEquilibrated = m.equilibrate(vScalings, mB1);
         mX = mB1;
         __solve<TR,TR,
             basic_srsmatrix>(m, mB.nsize(), mB, mB.ld(), mX, mX.ld(),
-                             dErr, pLU, pPivots, 0); // no transpose
+                             dErr, pLU, pPivots, 0);  // no transpose
         if (bEquilibrated) {
             for (tint j = 1; j <= mX.nsize(); ++j) {
                 for (tint i = 1; i <= this->msize(); ++i) {
@@ -33527,7 +33490,7 @@ protected:
                 if (bPositiveDefinite) {
                     const RVector vUpDiag = m.diag(0);
                     for (i = 1; i <= this->msize(); ++i) {
-                        dDet *= vUpDiag[i] * vUpDiag[i];    //here we use Cholesky factorization
+                        dDet *= vUpDiag[i] * vUpDiag[i];  //here we use Cholesky factorization
                     }
                 } else {
                     const RVector vEig = this->eig();
@@ -33555,7 +33518,7 @@ protected:
 
         __poequ<TR,basic_srsmatrix, RVector>(*this, vScalings, dCond, dMax);
 
-        if (dCond < TR(0.1) || _abs(dMax) <= sp || _abs(dMax) >= sp_inv) {
+        if (dCond < TR(0.1) || std::abs(dMax) <= sp || std::abs(dMax) >= sp_inv) {
             bRes = true;
             for (tint i = 0; i < this->msize(); ++i) {
                 for (tint j = i; j < this->msize(); ++j) {
@@ -33580,7 +33543,7 @@ protected:
     void _check_symmetric(TR tol) const throw(cvmexception) {
         for (tint j = 0; j < this->nsize(); ++j) {
             for (tint i = 0; i < this->msize(); ++i) {
-                if (i != j && _abs(this->get()[this->ld() * j + i] - this->get()[this->ld() * i + j]) > tol) {
+                if (i != j && std::abs(this->get()[this->ld() * j + i] - this->get()[this->ld() * i + j]) > tol) {
                     throw cvmexception(CVM_MATRIXNOTSYMMETRIC);
                 }
             }
@@ -33600,11 +33563,11 @@ Please use predefined \ref schmatrix class in your applications.
 template<typename TR, typename TC>
 class basic_schmatrix : public basic_scmatrix<TR,TC>
 {
-    using RVector = basic_rvector<TR>;          //!< \ref rvector class
-    using CVector = basic_cvector<TR,TC>;       //!< \ref cvector class
-    using BaseMatrix = Matrix<TR,TC>;           //!< Base Matrix class
-    using BaseCMatrix = basic_cmatrix<TR,TC>;   //!< \ref cmatrix class
-    using BaseSCMatrix = basic_scmatrix<TR,TC>; //!< \ref scmatrix class
+    using RVector = basic_rvector<TR>;  //!< \ref rvector class
+    using CVector = basic_cvector<TR,TC>;  //!< \ref cvector class
+    using BaseMatrix = Matrix<TR,TC>;  //!< Base Matrix class
+    using BaseCMatrix = basic_cmatrix<TR,TC>;  //!< \ref cmatrix class
+    using BaseSCMatrix = basic_scmatrix<TR,TC>;  //!< \ref scmatrix class
 
 public:
 /**
@@ -34242,7 +34205,7 @@ Function also assigns conjugated vector to \f$-i\f$-th diagonal
 (thus calling matrix remains hermitian).
 Function returns a reference to the matrix changed.
 Function throws \ref cvmexception if parameter \c nDiag is equal to zero
-(use \ref set_main_diag() instead), is outside of boundaries or if
+(use \ref set_main_diag() instead), is out of boundaries or if
 vector \c vDiag passed has size not equal to <c>msize()-abs(nDiag)</c>.
 \par Example:
 \code
@@ -34267,7 +34230,7 @@ prints
 */
     basic_schmatrix& set_diag(tint nDiag, const CVector& vDiag) throw(cvmexception) {
         if (nDiag == 0) throw cvmexception(CVM_BREAKS_HERMITIANITY, "set_main_diag");
-        const tint nD = _abs(nDiag);
+        const tint nD = std::abs(nDiag);
         const tint nSize = vDiag.size();
         _check_ne(CVM_SIZESMISMATCH, this->msize() - nD, nSize);
         const tint nShift = nDiag * this->ld();
@@ -34794,7 +34757,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_schmatrix operator !() const throw(cvmexception) {
+    basic_schmatrix operator ! () const throw(cvmexception) {
         basic_schmatrix mRes(*this);
         return mRes.transpose();
     }
@@ -34802,7 +34765,7 @@ prints
 /**
 @brief Does nothing and returns copy of a calling hermitian matrix.
 */
-    basic_schmatrix operator ~() const {
+    basic_schmatrix operator ~ () const {
         return *this;
     }
 
@@ -35023,7 +34986,7 @@ prints
 */
     basic_schmatrix& herk(TR alpha, const CVector& v, TR beta) throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v.size());
-        CVector vc(v);   // has to guarantee incr to be 1
+        CVector vc(v);  // has to guarantee incr to be 1
         __herk<TR,TC, basic_schmatrix>(false, alpha, 1, vc, vc.size(), beta, *this);
         this->_flip();
         return *this;
@@ -35155,7 +35118,7 @@ prints
                            const CVector& v2, TR beta) throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v1.size());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v2.size());
-        CVector v1c(v1);   // has to guarantee incr to be 1
+        CVector v1c(v1);  // has to guarantee incr to be 1
         CVector v2c(v2);
         __her2k<TR,TC,
             basic_schmatrix>(false, alpha, 1, v1c, v1c.size(),
@@ -35923,7 +35886,7 @@ when argument is symmetric but not positive-definite.
         const tint nNext = this->_msize() + 1;
         CVM_ASSERT(pd, nSize * sizeof(TC))
         for (tint i = 0; i < nSize; i += nNext) {
-            if (pd[i].real() <= zero) { // real numbers on main diagonal
+            if (pd[i].real() <= zero) {  // real numbers on main diagonal
                 return false;
             }
         }
@@ -36061,7 +36024,7 @@ protected:
     }
 
     void _scalc(TC d) override {
-        __scal<TC, TC>(this->get(), this->size(), this->incr(), d);
+        __scal<TC,TC>(this->get(), this->size(), this->incr(), d);
     }
 
     void _multiply(CVector& vRes, const CVector& v, bool bLeft) const override {
@@ -36088,12 +36051,12 @@ protected:
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, CVM0, this->msize() + CVM0);
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, CVM0, this->nsize() + CVM0);
         // only reals on main diagonal
-        if (nRow == nCol && _abs(val.imag()) > basic_cvmMachMin<TR>()) {
+        if (nRow == nCol && std::abs(val.imag()) > basic_cvmMachMin<TR>()) {
             throw cvmexception(CVM_BREAKS_HERMITIANITY, "real number");
         }
         this->get()[this->ld() * nCol + nRow] = val;
         if (nRow != nCol) {
-            this->get()[this->ld() * nRow + nCol] = _conjugate(val);
+            this->get()[this->ld() * nRow + nCol] = std::conj(val);
         }
     }
 
@@ -36103,8 +36066,8 @@ protected:
         for (tint j = 0; j < this->nsize(); ++j) {
             for (tint i = 0; i < this->msize(); ++i) {
                 if (i == j) {
-                    discr = _abs(this->get()[this->ld() * j + i].imag());
-                    if (discr > tol) { // real numbers on main diagonal
+                    discr = std::abs(this->get()[this->ld() * j + i].imag());
+                    if (discr > tol) {  // real numbers on main diagonal
                         throw cvmexception(CVM_MATRIXNOTHERMITIAN, discr, tol);
                     }
                     continue;
@@ -36112,7 +36075,9 @@ protected:
                 c1 = this->get()[this->ld() * j + i];
                 c2 = this->get()[this->ld() * i + j];
                 if (!_conjugated<TR>(c1, c2, tol)) {
-                    throw cvmexception(CVM_NOT_CONJUGATED, c1.real(), c1.imag(), c2.real(), c2.imag(), tol);
+                    throw cvmexception(CVM_NOT_CONJUGATED,
+                                       c1.real(), c1.imag(),
+                                       c2.real(), c2.imag(), tol);
                 }
             }
         }
@@ -36127,14 +36092,14 @@ protected:
             BaseSCMatrix::_solve(vB, vX, dErr, pLU, pPivots, transp_mode);
             return;
         }
-        CVector vB1(vB);    // to make sure incr = 1 and equilibrate
+        CVector vB1(vB);  // to make sure incr = 1 and equilibrate
         basic_rvector<TR> vScalings(this->msize());
         basic_schmatrix m(*this);
         const bool bEquilibrated = m.equilibrate(vScalings, vB1);
-        CVector vX1(vB1);   // to make sure incr = 1
+        CVector vX1(vB1);  // to make sure incr = 1
         __solve<TR,TC,
             basic_schmatrix>(m, 1, vB1, vB1.size(), vX1, vX1.size(),
-                             dErr, pLU, pPivots, 0); // no transpose
+                             dErr, pLU, pPivots, 0);  // no transpose
 
         if (bEquilibrated) {
             for (tint i = CVM0; i <= this->msize() - (1 - CVM0); ++i) {
@@ -36154,14 +36119,14 @@ protected:
             BaseSCMatrix::_solve(mB, mX, dErr, pLU, pPivots, transp_mode);
             return;
         }
-        BaseCMatrix mB1(mB);    // to equilibrate
+        BaseCMatrix mB1(mB);  // to equilibrate
         basic_rvector<TR> vScalings(this->msize());
         basic_schmatrix m(*this);
         const bool bEquilibrated = m.equilibrate(vScalings, mB1);
         mX = mB1;
         __solve<TR,TC,
             basic_schmatrix>(m, mB.nsize(), mB, mB.ld(), mX, mX.ld(),
-                             dErr, pLU, pPivots, 0); // no transpose
+                             dErr, pLU, pPivots, 0);  // no transpose
         if (bEquilibrated) {
             for (tint j = CVM0; j < mX.nsize() + CVM0; ++j) {
                 for (tint i = CVM0; i < this->msize() + CVM0; ++i) {
@@ -36197,12 +36162,12 @@ protected:
                 if (bPositiveDefinite) {
                     const CVector vUpDiag = m.diag(0);
                     for (i = CVM0; i < this->msize() + CVM0; ++i) {
-                        dDet *= vUpDiag[i] * vUpDiag[i]; // here we use Cholesky factorization
+                        dDet *= vUpDiag[i] * vUpDiag[i];  // here we use Cholesky factorization
                     }
                 } else {
                     const basic_rvector<TR> vEig = this->eig();
                     for (i = CVM0; i < this->msize() + CVM0; ++i) {
-                        dDet *= vEig[i]; // here we use eigenvalues. probably there is a better way.
+                        dDet *= vEig[i];  // here we use eigenvalues (might be better way)
                     }
                 }
             }
@@ -36225,7 +36190,7 @@ protected:
 
         __poequ<TR,basic_schmatrix, basic_rvector<TR> >(*this, vScalings, dCond, dMax);
 
-        if (dCond < TR(0.1) || _abs(dMax) <= sp || _abs(dMax) >= sp_inv) {
+        if (dCond < TR(0.1) || std::abs(dMax) <= sp || std::abs(dMax) >= sp_inv) {
             bRes = true;
             for (tint i = 0; i < this->msize(); ++i) {
                 for (tint j = i; j < this->msize(); ++j) {
@@ -36385,42 +36350,42 @@ inline basic_schmatrix<TR,TC> operator * (CVM_LONGEST_INT d, const basic_schmatr
 
 
 #if defined(CVM_FLOAT)
-using treal = float; //!< Either \c double (default) of \c float (when \c CVM_FLOAT is defined)
+using treal = float;  //!< Either \c double (default) of \c float (when \c CVM_FLOAT is defined)
 #else
-using treal = double; //!< Either \c double (default) of \c float (when \c CVM_FLOAT is defined)
+using treal = double;  //!< Either \c double (default) of \c float (when \c CVM_FLOAT is defined)
 #endif
 
-using tcomplex = std::complex<treal>; //!< Complex number defined as \c std::complex<treal> (see also \ref treal)
+using tcomplex = std::complex<treal>;  //!< Complex number defined as \c std::complex<treal> (see also \ref treal)
 
-using iarray = basic_array<tint,tint>;     //!< End-user class: array of integers, see \ref basic_array
-using rvector = basic_rvector<treal>;    //!< End-user class: vector of \ref treal numbers, see \ref basic_rvector
-using rmatrix = basic_rmatrix<treal>;    //!< End-user class: matrix of \ref treal numbers, see \ref basic_rmatrix
-using srmatrix = basic_srmatrix<treal>;   //!< End-user class: square matrix of \ref treal numbers, see \ref basic_srmatrix
-using cvector = basic_cvector<treal,tcomplex>;    //!< End-user class: vector of \ref treal complex numbers, see \ref basic_cvector
-using cmatrix = basic_cmatrix<treal,tcomplex>;    //!< End-user class: matrix of \ref treal complex numbers, see \ref basic_cmatrix
-using scmatrix = basic_scmatrix<treal,tcomplex>;   //!< End-user class: square matrix of \ref treal complex numbers, see \ref basic_scmatrix
+using iarray = basic_array<tint,tint>;  //!< End-user class: array of integers, see \ref basic_array
+using rvector = basic_rvector<treal>;  //!< End-user class: vector of \ref treal numbers, see \ref basic_rvector
+using rmatrix = basic_rmatrix<treal>;  //!< End-user class: matrix of \ref treal numbers, see \ref basic_rmatrix
+using srmatrix = basic_srmatrix<treal>;  //!< End-user class: square matrix of \ref treal numbers, see \ref basic_srmatrix
+using cvector = basic_cvector<treal,tcomplex>;  //!< End-user class: vector of \ref treal complex numbers, see \ref basic_cvector
+using cmatrix = basic_cmatrix<treal,tcomplex>;  //!< End-user class: matrix of \ref treal complex numbers, see \ref basic_cmatrix
+using scmatrix = basic_scmatrix<treal,tcomplex>;  //!< End-user class: square matrix of \ref treal complex numbers, see \ref basic_scmatrix
 using srbmatrix = basic_srbmatrix<treal>;  //!< End-user class: square band matrix of \ref treal numbers, see \ref basic_srbmatrix
 using scbmatrix = basic_scbmatrix<treal,tcomplex>;  //!< End-user class: square band matrix of \ref treal complex numbers, see \ref basic_scbmatrix
 using srsmatrix = basic_srsmatrix<treal>;  //!< End-user class: square symmetric matrix of \ref treal numbers, see \ref basic_srsmatrix
 using schmatrix = basic_schmatrix<treal,tcomplex>;  //!< End-user class: square hermitian matrix of \ref treal complex numbers, see \ref basic_schmatrix
 
-using rvector32 = basic_rvector<float>;    //!< End-user class: vector of 32-bit float numbers, see \ref basic_rvector
-using rmatrix32 = basic_rmatrix<float>;    //!< End-user class: matrix of 32-bit float numbers, see \ref basic_rmatrix
-using srmatrix32 = basic_srmatrix<float>;   //!< End-user class: square matrix of 32-bit float numbers, see \ref basic_srmatrix
-using cvector32 = basic_cvector<float,std::complex<float>>;    //!< End-user class: vector of 32-bit float complex numbers, see \ref basic_cvector
-using cmatrix32 = basic_cmatrix<float,std::complex<float>>;    //!< End-user class: matrix of 32-bit float complex numbers, see \ref basic_cmatrix
-using scmatrix32 = basic_scmatrix<float,std::complex<float>>;   //!< End-user class: square matrix of 32-bit float complex numbers, see \ref basic_scmatrix
+using rvector32 = basic_rvector<float>;  //!< End-user class: vector of 32-bit float numbers, see \ref basic_rvector
+using rmatrix32 = basic_rmatrix<float>;  //!< End-user class: matrix of 32-bit float numbers, see \ref basic_rmatrix
+using srmatrix32 = basic_srmatrix<float>;  //!< End-user class: square matrix of 32-bit float numbers, see \ref basic_srmatrix
+using cvector32 = basic_cvector<float,std::complex<float>>;  //!< End-user class: vector of 32-bit float complex numbers, see \ref basic_cvector
+using cmatrix32 = basic_cmatrix<float,std::complex<float>>;  //!< End-user class: matrix of 32-bit float complex numbers, see \ref basic_cmatrix
+using scmatrix32 = basic_scmatrix<float,std::complex<float>>;  //!< End-user class: square matrix of 32-bit float complex numbers, see \ref basic_scmatrix
 using srbmatrix32 = basic_srbmatrix<float>;  //!< End-user class: square band matrix of 32-bit float numbers, see \ref basic_srbmatrix
 using scbmatrix32 = basic_scbmatrix<float,std::complex<float>>;  //!< End-user class: square band matrix of 32-bit float complex numbers, see \ref basic_scbmatrix
 using srsmatrix32 = basic_srsmatrix<float>;  //!< End-user class: square symmetric matrix of 32-bit float numbers, see \ref basic_srsmatrix
 using schmatrix32 = basic_schmatrix<float,std::complex<float>>;  //!< End-user class: square hermitian matrix of 32-bit float complex numbers, see \ref basic_schmatrix
 
-using rvector64 = basic_rvector<double>;    //!< End-user class: vector of 64-bit double numbers, see \ref basic_rvector
-using rmatrix64 = basic_rmatrix<double>;    //!< End-user class: matrix of 64-bit double numbers, see \ref basic_rmatrix
-using srmatrix64 = basic_srmatrix<double>;   //!< End-user class: square matrix of 64-bit double numbers, see \ref basic_srmatrix
-using cvector64 = basic_cvector<double,std::complex<double>>;    //!< End-user class: vector of 64-bit double complex numbers, see \ref basic_cvector
-using cmatrix64 = basic_cmatrix<double,std::complex<double>>;    //!< End-user class: matrix of 64-bit double complex numbers, see \ref basic_cmatrix
-using scmatrix64 = basic_scmatrix<double,std::complex<double>>;   //!< End-user class: square matrix of 64-bit double complex numbers, see \ref basic_scmatrix
+using rvector64 = basic_rvector<double>;  //!< End-user class: vector of 64-bit double numbers, see \ref basic_rvector
+using rmatrix64 = basic_rmatrix<double>;  //!< End-user class: matrix of 64-bit double numbers, see \ref basic_rmatrix
+using srmatrix64 = basic_srmatrix<double>;  //!< End-user class: square matrix of 64-bit double numbers, see \ref basic_srmatrix
+using cvector64 = basic_cvector<double,std::complex<double>>;  //!< End-user class: vector of 64-bit double complex numbers, see \ref basic_cvector
+using cmatrix64 = basic_cmatrix<double,std::complex<double>>;  //!< End-user class: matrix of 64-bit double complex numbers, see \ref basic_cmatrix
+using scmatrix64 = basic_scmatrix<double,std::complex<double>>;  //!< End-user class: square matrix of 64-bit double complex numbers, see \ref basic_scmatrix
 using srbmatrix64 = basic_srbmatrix<double>;  //!< End-user class: square band matrix of 64-bit double numbers, see \ref basic_srbmatrix
 using scbmatrix64 = basic_scbmatrix<double,std::complex<double>>;  //!< End-user class: square band matrix of 64-bit double complex numbers, see \ref basic_scbmatrix
 using srsmatrix64 = basic_srsmatrix<double>;  //!< End-user class: square symmetric matrix of 64-bit double numbers, see \ref basic_srsmatrix
@@ -36554,7 +36519,7 @@ private:
 #else
     HANDLE mMutex;
 #endif
-#else                                                       // POSIX Threads library assumed
+#else  // POSIX Threads library assumed
     pthread_mutex_t mMutex;
     pthread_mutexattr_t mMutexAttr;
 #endif
@@ -36702,7 +36667,7 @@ CVM_STD_COMPLEX_PROXY(asinh)
 CVM_STD_COMPLEX_PROXY(acosh)
 CVM_STD_COMPLEX_PROXY(atanh)
 
-} // namespace std
+}  // namespace std
 
 
 //! BLAS callback error handler, don't use
@@ -36719,5 +36684,5 @@ extern "C"
                           const tint* pnParam) throw(cvm::cvmexception);
 }
 
-#endif                  // _CVM_H
+#endif  // _CVM_H
 

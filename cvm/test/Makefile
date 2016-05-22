@@ -105,6 +105,25 @@ ifdef PROF
   LFLAGSD += -pg
 endif
 
+ifdef STATIC_ONLY
+ifndef MKL
+ifdef GF_BLAS
+  ifdef MAC
+    BLAS_PATH = mac/gf  
+  else
+    BLAS_PATH = linux/gf
+  endif
+else
+  ifdef MAC
+    BLAS_PATH = mac/ifort
+  else
+    BLAS_PATH = linux/ifort
+  endif
+endif
+endif
+LFLAGS  += -L$(OUTDIR)/$(BLAS_PATH)
+LFLAGSD += -L$(OUTDIR)/$(BLAS_PATH)
+endif
 
 LIBS  += -lpthread
 DLIBS += -lpthread

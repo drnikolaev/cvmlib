@@ -242,7 +242,7 @@ public:
     static T sinint(const T& x, const T& eps) throw(cvmexception)
     {
         T si = cfun_zero<T>();
-        T xa = cvm::_abs(x);
+        T xa = std::abs(x);
 
         if (xa > cfun_two<T>()) {
             si = T(cfun_pi_2<T>()) + e1(xa, eps).imag();
@@ -258,7 +258,7 @@ public:
                     t = f / T(i);
                     si += T(sign) * t;
                     sign = -sign;
-                    if (t / cvm::_abs(si) < eps)
+                    if (t / std::abs(si) < eps)
                         break;
                     if (i >= CFUN_MAX_EI_ITERATIONS - 2) {
                         throw cvmexception(CFUN_CONVERGENCEERROR, "sinint", x);
@@ -292,7 +292,7 @@ public:
                 t = f / T(i);
                 ci += T(sign) * t;
                 sign = -sign;
-                if (t / cvm::_abs(ci) < eps)
+                if (t / std::abs(ci) < eps)
                     break;
                 if (i >= CFUN_MAX_EI_ITERATIONS - 2) {
                     throw cvmexception(CFUN_CONVERGENCEERROR, "cosint", x);
@@ -321,7 +321,7 @@ public:
             c = b + a / c;
             a = c * d;
             e *= a;
-            if (cvm::_abs(cfun_one<T>() - a.real()) + cvm::_abs(a.imag()) < eps)
+            if (std::abs(cfun_one<T>() - a.real()) + std::abs(a.imag()) < eps)
                 break;
             if (i >= CFUN_MAX_EI_ITERATIONS - 1) {
                 throw cvmexception(CFUN_CONVERGENCEERROR, "ElementaryFunctions<T>::e1", x);
@@ -352,7 +352,7 @@ public:
     {
         const T rm = v.real() * cfun_two<T>();
         const T im = v.imag() * cfun_two<T>();
-        if (cvm::_abs(im) >= basic_cvmLogMachMax<T>()) {
+        if (std::abs(im) >= basic_cvmLogMachMax<T>()) {
             return TC(cfun_zero<T>(), im > cfun_zero<T>() ? cfun_one<T>() : cfun_mone<T>());
         }
         else {
@@ -399,7 +399,7 @@ public:
     static TC sinint(const TC& x, const T& eps) throw(cvmexception)
     {
         TC si(x);
-        if (cvm::_abs(x) > eps) {
+        if (std::abs(x) > eps) {
             TC t;
             TC f(x);
             int sign = -1;
@@ -408,7 +408,7 @@ public:
                 t = f / T(i);
                 si += t * T(sign);
                 sign = -sign;
-                if (cvm::_abs(t) / cvm::_abs(si) < eps)
+                if (std::abs(t) / std::abs(si) < eps)
                     break;
                 if (i >= CFUN_MAX_EI_ITERATIONS - 2) {
                     throw cvmexception(CFUN_CONVERGENCEERROR_C, "sinint", x.real(), x.imag());
@@ -422,7 +422,7 @@ public:
     static TC cosint(const TC& x, const T& eps) throw(cvmexception)
     {
         static const TC gamma(cfun_gamma<T>(), cfun_zero<T>());
-        if (cvm::_abs(x) < eps) {
+        if (std::abs(x) < eps) {
             throw cvmexception(CFUN_DOMAINERROR_C, "cosint", x.real(), x.imag());
         }
 
@@ -435,7 +435,7 @@ public:
             t = f / T(i);
             ci += t * T(sign);
             sign = -sign;
-            if (cvm::_abs(t) / cvm::_abs(ci) < eps)
+            if (std::abs(t) / std::abs(ci) < eps)
                 break;
             if (i >= CFUN_MAX_EI_ITERATIONS - 2) {
                 throw cvmexception(CFUN_CONVERGENCEERROR_C, "cosint", x.real(), x.imag());
@@ -2670,7 +2670,7 @@ protected:
         {                                                                   // 6 / 2 = 3
             T dNomin = fCopy[0]->_value(nullptr);
             T dDenom = fCopy[1]->_value(nullptr);
-            if (cvm::_abs(dDenom) <= cvm::cvmMachMin())
+            if (std::abs(dDenom) <= cvm::cvmMachMin())
             {
                 if (Comparator<T,T>::lt(dNomin, cfun_zero<T>()))
                 {
@@ -3157,7 +3157,7 @@ protected:
         {
             U dRes = cfun_zero<U>();
             const U dMeans = pfArg0->_value(pdVars);
-            const U dDelta = cvm::_abs(pfArg1->_value(pdVars));
+            const U dDelta = std::abs(pfArg1->_value(pdVars));
             if (dMeans > dDelta) {
                 dRes = cfun_one<U>();
             }
@@ -3176,7 +3176,7 @@ protected:
         {
             UC dRes = cfun_zero<U>();
             const U dMeans = pfArg0->_value(pdVars).real();
-            const U dDelta = cvm::_abs(pfArg1->_value(pdVars).real());
+            const U dDelta = std::abs(pfArg1->_value(pdVars).real());
             if (dMeans > dDelta) {
                 dRes = cfun_one<U>();
             }
@@ -4496,7 +4496,7 @@ protected:
     {
         BasePointer fCopy(this->mf0->_simp());
         if (fCopy->_kind() == Kind::cfun_const) {
-            return std::make_shared<Fconst<T>>(cvm::_abs(fCopy->_value(nullptr)));
+            return std::make_shared<Fconst<T>>(std::abs(fCopy->_value(nullptr)));
         }
         else if (fCopy->_kind() == Kind::cfun_abs) {
             return fCopy;
@@ -4523,7 +4523,7 @@ public:
     }
 
     T _value(const T* pdVars) const override {
-        return cvm::_abs(this->mf0->_value(pdVars));
+        return std::abs(this->mf0->_value(pdVars));
     }
 
     BasePointer _clone() const override {
@@ -4567,7 +4567,7 @@ protected:
         if (fCopy[0]->_kind() == Kind::cfun_const && fCopy[1]->_kind() == Kind::cfun_const) {
             T dM1 = fCopy[0]->_value(nullptr);
             T dM2 = fCopy[1]->_value(nullptr);
-            if (cvm::_abs(dM1 - dM2) <= cvm::cvmMachMin()) {
+            if (std::abs(dM1 - dM2) <= cvm::cvmMachMin()) {
                 return std::make_shared<Finfinity<T>>();
             }
             else {
@@ -4631,7 +4631,7 @@ protected:
     public:
         static U _value(const BaseFunction<U>* pfArg0, const BaseFunction<U>* pfArg1, const U* pdVars)
         {
-            return cvm::_abs(pfArg0->_value(pdVars) - pfArg1->_value(pdVars)) <= basic_cvmMachMin<U>() ?
+            return std::abs(pfArg0->_value(pdVars) - pfArg1->_value(pdVars)) <= basic_cvmMachMin<U>() ?
                    basic_cvmMachMax<U>() : cfun_zero<U>();
         }
     };
@@ -4642,7 +4642,7 @@ protected:
     public:
         static UC _value(const BaseFunction<UC>* pfArg0, const BaseFunction<UC>* pfArg1, const UC* pdVars)
         {
-            return cvm::_abs((pfArg0->_value(pdVars) - pfArg1->_value(pdVars)).real()) <= basic_cvmMachMin<U>() ?
+            return std::abs((pfArg0->_value(pdVars) - pfArg1->_value(pdVars)).real()) <= basic_cvmMachMin<U>() ?
                    basic_cvmMachMax<U>() : cfun_zero<U>();
         }
     };
@@ -5821,7 +5821,7 @@ prints
 @brief Assignment operator
 
 Assigns real or complex number to a calling basic_function object
-and makes it to be constant function of variables originally
+and makes it to be a constant function of variables originally
 set. Returns a reference to the object changed.
 \par Example:
 \code
@@ -5982,7 +5982,7 @@ prints
 @param[in] rf Const reference to function to multiply by.
 @return %Function object.
 */
-    basic_function operator *(const basic_function& rf) const throw(cvmexception) {
+    basic_function operator * (const basic_function& rf) const throw(cvmexception) {
         return basic_function(this->_check_vars(rf.mvars), std::make_shared<Fmult<T>>(mp, rf.mp));
     }
 
@@ -6054,7 +6054,7 @@ prints
 @param[in] rf Const reference to function to power to.
 @return %Function object.
 */
-    basic_function operator ^(const basic_function& rf) const throw(cvmexception) {
+    basic_function operator ^ (const basic_function& rf) const throw(cvmexception) {
         return basic_function(this->_check_vars(rf.mvars), std::make_shared<Fpower<T>>(mp, rf.mp));
     }
 
@@ -6306,7 +6306,7 @@ prints
 @param[in] d Const reference to number to multiply by.
 @return %Function object.
 */
-    basic_function operator *(const T& d) const throw(cvmexception) {
+    basic_function operator * (const T& d) const throw(cvmexception) {
         return basic_function(mvars, std::make_shared<Fmult<T>>(mp, std::make_shared<Fconst<T>>(d)));
     }
 
@@ -6362,7 +6362,7 @@ prints
 @param[in] d Const reference to number to power to.
 @return %Function object.
 */
-    basic_function operator ^(const T& d) const throw(cvmexception) {
+    basic_function operator ^ (const T& d) const throw(cvmexception) {
         return basic_function(mvars, std::make_shared<Fpower<T>>(mp, std::make_shared<Fconst<T>>(d)));
     }
 
@@ -7349,7 +7349,7 @@ prints
 @param[in] rf Const reference to function to multiply by.
 @return %Function object.
 */
-    friend basic_function<T> operator *(const T& d, const basic_function<T>& rf) {
+    friend basic_function<T> operator * (const T& d, const basic_function<T>& rf) {
         return rf * d;
     }
 
@@ -7407,7 +7407,7 @@ prints
 @param[in] rf Const reference to function to power to.
 @return %Function object.
 */
-    friend basic_function<T> operator ^(const T& d, const basic_function<T>& rf) {
+    friend basic_function<T> operator ^ (const T& d, const basic_function<T>& rf) {
         return basic_function(rf.mvars, std::make_shared<Fpower<T>>(std::make_shared<Fconst<T>>(d), rf.mp));
     }
 
@@ -8574,7 +8574,7 @@ prints
 @param[in] f Const reference to function to multiply by.
 @return %Vector of functions object.
 */
-    basic_fvector operator *(const BaseFunction& f) const
+    basic_fvector operator * (const BaseFunction& f) const
     {
         basic_fvector vRet(this->size());
         vRet.BaseFArray::_mult(*this, f);
@@ -8654,7 +8654,7 @@ prints
 @param[in] d Number to multiply by.
 @return %Vector of functions object.
 */
-    basic_fvector operator *(const T& d) const
+    basic_fvector operator * (const T& d) const
     {
         basic_fvector vRet(this->size());
         vRet.BaseFArray::_mult(*this, d);
@@ -8914,7 +8914,7 @@ prints
 @param[in] fv Vector of functions to multiply by.
 @return \ref basic_function object.
 */
-    BaseFunction operator *(const basic_fvector& fv) const throw(cvmexception)
+    BaseFunction operator * (const basic_fvector& fv) const throw(cvmexception)
     {
         this->_check_size(fv.size());
         BaseFunction fRet;
@@ -8967,7 +8967,7 @@ prints
 @param[in] fm %Matrix of functions to multiply by.
 @return %Vector of functions.
 */
-    basic_fvector operator *(const basic_fmatrix<T>& fm) const throw(cvmexception)
+    basic_fvector operator * (const basic_fmatrix<T>& fm) const throw(cvmexception)
     {
         this->_check_size(fm.msize());
         basic_fvector vRet(fm.nsize());
@@ -10309,7 +10309,7 @@ Operator provides access to a particular element of a calling matrix of function
 This is different from core classes indexing like \ref basic_rmatrix indexing.</strong>
 That's because function arrays are based on std::vector implementation having 0-based indexing.
 Operator returns \e l-value in order to make possible write access to an element.
-Operator throws \ref cvmexception if \c nRow or \c nCol is outside of boundaries.
+Operator throws \ref cvmexception if \c nRow or \c nCol is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -10362,7 +10362,7 @@ Operator returns value of a particular element of a calling matrix of functions 
 <strong>Indexes passed are 0-based.
 This is different from core classes indexing like \ref basic_rmatrix indexing.</strong>
 That's because function arrays are based on std::vector implementation having 0-based indexing.
-Operator throws \ref cvmexception if \c nRow or \c nCol is outside of boundaries.
+Operator throws \ref cvmexception if \c nRow or \c nCol is out of boundaries.
 \par Example:
 \code
 using namespace cvm;
@@ -10809,7 +10809,7 @@ prints
 @param[in] f Const reference to function to multiply by.
 @return %Matrix of functions object.
 */
-    basic_fmatrix operator *(const BaseFunction& f) const
+    basic_fmatrix operator * (const BaseFunction& f) const
     {
         basic_fmatrix fmRet(this->mM, this->mN);
         fmRet.BaseFArray::_mult(*this, f);
@@ -10906,7 +10906,7 @@ prints
 @param[in] d Number to multiply by.
 @return %Matrix of functions object.
 */
-    basic_fmatrix operator *(const T& d) const
+    basic_fmatrix operator * (const T& d) const
     {
         basic_fmatrix fmRet(this->mM, this->mN);
         fmRet.BaseFArray::_mult(*this, d);
@@ -11146,7 +11146,7 @@ nRow-th row (0-based) of a calling matrix.
 This is different from core classes indexing like
 \ref basic_rmatrix indexing.</strong>
 Operator throws
-\ref cvmexception if \c nRow is outside of boundaries.
+\ref cvmexception if \c nRow is out of boundaries.
 \par Example:
 \code
 try{
@@ -11197,7 +11197,7 @@ nCol-th column (0-based) of a calling matrix.
 This is different from core classes indexing like
 \ref basic_rmatrix indexing.</strong>
 Operator throws
-\ref cvmexception if \c nCol is outside of boundaries.
+\ref cvmexception if \c nCol is out of boundaries.
 \par Example:
 \code
 try{
@@ -11249,7 +11249,7 @@ Function assigns \ref basic_fvector object referred by
 This is different from core classes indexing like
 \ref basic_rmatrix indexing.</strong>
 Operator throws
-\ref cvmexception if \c nRow is outside of boundaries.
+\ref cvmexception if \c nRow is out of boundaries.
 \par Example:
 \code
 try{
@@ -11304,7 +11304,7 @@ Function assigns \ref basic_fvector object referred by
 This is different from core classes indexing like
 \ref basic_rmatrix indexing.</strong>
 Operator throws
-\ref cvmexception if \c nCol is outside of boundaries.
+\ref cvmexception if \c nCol is out of boundaries.
 \par Example:
 \code
 try{
@@ -11398,7 +11398,7 @@ prints
 @param[in] fv Vector of functions to multiply by.
 @return %Vector of functions object.
 */
-    basic_fvector<T> operator *(const basic_fvector<T>& fv) const throw(cvmexception)
+    basic_fvector<T> operator * (const basic_fvector<T>& fv) const throw(cvmexception)
     {
         _check_ne(CVM_SIZESMISMATCH, fv.size(), this->nsize());
         basic_fvector<T> vRet(this->msize());
@@ -11465,7 +11465,7 @@ prints
 @param[in] fm %Matrix of functions to multiply by.
 @return %Matrix of functions object.
 */
-    basic_fmatrix operator *(const basic_fmatrix& fm) const throw(cvmexception)
+    basic_fmatrix operator * (const basic_fmatrix& fm) const throw(cvmexception)
     {
         _check_ne(CVM_SIZESMISMATCH, fm.msize(), this->nsize());
         basic_fmatrix mRet(this->msize(), fm.nsize());
@@ -11476,7 +11476,7 @@ prints
 /**
 @brief %Matrix by matrix product
 
-Sets calling basic_fmatrix object to be product of matrices referred by <tt>fmA</tt>
+Sets calling basic_fmatrix object to be a product of matrices referred by <tt>fmA</tt>
 and <tt>fmB</tt> and returns a reference to the object changed. Function throws
 \ref cvmexception if sizes of objects or lists of variables don't match.
 \par Example:
@@ -12381,7 +12381,7 @@ public:
     }
     static bool eq(const T& l, const T& r)
     {
-        return cvm::_abs(l - r) <= cvm::basic_cvmMachMin<T>();
+        return std::abs(l - r) <= cvm::basic_cvmMachMin<T>();
     }
 };
 
@@ -12407,8 +12407,8 @@ public:
     }
     static bool eq(const std::complex<T>& l, const std::complex<T>& r)
     {
-        return cvm::_abs(l.real() - r.real()) <= cvm::basic_cvmMachMin<T>() &&
-               cvm::_abs(l.imag() - r.imag()) <= cvm::basic_cvmMachMin<T>();
+        return std::abs(l.real() - r.real()) <= cvm::basic_cvmMachMin<T>() &&
+               std::abs(l.imag() - r.imag()) <= cvm::basic_cvmMachMin<T>();
     }
 };
 
@@ -12434,13 +12434,13 @@ public:
     }
     static bool eq(const T& l, const std::complex<T>& r)
     {
-        return cvm::_abs(l - r.real()) <= cvm::basic_cvmMachMin<T>() &&
-               cvm::_abs(r.imag()) <= cvm::basic_cvmMachMin<T>();
+        return std::abs(l - r.real()) <= cvm::basic_cvmMachMin<T>() &&
+               std::abs(r.imag()) <= cvm::basic_cvmMachMin<T>();
     }
 };
 
 template<typename T>
-class Comparator<std::complex<T>, T>
+class Comparator<std::complex<T>,T>
 {
 public:
     static bool lt(const std::complex<T>& l, const T& r)
@@ -12461,8 +12461,8 @@ public:
     }
     static bool eq(const std::complex<T>& l, const T& r)
     {
-        return cvm::_abs(l.real() - r) <= cvm::basic_cvmMachMin<T>() &&
-               cvm::_abs(l.imag()) <= cvm::basic_cvmMachMin<T>();
+        return std::abs(l.real() - r) <= cvm::basic_cvmMachMin<T>() &&
+               std::abs(l.imag()) <= cvm::basic_cvmMachMin<T>();
     }
 };
 //! @endcond

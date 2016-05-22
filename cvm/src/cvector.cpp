@@ -270,7 +270,7 @@ __eig<basic_cvector<float, std::complex<float> >, basic_srmatrix<float>, basic_s
             m = CVM0;
             mEigVect -> resize(nM);
             for (tint i = CVM0; i < nM + CVM0; i++) {
-                if (_abs(vI(i)) > basic_cvmMachMin<float>()) {
+                if (std::abs(vI(i)) > basic_cvmMachMin<float>()) {
                     (*mEigVect)(i).assign_real(v(m));
 
                     if (bPair) {
@@ -433,7 +433,7 @@ __eig<basic_cvector<double, std::complex<double> >, basic_srmatrix<double>, basi
             m = CVM0;
             mEigVect -> resize(nM);
             for (tint i = CVM0; i < nM + CVM0; i++) {
-                if (_abs(vI(i)) > basic_cvmMachMin<double>()) {
+                if (std::abs(vI(i)) > basic_cvmMachMin<double>()) {
                     (*mEigVect)(i).assign_real(v(m));
 
                     if (bPair) {
