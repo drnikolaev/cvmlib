@@ -870,7 +870,6 @@ public:
 CVM_API tbyte* _cvmMalloc(size_t nBytes) throw(cvmexception);
 CVM_API tbyte* _cvmAddRef(const tbyte* pd);
 CVM_API tint   _cvmFree(tbyte*& pd);
-CVM_API void   _cvm_assert(const void* pvBlock, size_t nBytes);
 //! @endcond
 
 /**
@@ -971,6 +970,9 @@ inline void cvmZeroMemory(T* p, tint nEls) {
     memset(p, 0, nEls * sizeof(T));
 }
 
+//! @cond INTERNAL
+CVM_API void _cvm_assert(const void* pvBlock, size_t nBytes);
+//! @endcond
 
 
 //! Sends proxy value to output stream

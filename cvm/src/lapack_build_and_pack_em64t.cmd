@@ -7,7 +7,7 @@ SET FILESET=LICENSE_1_0.txt cvm_em64t.dll cvm_em64t.lib cvm_em64t_debug.dll cvm_
 SET FILESETILP64=LICENSE_1_0.txt cvm_em64t_ilp64.dll cvm_em64t_ilp64.lib cvm_em64t_ilp64_debug.dll cvm_em64t_ilp64_debug.lib cvm_em64t_ilp64_debug.pdb regtest_cvm_em64t_ilp64.exe regtest_cvm_em64t_ilp64_debug.exe regtest_cvm_em64t_ilp64_debug.pdb
 
 SET CVMVER=8.2
-SET INTELREDIST="C:\Program Files (x86)\IntelSWTools\parallel_studio_xe_2016.1.051\compilers_and_libraries_2016\windows\redist\intel64\compiler"
+SET INTELREDIST="C:\Program Files (x86)\IntelSWTools\parallel_studio_xe_2016.3.059\compilers_and_libraries_2016\windows\redist\intel64\compiler"
 SET MSREDIST="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x64\Microsoft.VC140.CRT"
 
 

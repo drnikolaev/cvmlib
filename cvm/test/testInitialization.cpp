@@ -1575,7 +1575,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     scbm1 = scbm / cr1;
     EXPECT_EQ(scbm(CVM0+1,CVM0+2) / cr1, scbm1(CVM0+1,CVM0+2)) << "scbmatrix / number";
 
-    cv1 = cv  * cr2;
+    cv1 = cv * cr2;
     cv3 = cr2 * cv;
     EXPECT_EQ(cv1[CVM0+2], cv3[CVM0+2]) << "cvector * cmplx number";
     cm1 = cm * cr2;

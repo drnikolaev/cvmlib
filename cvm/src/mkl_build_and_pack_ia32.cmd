@@ -6,8 +6,8 @@ SET OUTDIR=..\
 SET FILESET=LICENSE_1_0.txt cvm_ia32.dll cvm_ia32.lib cvm_ia32_debug.dll cvm_ia32_debug.lib cvm_ia32_debug.pdb regtest_cvm_ia32.exe regtest_cvm_ia32_debug.exe regtest_cvm_ia32_debug.pdb
 
 SET CVMVER=8.2
-SET INTELREDIST="C:\Program Files (x86)\IntelSWTools\parallel_studio_xe_2016.1.051\compilers_and_libraries_2016\windows\redist\ia32\compiler"
-SET MKLREDIST="C:\Program Files (x86)\IntelSWTools\parallel_studio_xe_2016.1.051\compilers_and_libraries_2016\windows\redist\ia32\mkl"
+SET INTELREDIST="C:\Program Files (x86)\IntelSWTools\parallel_studio_xe_2016.3.059\compilers_and_libraries_2016\windows\redist\ia32\compiler"
+SET MKLREDIST="C:\Program Files (x86)\IntelSWTools\parallel_studio_xe_2016.3.059\compilers_and_libraries_2016\windows\redist\ia32\mkl"
 SET MSREDIST="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT"
 
 SET BUILDCMD=Rebuild

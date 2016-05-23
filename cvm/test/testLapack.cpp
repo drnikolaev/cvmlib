@@ -76,34 +76,34 @@ TYPED_TEST(LapackTest, TestSlashReal) {
     vB.randomize(-10., 20.);
 
     vX = vB / srm;
-    EXPECT_NEAR(0,(vX * srm - vB).norm(),spp<TP>()) << "rvector / srmatrix";
+    EXPECT_NEAR(0,(vX * srm - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "rvector / srmatrix";
     vX = srm % vB;
-    EXPECT_NEAR(0,(vX * srm - vB).norm(),spp<TP>()) << "srmatrix % rvector";
+    EXPECT_NEAR(0,(vX * srm - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "srmatrix % rvector";
 
     vX = vB / srbm;
-    EXPECT_NEAR(0,(vX * srbm - vB).norm(),spp<TP>(1.e-10,0.01)) << "rvector / srbmatrix";
+    EXPECT_NEAR(0,(vX * srbm - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "rvector / srbmatrix";
     vX = srbm % vB;
-    EXPECT_NEAR(0,(vX * srbm - vB).norm(),spp<TP>(1.e-10,0.01)) << "srbmatrix % rvector";
+    EXPECT_NEAR(0,(vX * srbm - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "srbmatrix % rvector";
 
     vX = vB / srsm;
-    EXPECT_NEAR(0,(vX * srsm - vB).norm(),spp<TP>()) << "rvector / srsmatrix";
+    EXPECT_NEAR(0,(vX * srsm - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "rvector / srsmatrix";
     vX = srsm % vB;
-    EXPECT_NEAR(0,(vX * srsm - vB).norm(),spp<TP>()) << "srsmatrix % rvector";
+    EXPECT_NEAR(0,(vX * srsm - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "srsmatrix % rvector";
 
     vX = vB % srm;
-    EXPECT_NEAR(0,(srm * vX - vB).norm(),spp<TP>()) << "rvector % srmatrix";
+    EXPECT_NEAR(0,(srm * vX - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "rvector % srmatrix";
     vX = srm / vB;
-    EXPECT_NEAR(0,(srm * vX - vB).norm(),spp<TP>()) << "srmatrix / rvector";
+    EXPECT_NEAR(0,(srm * vX - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "srmatrix / rvector";
 
     vX = vB % srbm;
-    EXPECT_NEAR(0,(srbm * vX - vB).norm(),spp<TP>()) << "rvector % srbmatrix";
+    EXPECT_NEAR(0,(srbm * vX - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "rvector % srbmatrix";
     vX = srbm / vB;
-    EXPECT_NEAR(0,(srbm * vX - vB).norm(),spp<TP>()) << "srbmatrix / rvector";
+    EXPECT_NEAR(0,(srbm * vX - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "srbmatrix / rvector";
 
     vX = vB % srsm;
-    EXPECT_NEAR(0,(srsm * vX - vB).norm(),spp<TP>()) << "rvector % srsmatrix";
+    EXPECT_NEAR(0,(srsm * vX - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "rvector % srsmatrix";
     vX = srsm / vB;
-    EXPECT_NEAR(0,(srsm * vX - vB).norm(),spp<TP>()) << "srsmatrix / rvector";
+    EXPECT_NEAR(0,(srsm * vX - vB).norm(),spp<TP>(1.e-5, 2.e-2)) << "srsmatrix / rvector";
 }
 
 // 6.1
@@ -132,9 +132,9 @@ TYPED_TEST(LapackTest, TestSlashComplex) {
     EXPECT_NEAR(0,(vX * scbm - vB).norm(),sp<TP>()) << "scbmatrix % cvector";
 
     vX = vB / schm;
-    EXPECT_NEAR(0,(vX * schm - vB).norm(),spp<TP>()) << "cvector / schmatrix";
+    EXPECT_NEAR(0,(vX * schm - vB).norm(),spp<TP>(1.e-3, 2.e-2)) << "cvector / schmatrix";
     vX = schm % vB;
-    EXPECT_NEAR(0,(vX * schm - vB).norm(),spp<TP>()) << "schmatrix % cvector";
+    EXPECT_NEAR(0,(vX * schm - vB).norm(),spp<TP>(1.e-3, 2.e-2)) << "schmatrix % cvector";
 
     vX = vB % scm;
     EXPECT_NEAR(0,(scm * vX - vB).norm(),sp<TP>()) << "scmatrix % cvector";
@@ -147,9 +147,9 @@ TYPED_TEST(LapackTest, TestSlashComplex) {
     EXPECT_NEAR(0,(scbm * vX - vB).norm(),sp<TP>()) << "scbmatrix / cvector";
 
     vX = vB % schm;
-    EXPECT_NEAR(0,(schm * vX - vB).norm(),spp<TP>()) << "cvector % schmatrix";
+    EXPECT_NEAR(0,(schm * vX - vB).norm(),spp<TP>(1.e-3, 2.e-2)) << "cvector % schmatrix";
     vX = schm / vB;
-    EXPECT_NEAR(0,(schm * vX - vB).norm(),spp<TP>()) << "schmatrix / cvector";
+    EXPECT_NEAR(0,(schm * vX - vB).norm(),spp<TP>(1.e-3, 2.e-2)) << "schmatrix / cvector";
 }
 
 TYPED_TEST(LapackTest, TestCholeskySymmetricReal) {
@@ -1387,7 +1387,7 @@ TYPED_TEST(LapackTest, TestGelsBandReal) {
     }
     
     basic_rmatrix<TP> xt = a.gels(true, bt, vErr);
-    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), spp<TP>(1.e-7,1.e-2)) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), spp<TP>(1.e-7,2.e-2)) << "gels real transp";
     if (sizeof(TP) > 4) {
         EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>(1.e-4,75.)) << "gels real transp";
     }
@@ -1453,12 +1453,12 @@ TYPED_TEST(LapackTest, TestGelsBandComplex) {
     bt.randomize_imag(-1., 1.);
 
     basic_cmatrix<TP,TPC> xn = a.gels(false, bn, vErr);
-    EXPECT_NEAR(TP(0.), (a*xn-bn).norm(), sp<TP>()) << "gels complex nontransp";
-    EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), spp<TP>()) << "gels complex nontransp";
+    EXPECT_NEAR(TP(0.), (a*xn-bn).norm(), spp<TP>(1.e-5, 2.e-2)) << "gels complex nontransp";
+    EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), spp<TP>(1.e-5, 5.e-1)) << "gels complex nontransp";
 
     basic_cmatrix<TP,TPC> xt = a.gels(true, bt, vErr);
-    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), sp<TP>()) << "gels complex transp";
-    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>()) << "gels complex transp";
+    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), spp<TP>(1.e-5, 1.e-2)) << "gels complex transp";
+    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>(1.e-5, 5.e-1)) << "gels complex transp";
 }
 
 // real vector gels*
@@ -1553,7 +1553,7 @@ TYPED_TEST(LapackTest, TestGelsBandRealVector) {
     }
     
     basic_rvector<TP> xt = a.gels(true, bt, dErr);
-    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), spp<TP>()) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), spp<TP>(1.e-5, 2.e-2)) << "gels real transp";
     if (sizeof(TP) > 4) {
         EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>(1.e-5,2.e-1)) << "gels real transp";
     }
@@ -1935,12 +1935,12 @@ TYPED_TEST(LapackTest, TestSolveSymmetric) {
 
     mx = m.solve(mb, err);
     EXPECT_NEAR(TP(0), (m * mx - mb).norm(), spp<TP>()) << "srsmatrix solve";
-    EXPECT_NEAR(TP(0), err, spp<TP>()) << "srsmatrix solve";
+    EXPECT_NEAR(TP(0), err, spp<TP>(1.e-3, 1.e-2)) << "srsmatrix solve";
 
     basic_srsmatrix<TP> im(m.inv());
-    EXPECT_NEAR(TP(0), (im * m - basic_eye_real<TP>(5)).norm(), sp<TP>()) << "srsmatrix inv";
+    EXPECT_NEAR(TP(0), (im * m - basic_eye_real<TP>(5)).norm(), spp<TP>()) << "srsmatrix inv";
     im.inv(m);
-    EXPECT_NEAR(TP(0), (im * m - basic_eye_real<TP>(5)).norm(), sp<TP>()) << "srsmatrix inv";
+    EXPECT_NEAR(TP(0), (im * m - basic_eye_real<TP>(5)).norm(), spp<TP>()) << "srsmatrix inv";
 
     basic_rvector<TP> ev(5), ev1(5), ev2(5);
     basic_srmatrix<TP> evect(5);
@@ -1977,11 +1977,11 @@ TYPED_TEST(LapackTest, TestSolveHermitian) {
     mb.randomize_imag(-2., 1.);
 
     mx = hm.solve(mb);
-    EXPECT_NEAR(TP(0), (hm * mx - mb).norm(), sp<TP>()) << "schmatrix solve";
+    EXPECT_NEAR(TP(0), (hm * mx - mb).norm(), spp<TP>()) << "schmatrix solve";
 
     mx = hm.solve(mb, err);
-    EXPECT_NEAR(TP(0), (hm * mx - mb).norm(), sp<TP>()) << "schmatrix solve";
-    EXPECT_NEAR(TP(0), err, sp<TP>()) << "schmatrix solve";
+    EXPECT_NEAR(TP(0), (hm * mx - mb).norm(), spp<TP>()) << "schmatrix solve";
+    EXPECT_NEAR(TP(0), err, spp<TP>()) << "schmatrix solve";
 
     basic_schmatrix<TP,TPC> im(hm.inv());
     EXPECT_NEAR(TP(0), (im * hm - basic_eye_complex<TP,TPC>(5)).norm(), sp<TP>()) << "srsmatrix inv";
