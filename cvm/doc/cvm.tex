@@ -1,8 +1,8 @@
 \documentclass[12pt,letterpaper]{article}
 %\documentclass[12pt,letterpaper,draft]{article}
 %\documentclass[12pt,a4paper]{article}
+\usepackage[T1,T2A]{fontenc}
 \usepackage[cp866]{inputenc}
-\usepackage[T1]{fontenc}
 %\usepackage[T2C]{fontenc}
 \usepackage[full]{textcomp}
 \usepackage{calc}
@@ -16,7 +16,7 @@
 \usepackage{examplep}
 %\usepackage[scaled]{luximono}
 %\usepackage{lucida}
-\usepackage[scaled]{helvet}
+%%\usepackage[scaled]{helvet}
 %\usepackage{courier}
 %\usepackage[boldsans]{ccfonts}
 \usepackage[euler-digits]{eulervm}
@@ -29,7 +29,7 @@
 %\usepackage{layout}
 %\usepackage[paper=letterpaper,hoffset=-0.5in,voffset=-0.5in,textwidth=474pt,textheight=628pt,heightrounded=true]{geometry}
 %\usepackage[top=1in, left=1in, right=1in, bottom=1in, includefoot, heightrounded=true]{geometry}
-\usepackage[paper=letterpaper, top=1in, left=1in, right=1in, bottom=1in, includefoot, heightrounded=true]{geometry}
+\usepackage[paper=letterpaper, top=0.8in, left=1in, right=1in, bottom=0.8in, includefoot, heightrounded=true]{geometry}
 \usepackage{fancyvrb}
 %\usepackage{listings}
 \usepackage{fancyhdr}
@@ -140,7 +140,7 @@ C++ class library%
 Copyright
 \copyright{ } Sergei Nikolaev, 1992--2016,
 \URL{http://cvmlib.com}{http://cvmlib.com}} encapsulates
-concepts of a vector and different kinds of matrices including square,
+concepts of vector and different kinds of matrices including square,
 band, symmetric and hermitian ones, in Euclidean space of real and
 complex numbers.
 The library is distributed under the \URL{Boost Software License, Version~1.0}{http://www.boost.org/LICENSE_1_0.txt}.
@@ -587,7 +587,7 @@ $ ./regtest_cvm_em64t
 [  PASSED  ] 540 tests.
 \end{Verbatim}
 Since version 8.2 Google Test Library is used here, so you can
-filter tests using \verb'--gtest_filter' option etc.
+use \verb'--gtest_filter' option for filtering tests etc.
 
 
 \newpage

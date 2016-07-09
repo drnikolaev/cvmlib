@@ -11,7 +11,7 @@
  * @author Sergei Nikolaev (c) 1992-2016
  * @date May 17th, 2016
  *
- * This C++ class library encapsulates concepts of a vector and different matrices
+ * This C++ class library encapsulates concepts of vector and different matrices
  * including square, band, symmetric and hermitian ones in Euclidean space
  * of real and complex numbers. It utilizes BLAS and LAPACK Fortran libraries
  * in order to achieve the best numerical performance possible.
@@ -3354,7 +3354,7 @@ prints
 \endcode
 @param[in] list Initializer list as shown above.
 */
-    basic_rvector(std::initializer_list<TR> list)
+    basic_rvector(const std::initializer_list<TR>& list)
       : BaseArray(static_cast<tint>(list.size())) {
         tint i = 0;
 #ifdef CVM_USE_POOL_MANAGER
@@ -6170,7 +6170,7 @@ cvector v = { 1.2+3.4_i, 3.4+5.6_i, 99.99 };
 \endcode
 @param[in] list Initializer list as shown above.
 */
-    basic_cvector(std::initializer_list<TC> list)
+    basic_cvector(const std::initializer_list<TC>& list)
       : BaseArray(static_cast<tint>(list.size())) {
         tint i = 0;
 #ifdef CVM_USE_POOL_MANAGER
@@ -10848,6 +10848,32 @@ prints
         m._check_submatrix();
     }
 
+
+
+// TODO dox, test
+#if defined(CVM_USE_INITIALIZER_LISTS)
+    basic_rmatrix(tint nM, tint nN, const std::initializer_list<TR>& list)
+      : BaseMatrix(nM, nN, nM, false) {
+        _check_ne(CVM_SIZESMISMATCH, this->size(), static_cast<tint>(list.size()));
+        tint i = 0;
+#ifdef CVM_USE_POOL_MANAGER
+        TR* p = this->mpd;
+#else
+        TR* p = this->mp.get();
+#endif
+        for (auto it = list.begin(); it != list.end(); ++it) {
+            p[i++] = *it;
+        }
+    }
+#endif
+
+
+
+
+
+
+
+
 /**
 @brief Reference to element (l-value)
 
@@ -14813,6 +14839,17 @@ prints
       : BaseRMatrix(nDim, nDim)
     {}
 
+
+
+// TODO dox, test
+#if defined(CVM_USE_INITIALIZER_LISTS)
+    basic_srmatrix(tint nDim, const std::initializer_list<TR>& list)
+      : BaseRMatrix(nDim, nDim, list)
+    {}
+#endif
+
+
+
 /**
 @brief Constructor
 
@@ -15541,22 +15578,25 @@ prints
 Adds identity matrix to a calling square matrix and returns a reference to the matrix changed.
 \par Example:
 \code
-using namespace cvm;
-double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
-srmatrix m(a, 3);
-m++;
+using namespace cvm; 
+srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.});
+std::cout << m << std::endl; 
+std::cout << ++m << std::endl; 
 std::cout << m << std::endl;
-std::cout << ++m;
 \endcode
 prints
 \code
-2 4 7
-2 6 8
-3 6 10
+1 4 7 
+2 5 8 
+3 6 9 
 
-3 4 7
-2 7 8
-3 6 11
+2 4 7 
+2 6 8 
+3 6 10 
+
+2 4 7 
+2 6 8 
+3 6 10 
 \endcode
 @return Reference to changed calling matrix.
 */
@@ -15568,55 +15608,64 @@ prints
 /**
 @brief Plus identity, postfix
 
-Adds identity matrix to a calling square matrix and returns a reference to the matrix changed.
+Adds identity matrix to a calling square matrix and returns a 
+copy of the original calling matrix. 
 \par Example:
 \code
 using namespace cvm;
-double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
-srmatrix m(a, 3);
-m++;
-std::cout << m << std::endl;
-std::cout << ++m;
+srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.});
+std::cout << m << std::endl; 
+std::cout << m++ << std::endl; 
+std::cout << m << std::endl; 
 \endcode
 prints
 \code
-2 4 7
-2 6 8
-3 6 10
+1 4 7 
+2 5 8 
+3 6 9 
 
-3 4 7
-2 7 8
-3 6 11
+1 4 7 
+2 5 8 
+3 6 9 
+
+2 4 7 
+2 6 8 
+3 6 10 
 \endcode
-@return Reference to changed calling matrix.
+@return Copy of the original calling matrix.
 */
     basic_srmatrix operator ++ (int) {
+        basic_srmatrix mRes(*this);
         this->_plus_plus();
-        return *this;
+        return mRes;
     }
 
 /**
 @brief Minus identity, prefix
 
-Subtracts identity matrix from calling square matrix and returns a reference to the matrix changed.
+Subtracts identity matrix from calling square matrix and 
+returns a reference to the matrix changed.
 \par Example:
 \code
 using namespace cvm;
-double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
-srmatrix m(a, 3);
-m--;
+srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.}); 
 std::cout << m << std::endl;
-std::cout << --m;
+std::cout << --m << std::endl;
+std::cout << m << std::endl;
 \endcode
 prints
 \code
-0 4 7
-2 4 8
-3 6 8
+1 4 7 
+2 5 8 
+3 6 9 
 
--1 4 7
-2 3 8
-3 6 7
+0 4 7 
+2 4 8 
+3 6 8 
+
+0 4 7 
+2 4 8 
+3 6 8 
 \endcode
 @return Reference to changed calling matrix.
 */
@@ -15628,31 +15677,36 @@ prints
 /**
 @brief Minus identity, postfix
 
-Subtracts identity matrix from calling square matrix and returns a reference to the matrix changed.
+Subtracts identity matrix from calling square matrix and returns
+a copy of the original calling matrix. 
 \par Example:
 \code
 using namespace cvm;
-double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
-srmatrix m(a, 3);
-m--;
+srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.}); 
 std::cout << m << std::endl;
-std::cout << --m;
+std::cout << m-- << std::endl;
+std::cout << m << std::endl;
 \endcode
 prints
 \code
-0 4 7
-2 4 8
-3 6 8
+1 4 7 
+2 5 8 
+3 6 9 
 
--1 4 7
-2 3 8
-3 6 7
+1 4 7 
+2 5 8 
+3 6 9 
+
+0 4 7 
+2 4 8 
+3 6 8 
 \endcode
-@return Reference to changed calling matrix.
+@return Copy of the original calling matrix.
 */
     basic_srmatrix operator -- (int) {
+        basic_srmatrix mRes(*this);
         this->_minus_minus();
-        return *this;
+        return mRes;
     }
 
 /**
@@ -15664,8 +15718,7 @@ It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-double a[] = {1., 2., 3., 4., 5., 6., 7., 8., 9.};
-srmatrix m(a, 3);
+srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.}); 
 std::cout << m * 5.;
 \endcode
 prints
@@ -15720,6 +15773,7 @@ prints
         return mRes;
     }
 
+    // TODO dox
     basic_srmatrix& operator *= (TR dMult) {
         this->_scalr(dMult);
         return *this;
@@ -18485,6 +18539,27 @@ prints
                    nHeight, nWidth, m.ld(), nHeight * nWidth) {
         m._check_submatrix();
     }
+
+
+
+// TODO dox, test
+#if defined(CVM_USE_INITIALIZER_LISTS)
+    basic_cmatrix(tint nM, tint nN, const std::initializer_list<TR>& list)
+      : BaseMatrix(nM, nN, nM, false) {
+        _check_ne(CVM_SIZESMISMATCH, this->size() * 2, static_cast<tint>(list.size()));
+        tint i = 0;
+#ifdef CVM_USE_POOL_MANAGER
+        TC* p = this->mpd;
+#else
+        TC* p = this->mp.get();
+#endif
+        for (auto it = list.begin(); it != list.end(); ++it, ++it) {
+            p[i++] = TC(*it,*(it+1));
+        }
+    }
+#endif
+
+
 
 /**
 @brief Reference to element (l-value)
@@ -23172,6 +23247,17 @@ prints
       : BaseCMatrix(nDim, nDim)
     {}
 
+
+
+// TODO dox
+#if defined(CVM_USE_INITIALIZER_LISTS)
+    basic_scmatrix(tint nDim, const std::initializer_list<TR>& list)
+      : BaseCMatrix(nDim, nDim, list)
+    {}
+#endif
+
+
+
 /**
 @brief Constructor
 
@@ -24082,25 +24168,26 @@ prints
 /**
 @brief Plus identity, prefix
 
-Adds identity matrix to a calling square complex matrix and returns a reference to the matrix changed.
+Adds identity matrix to a calling square complex matrix and returns 
+a reference to the matrix changed.
 \par Example:
 \code
-using namespace cvm;
-scmatrix m(3);
-m.set(std::complex<double>(1.,1.));
-m++;
+using namespace cvm; 
+scmatrix m(2, {1., 2., 3., 4., 5., 6., 7., 8.});
+std::cout << m << std::endl; 
+std::cout << ++m << std::endl; 
 std::cout << m << std::endl;
-std::cout << ++m;
 \endcode
 prints
 \code
-(2,1) (1,1) (1,1)
-(1,1) (2,1) (1,1)
-(1,1) (1,1) (2,1)
+(1,2) (5,6) 
+(3,4) (7,8) 
 
-(3,1) (1,1) (1,1)
-(1,1) (3,1) (1,1)
-(1,1) (1,1) (3,1)
+(2,2) (5,6) 
+(3,4) (8,8) 
+
+(2,2) (5,6) 
+(3,4) (8,8) 
 \endcode
 @return Reference to changed calling matrix.
 */
@@ -24112,55 +24199,58 @@ prints
 /**
 @brief Plus identity, postfix
 
-Adds identity matrix to a calling square complex matrix and returns a reference to the matrix changed.
+Adds identity matrix to a calling square complex matrix and
+returns a copy of the original calling matrix.
 \par Example:
 \code
-using namespace cvm;
-scmatrix m(3);
-m.set(std::complex<double>(1.,1.));
-m++;
+using namespace cvm; 
+scmatrix m(2, {1., 2., 3., 4., 5., 6., 7., 8.});
+std::cout << m << std::endl; 
+std::cout << m++ << std::endl; 
 std::cout << m << std::endl;
-std::cout << ++m;
 \endcode
 prints
 \code
-(2,1) (1,1) (1,1)
-(1,1) (2,1) (1,1)
-(1,1) (1,1) (2,1)
+(1,2) (5,6) 
+(3,4) (7,8) 
 
-(3,1) (1,1) (1,1)
-(1,1) (3,1) (1,1)
-(1,1) (1,1) (3,1)
+(1,2) (5,6) 
+(3,4) (7,8) 
+
+(2,2) (5,6) 
+(3,4) (8,8) 
 \endcode
-@return Reference to changed calling matrix.
+@return Copy of the original calling matrix.
 */
     basic_scmatrix operator ++ (int) {
+        basic_scmatrix mRes(*this);
         this->_plus_plus();
-        return *this;
+        return mRes;
     }
 
 /**
 @brief Minus identity, prefix
 
-Subtracts identity matrix from calling square complex matrix and returns a reference to the matrix changed.
+Subtracts identity matrix from calling square complex matrix and 
+returns a reference to the matrix changed.
 \par Example:
 \code
-using namespace cvm;
-scmatrix m(3);
-m.set(std::complex<double>(1.,1.));
-m--;
+using namespace cvm; 
+scmatrix m(2, {1., 2., 3., 4., 5., 6., 7., 8.});
+std::cout << m << std::endl; 
+std::cout << --m << std::endl; 
 std::cout << m << std::endl;
-std::cout << --m;
 \endcode
 prints
 \code
-(0,1) (1,1) (1,1)
-(1,1) (0,1) (1,1)
-(1,1) (1,1) (0,1)
+(1,2) (5,6) 
+(3,4) (7,8) 
 
-(-1,1) (1,1) (1,1)
-(1,1) (-1,1) (1,1)
-(1,1) (1,1) (-1,1)
+(0,2) (5,6) 
+(3,4) (6,8) 
+
+(0,2) (5,6) 
+(3,4) (6,8) 
 \endcode
 @return Reference to changed calling matrix.
 */
@@ -24172,31 +24262,33 @@ prints
 /**
 @brief Minus identity, postfix
 
-Subtracts identity matrix from calling square complex matrix and returns a reference to the matrix changed.
+Subtracts identity matrix from calling square complex matrix and 
+returns a copy of the original calling matrix.
 \par Example:
 \code
-using namespace cvm;
-scmatrix m(3);
-m.set(std::complex<double>(1.,1.));
-m--;
+using namespace cvm; 
+scmatrix m(2, {1., 2., 3., 4., 5., 6., 7., 8.});
+std::cout << m << std::endl; 
+std::cout << m-- << std::endl; 
 std::cout << m << std::endl;
-std::cout << --m;
 \endcode
 prints
 \code
-(0,1) (1,1) (1,1)
-(1,1) (0,1) (1,1)
-(1,1) (1,1) (0,1)
+(1,2) (5,6) 
+(3,4) (7,8) 
 
-(-1,1) (1,1) (1,1)
-(1,1) (-1,1) (1,1)
-(1,1) (1,1) (-1,1)
+(1,2) (5,6) 
+(3,4) (7,8) 
+
+(0,2) (5,6) 
+(3,4) (6,8) 
 \endcode
-@return Reference to changed calling matrix.
+@return Copy of the original calling matrix.
 */
     basic_scmatrix operator -- (int) {
+        basic_scmatrix mRes(*this);
         this->_minus_minus();
-        return *this;
+        return mRes;
     }
 
 /**
@@ -28745,27 +28837,33 @@ prints
 /**
 @brief Plus identity, prefix
 
-Adds identity matrix to a calling square band matrix and returns a reference to the matrix changed.
+Adds identity matrix to a calling square band matrix and 
+returns a reference to the matrix changed.
 \par Example:
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
 srbmatrix m(a,4,1,0);
-m++;
+std::cout << m << std::endl; 
+std::cout << ++m << std::endl; 
 std::cout << m << std::endl;
-std::cout << ++m;
 \endcode
 prints
 \code
-2 0 0 0
-2 4 0 0
-0 4 6 0
-0 0 6 8
+1 0 0 0 
+2 3 0 0 
+0 4 5 0 
+0 0 6 7 
 
-3 0 0 0
-2 5 0 0
-0 4 7 0
-0 0 6 9
+2 0 0 0 
+2 4 0 0 
+0 4 6 0 
+0 0 6 8 
+
+2 0 0 0 
+2 4 0 0 
+0 4 6 0 
+0 0 6 8 
 \endcode
 @return Reference to changed calling matrix.
 */
@@ -28777,33 +28875,40 @@ prints
 /**
 @brief Plus identity, postfix
 
-Adds identity matrix to a calling square band matrix and returns a reference to the matrix changed.
+Adds identity matrix to a calling square band matrix and returns 
+a copy of the original matrix. 
 \par Example:
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
 srbmatrix m(a,4,1,0);
-m++;
+std::cout << m << std::endl; 
+std::cout << m++ << std::endl; 
 std::cout << m << std::endl;
-std::cout << ++m;
 \endcode
 prints
 \code
-2 0 0 0
-2 4 0 0
-0 4 6 0
-0 0 6 8
+1 0 0 0 
+2 3 0 0 
+0 4 5 0 
+0 0 6 7 
 
-3 0 0 0
-2 5 0 0
-0 4 7 0
-0 0 6 9
+1 0 0 0 
+2 3 0 0 
+0 4 5 0 
+0 0 6 7 
+
+2 0 0 0 
+2 4 0 0 
+0 4 6 0 
+0 0 6 8 
 \endcode
-@return Reference to changed calling matrix.
+@return Copy of the original calling matrix.
 */
     basic_srbmatrix operator ++ (int) {
+        basic_srbmatrix mRes(*this);
         this->_plus_plus();
-        return *this;
+        return mRes;
     }
 
 /**
@@ -28815,21 +28920,26 @@ Subtracts identity matrix from calling square band matrix and returns a referenc
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
 srbmatrix m(a,4,1,0);
-m--;
+std::cout << m << std::endl; 
+std::cout << --m << std::endl; 
 std::cout << m << std::endl;
-std::cout << --m;
 \endcode
 prints
 \code
-0 0 0 0
-2 2 0 0
-0 4 4 0
-0 0 6 6
+1 0 0 0 
+2 3 0 0 
+0 4 5 0 
+0 0 6 7 
 
--1 0 0 0
-2 1 0 0
-0 4 3 0
-0 0 6 5
+0 0 0 0 
+2 2 0 0 
+0 4 4 0 
+0 0 6 6 
+
+0 0 0 0 
+2 2 0 0 
+0 4 4 0 
+0 0 6 6 
 \endcode
 @return Reference to changed calling matrix.
 */
@@ -28841,35 +28951,43 @@ prints
 /**
 @brief Minus identity, postfix
 
-Subtracts identity matrix from calling square band matrix and returns a reference to the matrix changed.
+Subtracts identity matrix from calling square band matrix and 
+returns a copy of the original matrix. 
 \par Example:
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
 srbmatrix m(a,4,1,0);
-m--;
+std::cout << m << std::endl; 
+std::cout << m-- << std::endl; 
 std::cout << m << std::endl;
-std::cout << --m;
 \endcode
 prints
 \code
-0 0 0 0
-2 2 0 0
-0 4 4 0
-0 0 6 6
+1 0 0 0 
+2 3 0 0 
+0 4 5 0 
+0 0 6 7 
 
--1 0 0 0
-2 1 0 0
-0 4 3 0
-0 0 6 5
+1 0 0 0 
+2 3 0 0 
+0 4 5 0 
+0 0 6 7 
+
+0 0 0 0 
+2 2 0 0 
+0 4 4 0 
+0 0 6 6 
 \endcode
-@return Reference to changed calling matrix.
+@return Copy of the original calling matrix.
 */
     basic_srbmatrix operator -- (int) {
+        basic_srbmatrix mRes(*this);
         this->_minus_minus();
-        return *this;
+        return mRes;
     }
 
+    // TODO dox
     basic_srbmatrix operator * (TR dMult) const {
         basic_srbmatrix mRes(*this);
         mRes._scalr(dMult);
@@ -30608,6 +30726,32 @@ prints
         return *this;
     }
 
+/**
+@brief Unary minus operator
+
+Creates an object of type \ref scbmatrix as a calling matrix 
+multiplied by \c -1. It throws \ref cvmexception in case of 
+memory allocation failure. 
+\par Example:
+\code
+using namespace cvm;
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
+              9., 10., 11., 12.};
+const scbmatrix m((std::complex<double>*)a, 3, 1, 0);
+std::cout << m << std::endl << -m;
+\endcode
+prints
+\code
+(1,2) (0,0) (0,0) 
+(3,4) (5,6) (0,0) 
+(0,0) (7,8) (9,10) 
+
+(-1,-2) (0,0) (0,0) 
+(-3,-4) (-5,-6) (0,0) 
+(0,0) (-7,-8) (-9,-10) 
+\endcode
+@return Result object.
+*/
     basic_scbmatrix operator - () const {
         static const TR mone(-1.);
         basic_scbmatrix mRes(*this);
@@ -30615,30 +30759,153 @@ prints
         return mRes;
     }
 
-    // plus identity, prefix
+/**
+@brief Plus identity, prefix
+
+Adds identity matrix to a calling complex square band matrix and
+returns a reference to the matrix changed. 
+\par Example:
+\code
+using namespace cvm;
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
+              9., 10., 11., 12.};
+scbmatrix m((std::complex<double>*)a, 3, 1, 0);
+std::cout << m << std::endl;
+std::cout << ++m << std::endl; 
+std::cout << m << std::endl;
+\endcode
+prints
+\code
+(1,2) (0,0) (0,0) 
+(3,4) (5,6) (0,0) 
+(0,0) (7,8) (9,10) 
+
+(2,2) (0,0) (0,0) 
+(3,4) (6,6) (0,0) 
+(0,0) (7,8) (10,10) 
+
+(2,2) (0,0) (0,0) 
+(3,4) (6,6) (0,0) 
+(0,0) (7,8) (10,10) 
+\endcode
+@return Reference to changed calling matrix.
+*/
     basic_scbmatrix& operator ++ () {
         this->_plus_plus();
         return *this;
     }
 
-    // plus identity, postfix
+/**
+@brief Plus identity, postfix
+
+Adds identity matrix to a calling complex square band matrix and returns 
+a copy of the original matrix. 
+\par Example:
+\code
+using namespace cvm;
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
+              9., 10., 11., 12.};
+scbmatrix m((std::complex<double>*)a, 3, 1, 0);
+std::cout << m << std::endl;
+std::cout << m++ << std::endl; 
+std::cout << m << std::endl;
+\endcode
+prints
+\code
+(1,2) (0,0) (0,0) 
+(3,4) (5,6) (0,0) 
+(0,0) (7,8) (9,10) 
+
+(1,2) (0,0) (0,0) 
+(3,4) (5,6) (0,0) 
+(0,0) (7,8) (9,10) 
+
+(2,2) (0,0) (0,0) 
+(3,4) (6,6) (0,0) 
+(0,0) (7,8) (10,10) 
+\endcode
+@return Copy of the original calling matrix.
+*/
     basic_scbmatrix operator ++ (int) {
+        basic_scbmatrix mRes(*this);
         this->_plus_plus();
-        return *this;
+        return mRes;
     }
 
-    // minus identity, prefix
+/**
+@brief Minus identity, prefix
+
+Subtracts identity matrix from calling complex square band 
+matrix and returns a reference to the matrix changed.
+\par Example:
+\code
+using namespace cvm;
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
+              9., 10., 11., 12.};
+scbmatrix m((std::complex<double>*)a, 3, 1, 0);
+std::cout << m << std::endl;
+std::cout << --m << std::endl; 
+std::cout << m << std::endl;
+\endcode
+prints
+\code
+(1,2) (0,0) (0,0) 
+(3,4) (5,6) (0,0) 
+(0,0) (7,8) (9,10) 
+
+(0,2) (0,0) (0,0) 
+(3,4) (4,6) (0,0) 
+(0,0) (7,8) (8,10) 
+
+(0,2) (0,0) (0,0) 
+(3,4) (4,6) (0,0) 
+(0,0) (7,8) (8,10) 
+\endcode
+@return Reference to changed calling matrix.
+*/
     basic_scbmatrix& operator -- () {
         this->_minus_minus();
         return *this;
     }
 
-    // minus identity, postfix
+/**
+@brief Minus identity, postfix
+
+Subtracts identity matrix from calling complex square band matrix and 
+returns a copy of the original matrix. 
+\par Example:
+\code
+using namespace cvm;
+double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
+              9., 10., 11., 12.};
+scbmatrix m((std::complex<double>*)a, 3, 1, 0);
+std::cout << m << std::endl;
+std::cout << m-- << std::endl; 
+std::cout << m << std::endl;
+\endcode
+prints
+\code
+(1,2) (0,0) (0,0) 
+(3,4) (5,6) (0,0) 
+(0,0) (7,8) (9,10) 
+
+(1,2) (0,0) (0,0) 
+(3,4) (5,6) (0,0) 
+(0,0) (7,8) (9,10) 
+
+(0,2) (0,0) (0,0) 
+(3,4) (4,6) (0,0) 
+(0,0) (7,8) (8,10) 
+\endcode
+@return Copy of the original calling matrix.
+*/
     basic_scbmatrix operator -- (int) {
+        basic_scbmatrix mRes(*this);
         this->_minus_minus();
-        return *this;
+        return mRes;
     }
 
+    // TODO dox
     basic_scbmatrix operator * (TR dMult) const {
         basic_scbmatrix mRes(*this);
         mRes._scalr(dMult);
@@ -32321,6 +32588,7 @@ prints
         return mRes;
     }
 
+    // TODO dox
     // plus identity, prefix
     basic_srsmatrix& operator ++ () {
         this->_plus_plus();
@@ -32329,8 +32597,9 @@ prints
 
     // plus identity, postfix
     basic_srsmatrix operator ++ (int) {
+        basic_srsmatrix mRes(*this);
         this->_plus_plus();
-        return *this;
+        return mRes;
     }
 
     // minus identity, prefix
@@ -32341,8 +32610,9 @@ prints
 
     // minus identity, postfix
     basic_srsmatrix operator -- (int) {
+        basic_srsmatrix mRes(*this);
         this->_minus_minus();
-        return *this;
+        return mRes;
     }
 
     basic_srsmatrix operator * (TR dMult) const {
@@ -34657,6 +34927,7 @@ prints
         return mRes;
     }
 
+    // TODO dox
     // plus identity, prefix
     basic_schmatrix& operator ++ () {
         this->_plus_plus();
@@ -34665,8 +34936,9 @@ prints
 
     // plus identity, postfix
     basic_schmatrix operator ++ (int) {
+        basic_schmatrix mRes(*this);
         this->_plus_plus();
-        return *this;
+        return mRes;
     }
 
     // minus identity, prefix
@@ -34677,8 +34949,9 @@ prints
 
     // minus identity, postfix
     basic_schmatrix operator -- (int) {
+        basic_schmatrix mRes(*this);
         this->_minus_minus();
-        return *this;
+        return mRes;
     }
 
     basic_schmatrix operator * (TR dMult) const {

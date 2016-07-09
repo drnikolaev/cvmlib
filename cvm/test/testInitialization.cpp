@@ -856,7 +856,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     basic_rvector<TP>  rv1{this->a1, 10};                 // note: this constructor shares memory
     basic_rvector<TP>  rv2{this->a1, 10, 3};              // note: this constructor shares memory
     basic_rvector<TP>  rv3(11, 17.77);
-    basic_rvector<TP>  rv4{rv2};                    // note: this constructor copies memory
+    basic_rvector<TP>  rv4{rv2};                          // note: this constructor copies memory
 
     basic_rmatrix<TP> bigm{100, 100};
     basic_cmatrix<TP,TPC> bigcm{100, 100};
@@ -868,8 +868,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     basic_rmatrix<TP>  rm0{bigm, 21, 34, 5, 6};
     basic_rmatrix<TP>  rm1{this->a1, 2, 3};               // note: this constructor shares memory
     basic_rmatrix<TP>  rm2{rm1};
-    basic_rmatrix<TP>  rm3{rv2, true};              // column
-    basic_rmatrix<TP>  rm4{rv2, false};             // row
+    basic_rmatrix<TP>  rm3{rv2, true};                    // column
+    basic_rmatrix<TP>  rm4{rv2, false};                   // row
     basic_srmatrix<TP> srm;
     basic_srmatrix<TP> srm0 {bigm, 43, 47, 4};
     basic_srmatrix<TP> srm1 {this->a1, 3};                // note: this constructor shares memory
@@ -878,12 +878,12 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     basic_cvector<TP,TPC> cv;
     basic_cvector<TP,TPC> cv0(10);
-    basic_cvector<TP,TPC> cv1 {this->a1, this->a2, 10};         // note: this constructor copies memory
-    basic_cvector<TP,TPC> cv2 {this->a1, this->a2, 10, 3};      // note: this constructor copies memory
+    basic_cvector<TP,TPC> cv1 {this->a1, this->a2, 10};   // note: this constructor copies memory
+    basic_cvector<TP,TPC> cv2 {this->a1, this->a2, 10, 3};// note: this constructor copies memory
     basic_cvector<TP,TPC> cv3 {this->c1, 10, 3};          // note: this constructor shares memory
     basic_cvector<TP,TPC> cv4(11, TPC(1.3, 2.4));
     basic_cvector<TP,TPC> cv5 {cv3};
-    basic_cvector<TP,TPC> cv6 {rv1, rv2};           // note: this constructor copies memory
+    basic_cvector<TP,TPC> cv6 {rv1, rv2};                 // note: this constructor copies memory
     basic_cvector<TP,TPC> cv7 {this->a4, 10, true,  2};   // note: this constructor copies memory
     basic_cvector<TP,TPC> cv8 {this->a4, 10, false, 3};   // note: this constructor copies memory
     basic_cvector<TP,TPC> cv9 {rv2, true};
@@ -891,11 +891,11 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     basic_cmatrix<TP,TPC> cm;
     basic_cmatrix<TP,TPC> cm0{bigcm, 68, 17, 5, 6};
-    basic_cmatrix<TP,TPC> cm1{this->a1, this->a2, 2, 3};        // note: this constructor copies memory
+    basic_cmatrix<TP,TPC> cm1{this->a1, this->a2, 2, 3};  // note: this constructor copies memory
     basic_cmatrix<TP,TPC> cm2{cm1};
     basic_scmatrix<TP,TPC> scm;
     basic_scmatrix<TP,TPC> scm0{4};
-    basic_scmatrix<TP,TPC> scm1{this->a1, this->a2, 3};         // note: this constructor copies memory
+    basic_scmatrix<TP,TPC> scm1{this->a1, this->a2, 3};   // note: this constructor copies memory
     basic_scmatrix<TP,TPC> scm2{scm1};
 
     basic_srbmatrix<TP> srbm;
@@ -2838,9 +2838,9 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
 
     srm1 << srm.inv();
-    EXPECT_NEAR(0,((srm1 * srm)--).norm(),sf<TP>()) << "srmatrix::inv";
+    EXPECT_NEAR(0,(--(srm1 * srm)).norm(),sf<TP>()) << "srmatrix::inv";
     scm1 << scm.inv();
-    EXPECT_NEAR(0,((scm1 * scm)--).norm(),sf<TP>()) << "scmatrix::inv";
+    EXPECT_NEAR(0,(--(scm1 * scm)).norm(),sf<TP>()) << "scmatrix::inv";
 
 
     rv.resize(11);

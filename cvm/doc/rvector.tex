@@ -916,8 +916,9 @@ and returns a reference to
 the vector changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
-See also \GOT{rvector::operator -~}{rvector.operator -},
+See also 
 \GOT{rvector::diff}{rvector.diff},
+\GOT{rvector::operator -~}{rvector.operator -},
 \GOT{rvector}{rvector}.
 Example:
 \begin{Verbatim}
@@ -957,8 +958,8 @@ Operator%
 rvector rvector::operator - () const throw (cvmexception);
 \end{verbatim}
 creates an object of type \verb"rvector" as
-a calling vector multiplied by $-1$.
-It throws  \GOT{cvmexception}{cvmexception}
+a calling vector multiplied by -1.
+It can throw  \GOT{cvmexception}{cvmexception}
 in case of memory allocation failure.
 See also \GOT{rvector}{rvector}.
 Example:

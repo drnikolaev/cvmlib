@@ -422,7 +422,8 @@ CVM_API void __ger<double, basic_rmatrix<double>, basic_rvector<double> >
 
 //! @cond SPECIALIZATIONS
 template <>
-CVM_API void __geru<std::complex<float>, basic_cmatrix<float, std::complex<float> >, basic_cvector<float, std::complex<float> > >
+CVM_API void __geru<std::complex<float>, basic_cmatrix<float, std::complex<float> >,
+    basic_cvector<float, std::complex<float> > >
     (basic_cmatrix<float, std::complex<float> >& m,
      const basic_cvector<float, std::complex<float> >& vCol,
      const basic_cvector<float, std::complex<float> >& vRow,
@@ -432,7 +433,8 @@ CVM_API void __geru<std::complex<float>, basic_cmatrix<float, std::complex<float
 }
 
 template <>
-CVM_API void __geru<std::complex<double>, basic_cmatrix<double, std::complex<double> >, basic_cvector<double, std::complex<double> > >
+CVM_API void __geru<std::complex<double>, basic_cmatrix<double, std::complex<double> >,
+    basic_cvector<double, std::complex<double> > >
     (basic_cmatrix<double, std::complex<double> >& m,
      const basic_cvector<double, std::complex<double> >& vCol,
      const basic_cvector<double, std::complex<double> >& vRow,
@@ -442,7 +444,8 @@ CVM_API void __geru<std::complex<double>, basic_cmatrix<double, std::complex<dou
 }
 
 template <>
-CVM_API void __gerc<std::complex<float>, basic_cmatrix<float, std::complex<float> >, basic_cvector<float, std::complex<float> > >
+CVM_API void __gerc<std::complex<float>, basic_cmatrix<float, std::complex<float> >,
+    basic_cvector<float, std::complex<float> > >
     (basic_cmatrix<float, std::complex<float> >& m,
      const basic_cvector<float, std::complex<float> >& vCol,
      const basic_cvector<float, std::complex<float> >& vRow,
@@ -452,7 +455,8 @@ CVM_API void __gerc<std::complex<float>, basic_cmatrix<float, std::complex<float
 }
 
 template <>
-CVM_API void __gerc<std::complex<double>, basic_cmatrix<double, std::complex<double> >, basic_cvector<double, std::complex<double> > >
+CVM_API void __gerc<std::complex<double>, basic_cmatrix<double, std::complex<double> >,
+    basic_cvector<double, std::complex<double> > >
     (basic_cmatrix<double, std::complex<double> >& m,
      const basic_cvector<double, std::complex<double> >& vCol,
      const basic_cvector<double, std::complex<double> >& vRow,
@@ -464,10 +468,8 @@ CVM_API void __gerc<std::complex<double>, basic_cmatrix<double, std::complex<dou
 
 template <>
 CVM_API void __poequ<float, basic_srsmatrix<float>, basic_rvector<float> >
-    (const basic_srsmatrix<float>& m,
-     basic_rvector<float>& vScalings,
-     float& dCond,
-     float& dMax) {
+    (const basic_srsmatrix<float>& m, basic_rvector<float>& vScalings,
+     float& dCond, float& dMax) {
     tint nOutInfo = 0;
     SPOEQU(m._pm(), m, m._pld(), vScalings, &dCond, &dMax, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
@@ -476,10 +478,8 @@ CVM_API void __poequ<float, basic_srsmatrix<float>, basic_rvector<float> >
 
 template <>
 CVM_API void __poequ<double, basic_srsmatrix<double>, basic_rvector<double> >
-    (const basic_srsmatrix<double>& m,
-     basic_rvector<double>& vScalings,
-     double& dCond,
-     double& dMax) {
+    (const basic_srsmatrix<double>& m, basic_rvector<double>& vScalings,
+     double& dCond, double& dMax) {
     tint nOutInfo = 0;
     DPOEQU(m._pm(), m, m._pld(), vScalings, &dCond, &dMax, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
@@ -488,10 +488,8 @@ CVM_API void __poequ<double, basic_srsmatrix<double>, basic_rvector<double> >
 
 template <>
 CVM_API void __poequ<float, basic_schmatrix<float, std::complex<float> >, basic_rvector<float> >
-    (const basic_schmatrix<float, std::complex<float> >& m,
-     basic_rvector<float>& vScalings,
-     float& dCond,
-     float& dMax) {
+    (const basic_schmatrix<float, std::complex<float> >& m, basic_rvector<float>& vScalings,
+     float& dCond, float& dMax) {
     tint nOutInfo = 0;
     CPOEQU(m._pm(), m, m._pld(), vScalings, &dCond, &dMax, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
@@ -500,10 +498,8 @@ CVM_API void __poequ<float, basic_schmatrix<float, std::complex<float> >, basic_
 
 template <>
 CVM_API void __poequ<double, basic_schmatrix<double, std::complex<double> >, basic_rvector<double> >
-    (const basic_schmatrix<double, std::complex<double> >& m,
-     basic_rvector<double>& vScalings,
-     double& dCond,
-     double& dMax) {
+    (const basic_schmatrix<double, std::complex<double> >& m, basic_rvector<double>& vScalings,
+     double& dCond, double& dMax) {
     tint nOutInfo = 0;
     ZPOEQU(m._pm(), m, m._pld(), vScalings, &dCond, &dMax, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
