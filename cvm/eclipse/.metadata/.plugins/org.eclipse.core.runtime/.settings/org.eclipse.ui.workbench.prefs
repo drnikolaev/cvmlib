@@ -1,4 +1,9 @@
 //org.eclipse.ui.commands/state/com.perforce.team.ui.commands.showStreams.radio/org.eclipse.ui.commands.radioState=Tree
 //org.eclipse.ui.commands/state/org.eclipse.ui.navigator.resources.nested.changeProjectPresentation/org.eclipse.ui.commands.radioState=false
+ColorsAndFontsPreferencePage.expandedCategories=Torg.eclipse.cdt.ui.presentation\tTorg.eclipse.cdt.ui.CEditor.presentation
+ColorsAndFontsPreferencePage.selectedElement=Forg.eclipse.cdt.ui.editors.textfont
 eclipse.preferences.version=1
+org.eclipse.cdt.internal.ui.compare.AsmMergeViewer=1|Meslo LG S DZ|10.5|0|GTK|1|;
+org.eclipse.cdt.internal.ui.compare.CMergeViewer=1|Meslo LG S DZ|10.5|0|GTK|1|;
+org.eclipse.cdt.ui.editors.textfont=1|Meslo LG S DZ|10.5|0|GTK|1|;
 org.eclipse.ui.commands=<?xml version\="1.0" encoding\="UTF-8"?>\n<org.eclipse.ui.commands/>

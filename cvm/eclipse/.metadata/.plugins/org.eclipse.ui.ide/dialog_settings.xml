@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<section name="ChooseWorkspaceDialogSettings">
-		<item value="252" key="DIALOG_Y_ORIGIN"/>
-		<item value="400" key="DIALOG_X_ORIGIN"/>
+	<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+		<item value="/home/snikolaev/cvmlib/cvm/eclipse"/>
+	</list>
+	<section name="CleanDialogSettings">
+		<item value="565" key="DIALOG_WIDTH"/>
+		<item value="true" key="TOGGLE_SELECTED"/>
+		<item value="382" key="DIALOG_HEIGHT"/>
+		<item value="259" key="DIALOG_Y_ORIGIN"/>
+		<item value="525" key="DIALOG_X_ORIGIN"/>
 	</section>
 	<section name="ExternalProjectImportWizard">
-		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
-		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
 			<item value="/home/sam/cvmlib/cvm/eclipse"/>
 		</list>
@@ -19,11 +25,8 @@
 		<list key="ENABLED_TRANSFERS">
 		</list>
 	</section>
-	<section name="CleanDialogSettings">
-		<item value="565" key="DIALOG_WIDTH"/>
-		<item value="259" key="DIALOG_Y_ORIGIN"/>
-		<item value="382" key="DIALOG_HEIGHT"/>
-		<item value="525" key="DIALOG_X_ORIGIN"/>
-		<item value="true" key="TOGGLE_SELECTED"/>
+	<section name="ChooseWorkspaceDialogSettings">
+		<item value="252" key="DIALOG_Y_ORIGIN"/>
+		<item value="400" key="DIALOG_X_ORIGIN"/>
 	</section>
 </section>

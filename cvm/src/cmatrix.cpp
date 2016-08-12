@@ -1063,7 +1063,7 @@ __gels<basic_cmatrix<float, std::complex<float> >, basic_cvector<float, std::com
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     // collecting residuals if applicable
-    vErr.set(0.);
+    vErr.set(std::complex<float>(0.F));
     if ((!transpose && nM > nN) || (transpose && nM < nN)) {
         for (tint col = CVM0; col < nrhs + CVM0; col++) {
             for (tint row = nL + CVM0; row < nK + CVM0; row++) {
@@ -1116,7 +1116,7 @@ __gels<basic_cmatrix<double, std::complex<double> >, basic_cvector<double, std::
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
     // collecting residuals if applicable
-    vErr.set(0.);
+    vErr.set(std::complex<double>(0.));
     if ((!transpose && nM > nN) || (transpose && nM < nN)) {
         for (tint col = CVM0; col < nrhs + CVM0; col++) {
             for (tint row = nL + CVM0; row < nK + CVM0; row++) {

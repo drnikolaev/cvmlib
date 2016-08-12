@@ -12,7 +12,7 @@
  * @date May 17th, 2016
  *
  * This C++ class library encapsulates concepts of vector and different matrices
- * including square, band, symmetric and hermitian ones in Euclidean space
+ * including square, band, symmetric and Hermitian ones in Euclidean space
  * of real and complex numbers. It utilizes BLAS and LAPACK Fortran libraries
  * in order to achieve the best numerical performance possible.
  * Along with basic vector and matrix arithmetic it implements different algorithms
@@ -83,7 +83,7 @@
 #   include <memory>
 
 #   if (_MSC_VER < 1400)
-#       error "Please use stable version 5.2 for older MSVC compilers"
+#       error "Please use version 5.2 for older MSVC compilers"
 #   endif
 #   if (_MSC_VER >= 1700)  // since VC11 aka MS Visual Studio 2012
 #       define CVM_STD_MUTEX
@@ -277,8 +277,8 @@ using CVM_PTR_WRAPPER = unsigned long;
 #define CVM_SUBMATRIXACCESSERROR         18 //!< Error code for "Attempt to access non-continuous submatrix as a continuous array, see programmer's reference for details"
 #define CVM_SUBMATRIXNOTAVAILABLE        19 //!< Error code for "Submatrix instantiation is not available for class '%s', see programmer's reference for details"
 #define CVM_MATRIXNOTSYMMETRIC           20 //!< Error code for "The matrix passed doesn't appear to be symmetric"
-#define CVM_MATRIXNOTHERMITIAN           21 //!< Error code for "The matrix passed doesn't appear to be hermitian (%g vs. tolerance %g)"
-#define CVM_BREAKS_HERMITIANITY          22 //!< Error code for "This operation could make the matrix non-hermitian. Use %s instead"
+#define CVM_MATRIXNOTHERMITIAN           21 //!< Error code for "The matrix passed doesn't appear to be Hermitian (%g vs. tolerance %g)"
+#define CVM_BREAKS_HERMITIANITY          22 //!< Error code for "This operation could make the matrix non-Hermitian. Use %s instead"
 #define CVM_METHODNOTAVAILABLE           23 //!< Error code for "Function '%s' is not available for class '%s'. See programmer's reference for details"
 #define CVM_NOTIMPLEMENTED               24 //!< Error code for "Function '%s' is not implemented"
 #define CVM_CANT_RESIZE_SHARED_MEM       25 //!< Error code for "Can't resize shared memory"
@@ -1307,7 +1307,7 @@ void _set_imag(TC* pDm, tint mnSize, tint mnIncr, TR d) {
  * @brief Read-write access for a particular value
  *
  * This class is used to resctict access to elements of specific matrices
- * like symmetric, hermitian and band ones.
+ * like symmetric, Hermitian and band ones.
  */
 template<typename T, typename TR>
 class type_proxy
@@ -5261,7 +5261,7 @@ These values are the main diagonal of a matrix \f$\Sigma\f$ of the singular valu
 A=U\Sigma V^H
 \f]
 where \f$U\f$ and \f$V\f$ are orthogonal for real \f$A\f$ and unitary for complex \f$A\f$.
-\f$V^H\f$ is transposed \f$V\f$ for real one and hermitian conjugated \f$V\f$ for complex one.
+\f$V^H\f$ is transposed \f$V\f$ for real one and Hermitian conjugated \f$V\f$ for complex one.
 First \f$\min(m, n)\f$ columns of matrices \f$U\f$ and \f$V\f$ are left and right singular
 vectors of \f$A\f$ respectively. Singular values and singular vectors satisfy
 \f[
@@ -5338,7 +5338,7 @@ These values are the main diagonal of a matrix \f$\Sigma\f$ of the singular valu
 A=U\Sigma V^H
 \f]
 where \f$U\f$ and \f$V\f$ are orthogonal for real \f$A\f$ and unitary for complex \f$A\f$.
-\f$V^H\f$ is transposed \f$V\f$ for real one and hermitian conjugated \f$V\f$ for complex one.
+\f$V^H\f$ is transposed \f$V\f$ for real one and Hermitian conjugated \f$V\f$ for complex one.
 First \f$\min(m, n)\f$ columns of matrices \f$U\f$ and \f$V\f$ are left and right singular
 vectors of \f$A\f$ respectively. Singular values and singular vectors satisfy
 \f[
@@ -5415,7 +5415,7 @@ These values are the main diagonal of a matrix \f$\Sigma\f$ of the singular valu
 A=U\Sigma V^H
 \f]
 where \f$U\f$ and \f$V\f$ are orthogonal for real \f$A\f$ and unitary for complex \f$A\f$.
-\f$V^H\f$ is transposed \f$V\f$ for real one and hermitian conjugated \f$V\f$ for complex one.
+\f$V^H\f$ is transposed \f$V\f$ for real one and Hermitian conjugated \f$V\f$ for complex one.
 First \f$\min(m, n)\f$ columns of matrices \f$U\f$ and \f$V\f$ are left and right singular
 vectors of \f$A\f$ respectively. Singular values and singular vectors satisfy
 \f[
@@ -5498,7 +5498,7 @@ These values are the main diagonal of a matrix \f$\Sigma\f$ of the singular valu
 A=U\Sigma V^H
 \f]
 where \f$U\f$ and \f$V\f$ are orthogonal for real \f$A\f$ and unitary for complex \f$A\f$.
-\f$V^H\f$ is transposed \f$V\f$ for real one and hermitian conjugated \f$V\f$ for complex one.
+\f$V^H\f$ is transposed \f$V\f$ for real one and Hermitian conjugated \f$V\f$ for complex one.
 First \f$\min(m, n)\f$ columns of matrices \f$U\f$ and \f$V\f$ are left and right singular
 vectors of \f$A\f$ respectively. Singular values and singular vectors satisfy
 \f[
@@ -5727,12 +5727,12 @@ prints
         return *this;
     }
 
-// we don't use _eig here since this is the special case - hermitian matrix
+// we don't use _eig here since this is the special case - Hermitian matrix
 /**
 @brief Eigenvalues
 
 Solves symmetric eigenvalue problem and sets calling vector to be equal to eigenvalues
-of hermitian matrix \c mA.
+of Hermitian matrix \c mA.
 The symmetric eigenvalue problem is defined as follows: given symmetric
 or Hermitian matrix \f$A\f$, find the eigenvalues \f$\lambda\f$ and the corresponding
 eigenvectors \f$z\f$ that satisfy the equation
@@ -5810,7 +5810,7 @@ prints
 @brief Eigenvalues
 
 Solves symmetric eigenvalue problem and sets calling vector to be equal to eigenvalues
-of hermitian matrix \c mA.
+of Hermitian matrix \c mA.
 The symmetric eigenvalue problem is defined as follows: given symmetric
 or Hermitian matrix \f$A\f$, find the eigenvalues \f$\lambda\f$ and the corresponding
 eigenvectors \f$z\f$ that satisfy the equation
@@ -9959,6 +9959,9 @@ destroyed but rather moved to a calling object <tt>a</tt>.
     }
 
 public:
+
+    virtual ~Matrix() {}
+
 /**
 @brief Number of rows
 
@@ -10616,6 +10619,8 @@ prints
 \endcode
 */
     basic_rmatrix() {}
+
+    virtual ~basic_rmatrix() {}
 
 /**
 @brief Constructor
@@ -12694,7 +12699,7 @@ These values are the main diagonal of a matrix \f$\Sigma\f$ of the singular valu
 A=U\Sigma V^H
 \f]
 where \f$U\f$ and \f$V\f$ are orthogonal for real \f$A\f$ and unitary for complex \f$A\f$.
-\f$V^H\f$ is transposed \f$V\f$ for real one and hermitian conjugated \f$V\f$ for complex one.
+\f$V^H\f$ is transposed \f$V\f$ for real one and Hermitian conjugated \f$V\f$ for complex one.
 First \f$\min(m, n)\f$ columns of matrices \f$U\f$ and \f$V\f$ are left and right singular
 vectors of \f$A\f$ respectively. Singular values and singular vectors satisfy
 \f[
@@ -12742,7 +12747,7 @@ These values are the main diagonal of a matrix \f$\Sigma\f$ of the singular valu
 A=U\Sigma V^H
 \f]
 where \f$U\f$ and \f$V\f$ are orthogonal for real \f$A\f$ and unitary for complex \f$A\f$.
-\f$V^H\f$ is transposed \f$V\f$ for real one and hermitian conjugated \f$V\f$ for complex one.
+\f$V^H\f$ is transposed \f$V\f$ for real one and Hermitian conjugated \f$V\f$ for complex one.
 First \f$\min(m, n)\f$ columns of matrices \f$U\f$ and \f$V\f$ are left and right singular
 vectors of \f$A\f$ respectively. Singular values and singular vectors satisfy
 \f[
@@ -14809,6 +14814,8 @@ prints
 */
     basic_srmatrix() {}
 
+    virtual ~basic_srmatrix() {}
+
 /**
 @brief Constructor
 
@@ -15875,6 +15882,7 @@ prints
         return this->transpose();
     }
 
+    // TODO dox
     basic_srmatrix& transpose() {
         this->_transp();
         return *this;
@@ -15999,6 +16007,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     basic_srmatrix& swap_rows(tint n1, tint n2) throw(cvmexception) {
         this->_swap_rows(n1, n2);
         return *this;
@@ -18199,6 +18208,8 @@ prints
 */
     basic_cmatrix() {}
 
+    virtual ~basic_cmatrix() {}
+
 /**
 @brief Constructor
 
@@ -18539,8 +18550,6 @@ prints
                    nHeight, nWidth, m.ld(), nHeight * nWidth) {
         m._check_submatrix();
     }
-
-
 
 // TODO dox, test
 #if defined(CVM_USE_INITIALIZER_LISTS)
@@ -19988,7 +19997,7 @@ prints
 /**
 @brief Matrix conjugation
 
-Creates an object of type \c cmatrix as hermitian conjugated calling matrix.
+Creates an object of type \c cmatrix as Hermitian conjugated calling matrix.
 \par Example:
 \code
 using namespace cvm;
@@ -20921,7 +20930,7 @@ These values are the main diagonal of a matrix \f$\Sigma\f$ of the singular valu
 A=U\Sigma V^H
 \f]
 where \f$U\f$ and \f$V\f$ are orthogonal for real \f$A\f$ and unitary for complex \f$A\f$.
-\f$V^H\f$ is transposed \f$V\f$ for real one and hermitian conjugated \f$V\f$ for complex one.
+\f$V^H\f$ is transposed \f$V\f$ for real one and Hermitian conjugated \f$V\f$ for complex one.
 First \f$\min(m, n)\f$ columns of matrices \f$U\f$ and \f$V\f$ are left and right singular
 vectors of \f$A\f$ respectively. Singular values and singular vectors satisfy
 \f[
@@ -20993,7 +21002,7 @@ These values are the main diagonal of a matrix \f$\Sigma\f$ of the singular valu
 A=U\Sigma V^H
 \f]
 where \f$U\f$ and \f$V\f$ are orthogonal for real \f$A\f$ and unitary for complex \f$A\f$.
-\f$V^H\f$ is transposed \f$V\f$ for real one and hermitian conjugated \f$V\f$ for complex one.
+\f$V^H\f$ is transposed \f$V\f$ for real one and Hermitian conjugated \f$V\f$ for complex one.
 First \f$\min(m, n)\f$ columns of matrices \f$U\f$ and \f$V\f$ are left and right singular
 vectors of \f$A\f$ respectively. Singular values and singular vectors satisfy
 \f[
@@ -22660,9 +22669,9 @@ prints
         return *this;
     }
 
-// this = alpha*a*b + beta*this of this = alpha*b*a + beta*this  where a is hermitian
+// this = alpha*a*b + beta*this of this = alpha*b*a + beta*this  where a is Hermitian
 /**
-@brief Generic hermitian matrix-matrix operation
+@brief Generic Hermitian matrix-matrix operation
 
 Calls one of \c ZHEMM routines of the BLAS library performing one of
 matrix-matrix operations defined as
@@ -22671,7 +22680,7 @@ M=\alpha\,M_s\cdot M_1 + \beta M\quad\text{or}\quad M=\alpha\,M_1\cdot M_s + \be
 \f]
 where \f$\alpha\f$ and \f$\beta\f$ are complex numbers
 (parameters \c cAlpha and \c cBeta), \f$M\f$ is calling matrix,
-\f$M_s\f$ is hermitian matrix and \f$M_1\f$ is complex matrix (parameters \c ms
+\f$M_s\f$ is Hermitian matrix and \f$M_1\f$ is complex matrix (parameters \c ms
 and \c m respectively).
 First operation is performed if \c bLeft passed is \c true and second one otherwise.
 Function returns a reference to the matrix changed and throws \ref cvmexception
@@ -22864,7 +22873,7 @@ prints
                                   dAlpha, *this, dBeta);
     }
 
-    // this = alpha*a*b + beta*this or this = alpha*b*a + beta*this  where a is hermitian
+    // this = alpha*a*b + beta*this or this = alpha*b*a + beta*this  where a is Hermitian
     void _hemm(bool bLeft, const basic_schmatrix<TR,TC>& ms,
                const basic_cmatrix& m, TC dAlpha, TC dBeta) throw(cvmexception) {
         basic_cmatrix mTmp;
@@ -23217,6 +23226,8 @@ prints
 */
     basic_scmatrix() {}
 
+    virtual ~basic_scmatrix() {}
+
 /**
 @brief Constructor
 
@@ -23249,7 +23260,7 @@ prints
 
 
 
-// TODO dox
+// TODO dox, test
 #if defined(CVM_USE_INITIALIZER_LISTS)
     basic_scmatrix(tint nDim, const std::initializer_list<TR>& list)
       : BaseCMatrix(nDim, nDim, list)
@@ -23585,6 +23596,7 @@ prints
         m._check_submatrix();
     }
 
+    // TODO dox
     // real part
     const basic_srmatrix<TR> real() const {
         basic_srmatrix<TR> mRet(this->msize());
@@ -24535,6 +24547,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     basic_scmatrix& normalize() {
         this->_normalize();
         return *this;
@@ -24584,7 +24597,7 @@ prints
 /**
 @brief Matrix conjugation
 
-Creates an object of type \c scmatrix as hermitian conjugated calling matrix.
+Creates an object of type \c scmatrix as Hermitian conjugated calling matrix.
 \par Example:
 \code
 using namespace cvm;
@@ -24669,7 +24682,7 @@ prints
 /**
 @brief Matrix conjugation
 
-Sets calling matrix to be equal to square complex matrix \c m hermitian conjugated.
+Sets calling matrix to be equal to square complex matrix \c m Hermitian conjugated.
 Function throws \ref cvmexception in case of not appropriate sizes of the operands.
 \par Example:
 \code
@@ -24755,7 +24768,7 @@ prints
 /**
 @brief Matrix conjugation (in-place)
 
-Makes calling square complex matrix to be equal to hermitian conjugated itself.
+Makes calling square complex matrix to be equal to Hermitian conjugated itself.
 Function throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
@@ -24795,6 +24808,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     CVector operator * (const CVector& v) const throw(cvmexception) {
         return this->BaseCMatrix::operator * (v);
     }
@@ -24911,6 +24925,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     basic_scmatrix& swap_rows(tint n1, tint n2) throw(cvmexception) {
         this->_swap_rows(n1, n2);
         return *this;
@@ -25057,7 +25072,7 @@ prints
 
 // 6.1: conjugate added
 /**
-@brief Linear solver (hermitian conjugated)
+@brief Linear solver (Hermitian conjugated)
 
 Creates \ref cvector object as solution \f$x\f$ of linear equation
 \f$A^H*x=b\f$ where calling matrix is square complex matrix \f$A\f$
@@ -25252,7 +25267,7 @@ prints
 
 // 6.1: conjugate added
 /**
-@brief Linear solver (hermitian conjugated)
+@brief Linear solver (Hermitian conjugated)
 
 Creates \ref cvector object as solution \f$x\f$ of linear equation
 \f$A^H*x=b\f$ where calling matrix is square complex matrix \f$A\f$
@@ -25450,7 +25465,7 @@ prints
 
 // 6.1: conjugate added
 /**
-@brief Linear solver (hermitian conjugated)
+@brief Linear solver (Hermitian conjugated)
 
 Creates \ref cmatrix object as solution \f$X\f$ of
 matrix linear equation \f$A^H*X=B\f$  (which is equivalent to \f$X^H*A=B^H\f$)
@@ -25646,7 +25661,7 @@ prints
 
 // 6.1: conjugate added
 /**
-@brief Linear solver (hermitian conjugated)
+@brief Linear solver (Hermitian conjugated)
 
 Creates \ref cmatrix object as solution \f$X\f$ of
 matrix linear equation \f$A^H*X=B\f$  (which is equivalent to \f$X^H*A=B^H\f$)
@@ -26925,14 +26940,14 @@ prints
 /**
 @brief Cholesky factorization
 
-Forms the Cholesky factorization of hermitian positive-definite complex matrix \f$A\f$ defined as
+Forms the Cholesky factorization of Hermitian positive-definite complex matrix \f$A\f$ defined as
 \f[
 A=U^T U,
 \f]
 where \f$U\f$ is upper triangular matrix.
 It utilizes one of \c ZPOTRF routines of the
 \c LAPACK library. Function sets calling matrix to be equal to the factorization
-of hermitian positive-definite matrix \c m.
+of Hermitian positive-definite matrix \c m.
 Function throws \ref cvmexception in case of inappropriate sizes of the operands
 or in case of convergence error.
 \par Example:
@@ -26980,7 +26995,7 @@ prints
 /**
 @brief Bunch-Kaufman factorization
 
-Forms the Bunch-Kaufman factorization of hermitian matrix (cited from the MKL library documentation):
+Forms the Bunch-Kaufman factorization of Hermitian matrix (cited from the MKL library documentation):
 \f[
 A=PUDU^TP^T,
 \f]
@@ -29066,6 +29081,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     basic_srbmatrix& transpose() throw(cvmexception) {
         this->_transp();
         return *this;
@@ -29162,6 +29178,7 @@ prints
                                _cvm_min<tint>(this->msize() - 1, this->usize() + m.usize()));
     }
 
+    // TODO dox
     // 6.1: reversed vector operator % returns solution of A*X=B equation
     // overridden to mask out operator / (TR)
     RVector operator / (const RVector& v) const throw(cvmexception) {
@@ -29266,6 +29283,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     basic_srbmatrix low_up(tint* nPivots) const throw(cvmexception) {
         basic_srbmatrix mRes(*this);
         mRes._low_up(nPivots);
@@ -29315,6 +29333,7 @@ prints
         return this->_bnorminf();
     }
 
+    // TODO dox
     // ATTENTION!!! This is not a good idea to use the following function. It's provided for
     // overriding of basic_rmatrix<TR>::mult only
     // this = m1 * m2
@@ -30082,6 +30101,7 @@ prints
         __copy2<TR,TC>(this->get(), this->size(), this->incr(), mRe, mIm, mRe.incr(), mIm.incr());
     }
 
+    // TODO dox
     // real part
     const basic_srbmatrix<TR> real() const {
         basic_srbmatrix<TR> mRet(this->msize(), this->lsize(), this->usize());
@@ -30153,6 +30173,7 @@ destroyed but rather moved to a calling object <tt>a</tt>.
         return *this;
     }
 
+    // TODO dox
     // assigns vector
     basic_scbmatrix& assign(const CVector& v) throw(cvmexception) {
         _check_gt(CVM_SIZESMISMATCH_GT, this->size(), v.size());
@@ -30239,6 +30260,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     // fills real part
     basic_scbmatrix& set_real(TR d) {
         this->_set_real_number(d);
@@ -30961,7 +30983,7 @@ prints
         return mRes.transpose();
     }
 
-    // hermitian conjugated matrix
+    // Hermitian conjugated matrix
     basic_scbmatrix operator ~ () const throw(cvmexception) {
         basic_scbmatrix mRes(*this);
         return mRes.conj();
@@ -31020,7 +31042,7 @@ prints
     }
 
 /**
-@brief Matrix hermitian conjugation
+@brief Matrix Hermitian conjugation
 
 Sets calling complex square band matrix to be equal to complex square band matrix \c m conjugated.
 Function throws \ref cvmexception in case of not appropriate sizes of the operands.
@@ -31070,6 +31092,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     // 6.1: transposed (not conjugated) matrix
     basic_scbmatrix& transpose() throw(cvmexception) {
         this->_transp();
@@ -31171,6 +31194,7 @@ prints
                                _cvm_min<tint>(this->msize() - 1, this->usize() + m.usize()));
     }
 
+    // TODO dox
     // 6.1: reversed vector operator % returns solution of A*X=B equation
     // overridden to mask out operator / (TC)
     CVector operator / (const CVector& v) const throw(cvmexception) {
@@ -31190,7 +31214,7 @@ triangular matrix with unit diagonal
 elements and \f$U\f$ is upper triangular matrix.
 Function stores result as the matrix \f$L\f$ without
 main diagonal combined with \f$U\f$. Function
-returns pivot indices as  array of integers
+returns pivot indices as an array of integers
 (it should support at least \ref msize() elements)
 pointed to by \c nPivots so \f$i\f$-th row
 was interchanged with \c nPivots[\f$i\f$]-th row.
@@ -31275,6 +31299,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     basic_scbmatrix low_up(tint* nPivots) const throw(cvmexception) {
         basic_scbmatrix mRes(*this);
         mRes._low_up(nPivots);
@@ -31327,6 +31352,7 @@ prints
         return this->_bnorminf();
     }
 
+    // TODO dox
     // ATTENTION!!! This is not a good idea to use the following function. It's provided for
     // overriding of basic_rmatrix<TR>::mult only
     basic_scbmatrix& mult(const BaseCMatrix& m1, const BaseCMatrix& m2) throw(cvmexception) {
@@ -32142,6 +32168,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     basic_srsmatrix& set(TR d) {
         this->_set(d);
         return *this;
@@ -32216,6 +32243,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     basic_srsmatrix& resize(tint nNewDim) throw(cvmexception) {
         this->_resize2(nNewDim, nNewDim);
         return *this;
@@ -32667,6 +32695,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     RVector operator * (const RVector& v) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), v.size());
         RVector vRes(this->msize());
@@ -32730,6 +32759,7 @@ prints
         return mRes;
     }
 
+    // TODO dox
     // 6.1: reversed vector operator % returns solution of A*X=B equation
     // overridden to mask out operator / (TR)
     RVector operator / (const RVector& v) const throw(cvmexception) {
@@ -33517,6 +33547,7 @@ when argument is symmetric but not positive-definite.
         return mRes;
     }
 
+    // TODO dox
     basic_srsmatrix& identity() {
         this->_vanish();
         this->_plus_plus();
@@ -33826,7 +33857,7 @@ protected:
 
 
 /**
-@brief End-user class encapsulating hermitian matrix of complex numbers
+@brief End-user class encapsulating Hermitian matrix of complex numbers
 
 \c TR type stands for \ref treal, \c TC type stands for \ref tcomplex.
 Please use predefined \ref schmatrix class in your applications.
@@ -33845,7 +33876,7 @@ public:
 /**
 @brief Default constructor
 
-Creates empty hermitian matrix. No memory gets allocated.
+Creates empty Hermitian matrix. No memory gets allocated.
 \par Example:
 \code
 using namespace cvm;
@@ -33900,12 +33931,12 @@ prints
 
 Creates \f$n\times n\f$ \ref schmatrix object where \f$n\f$ is passed in \c nDim parameter.
 It throws \ref cvmexception in case of non-positive size passed or
-if the matrix created doesn't appear to be hermitian.
+if the matrix created doesn't appear to be Hermitian.
 Hermiticity tolerance is set by parameter \c tol.
 Unlike others, this constructor <b>does not allocate memory</b>.
 It just shares memory with an array pointed to by \c pd (for matrices \c nIncr=1 is always satisfied).
 If subsequent application flow would change the array passed so
-it becomes not hermitian matrix anymore then results are not predictable.
+it becomes not Hermitian matrix anymore then results are not predictable.
 \par Example:
 \code
 using namespace cvm;
@@ -33941,7 +33972,7 @@ prints
 
 Creates \f$n\times n\f$ \ref schmatrix object where \f$n\f$ is passed in \c nDim parameter.
 Constructor throws \ref cvmexception in case of non-positive sizes passed or
-if the matrix created doesn't appear to be hermitian.
+if the matrix created doesn't appear to be Hermitian.
 Hermiticity tolerance is set by parameter \c tol.
 This is const version,
 it allocates memory and copies every element (deep copy) from external array pointed to by \c pd parameter.
@@ -33979,7 +34010,7 @@ prints
 /**
 @brief Copy constructor
 
-Creates \ref schmatrix object as a copy of hermitian matrix \c m.
+Creates \ref schmatrix object as a copy of Hermitian matrix \c m.
 It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
@@ -34037,7 +34068,7 @@ destroyed but rather moved to newly created object <tt>a</tt>.
 
 Creates \ref schmatrix object as a copy of complex matrix \c m.
 It's assumed that \f$m\times n\f$ matrix \c m must have equal
-sizes, i.e. \f$m = n\f$ is satisfied, and must be hermitian.
+sizes, i.e. \f$m = n\f$ is satisfied, and must be Hermitian.
 Hermiticity tolerance is set by parameter \c tol.
 Constructor throws \ref cvmexception if this is not true or in case of memory allocation failure.
 \par Example:
@@ -34129,7 +34160,7 @@ Creates \c schmatrix object of dimension \c nDim and copies every
 element of an arrays pointed to by \c pRe and \c pIm to real and imaginary part
 of the matrix created respectively.
 Use \c nullptr pointer to fill up appropriate part with zero values.
-Contructor checks that the matrix is hermitian and throws \ref cvmexception otherwise.
+Contructor checks that the matrix is Hermitian and throws \ref cvmexception otherwise.
 Hermiticity tolerance is set by parameter \c tol.
 Constructor also throws \ref cvmexception in case of memory allocation failure.
 \par Example:
@@ -34162,7 +34193,7 @@ prints
 Creates \ref schmatrix object of dimension \c mRe.msize()
 (if it differs from \c mIm.msize() then constructor throws \ref cvmexception)
 and copies matrices \c mRe and \c mIm to real and imaginary part of the matrix created respectively.
-Contructor checks that the matrix is hermitian and throws \ref cvmexception otherwise.
+Contructor checks that the matrix is Hermitian and throws \ref cvmexception otherwise.
 Hermiticity tolerance is set by parameter \c tol.
 Constructor also throws \ref cvmexception in case of memory allocation failure.
 \par Example:
@@ -34193,7 +34224,7 @@ prints
 /**
 @brief Submatrix constructor
 
-Creates \ref schmatrix object as submatrix of hermitian matrix \c m.
+Creates \ref schmatrix object as submatrix of Hermitian matrix \c m.
 It means that the object created shares memory with some part
 of \c m. This part is defined by its upper left corner (parameter
 \c nRowCol, \ref CVM0 based) and its dimension (parameter \c nDim).
@@ -34252,6 +34283,7 @@ prints
         return this->_diag(nDiag);
     }
 
+    // TODO dox
     // real part (symmetric)
     const basic_srsmatrix<TR> real() const {
         basic_srsmatrix<TR> mRet(this->msize());
@@ -34272,7 +34304,7 @@ prints
 @brief Assignment operator
 
 Sets every element of a calling \ref schmatrix to be equal to
-appropriate element of hermitian matrix \c m and returns a reference to
+appropriate element of Hermitian matrix \c m and returns a reference to
 the matrix changed.
 Operator throws \ref cvmexception in case of different matrix dimensions.
 \par Example:
@@ -34328,10 +34360,10 @@ destroyed but rather moved to a calling object <tt>a</tt>.
 /**
 @brief Vector (as array) assignment
 
-Sets every element of a calling hermitian matrix to be equal to appropriate element of \ref rvector \c v as an array.
+Sets every element of a calling Hermitian matrix to be equal to appropriate element of \ref rvector \c v as an array.
 Assignment is performed according to a matrix storage (by columns). It's assumed that vector passed is long
 enough to fill calling matrix. Function throws \ref cvmexception otherwise.
-Function also throws \ref cvmexception if the matrix changed doesn't appear to be hermitian.
+Function also throws \ref cvmexception if the matrix changed doesn't appear to be Hermitian.
 Hermiticity tolerance is set by parameter \c tol.
 \par Example:
 \code
@@ -34363,13 +34395,13 @@ prints
 /**
 @brief External array assignment
 
-Sets every element of a calling hermitian matrix to be equal to
+Sets every element of a calling Hermitian matrix to be equal to
 appropriate element of an array pointed to by parameter \c pd
 and returns a reference to the matrix changed.
 Assignment is performed according to a matrix storage (by columns).
 It's assumed that array passed is long
 enough to fill calling matrix.
-Function throws \ref cvmexception if the matrix changed doesn't appear to be hermitian.
+Function throws \ref cvmexception if the matrix changed doesn't appear to be Hermitian.
 Hermiticity tolerance is set by parameter \c tol.
 \par Example:
 \code
@@ -34399,8 +34431,8 @@ prints
 /**
 @brief Assignment to submatrix
 
-Sets main submatrix of a calling hermitian matrix beginning with row and column
-\c nRowCol to hermitian matrix \c m and
+Sets main submatrix of a calling Hermitian matrix beginning with row and column
+\c nRowCol to Hermitian matrix \c m and
 returns a reference to the matrix changed. Function throws
 \ref cvmexception if \c nRowCol is not positive or matrix \c m doesn't fit.
 Indexes are \ref CVM0 based.
@@ -34423,7 +34455,7 @@ prints
 (0,0) (0,0) (0,0) (0,0) (0,0)
 \endcode
 @param[in] nRowCol Row and column index (\ref CVM0 based).
-@param[in] m Reference to hermitian matrix to assign.
+@param[in] m Reference to Hermitian matrix to assign.
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& assign(tint nRowCol, const basic_schmatrix& m) throw(cvmexception) {
@@ -34434,10 +34466,10 @@ prints
     }
 
 /**
-@brief Sets both elements to keep matrix hermitian
+@brief Sets both elements to keep matrix Hermitian
 
-Sets main submatrix of a calling hermitian matrix beginning with row and column
-\c nRowCol to hermitian matrix \c m and
+Sets main submatrix of a calling Hermitian matrix beginning with row and column
+\c nRowCol to Hermitian matrix \c m and
 returns a reference to the matrix changed. Function throws
 \ref cvmexception if \c nRowCol is out of boundaries (it's \ref CVM0 based).
 \par Example:
@@ -34470,11 +34502,11 @@ prints
 /**
 @brief Sets lower and upper diagonals
 
-Assigns complex vector \c vDiag to \f$i\f$-th diagonal of a calling hermitian matrix
+Assigns complex vector \c vDiag to \f$i\f$-th diagonal of a calling Hermitian matrix
 (\f$i\f$ is passed in \c nDiag parameter),
 where \f$i<0\f$ for lower diagonals and \f$i>0\f$ for upper ones.
 Function also assigns conjugated vector to \f$-i\f$-th diagonal
-(thus calling matrix remains hermitian).
+(thus calling matrix remains Hermitian).
 Function returns a reference to the matrix changed.
 Function throws \ref cvmexception if parameter \c nDiag is equal to zero
 (use \ref set_main_diag() instead), is out of boundaries or if
@@ -34518,7 +34550,7 @@ prints
 /**
 @brief Sets main diagonal
 
-Assigns real vector \c vDiag to main diagonal of a calling hermitian matrix.
+Assigns real vector \c vDiag to main diagonal of a calling Hermitian matrix.
 Function returns a reference to the matrix changed.
 Function throws \ref cvmexception if vector \c vDiag passed
 has size not equal to \ref msize().
@@ -34551,7 +34583,7 @@ prints
 /**
 @brief Assigns real symmetric matrix to real part
 
-Sets real part of a calling hermitian matrix to be equal to
+Sets real part of a calling Hermitian matrix to be equal to
 real symmetric matrix \c mRe. Function returns a reference to
 the matrix changed. It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
@@ -34581,6 +34613,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     // fills real part
     basic_schmatrix& set_real(TR d) {
         this->_set_real_number(d);
@@ -34595,7 +34628,7 @@ prints
 /**
 @brief Matrix comparison
 
-Operator compares calling hermitian matrix with hermitian matrix \c m
+Operator compares calling Hermitian matrix with Hermitian matrix \c m
 and returns \c true if they have same dimensions
 and their appropriate elements differ by not more than
 \ref cvmMachMin() (the smallest normalized positive number).
@@ -34615,7 +34648,7 @@ prints
 1
 \endcode
 @see operator !=()
-@param[in] m hermitian matrix to compare to.
+@param[in] m Hermitian matrix to compare to.
 @return bool Result of comparison.
 */
     bool operator == (const basic_schmatrix& m) const {
@@ -34625,7 +34658,7 @@ prints
 /**
 @brief Matrix comparison
 
-Operator compares calling hermitian matrix with hermitian matrix \c m
+Operator compares calling Hermitian matrix with Hermitian matrix \c m
 and returns \c true if they have different sizes
 or at least one of their appropriate elements differs by more than
 \ref cvmMachMin() (the smallest normalized positive number).
@@ -34656,7 +34689,7 @@ prints
 /**
 @brief Matrix replacement
 
-Destroys calling hermitian matrix, creates a new one as a copy of hermitian matrix \c m
+Destroys calling Hermitian matrix, creates a new one as a copy of Hermitian matrix \c m
 and returns a reference to the matrix changed. Operator throws \ref cvmexception
 in case of memory allocation failure.
 \par Example:
@@ -34697,7 +34730,7 @@ prints
 @brief Addition operator
 
 Creates an object of type \ref schmatrix as a sum of
-a calling hermitian matrix and hermitian matrix \c m.
+a calling Hermitian matrix and Hermitian matrix \c m.
 Operator throws \ref cvmexception
 in case of different sizes of the operands
 or memory allocation failure.
@@ -34733,7 +34766,7 @@ prints
 @brief Subtraction operator
 
 Creates an object of type \ref schmatrix as a difference of
-a calling hermitian matrix and hermitian matrix \c m.
+a calling Hermitian matrix and Hermitian matrix \c m.
 It throws \ref cvmexception in case of different sizes of the operands
 or memory allocation failure.
 \par Example:
@@ -34767,7 +34800,7 @@ prints
 /**
 @brief Sum of matrices
 
-Assigns sum of hermitian matrices \c m1 and \c m2 to a calling hermitian matrix
+Assigns sum of Hermitian matrices \c m1 and \c m2 to a calling Hermitian matrix
 and returns a reference to the matrices changed.
 It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
@@ -34804,7 +34837,7 @@ prints
 /**
 @brief Difference of matrices
 
-Assigns difference of hermitian matrices \c m1 and \c m2 to a calling hermitian matrix
+Assigns difference of Hermitian matrices \c m1 and \c m2 to a calling Hermitian matrix
 and returns a reference to the matrix changed.
 It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
@@ -34841,7 +34874,7 @@ prints
 /**
 @brief Increment operator
 
-Adds \ref schmatrix \c m to a calling hermitian matrix
+Adds \ref schmatrix \c m to a calling Hermitian matrix
 and returns a reference to the matrix changed.
 It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
@@ -34882,7 +34915,7 @@ prints
 /**
 @brief Decrement operator
 
-Subtracts \ref schmatrix \c m from calling hermitian matrix
+Subtracts \ref schmatrix \c m from calling Hermitian matrix
 and returns a reference to the matrix changed.
 It throws \ref cvmexception in case of different sizes of the operands.
 \par Example:
@@ -34920,6 +34953,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     basic_schmatrix operator - () const {
         static const TR mone(-1.);
         basic_schmatrix mRes(*this);
@@ -34998,7 +35032,7 @@ prints
 /**
 @brief Matrix transposition
 
-Creates an object of type \c schmatrix as transposed calling hermitian matrix.
+Creates an object of type \c schmatrix as transposed calling Hermitian matrix.
 \par Example:
 \code
 using namespace cvm;
@@ -35038,7 +35072,7 @@ prints
     }
 
 /**
-@brief Does nothing and returns copy of a calling hermitian matrix.
+@brief Does nothing and returns copy of a calling Hermitian matrix.
 */
     basic_schmatrix operator ~ () const {
         return *this;
@@ -35047,7 +35081,7 @@ prints
 /**
 @brief Matrix transposition
 
-Sets calling hermitian matrix to be equal to hermitian matrix \c m transposed.
+Sets calling Hermitian matrix to be equal to Hermitian matrix \c m transposed.
 Function throws \ref cvmexception in case of not appropriate sizes of the operands.
 \par Example:
 \code
@@ -35089,7 +35123,7 @@ prints
     }
 
 /**
-@brief Assigns hermitian matrix \c m to a calling one and returns a reference to the matrix changed.
+@brief Assigns Hermitian matrix \c m to a calling one and returns a reference to the matrix changed.
 */
     basic_schmatrix& conj(const basic_schmatrix& m) throw(cvmexception) {
         (*this) = m;
@@ -35100,7 +35134,7 @@ prints
 /**
 @brief Matrix transposition (in-place)
 
-Makes calling hermitian matrix to be equal to transposed itself.
+Makes calling Hermitian matrix to be equal to transposed itself.
 Function throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
@@ -35147,6 +35181,7 @@ prints
         return *this;
     }
 
+    // TODO dox
     CVector operator * (const CVector& v) const throw(cvmexception) {
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), v.size());
         CVector vRes(this->msize());
@@ -35167,7 +35202,7 @@ prints
 /**
 @brief Matrix-matrix product
 
-Creates an object of type \ref scmatrix as a product of a calling hermitian matrix and square complex matrix \c m.
+Creates an object of type \ref scmatrix as a product of a calling Hermitian matrix and square complex matrix \c m.
 Operator throws \ref cvmexception if dimension of a calling matrix
 differs from dimension the matrix \c m.
 Use \ref mult() to avoid new object creation.
@@ -35205,6 +35240,7 @@ prints
         return mRes;
     }
 
+    // TODO dox
     // 6.1: reversed vector operator % returns solution of A*X=B equation
     // overridden to mask out operator / (TC)
     CVector operator / (const CVector& v) const throw(cvmexception) {
@@ -35229,7 +35265,7 @@ v_1^* & v_2^* & \cdots & v_n^*
 \end{pmatrix} + \beta A,
 \f]
 where \f$\alpha\f$ and \f$\beta\f$ are real numbers (parameters \c alpha and \c beta),
-\f$A\f$ is calling hermitian matrix and \f$v\f$ is complex vector (parameter \c v).
+\f$A\f$ is calling Hermitian matrix and \f$v\f$ is complex vector (parameter \c v).
 Function returns a reference to the matrix changed and throws \ref cvmexception
 in case of inappropriate sizes of the operands.
 \par Example:
@@ -35277,7 +35313,7 @@ performing rank-1 update matrix-vector operation defined as
 A=\alpha MM^H + \beta A\quad\text{or}\quad A=\alpha M^HM + \beta A.
 \f]
 where \f$\alpha\f$ and \f$\beta\f$ are real numbers (parameters \c alpha and \c beta),
-\f$A\f$ is calling hermitian matrix and \f$M\f$ is complex matrix (parameter \c m).
+\f$A\f$ is calling Hermitian matrix and \f$M\f$ is complex matrix (parameter \c m).
 First operation is performed if \c bTransp passed is \c false and second one otherwise.
 Function returns a reference to the matrix changed and throws \ref cvmexception
 in case of inappropriate sizes of the operands.
@@ -35352,7 +35388,7 @@ performing rank-1 update matrix-vector operation defined as
 A=\alpha v_1 v_2^* + \alpha^* v_2 v_1^* + \beta A,
 \f]
 where \f$\alpha\f$ is complex and \f$\beta\f$ is real number (parameters \c alpha and \c beta),
-\f$A\f$ is calling hermitian matrix and \f$v_1\f$ and \f$v_2\f$ are complex vectors (parameters \c v1 and \c v2).
+\f$A\f$ is calling Hermitian matrix and \f$v_1\f$ and \f$v_2\f$ are complex vectors (parameters \c v1 and \c v2).
 Function returns a reference to the matrix changed and throws \ref cvmexception
 in case of inappropriate sizes of the operands.
 \par Example:
@@ -35414,7 +35450,7 @@ A=\alpha M_1 M_2^H + \alpha^* M_2 M_1^H + \beta A\quad
 A=\alpha M_1^H M_2 + \alpha^* M_2^H M_1 + \beta A.
 \f]
 where \f$\alpha\f$ is complex and \f$\beta\f$ is real number (parameters \c alpha and \c beta),
-\f$A\f$ is calling hermitian matrix and \f$M_1\f$ and \f$M_2\f$ are complex matrices (parameters \c m1 and \c m2).
+\f$A\f$ is calling Hermitian matrix and \f$M_1\f$ and \f$M_2\f$ are complex matrices (parameters \c m1 and \c m2).
 First operation is performed if \c bTransp passed is \c false and second one otherwise.
 Function returns a reference to the matrix changed and throws \ref cvmexception
 in case of inappropriate sizes of the operands.
@@ -35501,7 +35537,7 @@ prints
 /**
 @brief Matrix inversion
 
-This version sets calling matrix to be equal to hermitian matrix \c m inverted.
+This version sets calling matrix to be equal to Hermitian matrix \c m inverted.
 Function throws \ref cvmexception in case of inappropriate
 sizes of the operands or when the matrix to be inverted is close to singular.
 \par Example:
@@ -35538,7 +35574,7 @@ prints
 /**
 @brief Matrix inversion
 
-This version creates \ref schmatrix object equal to a calling hermitian matrix inverted.
+This version creates \ref schmatrix object equal to a calling Hermitian matrix inverted.
 Function throws \ref cvmexception in case of memory allocation failure
 or when the matrix to be inverted is close to singular.
 \par Example:
@@ -35574,7 +35610,7 @@ prints
 /**
 @brief Matrix exponent
 
-Computes exponent of hermitian matrix using Pade approximation defined as
+Computes exponent of Hermitian matrix using Pade approximation defined as
 \f[
 R_{pq}(z)=D_{pq}(z)^{-1}N_{pq}(z)=1+z+\dots+z^p/p!\,,
 \f]
@@ -35588,7 +35624,7 @@ along with the matrix normalizing as described in
 Function uses \ref DMEXP (or \ref SMEXP for \c float version)
 \c FORTRAN subroutine implementing the algorithm.
 This version sets calling matrix to be equal to
-exponent of hermitian matrix \c m and returns a reference to the matrix changed.
+exponent of Hermitian matrix \c m and returns a reference to the matrix changed.
 The algorithm uses parameter \c tol as \f$\varepsilon(p,q)\f$ in order to choose constants \f$p\f$ and \f$q\f$
 so that
 \f[
@@ -35664,7 +35700,7 @@ Matlab output:
 /**
 @brief Matrix exponent
 
-Computes exponent of hermitian matrix using Pade approximation defined as
+Computes exponent of Hermitian matrix using Pade approximation defined as
 \f[
 R_{pq}(z)=D_{pq}(z)^{-1}N_{pq}(z)=1+z+\dots+z^p/p!\,,
 \f]
@@ -35677,7 +35713,7 @@ along with the matrix normalizing as described in
 <em>Gene H. Golub, Charles F. Van Loan. Matrix Computations, The Johns Hopkins University Press, 1996, 694~p., ISBN 0-8018-5413-X</em>, p. 572.
 Function uses \ref DMEXP (or \ref SMEXP for \c float version)
 \c FORTRAN subroutine implementing the algorithm.
-This version creates an object of type \c schmatrix as exponent of a calling hermitian matrix.
+This version creates an object of type \c schmatrix as exponent of a calling Hermitian matrix.
 The algorithm uses parameter \c tol as \f$\varepsilon(p,q)\f$ in order to choose constants \f$p\f$ and \f$q\f$
 so that
 \f[
@@ -35752,7 +35788,7 @@ Matlab output:
 /**
 @brief Matrix polynomial
 
-Computes hermitian matrix polynomial defined as
+Computes Hermitian matrix polynomial defined as
 \f[
 p(A)=b_0I+b_1A+\dots+b_qA^q
 \f]
@@ -35774,7 +35810,7 @@ computes matrix polynomial equal to
 \f[
 \mathtt{v[1]*I + v[2]*m +\cdots + v[v.size()]*m^{v.size()-1}}
 \f]
-This version sets calling matrix to be equal to the polynomial of hermitian matrix \c m.
+This version sets calling matrix to be equal to the polynomial of Hermitian matrix \c m.
 Function uses \ref ZPOLY (or \ref CPOLY for \c float version) \c FORTRAN subroutine implementing the Horner's algorithm.
 Function throws \ref cvmexception in case of inappropriate sizes of the operands.
 \par Example:
@@ -35946,14 +35982,14 @@ Matlab output:
 @brief Eigenvalues and eigenvectors
 
 Solves symmetric eigenvalue problem and creates \ref rvector object equal to eigenvalues
-of a calling hermitian matrix.
-The symmetric eigenvalue problem is defined as follows: given symmetric (hermitian)
+of a calling Hermitian matrix.
+The symmetric eigenvalue problem is defined as follows: given symmetric (Hermitian)
 matrix \f$A\f$, find the eigenvalues \f$\lambda\f$ and the corresponding
 eigenvectors \f$z\f$ that satisfy the equation
 \f[
 Az = \lambda z.
 \f]
-Eigenvalues of hermitian complex matrix \f$A\f$ are real and eigenvectors are complex.
+Eigenvalues of Hermitian complex matrix \f$A\f$ are real and eigenvectors are complex.
 Function sets output parameter \c mEigVect to be equal to square matrix containing eigenvectors as columns.
 Function throws \ref cvmexception
 in case of inappropriate calling object sizes or in case of convergence error.
@@ -35997,7 +36033,7 @@ prints
 */
     RVector eig(BaseSCMatrix& mEigVect) const throw(cvmexception) {
         RVector vEig(this->msize());
-        // we don't use _eig here since this is the special case - hermitian matrix
+        // we don't use _eig here since this is the special case - Hermitian matrix
         __eig<RVector, basic_schmatrix, BaseSCMatrix>(vEig, *this, &mEigVect, true);
         return vEig;
     }
@@ -36006,14 +36042,14 @@ prints
 @brief Eigenvalues
 
 Solves symmetric eigenvalue problem and creates \ref rvector object equal to eigenvalues
-of a calling hermitian matrix.
-The symmetric eigenvalue problem is defined as follows: given symmetric (hermitian)
+of a calling Hermitian matrix.
+The symmetric eigenvalue problem is defined as follows: given symmetric (Hermitian)
 matrix \f$A\f$, find the eigenvalues \f$\lambda\f$ and the corresponding
 eigenvectors \f$z\f$ that satisfy the equation
 \f[
 Az = \lambda z.
 \f]
-Eigenvalues of hermitian complex matrix \f$A\f$ are real.
+Eigenvalues of Hermitian complex matrix \f$A\f$ are real.
 Function throws \ref cvmexception
 in case of memory allocation failure or convergence error.
 \par Example:
@@ -36035,7 +36071,7 @@ prints
 */
     RVector eig() const throw(cvmexception) {
         RVector vEig(this->msize());
-        // we don't use _eig here since this is the special case - hermitian matrix
+        // we don't use _eig here since this is the special case - Hermitian matrix
         __eig<RVector, basic_schmatrix, BaseSCMatrix>(vEig, *this, nullptr, true);
         return vEig;
     }
@@ -36043,7 +36079,7 @@ prints
 /**
 @brief Cholesky factorization
 
-Forms the Cholesky factorization of hermitian positive-definite calling matrix \f$A\f$ defined as
+Forms the Cholesky factorization of Hermitian positive-definite calling matrix \f$A\f$ defined as
 \f[
 A=U^H U,
 \f]
@@ -36092,19 +36128,19 @@ prints
 /**
 @brief Bunch-Kaufman factorization
 
-Forms the Bunch-Kaufman factorization of hermitian calling matrix (cited from the MKL library documentation):
+Forms the Bunch-Kaufman factorization of Hermitian calling matrix (cited from the MKL library documentation):
 \f[
 A=PUDU^HP^H,
 \f]
-where \f$A\f$ is calling hermitian matrix,
+where \f$A\f$ is calling Hermitian matrix,
 \f$P\f$ is a permutation matrix, \f$U\f$ and \f$L\f$ are upper and lower triangular
-matrices with unit diagonal, and \f$D\f$ is a hermitian
+matrices with unit diagonal, and \f$D\f$ is a Hermitian
 block-diagonal matrix with 1-by-1 and 2-by-2
 diagonal blocks. \f$U\f$ and \f$L\f$ have 2-by-2 unit diagonal
 blocks corresponding to the 2-by-2 blocks of \f$D\f$.
 It utilizes one of \c ZHETRF routines of the \c LAPACK library.
 Function creates \ref scmatrix object equal to the factorization
-of hermitian calling matrix.
+of Hermitian calling matrix.
 Function throws \ref cvmexception in case of convergence error.
 Function is mostly designed to be used for subsequent calls
 of \c ZHETRS, \c ZHECON and \c ZHETRI routines of the
@@ -36123,6 +36159,7 @@ when argument is symmetric but not positive-definite.
         return mRes;
     }
 
+    // TODO dox
     basic_schmatrix& identity() {
         this->_vanish();
         this->_plus_plus();
@@ -36150,9 +36187,9 @@ when argument is symmetric but not positive-definite.
     }
 
 /**
-@brief Is calling hermitian matrix positive definite?
+@brief Is calling Hermitian matrix positive definite?
 
-@return \c true if calling hermitian matrix is positive definite.
+@return \c true if calling Hermitian matrix is positive definite.
 */
     bool is_positive_definite() const {
         static const TR zero = TR(0.);
@@ -36284,7 +36321,7 @@ protected:
         this->_sq_transp();
     }
 
-    //6.1: unlike transp, this one does nothing for hermitian matrices
+    //6.1: unlike transp, this one does nothing for Hermitian matrices
     void _conj() override {}
 
     // returns main diagonal of low_up factorization
@@ -36320,7 +36357,7 @@ protected:
         }
     }
 
-    // sets both elements to keep matrix hermitian, checks ranges
+    // sets both elements to keep matrix Hermitian, checks ranges
     // zero based
     void _set_at(tint nRow, tint nCol, TC val) throw(cvmexception) {
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, CVM0, this->msize() + CVM0);
@@ -36642,7 +36679,7 @@ using scmatrix = basic_scmatrix<treal,tcomplex>;  //!< End-user class: square ma
 using srbmatrix = basic_srbmatrix<treal>;  //!< End-user class: square band matrix of \ref treal numbers, see \ref basic_srbmatrix
 using scbmatrix = basic_scbmatrix<treal,tcomplex>;  //!< End-user class: square band matrix of \ref treal complex numbers, see \ref basic_scbmatrix
 using srsmatrix = basic_srsmatrix<treal>;  //!< End-user class: square symmetric matrix of \ref treal numbers, see \ref basic_srsmatrix
-using schmatrix = basic_schmatrix<treal,tcomplex>;  //!< End-user class: square hermitian matrix of \ref treal complex numbers, see \ref basic_schmatrix
+using schmatrix = basic_schmatrix<treal,tcomplex>;  //!< End-user class: square Hermitian matrix of \ref treal complex numbers, see \ref basic_schmatrix
 
 using rvector32 = basic_rvector<float>;  //!< End-user class: vector of 32-bit float numbers, see \ref basic_rvector
 using rmatrix32 = basic_rmatrix<float>;  //!< End-user class: matrix of 32-bit float numbers, see \ref basic_rmatrix
@@ -36653,7 +36690,7 @@ using scmatrix32 = basic_scmatrix<float,std::complex<float>>;  //!< End-user cla
 using srbmatrix32 = basic_srbmatrix<float>;  //!< End-user class: square band matrix of 32-bit float numbers, see \ref basic_srbmatrix
 using scbmatrix32 = basic_scbmatrix<float,std::complex<float>>;  //!< End-user class: square band matrix of 32-bit float complex numbers, see \ref basic_scbmatrix
 using srsmatrix32 = basic_srsmatrix<float>;  //!< End-user class: square symmetric matrix of 32-bit float numbers, see \ref basic_srsmatrix
-using schmatrix32 = basic_schmatrix<float,std::complex<float>>;  //!< End-user class: square hermitian matrix of 32-bit float complex numbers, see \ref basic_schmatrix
+using schmatrix32 = basic_schmatrix<float,std::complex<float>>;  //!< End-user class: square Hermitian matrix of 32-bit float complex numbers, see \ref basic_schmatrix
 
 using rvector64 = basic_rvector<double>;  //!< End-user class: vector of 64-bit double numbers, see \ref basic_rvector
 using rmatrix64 = basic_rmatrix<double>;  //!< End-user class: matrix of 64-bit double numbers, see \ref basic_rmatrix
@@ -36664,7 +36701,7 @@ using scmatrix64 = basic_scmatrix<double,std::complex<double>>;  //!< End-user c
 using srbmatrix64 = basic_srbmatrix<double>;  //!< End-user class: square band matrix of 64-bit double numbers, see \ref basic_srbmatrix
 using scbmatrix64 = basic_scbmatrix<double,std::complex<double>>;  //!< End-user class: square band matrix of 64-bit double complex numbers, see \ref basic_scbmatrix
 using srsmatrix64 = basic_srsmatrix<double>;  //!< End-user class: square symmetric matrix of 64-bit double numbers, see \ref basic_srsmatrix
-using schmatrix64 = basic_schmatrix<double,std::complex<double>>;  //!< End-user class: square hermitian matrix of 64-bit double complex numbers, see \ref basic_schmatrix
+using schmatrix64 = basic_schmatrix<double,std::complex<double>>;  //!< End-user class: square Hermitian matrix of 64-bit double complex numbers, see \ref basic_schmatrix
 
 //! Real identity matrix
 template<typename TR>
