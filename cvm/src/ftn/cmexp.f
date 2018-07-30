@@ -16,35 +16,36 @@ C     A   - matrix (real)(input)
 C     LDA - leading dimesion of A (int)(input)
 C     EA  - exponent of A (real)(output)
 C     LDE - leading dimesion of EA (int)(input)
-C     TOL - tolerance (real)(input)
 C     R   - working array of size NR (real)(input). IT MUST BE FILLED WITH ZEROES
 C     IR  - working array of size NI (int)(input)
 C     NR  - working array R size (int)(input).  IT MUST BE CALCULATED BY 'DMEXPC'
 C     NI  - working array IR size (int)(input). IT MUST BE CALCULATED BY 'DMEXPC'
 C     NQ  - row length (int)(input).            IT MUST BE CALCULATED BY 'DMEXPC'
 C     J   - A measure (int)(input).             IT MUST BE CALCULATED BY 'DMEXPC'
-C     ISSYMM - whether matrix A is symmetric (int)(input). 1 - true, 0 - false
+C     ISHEM  - whether matrix A is hermitian (int)(input). 1 - true, 0 - false
 C     WORK   - working array of size LWORK (real)(input)
 C     LWORK  - length of working array WORK (int)(input) - usually 64 * M
 
-      SUBROUTINE SMEXP (M, A, LDA, EA, LDE, R, IR, NR, NI, NQ, J,
-     1                  ISSYMM, WORK, LWORK)   ! referenced in 
+      SUBROUTINE CMEXP (M, A, LDA, EA, LDE, R, IR, NR, NI, NQ, J,
+     1                  ISHEM, WORK, LWORK)    ! referenced in 
                                                ! symmetric case only
 CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::SMEXP
+CDEC$     ATTRIBUTES DLLEXPORT::CMEXP
 CDEC$ ENDIF
       INTEGER M, LDA, LDE
-      REAL A(LDA*M), EA(LDE*M)
+      COMPLEX A(LDA*M), EA(LDE*M)
       INTEGER NR, NI, NQ, J, LWORK
-      LOGICAL ISSYMM
-      REAL R(NR), WORK(LWORK)
+      LOGICAL ISHEM
+      COMPLEX R(NR), WORK(LWORK)
       INTEGER IR(NI)
 
       INTEGER I, IQ, NQC, NB, INFO, NNR
       INTEGER MM, MM1, MM12, MM13, MM14, MNB, MW
-      REAL ZERO /0./, ONE /1./, TWO /2./
+      REAL TWO /2./
       DOUBLE PRECISION DTWO /2.D0/
-      REAL TJ, C
+      COMPLEX CZERO /(0., 0.)/, CONE /(1., 0.)/
+      COMPLEX TJ
+      REAL C
       CHARACTER TRANS /'N'/
       CHARACTER UPLO /'U'/
       LOGICAL EVEN
@@ -52,11 +53,11 @@ CDEC$ ENDIF
 
       IF (M .LE. 0) RETURN
       IF (M .EQ. 1) THEN
-         EA(1) = EXP (A(1))
+         EA(1) = CEXP (A(1))
          RETURN
       END IF
 
-      TJ   = 1.
+      TJ   = (1., 0.)
       C    = 0.5
 
       MM   = M * M
@@ -75,69 +76,69 @@ CDEC$ ENDIF
 
       EVEN = .TRUE.
       I    = 1
-      R(MM14)       = ONE
-      R(MM14 + NQC) = C
+      R(MM14)       = CONE
+      R(MM14 + NQC) = CMPLX (C)
       DO 40 IQ = 2, NQ
           C = C * FLOAT (NQ - IQ + 1) / FLOAT ((2 * NQ - IQ + 1) * IQ)
 
           IF (EVEN) THEN
-              R(MM14 + I) = C
+              R(MM14 + I) = CMPLX (C)
           ELSE
-              R(MM14 + NQC + I) = C
+              R(MM14 + NQC + I) = CMPLX (C)
               I = I + 1
           ENDIF
 
           EVEN = .NOT. EVEN
 40    CONTINUE
 
-      CALL SCOPYM (M, M, A, LDA, EA, LDE)
+      CALL CCOPYM (M, M, A, LDA, EA, LDE)
       IF (J .GT. 0) THEN
-          TJ = TWO ** FLOAT (-J)
-          CALL SSCALM (M, M, TJ, EA, LDE)
+          TJ = CMPLX (TWO ** FLOAT (-J))
+          CALL CSCALM (M, M, TJ, EA, LDE)
       ENDIF
 
-      CALL SCOPYM (M, M, EA, LDE, R(MM1), M)
-      CALL SGEMM (TRANS, TRANS, M, M, M, ONE, R(MM1), M,
-     1                 EA, LDE, ZERO, R, M)
-      CALL SSCAL (MM, ZERO, R(MM1), 1)
+      CALL CCOPYM (M, M, EA, LDE, R(MM1), M)
+      CALL CGEMM (TRANS, TRANS, M, M, M, CONE, R(MM1), M,
+     1                                       EA, LDE, CZERO, R, M)
+      CALL CSCAL (MM, CZERO, R(MM1), 1)
 
 C     U and V matrices calculation...
-      CALL SPOLY2 (M, R, NQC, R(MM14), R(MM14 + NQC), R(MM1), R(MM12),
-     1                 R(MNB), R(MNB + (NNR + 2) * MM))
-      CALL SCOPYM (M, M, R(MM1), M, EA, LDE)
-      CALL SGEMM  (TRANS, TRANS, M, M, M, TJ,
-     1                 A, LDA, R(MM12), M, ONE, EA, LDE)   ! N matrix
-      CALL SGEMM  (TRANS, TRANS, M, M, M, -TJ,
-     1                 A, LDA, R(MM12), M, ONE, R(MM1), M) ! D matrix
-      CALL SCOPY  (MM, R(MM1), 1, R(MM13), 1)              ! copy of D
-      CALL SCOPYM  (M, M, EA, LDE, R(MM12), M)             ! copy of N
+      CALL CPOLY2 (M, R, NQC, R(MM14), R(MM14 + NQC), R(MM1), R(MM12),
+     1                                  R(MNB), R(MNB + (NNR + 2) * MM))
+      CALL CCOPYM (M, M, R(MM1), M, EA, LDE)
+      CALL CGEMM  (TRANS, TRANS, M, M, M, TJ,
+     1                 A, LDA, R(MM12), M, CONE, EA, LDE)     ! N matrix
+      CALL CGEMM  (TRANS, TRANS, M, M, M, -TJ,
+     1                 A, LDA, R(MM12), M, CONE, R(MM1), M) ! D matrix
+      CALL CCOPY  (MM, R(MM1), 1, R(MM13), 1)            ! copy of D
+      CALL CCOPYM (M, M, EA, LDE, R(MM12), M)            ! copy of N
 
-      IF (ISSYMM) THEN
-          CALL SSYTRF (UPLO, M, R(MM1), M, IR, WORK, LWORK, INFO)
-          CALL SCOPY  (MM, R(MM1), 1, R, 1)              ! copy of LD/UD
-          CALL SSYTRS (UPLO, M, M, R(MM1), M, IR, EA, LDE, INFO)
-          CALL SSYRFS (UPLO, M, M, R(MM13), M, R, M, IR, 
+      IF (ISHEM) THEN
+          CALL CHETRF (UPLO, M, R(MM1), M, IR, WORK, LWORK, INFO)
+          CALL CCOPY  (MM, R(MM1), 1, R, 1)              ! copy of LD/UD
+          CALL CHETRS (UPLO, M, M, R(MM1), M, IR, EA, LDE, INFO)
+          CALL CHERFS (UPLO, M, M, R(MM13), M, R, M, IR, 
      1                 R(MM12), M, EA, LDE, R(MW), R(MW + M),
-     2                 R(MW + 2*M), IR(M + 1), INFO)
+     2                 R(MW + 2*M), WORK, INFO)
       ELSE
-          CALL SGETRF (M, M, R(MM1), M, IR, INFO)       ! factorize
-          CALL SCOPY  (MM, R(MM1), 1, R, 1)             ! copy of LD/UD
+          CALL CGETRF (M, M, R(MM1), M, IR, INFO)        ! factorize
+          CALL CCOPY  (MM, R(MM1), 1, R, 1)              ! copy of LD/UD
           ! F matrix (EA) is  the solution of the equation DF = N
-          CALL SGETRS (TRANS, M, M, R(MM1), M, IR, EA, LDE, INFO)
-          CALL SGERFS (TRANS, M, M, R(MM13), M, R, M, IR,
-     1                 R(MM12), M, EA, LDE, R(MW), R(MW + M),
-     2                 R(MW + 2*M), IR(M + 1), INFO)
+          CALL CGETRS (TRANS, M, M, R(MM1), M, IR, EA, LDE, INFO)
+          CALL CGERFS (TRANS, M, M, R(MM13), M, R, M, IR,
+     1             R(MM12), M, EA, LDE, R(MW), R(MW + M), R(MW + 2*M),
+     2             R(MM1), INFO)
       ENDIF
 
       DO 50 I = 1, J
-          CALL SCOPYM (M, M, EA, LDE, R, M)
-          CALL SCOPYM (M, M, EA, LDE, R(MM1), M)
-          CALL SGEMM (TRANS, TRANS, M, M, M, ONE,
-     1                 R, M, R(MM1), M, ZERO, EA, LDE)     ! F = F * F
+          CALL CCOPYM (M, M, EA, LDE, R, M)
+          CALL CCOPYM (M, M, EA, LDE, R(MM1), M)
+          CALL CGEMM (TRANS, TRANS, M, M, M, CONE,
+     1                 R, M, R(MM1), M, CZERO, EA, LDE)     ! F = F * F
 50    CONTINUE
 
       RETURN
-      END !SUBROUTINE SMEXP
+      END !SUBROUTINE CMEXP
 
 
 C     Input/Output parameters:
@@ -151,12 +152,14 @@ C     NI  - working array IR size (int)(output)
 C     NQ  - row length (int)(output)
 C     J   - A measure (int)(output)
 
-      SUBROUTINE SMEXPC (M, A, LDA, TOL, NR, NI, NQ, J)
+
+      SUBROUTINE CMEXPC (M, A, LDA, TOL, NR, NI, NQ, J)
 CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::SMEXPC
+CDEC$     ATTRIBUTES DLLEXPORT::CMEXPC
 CDEC$ ENDIF
       INTEGER M, LDA
-      REAL A(LDA*M), TOL
+      COMPLEX A(LDA*M)
+      REAL TOL
       INTEGER NR, NI, NQ, J
 
       REAL ANRM, TMP, EQ
@@ -164,14 +167,14 @@ CDEC$ ENDIF
       DOUBLE PRECISION DTWO /2.D0/
       DOUBLE PRECISION DTWOL /0.69314718055994530941723212145818D0/
       INTEGER NB, MM, NQC
-      REAL SINFNM
+      REAL CINFNM
       INTEGER FLOOR, CEILING
       REAL TINY
 
       NI = M * 2
       MM = M * M
 
-      ANRM = SINFNM (M, M, A, LDA) 
+      ANRM = CINFNM (M, M, A, LDA) 
       NQ = 1
       EQ = 0.16666666666666666666666666666667     ! 1/6
       DO 10 WHILE (.TRUE.)
@@ -182,10 +185,10 @@ CDEC$ ENDIF
 10    CONTINUE
 
 15    NQ = NQ + 1
-      
+
       J = 0
       IF (ANRM .GT. TINY (ONE)) THEN
-          J = 1 + CEILING (DLOG (DBLE(ANRM)) / DTWOL)     ! G77 bug fix
+          J = 1 + CEILING (DLOG (DBLE(ANRM)) / DTWOL)
       ENDIF
 
       NQC = FLOOR (DFLOAT (NQ) / DTWO) + 1
@@ -195,15 +198,16 @@ CDEC$ ENDIF
 
       NR  = 4 * MM + 2 * NQC + NB + 5 * M
       RETURN
-      END !SUBROUTINE SMEXPC
+      END !SUBROUTINE CMEXPC
 
 
-      SUBROUTINE SPOLY2 (M, A, N, V1, V2, P1, P2, B, B2)
+
+      SUBROUTINE CPOLY2 (M, A, N, V1, V2, P1, P2, B, B2)
       INTEGER M, N
-      REAL A(M*M), V1(N), V2(N), P1(M*M), P2(M*M)
-      REAL B(1), B2(1)
+      COMPLEX A(M*M), V1(N), V2(N), P1(M*M), P2(M*M), B(1), B2(1)
+      COMPLEX CONE /(1., 0.)/, CZERO /(0., 0.)/
       INTEGER I, K, NS, NR, NQSR, MM, NRM
-      REAL Q, ONE /1./, ZERO /0./
+      REAL Q
       CHARACTER TRANS /'N'/
       INTEGER FLOOR, CEILING
 
@@ -219,7 +223,7 @@ CDEC$ ENDIF
       NQSR = N - 1 - NS * NR        ! q - sr
       NRM  = (NR + 1) * MM + 1      ! the 1st el. of the last matrix
 
-      CALL SCOPY (MM, A, 1, B, 1)   ! the first of these matrices
+      CALL CCOPY (MM, A, 1, B, 1)   ! the first of these matrices
                                     ! will contain powers of A
       DO 20 K = 1, NR
           DO 30 I = 1, MM, M + 1
@@ -229,45 +233,45 @@ CDEC$ ENDIF
 20    CONTINUE
 
       DO 40 I = 1, NS - 1
-          CALL SAXPY (MM, V1(I + 1), B, 1, P1, 1)
-          CALL SAXPY (MM, V2(I + 1), B, 1, P2, 1)
+          CALL CAXPY (MM, V1(I + 1), B, 1, P1, 1)
+          CALL CAXPY (MM, V2(I + 1), B, 1, P2, 1)
 
           DO 50 K = 1, NR - 1
-              CALL SAXPY (MM, V1(NS * K + I + 1), B, 1,
+              CALL CAXPY (MM, V1(NS * K + I + 1), B, 1,
      1                                        B(K * MM + 1), 1)
-              CALL SAXPY (MM, V2(NS * K + I + 1), B, 1,
+              CALL CAXPY (MM, V2(NS * K + I + 1), B, 1,
      1                                        B2((K - 1) * MM + 1), 1)
 50        CONTINUE
 
           IF (I .LE. NQSR) THEN
-              CALL SAXPY (MM, V1(NS * NR + I + 1), B, 1,
+              CALL CAXPY (MM, V1(NS * NR + I + 1), B, 1,
      1                                        B(NR * MM + 1), 1)
-              CALL SAXPY (MM, V2(NS * NR + I + 1), B, 1,
+              CALL CAXPY (MM, V2(NS * NR + I + 1), B, 1,
      1                                        B2((NR - 1) * MM + 1), 1)
           ENDIF
 
-          CALL SCOPY (MM, B, 1, B(NRM), 1)
-          CALL SGEMM (TRANS, TRANS, M, M, M, ONE, B(NRM), M, A, M,
-     1                                           ZERO, B, M)
+          CALL CCOPY (MM, B, 1, B(NRM), 1)
+          CALL CGEMM (TRANS, TRANS, M, M, M, CONE, B(NRM), M, A, M,
+     1                                           CZERO, B, M)
 40    CONTINUE
 
-      CALL SGEMM (TRANS, TRANS, M, M, M, ONE, B(MM + 1), M,
-     1                                           B, M, ONE, P1, M)
-      CALL SGEMM (TRANS, TRANS, M, M, M, ONE, B2, M,
-     1                                           B, M, ONE, P2, M)
+      CALL CGEMM (TRANS, TRANS, M, M, M, CONE, B(MM + 1), M,
+     1                                           B, M, CONE, P1, M)
+      CALL CGEMM (TRANS, TRANS, M, M, M, CONE, B2, M,
+     1                                           B, M, CONE, P2, M)
 
-      IF (NR .GT. 1) CALL SCOPY (MM, B, 1, B(NRM), 1)
+      IF (NR .GT. 1) CALL CCOPY (MM, B, 1, B(NRM), 1)
 
       DO 60 K = 2, NR
-          CALL SCOPY (MM, B, 1, B(MM + 1), 1)
-          CALL SGEMM (TRANS, TRANS, M, M, M, ONE, B(MM + 1), M,
-     1                                           B(NRM), M, ZERO, B, M)
-          CALL SGEMM (TRANS, TRANS, M, M, M, ONE,
-     1                      B(K * MM + 1), M, B, M, ONE, P1, M)
-          CALL SGEMM (TRANS, TRANS, M, M, M, ONE,
-     1                      B2((K - 1) * MM + 1), M, B, M, ONE, P2, M)
+          CALL CCOPY (MM, B, 1, B(MM + 1), 1)
+          CALL CGEMM (TRANS, TRANS, M, M, M, CONE, B(MM + 1), M,
+     1                                         B(NRM), M, CZERO, B, M)
+          CALL CGEMM (TRANS, TRANS, M, M, M, CONE,
+     1                      B(K * MM + 1), M, B, M, CONE, P1, M)
+          CALL CGEMM (TRANS, TRANS, M, M, M, CONE,
+     1                      B2((K - 1) * MM + 1), M, B, M, CONE, P2, M)
 60    CONTINUE
 
       RETURN
-      END !SUBROUTINE SPOLY2
+      END !SUBROUTINE CPOLY2
 

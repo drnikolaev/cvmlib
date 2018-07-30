@@ -321,7 +321,7 @@ TYPED_TEST(LapackTest, TestHerkHermitianComplex2) {
     mh2 = mh;
     mh.herk(false, alpha, m, beta);
     mh2 = alpha * basic_schmatrix<TP,TPC>(m * ~m, 1.e-14) + beta * mh2;
-    EXPECT_NEAR(TP(0.), (mh - mh2).norm(), spp<TP>(2.e-14, 6.)) << "schmatrix::herk";
+    EXPECT_NEAR(TP(0.), (mh - mh2).norm(), spp<TP>(5.e-14, 6.)) << "schmatrix::herk";
 }
 
 TYPED_TEST(LapackTest, TestHerkHermitianComplex3) {
