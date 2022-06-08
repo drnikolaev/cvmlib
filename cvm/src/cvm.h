@@ -207,7 +207,7 @@ using CVM_PTR_WRAPPER = unsigned long;
 #   define CVM_VSNPRINTF vsnprintf
 
 // 5.7 - looking for memset
-#   include <string.h>
+#   include <cstring>
 // gcc 4.6.1 fix for ptrdiff_t
 #   include <cstddef>
 
@@ -226,12 +226,12 @@ using CVM_PTR_WRAPPER = unsigned long;
 #   error "Unsupported compiler"
 #endif
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <math.h>
-#include <float.h>
-#include <time.h>
+//#include <stdlib.h>
+#include <cstdio>
+#include <cstdarg>
+#include <cmath>
+#include <cfloat>
+#include <ctime>
 
 // fix for missing __builtin_clog functions
 #if defined(__INTEL_COMPILER)
@@ -10279,14 +10279,14 @@ protected:
         }
     }
 
+    tint _indofmin() const override {
+      this->_check_ld();
+      return __idamin<TC>(this->get(), this->size(), this->incr());
+    }
+
     tint _indofmax() const override {
         this->_check_ld();
         return __idamax<TC>(this->get(), this->size(), this->incr());
-    }
-
-    tint _indofmin() const override {
-        this->_check_ld();
-        return __idamin<TC>(this->get(), this->size(), this->incr());
     }
 
     void _assign(const TC* pd, tint nIncr) override {

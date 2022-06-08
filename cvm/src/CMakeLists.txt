@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.6)
-project(cvm)
+#project(cvm)
 set(CMAKE_CXX_STANDARD 11)
 set(OUTPUT_PATH  "${CMAKE_CURRENT_SOURCE_DIR}/../../lib64")
 link_directories(${OUTPUT_PATH} ${OUTPUT_PATH}/mac/gf /usr/local/lib)
