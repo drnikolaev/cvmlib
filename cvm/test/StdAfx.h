@@ -11,7 +11,7 @@
 #endif // _MSC_VER > 1000
 
 
-#if defined (_MSC_VER) || defined (__CYGWIN__) || defined (__BORLANDC__)
+#if defined (_MSC_VER) || defined (__CYGWIN__)
     #define WIN32_LEAN_AND_MEAN        // Exclude rarely-used stuff from Windows headers
     #define _WIN32_WINNT 0x500      // at least Win2000 is required for InitializeCriticalSectionAndSpinCount
     #include <windows.h>

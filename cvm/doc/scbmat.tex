@@ -193,7 +193,7 @@ creates  $n\times n$ \verb"scbmatrix" object where $n$ is passed in
 \verb"nMN" parameter. The matrix created has $k_l$=\verb"nKL" 
 sub-diagonals and $k_u$=\verb"nKU" super-diagonals.
 Unlike others, this constructor \textit{does not allocate  memory}.
-It just shares  memory with  array pointed to by \verb"pD".
+It just shares  memory with an array pointed to by \verb"pD".
 Please note that this array must contain at least $(k_l + k_u + 1)*n$ elements.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size or negative number of sub- or super-diagonals 
@@ -238,7 +238,7 @@ scbmatrix::scbmatrix (const TC* pD, int nMN, int nKL, int nKU);
 creates  $n\times n$ \verb"scbmatrix" object where $n$ is passed in
 \verb"nMN" parameter. The matrix created has $k_l$=\verb"nKL" 
 sub-diagonals and $k_u$=\verb"nKU" super-diagonals.
-Then constructor copies $(k_l + k_u + 1)*n$ elements of array \verb"pD" to the 
+Then constructor copies $(k_l + k_u + 1)*n$ elements of an array  \verb"pD" to the 
 matrix according to \GOT{band storage}{SubSubSectionStorage}.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size or negative number of sub- or super-diagonals 
@@ -320,7 +320,7 @@ scbmatrix::scbmatrix (const cmatrix& m, int nKL, int nKU);
 \end{verbatim}
 creates  \verb"scbmatrix" object as a copy of ``sliced'' 
 matrix \verb"m", i.e. it copies main diagonal, \verb"nKL" 
-sub-diagonals and \verb"nKU" super-diagonals of  matrix \verb"m".
+sub-diagonals and \verb"nKU" super-diagonals of a matrix \verb"m".
 It's assumed that $m\times n$ matrix \verb"m" must have equal
 sizes, i.e. $m = n$ is satisfied.
 Constructor throws  \GOT{cvmexception}{cvmexception}
@@ -467,7 +467,7 @@ Indexing operators%
 TC& scbmatrix::operator () (int im, int in) throw (cvmexception);
 TC scbmatrix::operator () (int im, int in) const throw (cvmexception);
 \end{verbatim}
-provide access to a particular element of calling band matrix. The first version
+provide access to a particular element of a calling band matrix. The first version
 of operator is applicable to non-constant object.
 This version returns  \emph{l-value}
 in order to make possible write access to an element.
@@ -524,7 +524,7 @@ Indexing operator%
 \begin{verbatim}
 const cvector scbmatrix::operator () (int i) const throw (cvmexception);
 \end{verbatim}
-provides access to \hbox{$i$-th} column of calling band matrix.
+provides access to \hbox{$i$-th} column of a calling band matrix.
 Unlike \GO{scmatrix::operator~()}{scmatrix.operator ()},
 this operator creates only  \emph{copy} of a column and therefore 
 it returns
@@ -560,7 +560,7 @@ Indexing operator%
 \begin{verbatim}
 const cvector scbmatrix::operator [] (int i) const throw (cvmexception);
 \end{verbatim}
-provides access to  \hbox{$i$-th} row of calling band matrix.
+provides access to  \hbox{$i$-th} row of a calling band matrix.
 Unlike \GO{scmatrix::operator~[]}{scmatrix.operator []},
 this operator creates only  \emph{copy} of a column and therefore 
 it returns
@@ -597,13 +597,13 @@ Function%
 \begin{verbatim}
 const srbmatrix scbmatrix::real () const;
 \end{verbatim}
-creates  object of type \verb"const srbmatrix"
+creates an object of type \verb"const srbmatrix"
 as  real part
-of  calling band matrix.
+of a calling band matrix.
 Please note that, unlike
 \GO{cvector::real}{cvector.real}, this
 function creates new object \emph{not sharing}  memory
-with  real part of calling matrix, i.e.
+with  real part of a calling matrix, i.e.
 the matrix returned is \emph{not  l-value}.
 See also
 \GOT{srbmatrix}{srbmatrix},
@@ -638,13 +638,13 @@ Function%
 \begin{verbatim}
 const srbmatrix scbmatrix::imag () const;
 \end{verbatim}
-creates  object of type \verb"const srbmatrix"
+creates an object of type \verb"const srbmatrix"
 as imaginary part
-of  calling band matrix.
+of a calling band matrix.
 Please note that, unlike
 \GO{cvector::imag}{cvector.imag}, this
 function creates new object \emph{not sharing}  memory
-with  imaginary part of calling matrix, i.e.
+with  imaginary part of a calling matrix, i.e.
 the matrix returned is \emph{not  l-value}.
 See also
 \GOT{srbmatrix}{srbmatrix},
@@ -679,9 +679,9 @@ Operator%
 scbmatrix& scbmatrix::operator = (const scbmatrix& m)
 throw (cvmexception);
 \end{verbatim}
-sets every element of  calling band matrix to value of
+sets every element of a calling band matrix to a value of
 appropriate element of  band matrix \verb"m"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of different matrix sizes or in case of different numbers
@@ -722,10 +722,10 @@ Function%
 scbmatrix& scbmatrix::assign (const cvector& v) throw (cvmexception);
 scbmatrix& scbmatrix::assign (const TC* pD);
 \end{verbatim}
-sets every element of  calling band matrix to  value of
+sets every element of a calling band matrix to a value of
 appropriate element of  vector~\verb'v'
 or array pointed to by~\verb"pD"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 In first version it's assumed that vector passed is long
 enough to fill calling matrix. Function throws \GOT{cvmexception}{cvmexception} 
@@ -757,11 +757,11 @@ Function%
 \begin{verbatim}
 scbmatrix& scbmatrix::set (TC z);
 \end{verbatim}
-sets every element of  calling band matrix to  value of
-parameter \verb"z" and returns  reference to
+sets every element of a calling band matrix to a value of
+parameter \verb"z" and returns a reference to
 the matrix changed.
 Use \GOT{vanish}{scbmatrix.vanish} to set every element
-of  calling matrix to be equal to zero.
+of a calling matrix to be equal to zero.
 See also \GOT{scbmatrix}{scbmatrix}.
 Example:
 \begin{Verbatim}
@@ -790,9 +790,9 @@ Function%
 scbmatrix& scbmatrix::assign_real (const srbmatrix& mRe)
 throw (cvmexception);
 \end{verbatim}
-sets real part of every element of  calling band matrix to  value of
+sets real part of every element of a calling band matrix to a value of
 appropriate element of  band matrix \verb"mRe"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -828,9 +828,9 @@ Function%
 scbmatrix& scbmatrix::assign_imag (const srbmatrix& mIm)
 throw (cvmexception);
 \end{verbatim}
-sets imaginary part of every element of  calling band matrix to  value of
+sets imaginary part of every element of a calling band matrix to a value of
 appropriate element of  bandmatrix \verb"mIm"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Function throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes of the operands.
@@ -865,9 +865,9 @@ Function%
 \begin{verbatim}
 scbmatrix& scbmatrix::set_real (TR d);
 \end{verbatim}
-sets real part of every element of  calling band matrix to  value of
+sets real part of every element of a calling band matrix to a value of
 parameter \verb"d"
-and returns  reference to the matrix changed.
+and returns a reference to the matrix changed.
 See also \GOT{scbmatrix}{scbmatrix}.
 Example:
 \begin{Verbatim}
@@ -896,9 +896,9 @@ Function%
 \begin{verbatim}
 scbmatrix& scbmatrix::set_imag (TR d);
 \end{verbatim}
-sets imaginary part of every element of  calling band matrix to  value of
+sets imaginary part of every element of a calling band matrix to a value of
 parameter \verb"d"
-and returns  reference to the matrix changed.
+and returns a reference to the matrix changed.
 See also \GOT{scbmatrix}{scbmatrix}.
 Example:
 \begin{Verbatim}
@@ -925,8 +925,8 @@ Function%
 \begin{verbatim}
 scbmatrix& scbmatrix::resize (int nNewMN) throw (cvmexception);
 \end{verbatim}
-changes  size of  calling band matrix to \verb"nNewMN" by \verb"nNewMN"
-and returns  reference to
+changes  size of a calling band matrix to \verb"nNewMN" by \verb"nNewMN"
+and returns a reference to
 the matrix changed. In case of increasing of its size, calling matrix
 is filled up with zeroes. This function doesn't change
  number of sub- ore super-diagonals. Like any band matrix 
@@ -978,8 +978,8 @@ scbmatrix& scbmatrix::resize_lu (int nNewKL, int nNewKU)
 throw (cvmexception);
 \end{verbatim}
 changes  number of sub- and super-diagonals 
-of  calling band matrix to \verb"nNewKL" by \verb"nNewKU" respectively
-and returns  reference to
+of a calling band matrix to \verb"nNewKL" by \verb"nNewKU" respectively
+and returns a reference to
 the matrix changed. In case of increasing of the numbers, calling matrix
 is filled up with zeroes. 
 Function throws  \GOT{cvmexception}{cvmexception}
@@ -1107,7 +1107,7 @@ scbmatrix& scbmatrix::operator << (const scbmatrix& m)
 throw (cvmexception);
 \end{verbatim}
 destroys  calling band matrix, creates  new one as a copy of \verb"m"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of memory allocation failure.
@@ -1153,8 +1153,8 @@ Operator%
 scbmatrix scbmatrix::operator + (const scbmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scbmatrix" as  sum of
- calling band matrix and  band matrix \verb"m".
+creates an object of type \verb"scbmatrix" as a sum of
+a calling band matrix and  band matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
 of the operands.
@@ -1207,8 +1207,8 @@ Operator%
 scbmatrix scbmatrix::operator - (const scbmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scbmatrix" as  difference of
- calling band matrix and  band matrix \verb"m".
+creates an object of type \verb"scbmatrix" as a difference of
+a calling band matrix and  band matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
 of the operands.
@@ -1263,9 +1263,9 @@ Function%
 scbmatrix& scbmatrix::sum (const scbmatrix& m1, const scbmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of addition of
-band matrices \verb"m1" and \verb"m2"  to  calling band matrix
-and returns  reference to
+assigns the result of addition of
+band matrices \verb"m1" and \verb"m2"  to a calling band matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
@@ -1315,9 +1315,9 @@ Function%
 scbmatrix& scbmatrix::diff (const scbmatrix& m1, const scbmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of subtraction of
-band matrices \verb"m1" and \verb"m2" to  calling band matrix
-and returns  reference to
+assigns the result of subtraction of
+band matrices \verb"m1" and \verb"m2" to a calling band matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
@@ -1368,8 +1368,8 @@ Operator%
 scbmatrix& scbmatrix::operator += (const scbmatrix& m) 
 throw (cvmexception);
 \end{verbatim}
-adds  band matrix \verb"m" to  calling band matrix 
-and returns  reference to
+adds  band matrix \verb"m" to a calling band matrix 
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
@@ -1423,7 +1423,7 @@ scbmatrix& scbmatrix::operator -= (const scbmatrix& m)
 throw (cvmexception);
 \end{verbatim}
 subtracts  band matrix \verb"m" from  calling band matrix
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
@@ -1474,8 +1474,8 @@ Operator%
 \begin{verbatim}
 scbmatrix scbmatrix::operator - () const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scbmatrix" as
- calling band matrix multiplied by $-1$.
+creates an object of type \verb"scbmatrix" as
+a calling band matrix multiplied by $-1$.
 See also \GOT{scbmatrix}{scbmatrix}.
 Example:
 \begin{Verbatim}
@@ -1509,8 +1509,8 @@ Operator%
 scbmatrix& scbmatrix::operator ++ ();
 scbmatrix& scbmatrix::operator ++ (int);
 \end{verbatim}
-adds identity matrix to  calling band matrix
-and returns  reference to
+adds identity matrix to a calling band matrix
+and returns a reference to
 the matrix changed.
 See also \GOT{scbmatrix}{scbmatrix}.
 Example:
@@ -1548,7 +1548,7 @@ scbmatrix& scbmatrix::operator -- ();
 scbmatrix& scbmatrix::operator -- (int);
 \end{verbatim}
 subtracts identity matrix from  calling band matrix
-and returns  reference to
+and returns a reference to
 the matrix changed.
 See also \GOT{scbmatrix}{scbmatrix}.
 Example:
@@ -1585,8 +1585,8 @@ Operator%
 \begin{verbatim}
 scbmatrix scbmatrix::operator * (TR d) const;
 \end{verbatim}
-creates  object of type \verb"scbmatrix" as  product of
- calling band matrix and  real number~\verb"d".
+creates an object of type \verb"scbmatrix" as a product of
+a calling band matrix and  real number~\verb"d".
 See also \GOT{scbmatrix::ope\-ra\-tor *=~}{scbmatrix.operator *= (TR)},
 \GOT{scbmatrix}{scbmatrix}.
 Example:
@@ -1614,8 +1614,8 @@ Operator%
 \begin{verbatim}
 scbmatrix scbmatrix::operator / (TR d) const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scbmatrix" as  quotient of
- calling band matrix and  real number~\verb"d". It throws
+creates an object of type \verb"scbmatrix" as a quotient of
+a calling band matrix and  real number~\verb"d". It throws
  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less than the
 \GO{smallest normalized positive number}{Utilities.cvmMachMin}.
@@ -1646,8 +1646,8 @@ Operator%
 \begin{verbatim}
 scbmatrix scbmatrix::operator * (TC z) const;
 \end{verbatim}
-creates  object of type \verb"scbmatrix" as  product of
- calling band matrix and  complex number~\verb"z".
+creates an object of type \verb"scbmatrix" as a product of
+a calling band matrix and  complex number~\verb"z".
 See also \GOT{scbmatrix::operator *=~}
 {scbmatrix.operator *= (TC)},
 \GOT{scbmatrix}{scbmatrix}.
@@ -1676,8 +1676,8 @@ Operator%
 \begin{verbatim}
 scbmatrix scbmatrix::operator / (TC z) const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scbmatrix" as  quotient of
- calling band matrix and  complex number~\verb"z". 
+creates an object of type \verb"scbmatrix" as a quotient of
+a calling band matrix and  complex number~\verb"z". 
 It throws
  \GOT{cvmexception}{cvmexception}
 if \verb"z" has  absolute value equal or less than the
@@ -1711,7 +1711,7 @@ Operator%
 scbmatrix& scbmatrix::operator *= (TR d);
 \end{verbatim}
 multiplies  calling band matrix by  real number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 See also \GOT{scbmatrix::operator *~}{scbmatrix.operator * (TR)},
 \GOT{scbmatrix}{scbmatrix}.
@@ -1742,7 +1742,7 @@ Operator%
 scbmatrix& scbmatrix::operator /= (TR d) throw (cvmexception);
 \end{verbatim}
 divides  calling band matrix by  real number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less
@@ -1778,7 +1778,7 @@ Operator%
 scbmatrix& scbmatrix::operator *= (TC z);
 \end{verbatim}
 multiplies  calling band matrix by  complex number~\verb"z"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 See also \GOT{scbmatrix::operator *~}{scbmatrix.operator * (TC)},
 \GOT{scbmatrix}{scbmatrix}.
@@ -1809,7 +1809,7 @@ Operator%
 scbmatrix& scbmatrix::operator /= (TC z) throw (cvmexception);
 \end{verbatim}
 divides  calling band matrix by  complex number~\verb"z"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 if \verb"z" has  absolute value equal or less
@@ -1876,9 +1876,9 @@ prints
 Operator and functions%
 \pdfdest name {scbmatrix.conj} fit
 \begin{verbatim}
-scbmatrix scbmatrix::operator ~ () const throw(cvmexception);
-scbmatrix& scbmatrix::conj (const scbmatrix& m) throw(cvmexception);
-scbmatrix& scbmatrix::conj () throw(cvmexception);
+scbmatrix scbmatrix::operator ~ () const;
+scbmatrix& scbmatrix::conj (const scbmatrix& m);
+scbmatrix& scbmatrix::conj ();
 \end{verbatim}
 implement complex band matrix conjugation.
 First operator creates \verb"scbmatrix" object as
@@ -1947,7 +1947,7 @@ scbmatrix& scbmatrix::transpose (const scbmatrix& m) throw (cvmexception);
 scbmatrix& scbmatrix::transpose () throw (cvmexception);
 \end{verbatim}
 implement complex band matrix transposition (\emph{not} conjugation).
-First operator creates  object of type \verb"scbmatrix" as
+First operator creates an object of type \verb"scbmatrix" as
  transposed calling matrix
 (it throws  
 \GOT{cvmexception}{cvmexception}
@@ -2015,11 +2015,11 @@ Operator%
 cvector scbmatrix::operator * (const cvector& v) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cvector"
-as  product of  calling band matrix and  vector \verb"v".
+creates an object of type \verb"cvector"
+as a product of a calling band matrix and a vector \verb"v".
 It throws  \GOT{cvmexception}{cvmexception}
-if  number of columns of  calling matrix
-differs from  size of  vector \verb"v".
+if  number of columns of a calling matrix
+differs from  size of a vector \verb"v".
 Use \GOT{cvector::mult}{cvector.mult (const cmatrix&, const cvector&)}
 in order to avoid new object creation.
 See also
@@ -2055,11 +2055,11 @@ Operator%
 cmatrix scbmatrix::operator * (const cmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"cmatrix"
-as  product of  calling band matrix and  matrix \verb"m".
+creates an object of type \verb"cmatrix"
+as a product of a calling band matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
-if  number of columns of  calling matrix
-differs from  number of rows of  matrix \verb"m".
+if  number of columns of a calling matrix
+differs from  number of rows of a matrix \verb"m".
 Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
  new object creation.
 See also
@@ -2099,8 +2099,8 @@ Operator%
 scmatrix scbmatrix::operator * (const scmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scmatrix"
-as  product of  calling band matrix and  matrix \verb"m".
+creates an object of type \verb"scmatrix"
+as a product of a calling band matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 if the operands have different sizes.
 Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
@@ -2141,8 +2141,8 @@ Operator%
 scbmatrix scbmatrix::operator * (const scbmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"scbmatrix"
-as  product of  calling band matrix and  band matrix \verb"m".
+creates an object of type \verb"scbmatrix"
+as a product of a calling band matrix and  band matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 if the operands have different sizes.
 Use \GOT{cmatrix::mult}{cmatrix.mult} in order to avoid
@@ -2185,7 +2185,7 @@ scbmatrix::low_up (const scbmatrix& m, int* nPivots) throw (cvmexception);
 scbmatrix
 scbmatrix::low_up (int* nPivots) const throw (cvmexception);
 \end{verbatim}
-compute  $LU$ factorization of  calling band matrix as
+compute  $LU$ factorization of a calling band matrix as
 \begin{equation*}
 A=PLU
 \end{equation*}
@@ -2200,7 +2200,7 @@ pointed to by \verb"nPivots" so \hbox{$i$-th} row
 was interchanged with \hbox{\verb"nPivots["$i$\verb"]"-th} row.
 The first version sets  calling matrix to be equal to matrix
 \verb"m"'s $LU$ factorization and the second one
-creates  object of type \verb"scbmatrix" as calling matrix's
+creates an object of type \verb"scbmatrix" as calling matrix's
 $LU$ factorization.
 Functions throw \GOT{cvmexception}{cvmexception}
 in case of inappropriate
@@ -2294,7 +2294,7 @@ cvector operator / (const cvector& vB) const throw (cvmexception);
 \end{verbatim}
 returns solution $x$ of linear equation
 $A*x=b$ where calling matrix is square band matrix $A$
-and vector $b$ is passed in parameter \verb"vB".
+and a vector $b$ is passed in parameter \verb"vB".
 This operator throws exception 
 of type \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes
@@ -2344,7 +2344,7 @@ Function%
 scbmatrix& scbmatrix::identity();
 \end{verbatim}
 sets  calling band matrix to be equal to identity matrix
-and returns  reference to
+and returns a reference to
 the matrix changed. Function doesn't change
 numbers of sub- and super-diagonals.
 See also \GOT{scbmatrix}{scbmatrix}.
@@ -2381,8 +2381,8 @@ Function%
 \begin{verbatim}
 scbmatrix& scbmatrix::vanish();
 \end{verbatim}
-sets every element of  calling band matrix to be equal to zero
-and returns  reference to
+sets every element of a calling band matrix to be equal to zero
+and returns a reference to
 the matrix changed. This function is faster
 than
 \GOT{scbmatrix::set(TR)}{scbmatrix.set}
@@ -2419,11 +2419,11 @@ Function%
 \begin{verbatim}
 scbmatrix& scbmatrix::randomize_real (TR dFrom, TR dTo);
 \end{verbatim}
-fills  real part of  calling band matrix with 
+fills  real part of a calling band matrix with 
 pseudo-random numbers distributed between
 \verb"dFrom" and \verb"dTo".
 Function
-returns  reference to the matrix changed.
+returns a reference to the matrix changed.
 See also
 \GOT{scbmatrix}{scbmatrix}.
 Example:
@@ -2451,11 +2451,11 @@ Function%
 \begin{verbatim}
 scbmatrix& scbmatrix::randomize_imag (TR dFrom, TR dTo);
 \end{verbatim}
-fills  imaginary part of  calling band matrix with 
+fills  imaginary part of a calling band matrix with 
 pseudo-random numbers distributed between
 \verb"dFrom" and \verb"dTo".
 Function
-returns  reference to the matrix changed.
+returns a reference to the matrix changed.
 See also
 \GOT{scbmatrix}{scbmatrix}.
 Example:

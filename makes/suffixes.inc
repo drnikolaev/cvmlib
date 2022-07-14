@@ -3,7 +3,9 @@ ifdef ICC
 else
   NC=_gcc
 endif
-ifdef IFORT
+ifdef GF_BLAS
+  NF=
+else
   NF=_ifort
 endif
 ifdef MKL
@@ -11,7 +13,7 @@ ifdef MKL
 endif
 ifdef EM64T
   NE=_em64t
-  OUTDIR  = $(ROOT_PATH)/lib64
+  OUTDIR  = $(ROOT_PATH)/lib
 else  
   NE=_ia32
   OUTDIR  = $(ROOT_PATH)/lib

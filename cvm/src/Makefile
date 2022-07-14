@@ -3,14 +3,16 @@ SHELL=/bin/sh
 ROOT_PATH=../..
 INC_PATH=$(ROOT_PATH)/makes
 include $(INC_PATH)/defines.inc
+include $(INC_PATH)/makecmd.inc
 
-COMMON_LD_FLAGS = -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
-ifdef CVM_USE_POOL_MANAGER
-  COMMON_FLAGS += -DCVM_USE_POOL_MANAGER
+ifdef MAC
+COMMON_LD_FLAGS = -L/usr/local/lib
+else
+#COMMON_LD_FLAGS = -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
 endif
 
-ifdef CVM_ZERO_BASED
-  COMMON_FLAGS += -DCVM_ZERO_BASED
+ifdef CVM_USE_POOL_MANAGER
+  COMMON_FLAGS += -DCVM_USE_POOL_MANAGER
 endif
 
 include $(INC_PATH)/libs.inc
@@ -38,7 +40,7 @@ endif
 
 include $(INC_PATH)/suffixes.inc
 
-FLIBDIR=../ftn
+FLIBDIR=./ftn
 FLIB      =$(call concat,libftn,$(NF),$(NM),$(NE),$(NI),.a)
 DFLIB     =$(call concat,libftn,$(NF),$(NM),$(NE),$(NI),_debug.a)
 
@@ -79,7 +81,7 @@ ifdef CVM_STLPORT
   DLIBS += -lstlportg
 endif
 
-COMMON_FLAGS += -std=c++0x
+COMMON_FLAGS += -std=c++17
 
 CFLAGS    =$(COMMON_FLAGS) -O3
 CFLAGSD   =$(COMMON_FLAGS) -g -DDEBUG
@@ -91,8 +93,30 @@ ifndef COMSPEC
   SOCFLAGSD += -fPIC
 endif
 
-LFLAGS  += $(COMMON_LD_FLAGS) -L$(OUTDIR) -shared
-LFLAGSD += $(COMMON_LD_FLAGS) -L$(OUTDIR) -shared
+LFLAGS  += $(COMMON_LD_FLAGS) -L$(OUTDIR)
+LFLAGSD += $(COMMON_LD_FLAGS) -L$(OUTDIR)
+
+ifndef MKL
+ifdef GF_BLAS
+  ifdef MAC
+    BLAS_PATH = mac/gf  
+  else
+    BLAS_PATH = linux/gf
+  endif
+else
+  ifdef MAC
+    BLAS_PATH = mac/ifort
+  else
+    BLAS_PATH = linux/ifort
+  endif
+endif
+endif
+LFLAGS  += -L$(OUTDIR)/$(BLAS_PATH)
+LFLAGSD += -L$(OUTDIR)/$(BLAS_PATH)
+
+LFLAGS  += -shared
+LFLAGSD += -shared
+
 
 ifdef PROF
   CFLAGSD += -pg

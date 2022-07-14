@@ -28,7 +28,7 @@ Function%
 \begin{Verbatim}
 int Array<TR,TC>::incr () const;
 \end{Verbatim}
-returns  increment between elements of calling array.
+returns  increment between elements of a calling array.
 This function is \emph{inherited} in all classes of the library:
 \GOT{rvector}{rvector},   \GOT{cvector}{cvector},
 \GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
@@ -64,7 +64,7 @@ Function%
 int Array<TR,TC>::indofmax () const;
 \end{Verbatim}
 returns \Based
-index of calling array's element with maximum
+index of a calling array's element with the maximum
 absolute value.
 Function is \emph{inherited}%
 \footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
@@ -105,7 +105,7 @@ Function%
 int Array<TR,TC>::indofmin () const;
 \end{Verbatim}
 returns  \Based
-index of calling array's element with minimum
+index of a calling array's element with the minimum
 absolute value.
 Function is \emph{inherited}%
 \footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
@@ -145,7 +145,7 @@ Virtual function%
 \begin{verbatim}
 virtual TR Array<TR,TC>::norm() const;
 \end{verbatim}
-returns Euclidean norm of calling array that for vectors is defined as
+returns Euclidean norm of a calling array that for vectors is defined as
 \begin{equation*}
 {\|x\|}_E=\left(\sum_{i=1}^{n} |x_i|^2\right)^{1/2}
 \end{equation*}
@@ -198,7 +198,7 @@ Virtual function%
 \begin{verbatim}
 virtual TR Array<TR,TC>::norminf () const;
 \end{verbatim}
-returns  infinity norm of calling array that for vectors
+returns  infinity norm of a calling array that for vectors
 is defined as
 \begin{equation*}
 {\|x\|}_\infty=\max_{i=1,\dots,n} |x_i|
@@ -246,7 +246,7 @@ Virtual function%
 \begin{verbatim}
 virtual TR Array<TR,TC>::norm1 () const;
 \end{verbatim}
-returns 1-norm of calling array that for vectors
+returns 1-norm of a calling array that for vectors
 is defined as
 \begin{equation*}
 {\|x\|}_1=\sum_{i=1}^{n} |x_i|
@@ -295,7 +295,7 @@ Virtual function%
 \begin{verbatim}
 virtual TR Array<TR,TC>::norm2 () const;
 \end{verbatim}
-returns  2-norm of calling array that for vectors
+returns  2-norm of a calling array that for vectors
 is defined as
 \begin{equation*}
 {\|x\|}_2={\|x\|}_E=\left(\sum_{i=1}^{n} |x_i|^2\right)^{1/2}

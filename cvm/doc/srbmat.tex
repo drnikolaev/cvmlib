@@ -181,7 +181,7 @@ creates  $n\times n$ \verb"srbmatrix" object where $n$ is passed in
 \verb"nMN" parameter. The matrix created has $k_l$=\verb"nKL" 
 sub-diagonals and $k_u$=\verb"nKU" super-diagonals.
 Unlike others, this constructor \textit{does not allocate  memory}.
-It just shares  memory with  array pointed to by \verb"pD".
+It just shares  memory with an array pointed to by \verb"pD".
 Please note that this array must contain at least $(k_l + k_u + 1)*n$ elements.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size or negative number of sub- or super-diagonals 
@@ -225,7 +225,7 @@ srbmatrix::srbmatrix (const TR* pD, int nMN, int nKL, int nKU);
 creates  $n\times n$ \verb"srbmatrix" object where $n$ is passed in
 \verb"nMN" parameter. The matrix created has $k_l$=\verb"nKL"
 sub-diagonals and $k_u$=\verb"nKU" super-diagonals.
-Then constructor copies $(k_l + k_u + 1)*n$ elements of  array \verb"pD" to the 
+Then constructor copies $(k_l + k_u + 1)*n$ elements of an array  \verb"pD" to the 
 matrix according to \GOT{band storage}{SubSubSectionStorage}.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size or negative number of sub- or super-diagonals 
@@ -304,7 +304,7 @@ srbmatrix::srbmatrix (const rmatrix& m, int nKL, int nKU);
 \end{verbatim}
 creates  \verb"srbmatrix" object as a copy of ``sliced'' 
 matrix \verb"m", i.e. it copies main diagonal, \verb"nKL" 
-sub-diagonals and \verb"nKU" super-diagonals of matrix \verb"m".
+sub-diagonals and \verb"nKU" super-diagonals of a matrix \verb"m".
 It's assumed that $m\times n$ matrix \verb"m" must have equal
 sizes, i.e. $m = n$ is satisfied.
 Constructor throws  \GOT{cvmexception}{cvmexception}
@@ -377,7 +377,7 @@ Indexing operators%
 TR& srbmatrix::operator () (int im, int in) throw (cvmexception);
 TR srbmatrix::operator () (int im, int in) const throw (cvmexception);
 \end{verbatim}
-provide access to a particular element of calling band matrix. The first version
+provide access to a particular element of a calling band matrix. The first version
 is applicable to non-constant objects.
 This version returns  \emph{l-value}
 in order to make possible write access to an element.
@@ -434,7 +434,7 @@ Indexing operator%
 \begin{verbatim}
 const rvector srbmatrix::operator () (int i) const throw (cvmexception);
 \end{verbatim}
-provides access to \hbox{$i$-th} column of calling band matrix.
+provides access to \hbox{$i$-th} column of a calling band matrix.
 Unlike \GO{srmatrix::operator~()}{srmatrix.operator ()},
 this operator creates only \emph{copy} of a column 
 and therefore it returns
@@ -472,7 +472,7 @@ Indexing operator%
 \begin{verbatim}
 const rvector srbmatrix::operator [] (int i) const throw (cvmexception);
 \end{verbatim}
-provides access to  \hbox{$i$-th} row of calling band matrix.
+provides access to  \hbox{$i$-th} row of a calling band matrix.
 Unlike \GO{srmatrix::operator~[]}{srmatrix.operator []},
 this operator creates only  \emph{copy} of a column and therefore 
 it returns
@@ -512,9 +512,9 @@ Operator%
 srbmatrix& srbmatrix::operator = (const srbmatrix& m)
 throw (cvmexception);
 \end{verbatim}
-sets every element of  calling band matrix to  value of
+sets every element of a calling band matrix to a value of
 appropriate element of  band matrix \verb"m"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of different matrix sizes or in case of different numbers
@@ -554,10 +554,10 @@ Function%
 srbmatrix& srbmatrix::assign (const rvector& v) throw (cvmexception);
 srbmatrix& srbmatrix::assign (const TR* pD);
 \end{verbatim}
-sets every element of  calling band matrix to  value of
+sets every element of a calling band matrix to a value of
 appropriate element of  vector~\verb'v'
 or  array pointed to by~\verb"pD"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 In first version it's assumed that vector passed is long
 enough to fill calling matrix. Function throws \GOT{cvmexception}{cvmexception} 
@@ -590,11 +590,11 @@ Function%
 \begin{verbatim}
 srbmatrix& srbmatrix::set (TR x);
 \end{verbatim}
-sets every element of  calling band matrix to  value of
-parameter~\verb"x" and returns  reference to
+sets every element of a calling band matrix to a value of
+parameter~\verb"x" and returns a reference to
 the matrix changed.
 Use \GOT{vanish}{srbmatrix.vanish} to set every element
-of  calling matrix to be equal to zero.
+of a calling matrix to be equal to zero.
 See also \GOT{srbmatrix}{srbmatrix}.
 Example:
 \begin{Verbatim}
@@ -625,8 +625,8 @@ Function%
 \begin{verbatim}
 srbmatrix& srbmatrix::resize (int nNewMN) throw (cvmexception);
 \end{verbatim}
-changes  size of  calling band matrix to \verb"nNewMN" by \verb"nNewMN"
-and returns  reference to
+changes  size of a calling band matrix to \verb"nNewMN" by \verb"nNewMN"
+and returns a reference to
 the matrix changed. In case of increasing of its size, calling matrix
 is filled up with zeroes. This function doesn't change
  number of sub- ore super-diagonals. Like any band matrix 
@@ -680,8 +680,8 @@ srbmatrix& srbmatrix::resize_lu (int nNewKL, int nNewKU)
 throw (cvmexception);
 \end{verbatim}
 changes  number of sub- and super-diagonals 
-of  calling band matrix to \verb"nNewKL" and \verb"nNewKU" respectively
-and returns  reference to
+of a calling band matrix to \verb"nNewKL" and \verb"nNewKU" respectively
+and returns a reference to
 the matrix changed. In case of increasing of the numbers, calling matrix
 is filled up with zeroes. 
 Function throws  \GOT{cvmexception}{cvmexception}
@@ -810,7 +810,7 @@ srbmatrix& srbmatrix::operator << (const srbmatrix& m)
 throw (cvmexception);
 \end{verbatim}
 destroys  calling band matrix, creates  new one as a copy of \verb"m"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of memory allocation failure.
@@ -857,8 +857,8 @@ Operator%
 srbmatrix srbmatrix::operator + (const srbmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srbmatrix" as  sum of
- calling band matrix and  band matrix \verb"m".
+creates an object of type \verb"srbmatrix" as a sum of
+a calling band matrix and  band matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
 of the operands.
@@ -906,8 +906,8 @@ Operator%
 srbmatrix srbmatrix::operator - (const srbmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srbmatrix" as  difference of
- calling band matrix and  band matrix \verb"m".
+creates an object of type \verb"srbmatrix" as a difference of
+a calling band matrix and  band matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
 of the operands.
@@ -955,9 +955,9 @@ Function%
 srbmatrix& srbmatrix::sum (const srbmatrix& m1, const srbmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of addition of
-band matrices \verb"m1" and \verb"m2"  to  calling band matrix
-and returns  reference to
+assigns the result of addition of
+band matrices \verb"m1" and \verb"m2"  to a calling band matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
@@ -1014,9 +1014,9 @@ Function%
 srbmatrix& srbmatrix::diff (const srbmatrix& m1, const srbmatrix& m2)
 throw (cvmexception);
 \end{verbatim}
-assigns  result of subtraction of
-band matrices \verb"m1" and \verb"m2" to  calling band matrix
-and returns  reference to
+assigns the result of subtraction of
+band matrices \verb"m1" and \verb"m2" to a calling band matrix
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
@@ -1072,8 +1072,8 @@ Operator%
 srbmatrix& srbmatrix::operator += (const srbmatrix& m) 
 throw (cvmexception);
 \end{verbatim}
-adds  band matrix \verb"m" to  calling band matrix 
-and returns  reference to
+adds  band matrix \verb"m" to a calling band matrix 
+and returns a reference to
 the matrix changed.
 Operator throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
@@ -1127,7 +1127,7 @@ srbmatrix& srbmatrix::operator -= (const srbmatrix& m)
 throw (cvmexception);
 \end{verbatim}
 subtracts  band matrix \verb"m" from  calling band matrix
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of different sizes or different numbers of sub- or super-diagonals
@@ -1180,8 +1180,8 @@ Operator%
 \begin{verbatim}
 srbmatrix srbmatrix::operator - () const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srbmatrix" as
- calling band matrix multiplied by $-1$.
+creates an object of type \verb"srbmatrix" as
+a calling band matrix multiplied by $-1$.
 See also \GOT{srbmatrix}{srbmatrix}.
 Example:
 \begin{Verbatim}
@@ -1215,8 +1215,8 @@ Operator%
 srbmatrix& srbmatrix::operator ++ ();
 srbmatrix& srbmatrix::operator ++ (int);
 \end{verbatim}
-adds identity matrix to  calling band matrix
-and returns  reference to
+adds identity matrix to a calling band matrix
+and returns a reference to
 the matrix changed.
 See also \GOT{srbmatrix}{srbmatrix}.
 Example:
@@ -1254,7 +1254,7 @@ srbmatrix& srbmatrix::operator -- ();
 srbmatrix& srbmatrix::operator -- (int);
 \end{verbatim}
 subtracts identity matrix from  calling band matrix
-and returns  reference to
+and returns a reference to
 the matrix changed.
 See also \GOT{srbmatrix}{srbmatrix}.
 Example:
@@ -1290,8 +1290,8 @@ Operator%
 \begin{verbatim}
 srbmatrix srbmatrix::operator * (TR d) const;
 \end{verbatim}
-creates  object of type \verb"srbmatrix" as  product of
- calling band matrix and  number~\verb"d".
+creates an object of type \verb"srbmatrix" as a product of
+a calling band matrix and  number~\verb"d".
 See also \GOT{srbmatrix::ope\-ra\-tor *=~}{srbmatrix.operator *= (TR)},
 \GOT{srbmatrix}{srbmatrix}.
 Example:
@@ -1319,8 +1319,8 @@ Operator%
 \begin{verbatim}
 srbmatrix srbmatrix::operator / (TR d) const throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srbmatrix" as  quotient of
- calling band matrix and  number~\verb"d". It throws
+creates an object of type \verb"srbmatrix" as a quotient of
+a calling band matrix and  number~\verb"d". It throws
  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less than the
 \GO{smallest normalized positive number}{Utilities.cvmMachMin}.
@@ -1352,7 +1352,7 @@ Operator%
 srbmatrix& srbmatrix::operator *= (TR d);
 \end{verbatim}
 multiplies  calling band matrix by  number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 See also \GOT{srbmatrix::ope\-ra\-tor *~}{srbmatrix.operator * (TR)},
 \GOT{srbmatrix}{srbmatrix}.
@@ -1383,7 +1383,7 @@ Operator%
 srbmatrix& srbmatrix::operator /= (TR d) throw (cvmexception);
 \end{verbatim}
 divides  calling matrix by  number~\verb"d"
-and returns  reference to
+and returns a reference to
 the matrix changed.
 It throws  \GOT{cvmexception}{cvmexception}
 if \verb"d" has  absolute value equal or less
@@ -1454,7 +1454,7 @@ srbmatrix& srbmatrix::transpose (const srbmatrix& m) throw (cvmexception);
 srbmatrix& srbmatrix::transpose () throw (cvmexception);
 \end{verbatim}
 implement band matrix transposition.
-First operator creates  object of type \verb"srbmatrix" as
+First operator creates an object of type \verb"srbmatrix" as
  transposed calling band matrix
 (it throws  
 \GOT{cvmexception}{cvmexception}
@@ -1511,11 +1511,11 @@ Operator%
 rvector srbmatrix::operator * (const rvector& v) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"rvector"
-as  product of  calling band matrix and  vector \verb"v".
+creates an object of type \verb"rvector"
+as a product of a calling band matrix and a vector \verb"v".
 It throws  \GOT{cvmexception}{cvmexception}
-if number of columns of  calling matrix
-differs from  size of  vector \verb"v".
+if number of columns of a calling matrix
+differs from  size of a vector \verb"v".
 Use \GOT{rvector::mult}{rvector.mult (const rmatrix&, const rvector&)}
 in order to avoid new object creation.
 See also
@@ -1551,11 +1551,11 @@ Operator%
 rmatrix srbmatrix::operator * (const rmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"rmatrix"
-as  product of  calling band matrix and  matrix \verb"m".
+creates an object of type \verb"rmatrix"
+as a product of a calling band matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
-if  number of columns of  calling matrix
-differs from  number of rows of  matrix \verb"m".
+if  number of columns of a calling matrix
+differs from  number of rows of a matrix \verb"m".
 Use \GOT{rmatrix::mult}{rmatrix.mult} in order to avoid
  new object creation.
 See also
@@ -1595,8 +1595,8 @@ Operator%
 srmatrix srbmatrix::operator * (const srmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srmatrix"
-as  product of  calling band matrix and  matrix \verb"m".
+creates an object of type \verb"srmatrix"
+as a product of a calling band matrix and a matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 if the operands have different sizes.
 Use \GOT{rmatrix::mult}{rmatrix.mult} in order to avoid
@@ -1637,8 +1637,8 @@ Operator%
 srbmatrix srbmatrix::operator * (const srbmatrix& m) const
 throw (cvmexception);
 \end{verbatim}
-creates  object of type \verb"srbmatrix"
-as  product of  calling band matrix and band matrix \verb"m".
+creates an object of type \verb"srbmatrix"
+as a product of a calling band matrix and band matrix \verb"m".
 It throws  \GOT{cvmexception}{cvmexception}
 if the operands have different sizes.
 Use \GOT{rmatrix::mult}{rmatrix.mult} in order to avoid
@@ -1685,7 +1685,7 @@ srbmatrix::low_up (const srbmatrix& m, int* nPivots) throw (cvmexception);
 srbmatrix
 srbmatrix::low_up (int* nPivots) const throw (cvmexception);
 \end{verbatim}
-compute  $LU$ factorization of  calling band matrix as
+compute  $LU$ factorization of a calling band matrix as
 \begin{equation*}
 A=PLU
 \end{equation*}
@@ -1700,7 +1700,7 @@ pointed to by \verb"nPivots" so \hbox{$i$-th} row
 was interchanged with \hbox{\verb"nPivots["$i$\verb"]"-th} row.
 The first version sets  calling matrix to be equal to the
 \verb"m"'s $LU$ factorization and the second one
-creates  object of type \verb"srbmatrix" as  calling band matrix's
+creates an object of type \verb"srbmatrix" as  calling band matrix's
 $LU$ factorization.
 Functions throw \GOT{cvmexception}{cvmexception}
 in case of inappropriate
@@ -1793,7 +1793,7 @@ rvector operator / (const rvector& vB) const throw (cvmexception);
 \end{verbatim}
 returns solution $x$ of linear equation
 $A*x=b$ where calling matrix is square band matrix $A$
-and vector $b$ is passed in parameter \verb"vB".
+and a vector $b$ is passed in parameter \verb"vB".
 This operator throws exception 
 of type \GOT{cvmexception}{cvmexception}
 in case of inappropriate sizes
@@ -1839,7 +1839,7 @@ Function%
 srbmatrix& srbmatrix::identity();
 \end{verbatim}
 sets  calling band matrix to be equal to identity matrix
-and returns  reference to
+and returns a reference to
 the matrix changed. 
 Function doesn't change
 numbers of sub- and super-diagonals.
@@ -1877,8 +1877,8 @@ Function%
 \begin{verbatim}
 srbmatrix& srbmatrix::vanish();
 \end{verbatim}
-sets every element of  calling band matrix to be equal to zero
-and returns  reference to
+sets every element of a calling band matrix to be equal to zero
+and returns a reference to
 the matrix changed. This function is faster
 than
 \GOT{srbmatrix::set(TR)}{srbmatrix.set}
@@ -1919,7 +1919,7 @@ srbmatrix& srbmatrix::randomize (TR dFrom, TR dTo);
 fills  calling band matrix with pseudo-random numbers distributed between
 \verb"dFrom" and \verb"dTo".
 Function
-returns  reference to the matrix changed.
+returns a reference to the matrix changed.
 See also
 \GOT{srbmatrix}{srbmatrix}.
 Example:

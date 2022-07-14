@@ -1,8 +1,8 @@
 \documentclass[12pt,letterpaper]{article}
 %\documentclass[12pt,letterpaper,draft]{article}
 %\documentclass[12pt,a4paper]{article}
+\usepackage[T1,T2A]{fontenc}
 \usepackage[cp866]{inputenc}
-\usepackage[T1]{fontenc}
 %\usepackage[T2C]{fontenc}
 \usepackage[full]{textcomp}
 \usepackage{calc}
@@ -16,7 +16,7 @@
 \usepackage{examplep}
 %\usepackage[scaled]{luximono}
 %\usepackage{lucida}
-\usepackage[scaled]{helvet}
+%%\usepackage[scaled]{helvet}
 %\usepackage{courier}
 %\usepackage[boldsans]{ccfonts}
 \usepackage[euler-digits]{eulervm}
@@ -29,7 +29,7 @@
 %\usepackage{layout}
 %\usepackage[paper=letterpaper,hoffset=-0.5in,voffset=-0.5in,textwidth=474pt,textheight=628pt,heightrounded=true]{geometry}
 %\usepackage[top=1in, left=1in, right=1in, bottom=1in, includefoot, heightrounded=true]{geometry}
-\usepackage[paper=letterpaper, top=1in, left=1in, right=1in, bottom=1in, includefoot, heightrounded=true]{geometry}
+\usepackage[paper=letterpaper, top=0.8in, left=1in, right=1in, bottom=0.8in, includefoot, heightrounded=true]{geometry}
 \usepackage{fancyvrb}
 %\usepackage{listings}
 \usepackage{fancyhdr}
@@ -95,10 +95,11 @@ goto name{#2}%
 \newcommand{\conj}{\operatorname{conj}}
 \newcommand{\floor}{\operatorname{floor}}
 \newcommand{\pinv}{\operatorname{pinv}}
-\newcommand{\CVMVERSION}{8.1\xspace}
-\newcommand{\MKLVERSION}{11.1 Update~1\xspace}
-\newcommand{\ACMLVERSION}{4.4.0\xspace}
-\newcommand{\ACMLVERSIONSIXFOUR}{5.3.0\xspace}
+\newcommand{\CVMVERSION}{9.0\xspace}
+%\newcommand{\MKLVERSION}{11.1 Update~1\xspace}
+\newcommand{\MKLVERSION}{11.3}
+%\newcommand{\ACMLVERSION}{4.4.0\xspace}
+%\newcommand{\ACMLVERSIONSIXFOUR}{5.3.0\xspace}
 \newcommand{\Based}{\GO{$\ell$-based}{SubSubSectionIndexing}\xspace}
 
 
@@ -135,9 +136,9 @@ CVM%
 \pdfdest name {SectionPreface} fit%
 \pdfdest name {SubSectionBriefHistory} fit{}
 C++ class library%
-\footnote{\,This document describes version \CVMVERSION and it does not cover function classes yet. 
-Use online documentation for them. Copyright
-\copyright{ } Sergei Nikolaev, 1992--2012,
+\footnote{\,This document describes version \CVMVERSION. 
+Copyright
+\copyright{ } Sergei Nikolaev, 1992--2022,
 \URL{http://cvmlib.com}{http://cvmlib.com}} encapsulates
 concepts of vector and different kinds of matrices including square,
 band, symmetric and hermitian ones, in Euclidean space of real and
@@ -161,9 +162,9 @@ Russian office of Intel Corporation began to distribute a CD with
 last software products from Intel. Among others there was a freely
 (at that time) distributed library called ``Intel BLAS Library''.
 More than 20 years \URL{BLAS library}{http://www.netlib.org/blas}
-(Basic Linear Algebra Subprograms) is known to experts in numerical
+(Basic Linear Algebra Subprograms) was known to experts in numerical
 algorithms programming in \FORTRAN language. This library features
-common vector-matrix operations for data types \verb"REAL" and
+common vector--matrix operations for data types \verb"REAL" and
 \verb"DOUBLE RECISION". 
 %It's important to note here that CVM
 %library is also released in two versions:
@@ -175,7 +176,7 @@ common vector-matrix operations for data types \verb"REAL" and
 %#endif
 %\end{Verbatim}
 Both implementations of the BLAS are utilized since version 2.0 of
-CVM library. For example, operator of addition of two vectors
+CVM Class library. For example, operator of addition of two vectors
 utilizes subroutine \verb"DAXPY". Later Intel changed the name
 ``BLAS'' to ``Intel Math Kernel Library''. Since version 3.0
 \URL{LAPACK}{http://www.netlib.org/lapack} subroutines were
@@ -199,10 +200,10 @@ Intel MKL library at the moment of writing of this document for Win32 and
 Linux is \MKLVERSION. Version~\CVMVERSION of the CVM library was 
 built and tested with that MKL library implementation.
 
-Besides that \URL{AMD ACML library}{http://developer.amd.com/cpu/Libraries/acml/Pages/default.aspx}
-is supported as well. Current CVM Library was 
-built and tested with AMD ACML~\ACMLVERSION for 32 bit plaforms 
-and ACML~\ACMLVERSIONSIXFOUR for 64~bit.
+%Besides that \URL{AMD ACML library}{http://developer.amd.com/cpu/Libraries/acml/Pages/default.aspx}
+%is supported as well. Current CVM Library was 
+%built and tested with AMD ACML~\ACMLVERSION for 32 bit plaforms 
+%and ACML~\ACMLVERSIONSIXFOUR for 64~bit.
 
 Finally, \URL{native BLAS and LAPACK}{http://www.netlib.org/lapack/} libraries
 are supported and starting from CVM 5.7 they are part of binary packages as well.
@@ -211,7 +212,7 @@ are supported and starting from CVM 5.7 they are part of binary packages as well
 \subsection{Object Model}
 Object%
 \pdfdest name {SubSectionTheModel} fit{}
-model of the CVM library is shown on the following picture\\
+model of the CVM library is shown at the following picture\\
 \noindent
 %\begin{figure}
 \unitlength=1mm
@@ -222,7 +223,7 @@ model of the CVM library is shown on the following picture\\
 \unitlength=1pt
 %\newpage
 
-Base class's names are beginning with capital letters. They
+Base classes names are beginning with capital letters. They
 implement common interfaces and are \emph{not} designed to be instantiated.
 This is the list of end-user classes:
 \begin{compactitem}
@@ -230,13 +231,13 @@ This is the list of end-user classes:
 It's used
 mostly as an array of integers like \verb"basic_array<int>", but you
 can use it in your projects within any other types as well.
-\item \verb"basic_rvector" is a class encapsulating vector
+\item \verb"basic_rvector" is a class encapsulating a vector
 of real numbers.
-\item \verb"basic_cvector" is a class encapsulating vector
+\item \verb"basic_cvector" is a class encapsulating a vector
 of complex numbers.
-\item \verb"basic_rmatrix" is a class encapsulating matrix
+\item \verb"basic_rmatrix" is a class encapsulating a matrix
 of real numbers.
-\item \verb"basic_cmatrix" is a class encapsulating matrix
+\item \verb"basic_cmatrix" is a class encapsulating a matrix
 of complex numbers.
 \item \verb"basic_srmatrix" is a class encapsulating 
 square matrix of real numbers.
@@ -256,23 +257,49 @@ hermitian matrix of complex numbers.
 
 You don't need to use those class names directly unless you
 want to \verb"typedef"
-your own ones. Otherwise you should use the following
+your own ones. Otherwise, you should use the following
 pre-defined classes:
 %(\verb"CVMAllocator" is omitted here for simplicity):
 \begin{Verbatim}
-typedef basic_array    <int>             iarray;
-typedef basic_rvector  <treal>           rvector;
-typedef basic_rmatrix  <treal>           rmatrix;
-typedef basic_srmatrix <treal>           srmatrix;
-typedef basic_cvector  <treal, tcomplex> cvector;
-typedef basic_cmatrix  <treal, tcomplex> cmatrix;
-typedef basic_scmatrix <treal, tcomplex> scmatrix;
-typedef basic_srbmatrix<treal>           srbmatrix;
-typedef basic_scbmatrix<treal, tcomplex> scbmatrix;
-typedef basic_srsmatrix<treal>           srsmatrix;
-typedef basic_schmatrix<treal, tcomplex> schmatrix;
+using iarray    = basic_array<tint,tint>;
+using rvector   = basic_rvector  <treal>;
+using rmatrix   = basic_rmatrix  <treal>;
+using srmatrix  = basic_srmatrix <treal>;
+using cvector   = basic_cvector  <treal,tcomplex>;
+using cmatrix   = basic_cmatrix  <treal,tcomplex>;
+using scmatrix  = basic_scmatrix <treal,tcomplex>;
+using srbmatrix = basic_srbmatrix<treal>;
+using scbmatrix = basic_scbmatrix<treal,tcomplex>;
+using srsmatrix = basic_srsmatrix<treal>;
+using schmatrix = basic_schmatrix<treal,tcomplex>;
 \end{Verbatim}
+
 The rest of this manual describes them in details.
+Since version 8.2 you can use both precisions simultaneously:
+
+\begin{Verbatim}
+using rvector32   = basic_rvector  <float>;
+using rmatrix32   = basic_rmatrix  <float>;
+using srmatrix32  = basic_srmatrix <float>;
+using cvector32   = basic_cvector  <float,std::complex<float>>;
+using cmatrix32   = basic_cmatrix  <float,std::complex<float>>;
+using scmatrix32  = basic_scmatrix <float,std::complex<float>>;
+using srbmatrix32 = basic_srbmatrix<float>;
+using scbmatrix32 = basic_scbmatrix<float,std::complex<float>>;
+using srsmatrix32 = basic_srsmatrix<float>;
+using schmatrix32 = basic_schmatrix<float,std::complex<float>>;
+
+using rvector64   = basic_rvector  <double>;
+using rmatrix64   = basic_rmatrix  <double>;
+using srmatrix64  = basic_srmatrix <double>;
+using cvector64   = basic_cvector  <double,std::complex<double>>;
+using cmatrix64   = basic_cmatrix  <double,std::complex<double>>;
+using scmatrix64  = basic_scmatrix <double,std::complex<double>>;
+using srbmatrix64 = basic_srbmatrix<double>;
+using scbmatrix64 = basic_scbmatrix<double,std::complex<double>>;
+using srsmatrix64 = basic_srsmatrix<double>;
+using schmatrix64 = basic_schmatrix<double,std::complex<double>>;
+\end{Verbatim}
 
 
 
@@ -285,18 +312,17 @@ CVM%
 \pdfdest name {SubSubSectionDirectoryStructure} fit{}
 library distribution has the following directory structure.
 \begin{compactitem}
-\item \verb".\*2010.sln" MS Visual~Studio~2010 solution files.
-\item \verb".\*2012.sln" MS Visual~Studio~2012 solution files.
+\item \verb".\*2013.sln" MS Visual~Studio~2013 solution files.
+\item \verb".\*2015.sln" MS Visual~Studio~2015 solution files.
 \item \verb"ftn" contains \FORTRAN{} files.
 %for Intel Fortran compiler and GNU \verb'gfortran'. 
 This source code
-is the part of CVM library, it contains some
-numerical algorithms implementation.
-\item \verb"lib" is the place for 32-bit libraries.
-\item \verb"lib64" is the place for 64-bit libraries.
+is the part of the library: it implements some
+numerical algorithms.
+\item \verb"lib" is the directory for libraries.
 \item \verb"test" contains regression test code and projects.
 \item \verb"src" contains source code of the library
-along with \verb"cvm.h" header file.
+along with \verb"cvm.h" and \verb"cfun.h" header files.
 \end{compactitem}
 
 
@@ -312,14 +338,11 @@ are definitions and data types used in the library.\\
 \Code{CVM\_ZERO\_BASED} & define this macro to build the library with \GO{$0$-based indexing}{SubSubSectionIndexing}
 \\ %tabularnewline
 \hline
-\Code{CVM\_ACML} & define this macro to link against AMD ACML and/or ACML MP library
-\\ %tabularnewline
-\hline
-\Code{CVM\_FLOAT} & define this macro in order to build a float version
+\Code{CVM\_FLOAT} & \textbf{(deprecated)} define this macro in order to build a float version
 \\ %tabularnewline
 \hline
 \Code{CVM\_NO\_NAMESPACE} & define this macro
-if you don't want to use namespace
+if you don't want to use \Code{cvm} namespace
 \\ %tabularnewline
 \hline
 \Code{tint} & is \Code{typedef}'ed as \Code{long long int} (or as \Code{\_\_int64} for MSVC)
@@ -343,26 +366,30 @@ In order to use the library just include its header file:
 \begin{Verbatim}
 #include <cvm.h>
 \end{Verbatim}
+To use functional classes include this one:
+\begin{Verbatim}
+#include <cfun.h>
+\end{Verbatim}
 You should also link your project with one of \verb"cvm*.lib"
 for Microsoft's C++ compilers
 and \verb"cvm*.so" for GNU~C++ compilers
 (debug versions are \verb"*_debug.lib" and \verb"*_debug.so"
 respectively).
 
-\subsubsection{Installation -- Win32}
+\subsubsection{Installation -- Windows}
 If%
 \pdfdest name {SubSubSectionInstallationWin32} fit{}
 you don't want to rebuild the library just download
-an appropriate version of \verb"cvm*.dll" and \verb"cvm*.lib" files
-from binaries section.
+appropriate version of \verb"cvm*.dll" and \verb"cvm*.lib" files
+from binaries section of the site.
 If you want to rebuild the whole library you'll
-need Intel Fortran~11.1 and Intel C++~11.1 compilers (or higher)
-along with MS~Visual~Studio~2010 or 2012.
-You'll also need
-the Intel MKL~10.2 (or higher) library.
-You will also need STL library 
-coming with MS~VC++ or
-the \URL{STLport}{http://stlport.com} library.
+need Intel Fortran (and optionally Intel~C++) %~11.1 and Intel C++~11.1 compilers (or higher)
+along with MS~Visual~Studio~2013 or 2015.
+You can also use
+Intel MKL~10.2 (or higher) library.
+%You will also need STL library 
+%coming with MS~VC++ or
+%the \URL{STLport}{http://stlport.com} library.
 Open \verb".\cvmlib*.sln" solution
 and choose the library version you want to build.
 
@@ -380,45 +407,36 @@ Use%
 the Makefile provided in the root directory:
 \begin{Verbatim}
 make [release|debug] [IFORT=1] [ICC=1] [MKL=1] [MKL_PATH=/opt/...] 
-     [ACML=1] [ACML_MP=1] [ACML_PATH=/opt/...] [EM64T=1] [ILP64=1]
-     [CVM_FLOAT=1] [ICCT=1] [STATIC_ONLY=1] [IFORT_PATH=/opt/...] 
-     [MAC=1]
+     [EM64T=1] [ILP64=1] [CVM_FLOAT=1] [ICCT=1] [STATIC_ONLY=1]
+     [IFORT_PATH=/opt/...] [MAC=1] [GF_BLAS=1]
 \end{Verbatim}
 Here
 \begin{compactitem}
 \item \verb'release|debug' is a target (by default it builds both)
 \item \verb'IFORT=1' instructs to use \verb"ifort"
-%Intel~Fortran 
-compiler (by default it's \verb'gfortran')
+compiler (\verb'gfortran' is the default)
 \item \verb'ICC=1' instructs to use \verb"icpc"
-%Intel~C++ compiler 
-(by default it's \verb'g++')
-\item \verb'MKL=1' instructs to use Intel~MKL library (by default it uses
-  native BLAS and LAPACK libraries)
-\item \verb'MKL_PATH=path' specifies the directory where the~MKL is installed to.
-By default it's equal to \verb'/opt/intel/composerxe/mkl/lib'.
-%(please make sure that this path contains \verb'32' and \verb'em64t' subdirectories inside).
-\item \verb'ACML=1' instructs to use AMD ACML library (overrides \verb'MKL=1' and \verb'ACML_MP=1').
-\item \verb'ACML_MP=1' instructs to use AMD ACML MP library (overrides \verb'MKL=1').
-\item \verb'ACML_PATH=path' specifies the directory where the ACML is 
-installed to.
-(overrides \verb'MKL_PATH=path').
+(\verb'g++' is the default)
+\item \verb'MKL=1' instructs to use Intel~MKL library (it uses
+  native BLAS and LAPACK libraries by default)
+%\item \verb'MKL_PATH=path' specifies the directory where the~MKL is installed to.
+It's set to \verb'/opt/intel/mkl/lib' by default.
 \item \verb'EM64T=1' instructs to build EM64T version of the library.
 \item \verb'ILP64=1' instructs to build INT64-based version of the library (EM64T must be turned on).
-\item \verb'CVM_FLOAT=1' instructs to build \verb'float' version of the
-  library.
+\item \verb'CVM_FLOAT=1' \textbf{(deprecated)} instructs to build \verb'float' version of the library.
 \item \verb'ICCT=1' instructs to use Intel~C++ compiler for building the
-regression test utility (by default it's \verb'g++')
+regression test utility (\verb'g++' is the default)
 \item \verb'STATIC_ONLY=1' instructs to build static libraries only.
 Both .so and .a will be built otherwise.
 \item \verb'IFORT_PATH=path' specifies the directory where the Intel Fortran is installed to. 
-It's required only when you build ACML version within Intel Fortran and
-Intel C++ compilers.
+It's set to \verb"/opt/intel" by default.
 \item \verb'MAC=1' instructs to build Mac OS X version of the library.
+\item \verb'GF_BLAS=1' instructs to link with BLAS and LAPACK libraries built by 
+\verb'gfortran' compiler. If not set, \verb'ifort'-built libraries will be linked.
 \end{compactitem}
-On Unix platforms Intel~MKL, AMD ACML and native BLAS/LAPACK libraries as well
+On Unix platforms Intel~MKL and native BLAS/LAPACK libraries as well
 as both Intel's and GNU compilers are supported. On MinGW platform the native libraries and
-compilers are only supported.
+compilers only supported.
 
 
 \subsection{Storage}
@@ -543,25 +561,35 @@ The%
 library is shipped with regression utility testing almost all
 its functions and operators. It's strongly recommended to build
 it upon installation and verify (see \verb"test" directory for
-workspace and make files). It has the following syntax:
+workspace and make files):
+%. It has the following syntax:
+%\begin{Verbatim}
+%regtest_* [-t<Number of threads to run>] [-r<Number of executions>]
+%\end{Verbatim}
+%Example:
 \begin{Verbatim}
-regtest_* [-t<Number of threads to run>] [-r<Number of executions>]
-\end{Verbatim}
-Example:
-\begin{Verbatim}
-D:\cvmlib\lib>regtest_cvm_ia32.exe -t2 -r2
-TESTS STARTED
-TESTS STARTED
-ALL TESTS SUCEEDED
-ALL TESTS SUCEEDED
-TESTS STARTED
-TESTS STARTED
-ALL TESTS SUCEEDED
-ALL TESTS SUCEEDED
-TOTAL TIME 1.83e+000 sec.
-\end{Verbatim}
-\newpage
+$ ./regtest_cvm_em64t
+[==========] Running 540 tests from 10 test cases.
+[----------] Global test environment set-up.
+[----------] 61 tests from InitializationTest/0, where TypeParam = float
+[ RUN      ] InitializationTest/0.TestSizes
+[       OK ] InitializationTest/0.TestSizes (0 ms)
 
+...
+
+[ RUN      ] BlasTest/1.TestHermitianMatrixExponent
+[       OK ] BlasTest/1.TestHermitianMatrixExponent (0 ms)
+[----------] 23 tests from BlasTest/1 (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 540 tests from 10 test cases ran. (813 ms total)
+[  PASSED  ] 540 tests.
+\end{Verbatim}
+Since version 8.2 Google Test Library is used here, so you can
+use \verb'--gtest_filter' option for filtering tests etc.
+
+
+\newpage
 
 
 \makeatletter

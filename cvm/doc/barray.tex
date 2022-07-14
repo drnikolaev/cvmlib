@@ -4,9 +4,9 @@
 \verb"class basic_array {"\\
 \verb"public:"\\
 \verb"    int "\GOT{basic\_array}{basicarray.ctr}\verb" ();"\\
-\verb"    explicit "\GOT{basic\_array}{basicarray.ctr2}\verb" (int nSize, bool bZeroMemory = true);"\\
-\verb"    "\GOT{basic\_array}{basicarray.ctr2.5}\verb" (T* p, int nSize);"\\
-\verb"    "\GOT{basic\_array}{basicarray.ctr3}\verb" (const T* p, int nSize);"\\
+\verb"    explicit "\GOT{basic\_array}{basicarray.ctr2}\verb" (int size, bool bZeroMemory = true);"\\
+\verb"    "\GOT{basic\_array}{basicarray.ctr2.5}\verb" (T* p, int size);"\\
+\verb"    "\GOT{basic\_array}{basicarray.ctr3}\verb" (const T* p, int size);"\\
 \verb"    "\GOT{basic\_array}{basicarray.ctrstl}\verb" (const T* first, const T* last);"\\
 \verb"    "\GOT{basic\_array}{basicarray.copyctr}\verb" (const basic_array& a);"\\
 \verb"    int "\GOT{size}{basicarray.size}\verb" () const;"\\
@@ -23,7 +23,7 @@
 \verb"    basic_array& "\GOT{operator =}{basicarray.operator =}\verb" (const basic_array& a) throw (cvmexception);"\\
 \verb"    basic_array& "\GOT{assign}{basicarray.assign}\verb" (const T* p);"\\
 \verb"    basic_array& "\GOT{set}{basicarray.set}\verb" (T x);"\\
-\verb"    basic_array& "\GOT{resize}{basicarray.resize}\verb" (int nNewSize) throw (cvmexception);"\\
+\verb"    basic_array& "\GOT{resize}{basicarray.resize}\verb" (int new_size) throw (cvmexception);"\\
 \verb"    // "\GOT{STL-specific type definitions}{basicarray.typedefs}\\
 \verb"    typedef T value_type;"\\
 \verb"    typedef value_type* pointer;"\\
@@ -56,7 +56,7 @@
 \verb"    void "\GOT{assign}{basicarray.beginend}\verb" (size_type n, const T& val) throw (cvmexception);"\\
 \verb"    void "\GOT{assign}{basicarray.beginend}\verb" (const_iterator first,"\\
 \verb"                 const_iterator last) throw (cvmexception);"\\
-\verb"    void "\GOT{resize}{basicarray.beginend}\verb" (size_type nNewSize) throw (cvmexception);"\\
+\verb"    void "\GOT{resize}{basicarray.beginend}\verb" (size_type new_size) throw (cvmexception);"\\
 \verb"    void "\GOT{clear}{basicarray.beginend}\verb" ();"\\
 \verb"    void "\GOT{swap}{basicarray.beginend}\verb" (basic_array& v);"\\
 \verb"    reference "\GOT{at}{basicarray.at}\verb" (size_type n) throw (cvmexception);"\\
@@ -106,9 +106,9 @@ prints
 Constructor%
 \pdfdest name {basicarray.ctr2} fit
 \begin{verbatim}
-explicit basic_array<T>::basic_array(int nSize, bool bZeroMemory = true);
+explicit basic_array<T>::basic_array(int size, bool bZeroMemory = true);
 \end{verbatim}
-creates  \verb"basic_array" object of size equal to \verb"nSize". 
+creates  \verb"basic_array" object of size equal to \verb"size".
 Allocated memory is initialized with zero values by default 
 (you can pass \verb"false" in second argument in order to 
 avoid this initialization). 
@@ -134,10 +134,10 @@ prints
 Constructor%
 \pdfdest name {basicarray.ctr2.5} fit
 \begin{verbatim}
-basic_array<T>::basic_array (T* p, int nSize);
+basic_array<T>::basic_array (T* p, int size);
 \end{verbatim}
 creates  \verb"basic_array" object of size equal to 
-\verb"nSize" and shares memory (shallow copy) with array pointed to by \verb"p" parameter.
+\verb"size" and shares memory (shallow copy) with an array pointed to by \verb"p" parameter.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed.
 See also \GOT{basic\_array}{basicarray}.
@@ -163,10 +163,10 @@ prints
 Constructor%
 \pdfdest name {basicarray.ctr3} fit
 \begin{verbatim}
-basic_array<T>::basic_array (const T* p, int nSize);
+basic_array<T>::basic_array (const T* p, int size);
 \end{verbatim}
 creates  \verb"basic_array" object of size equal to 
-\verb"nSize" and copies \verb"nSize" elements of
+\verb"size" and copies \verb"size" elements of
 an array \verb"p" to it.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed or memory allocation failure.
@@ -221,7 +221,7 @@ basic_array<T>::basic_array (const basic_array& a);
 \end{verbatim}
 creates  \verb"basic_array" object of size equal to size of
 vector \verb"a" and 
-sets every element of created array to  value of
+sets every element of created array to a value of
 appropriate element of  \verb"a".
 See also \GOT{basic\_array}{basicarray}.
 Example:
@@ -246,7 +246,7 @@ Function%
 \begin{verbatim}
 int basic_array<T>::size () const;
 \end{verbatim}
-returns  number of elements of calling array.
+returns  number of elements of a calling array.
 This function is \emph{inherited} in all classes of the library:
 \GOT{rvector}{rvector},   \GOT{cvector}{cvector},
 \GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
@@ -278,7 +278,7 @@ const T* basic_array<T>::get () const;
 basic_array<T>::operator T* ();
 basic_array<T>::operator const T* () const;
 \end{verbatim}
-return  pointer to beginning (first element) of calling array.
+return  pointer to beginning (first element) of a calling array.
 These functions and operators are \emph{inherited} in all 
 classes of the library:
 \GOT{rvector}{rvector},   \GOT{cvector}{cvector},
@@ -327,7 +327,7 @@ T& basic_array<T>::operator [] (int i) throw (cvmexception);
 T  basic_array<T>::operator [] (int i) const throw (cvmexception);
 \end{verbatim}
 return  reference (or value for constant versions)
-to \verb"i"-th element of calling array. Please note that \emph{all indexing 
+to \verb"i"-th element of a calling array. Please note that \emph{all indexing 
 operators of the library are \Based.}
 These operators are \emph{inherited} in 
 \GOT{rvector}{rvector} and \GOT{cvector}{cvector} 
@@ -370,9 +370,9 @@ Assignment operator%
 basic_array<T>&
 basic_array<T>::operator = (const basic_array& a) throw (cvmexception);
 \end{verbatim}
-sets every element of  calling array to  value of
-appropriate element of  array \verb"a"
-and returns  reference to the object changed.
+sets every element of a calling array to a value of
+appropriate element of an array  \verb"a"
+and returns a reference to the object changed.
 This operator is \emph{reimplemented} in all classes of the library:
 \GOT{rvector}{rvector}, \GOT{cvector}{cvector} ,
 \GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
@@ -404,9 +404,9 @@ Function%
 \begin{verbatim}
 basic_array<T>& basic_array<T>::assign (const T* p);
 \end{verbatim}
-sets every element of  calling array to  value of
-appropriate element of  array pointed to by parameter \verb"p"
-and returns  reference to the object changed.
+sets every element of a calling array to a value of
+appropriate element of an array  pointed to by parameter \verb"p"
+and returns a reference to the object changed.
 This function is \emph{reimplemented} in all classes of the library:
 \GOT{rvector}{rvector}, \GOT{cvector}{cvector} ,
 \GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
@@ -437,9 +437,9 @@ Function%
 \begin{verbatim}
 basic_array<T>& basic_array<T>::set (T x);
 \end{verbatim}
-sets every element of  calling array to  value of
+sets every element of a calling array to a value of
 parameter \verb"x"
-and returns  reference to the object changed.
+and returns a reference to the object changed.
 This function is \emph{reimplemented} in all classes of the library:
 \GOT{rvector}{rvector}, \GOT{cvector}{cvector} ,
 \GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
@@ -467,10 +467,10 @@ Function%
 \pdfdest name {basicarray.resize} fit
 \begin{verbatim}
 basic_array<T>&
-basic_array<T>::resize (int nNewSize) throw (cvmexception);
+basic_array<T>::resize (int new_size) throw (cvmexception);
 \end{verbatim}
-changes  size of  calling array to be equal to
-\verb"nNewSize" and returns  reference to
+changes  size of a calling array to be equal to
+\verb"new_size" and returns a reference to
 the array changed. Calling array
 will be filled with zeroes in case of increasing of its size.
 This function is \emph{reimplemented} in all classes of the library:
@@ -600,7 +600,7 @@ void basic_array<T>::assign (size_type n,
                              const T& val) throw (cvmexception);
 void basic_array<T>::assign (const_iterator first, 
                              const_iterator last) throw (cvmexception);
-void basic_array<T>::resize (size_type nNewSize) throw (cvmexception);
+void basic_array<T>::resize (size_type new_size) throw (cvmexception);
 void basic_array<T>::clear();
 void basic_array<T>::swap (basic_array& v) throw (cvmexception);
 \end{verbatim}
@@ -643,7 +643,7 @@ basic_array<T>::at(size_type n) throw (cvmexception);
 basic_array<T>::const_reference 
 basic_array<T>::at(size_type n) throw (cvmexception);
 \end{verbatim}
-return  reference to  \verb"(n-1)"-th element of calling array, i.e.,
+return  reference to  \verb"(n-1)"-th element of a calling array, i.e.,
 unlike \GO{indexing operators}{basicarray.indexing},
 these functions are \emph{$0$-based}.
 They are provided for every class of the library to be compatible 
