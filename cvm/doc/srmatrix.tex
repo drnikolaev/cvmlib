@@ -10,7 +10,7 @@
 \verb"    "\GOT{srmatrix}{srmatrix.srmatrix (const srmatrix&)}\verb" (const srmatrix& m);"\\
 \verb"    "\GOT{srmatrix}{srmatrix.srmatrix (const rmatrix&)}\verb" (const rmatrix& m);"\\
 \verb"    explicit "\GOT{srmatrix}{srmatrix.srmatrix (const rvector&)}\verb" (const rvector& v);"\\
-\verb"    "\GOT{srmatrix}{srmatrix.submatrixctr}\verb" (rmatrix& m, int nRow, int nCol, int nSize);"\\
+\verb"    "\GOT{srmatrix}{srmatrix.submatrixctr}\verb" (rmatrix& m, int nRow, int nCol, int size);"\\
 \verb"    TR& "\GOT{operator ()}{srmatrix.operator (,)}\verb" (int im, int in) throw (cvmexception);"\\
 \verb"    TR "\GOT{operator ()}{srmatrix.operator (,)}\verb" (int im, int in) const throw (cvmexception);"\\
 \verb"    rvector "\GOT{operator ()}{srmatrix.operator ()}\verb" (int i) throw (cvmexception);"\\
@@ -354,13 +354,13 @@ prints
 Submatrix constructor%
 \pdfdest name {srmatrix.submatrixctr} fit
 \begin{verbatim}
-srmatrix::srmatrix (rmatrix& m, int nRow, int nCol, int nSize);
+srmatrix::srmatrix (rmatrix& m, int nRow, int nCol, int size);
 \end{verbatim}
 creates  \verb"srmatrix" object as  \emph{submatrix} of \verb"m".
 It means that the matrix object created shares  memory with some part
 of \verb"m". This part is defined by its upper left corner (parameters 
 \verb"nRow" and \verb"nCol", both are \Based)
-and its size (parameter \verb"nSize").
+and its size (parameter \verb"size").
 See also \GOT{srmatrix}{srmatrix}.
 Example:
 \begin{Verbatim}

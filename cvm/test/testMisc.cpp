@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2016
+//          Copyright Sergei Nikolaev 1992-2022
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -20,12 +20,12 @@ TYPED_TEST_CASE(MiscTest, TestTypes);
 
 TYPED_TEST(MiscTest, TestPrintProxy) {
     basic_rmatrix<TP> m(1,1);
-    m(CVM0,CVM0) = 1.234;
+    m(0,0) = 1.234;
     char buf[32];
 #if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
-    sprintf_s(buf, sizeof(buf), "%.3f", m(CVM0,CVM0).val());  // use .val to printf type_proxy!
+    sprintf_s(buf, sizeof(buf), "%.3f", m(0,0).val());  // use .val to printf type_proxy!
 #else
-    sprintf(buf, "%.3f", m(CVM0,CVM0).val());  // use .val to printf type_proxy!
+    sprintf(buf, "%.3f", m(0,0).val());  // use .val to printf type_proxy!
 #endif
     EXPECT_STREQ("1.234", buf);
 }
@@ -47,7 +47,7 @@ TYPED_TEST(MiscTest, TestMKL81Crash) {
     basic_rmatrix<TP> A(n, p);
     for (j = 0 ; j < p; ++j) {
        for (i = 0 ; i < n; ++i) {
-           A(i+CVM0, j+CVM0) = TP(i + j * p);
+           A(i, j) = TP(i + j * p);
        }
     }
     basic_rvector<TP> v(_cvm_min(n,p)) ;
@@ -110,10 +110,10 @@ TYPED_TEST(MiscTest, TestComplexByRealProxy) {
     TPC phase = exp(2*pi*ci);
 
     basic_rmatrix<TP> tmp(2,2);
-    tmp(CVM0+1,CVM0+1) = 3.;
+    tmp(1,1) = 3.;
     basic_cmatrix<TP,TPC> H(10,10);
-    H(CVM0+1,CVM0+1) += phase*tmp(CVM0+1,CVM0+1);
-    EXPECT_NEAR(std::abs(TPC(1.606474966574294e+03,0.)), std::abs(H(CVM0+1,CVM0+1)), sp<TP>())
+    H(1,1) += phase*tmp(1,1);
+    EXPECT_NEAR(std::abs(TPC(1.606474966574294e+03,0.)), std::abs(H(1,1)), sp<TP>())
         << "tcomplex * type_proxy<treal>";
 }
 
@@ -121,40 +121,40 @@ TYPED_TEST(MiscTest, TestComplexFunctionsProxy) {
     basic_cmatrix<TP,TPC> m(2,3);
     const TPC c1 = TPC(1.19,1.21);
     const TPC c2 = TPC(1.23,-0.34);
-    m(CVM0,CVM0) = c1;
-    m(CVM0+1,CVM0+1) = c2;
+    m(0,0) = c1;
+    m(1,1) = c2;
 
-    EXPECT_EQ(c1, m(CVM0,CVM0));
-    EXPECT_EQ(c2, m(CVM0+1,CVM0+1));
-    EXPECT_EQ(real(c1), real(m(CVM0,CVM0)));
-    EXPECT_EQ(imag(c1), imag(m(CVM0,CVM0)));
-    EXPECT_EQ(abs(c1), abs(m(CVM0,CVM0)));
-    EXPECT_EQ(arg(c1), arg(m(CVM0,CVM0)));
-    EXPECT_EQ(norm(c1), norm(m(CVM0,CVM0)));
-    EXPECT_EQ(pow(c1,c2), pow(m(CVM0,CVM0), m(CVM0+1,CVM0+1)));
-    EXPECT_EQ(pow(c1,TP(3.)), pow(m(CVM0,CVM0), TP(3.)));
-    EXPECT_EQ(pow(TP(2.),c2), pow(TP(2.), m(CVM0+1,CVM0+1)));
+    EXPECT_EQ(c1, m(0,0));
+    EXPECT_EQ(c2, m(1,1));
+    EXPECT_EQ(real(c1), real(m(0,0)));
+    EXPECT_EQ(imag(c1), imag(m(0,0)));
+    EXPECT_EQ(abs(c1), abs(m(0,0)));
+    EXPECT_EQ(arg(c1), arg(m(0,0)));
+    EXPECT_EQ(norm(c1), norm(m(0,0)));
+    EXPECT_EQ(pow(c1,c2), pow(m(0,0), m(1,1)));
+    EXPECT_EQ(pow(c1,TP(3.)), pow(m(0,0), TP(3.)));
+    EXPECT_EQ(pow(TP(2.),c2), pow(TP(2.), m(1,1)));
 
-    EXPECT_EQ(conj(c1), conj(m(CVM0,CVM0)));
-    EXPECT_EQ(proj(c1), proj(m(CVM0,CVM0)));
-    EXPECT_EQ(exp(c1), exp(m(CVM0,CVM0)));
-    EXPECT_EQ(log(c1), log(m(CVM0,CVM0)));
-    EXPECT_EQ(log10(c1), log10(m(CVM0,CVM0)));
-    EXPECT_EQ(sqrt(c1), sqrt(m(CVM0,CVM0)));
+    EXPECT_EQ(conj(c1), conj(m(0,0)));
+    EXPECT_EQ(proj(c1), proj(m(0,0)));
+    EXPECT_EQ(exp(c1), exp(m(0,0)));
+    EXPECT_EQ(log(c1), log(m(0,0)));
+    EXPECT_EQ(log10(c1), log10(m(0,0)));
+    EXPECT_EQ(sqrt(c1), sqrt(m(0,0)));
 
-    EXPECT_EQ(sin(c1), sin(m(CVM0,CVM0)));
-    EXPECT_EQ(cos(c1), cos(m(CVM0,CVM0)));
-    EXPECT_EQ(tan(c1), tan(m(CVM0,CVM0)));
-    EXPECT_EQ(asin(c1), asin(m(CVM0,CVM0)));
-    EXPECT_EQ(acos(c1), acos(m(CVM0,CVM0)));
-    EXPECT_EQ(atan(c1), atan(m(CVM0,CVM0)));
+    EXPECT_EQ(sin(c1), sin(m(0,0)));
+    EXPECT_EQ(cos(c1), cos(m(0,0)));
+    EXPECT_EQ(tan(c1), tan(m(0,0)));
+    EXPECT_EQ(asin(c1), asin(m(0,0)));
+    EXPECT_EQ(acos(c1), acos(m(0,0)));
+    EXPECT_EQ(atan(c1), atan(m(0,0)));
 
-    EXPECT_EQ(sinh(c1), sinh(m(CVM0,CVM0)));
-    EXPECT_EQ(cosh(c1), cosh(m(CVM0,CVM0)));
-    EXPECT_EQ(tanh(c1), tanh(m(CVM0,CVM0)));
-    EXPECT_EQ(asinh(c1), asinh(m(CVM0,CVM0)));
-    EXPECT_EQ(acosh(c1), acosh(m(CVM0,CVM0)));
-    EXPECT_EQ(atanh(c1), atanh(m(CVM0,CVM0)));
+    EXPECT_EQ(sinh(c1), sinh(m(0,0)));
+    EXPECT_EQ(cosh(c1), cosh(m(0,0)));
+    EXPECT_EQ(tanh(c1), tanh(m(0,0)));
+    EXPECT_EQ(asinh(c1), asinh(m(0,0)));
+    EXPECT_EQ(acosh(c1), acosh(m(0,0)));
+    EXPECT_EQ(atanh(c1), atanh(m(0,0)));
 }
 
 TYPED_TEST(MiscTest, TestMatrixIndexing) {

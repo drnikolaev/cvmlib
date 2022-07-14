@@ -36,9 +36,9 @@ endif
 ifdef ILP64
   MAKECMD += ILP64=1
 endif
-ifdef MKL_PATH
-  MAKECMD += MKL_PATH=$(MKL_PATH)
-endif
+#ifdef MKL_PATH
+#  MAKECMD += MKL_PATH=$(MKL_PATH)
+#endif
 ifdef STATIC_ONLY
   MAKECMD += STATIC_ONLY=1
 endif
@@ -47,9 +47,6 @@ ifdef CVM_NO_MT
 endif
 ifdef CVM_USE_POOL_MANAGER
   MAKECMD += CVM_USE_POOL_MANAGER=1
-endif
-ifdef CVM_ZERO_BASED
-  MAKECMD += CVM_ZERO_BASED=1
 endif
 ifdef GF_BLAS=1
   MAKECMD += GF_BLAS=1

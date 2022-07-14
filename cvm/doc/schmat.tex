@@ -15,7 +15,7 @@
 \verb"               TR tol = cvmMachSp());"\\
 \verb"    "\GOT{schmatrix}{schmatrix.schmatrix (const srmatrix&, const srmatrix&)}\verb" (const srmatrix& mRe, const srmatrix& mIm,"\\
 \verb"               TR tol = cvmMachSp());"\\
-\verb"    "\GOT{schmatrix}{schmatrix.submatrixctr}\verb" (schmatrix& m, int nRowCol, int nSize);"\\
+\verb"    "\GOT{schmatrix}{schmatrix.submatrixctr}\verb" (schmatrix& m, int nRowCol, int size);"\\
 \verb"    TC "\GOT{operator ()}{schmatrix.operator (,)}\verb" (int im, int in) const throw (cvmexception);"\\
 \verb"    const cvector "\GOT{operator ()}{schmatrix.operator ()}\verb" (int i) const throw (cvmexception);"\\
 \verb"    const cvector "\GOT{operator []}{schmatrix.operator []}\verb" (int i) const throw (cvmexception);"\\
@@ -463,13 +463,13 @@ prints
 Submatrix constructor%
 \pdfdest name {schmatrix.submatrixctr} fit
 \begin{verbatim}
-schmatrix::schmatrix (schmatrix& m, int nRowCol, int nSize);
+schmatrix::schmatrix (schmatrix& m, int nRowCol, int size);
 \end{verbatim}
 creates  \verb"scmatrix" object as  \emph{submatrix} of \verb"m".
 It means that the matrix object created shares  memory with some part
 of \verb"m". This part is defined by its upper left corner (parameter 
 \verb"nRowCol", \Based)
-and its size (parameter \verb"nSize").
+and its size (parameter \verb"size").
 See also \GOT{schmatrix}{schmatrix}.
 Example:
 \begin{Verbatim}

@@ -4,31 +4,31 @@
 \verb"class cvector : public Array<TR,TC> {"\\
 \verb"public:"\\
 \verb"    "\GOT{cvector}{cvector.cvector ()}\verb" ();"\\
-\verb"    explicit "\GOT{cvector}{cvector.cvector (int)}\verb" (int nSize);"\\
+\verb"    explicit "\GOT{cvector}{cvector.cvector (int)}\verb" (int size);"\\
 \verb"    "\GOT{cvector}{cvector (std::initializerlist)}\verb" (std::initializer_list<TC> list);"\\
-\verb"    "\GOT{cvector}{cvector.cvector (int, TC)}\verb" (int nSize, TC c);"\\
-\verb"    "\GOT{cvector}{cvector.cvector (TC*,int,int)}\verb" (TC* pD, int nSize, int nIncr = 1);"\\
-\verb"    "\GOT{cvector}{cvector.cvector (const TC*,int,int)}\verb" (const TC* pD, int nSize, int nIncr = 1);"\\
+\verb"    "\GOT{cvector}{cvector.cvector (int, TC)}\verb" (int size, TC c);"\\
+\verb"    "\GOT{cvector}{cvector.cvector (TC*,int,int)}\verb" (TC* pD, int size, int incr = 1);"\\
+\verb"    "\GOT{cvector}{cvector.cvector (const TC*,int,int)}\verb" (const TC* pD, int size, int incr = 1);"\\
 \verb"    "\GOT{cvector}{cvector.cvector (const cvector&)}\verb" (const cvector& v);"\\
-\verb"    "\GOT{cvector}{cvector.cvector (TR*,TR*,int,int,int)}\verb" (const TR* pRe, const TR* pIm, int nSize,"\\
-\verb"             tint nIncrRe = 1, tint nIncrIm = 1);"\\
+\verb"    "\GOT{cvector}{cvector.cvector (TR*,TR*,int,int,int)}\verb" (const TR* pRe, const TR* pIm, int size,"\\
+\verb"             tint incr_re = 1, tint incr_im = 1);"\\
 \verb"    "\GOT{cvector}{cvector.cvector (const rvector&, const rvector&)}\verb" (const rvector& vRe, const rvector& vIm);"\\
-\verb"    "\GOT{cvector}{cvector.cvector (const TR*,int,bool,int)}\verb" (const TR* pA, int nSize,"\\
-\verb"             bool bRealPart = true, int nIncr = 1);"\\
+\verb"    "\GOT{cvector}{cvector.cvector (const TR*,int,bool,int)}\verb" (const TR* pA, int size,"\\
+\verb"             bool bRealPart = true, int incr = 1);"\\
 \verb"    explicit "\GOT{cvector}{cvector.cvector (const rvector&,bool)}\verb" (const rvector& v, bool bRealPart = true);"\\
 \verb"    rvector "\GOT{real}{cvector.real}\verb" ();"\\
 \verb"    rvector "\GOT{imag}{cvector.imag}\verb" ();"\\
 \verb"    cvector& "\GOT{operator =}{cvector.operator = (const cvector&)}\verb" (const cvector& v) throw (cvmexception);"\\
-\verb"    cvector& "\GOT{assign}{cvector.assign (const TC*, int)}\verb" (const TC* p, int nIncr = 1);"\\
-\verb"    cvector& "\GOT{assign}{cvector.assign (int, const TC*, int)}\verb" (int n, const TC* p, int nIncr = 1);"\\
-\verb"    cvector& "\GOT{assign}{cvector.assign (int, const TC*, int, int)}\verb" (int n, const TC* p, int nSize, tint nIncr);"\\
+\verb"    cvector& "\GOT{assign}{cvector.assign (const TC*, int)}\verb" (const TC* p, int incr = 1);"\\
+\verb"    cvector& "\GOT{assign}{cvector.assign (int, const TC*, int)}\verb" (int n, const TC* p, int incr = 1);"\\
+\verb"    cvector& "\GOT{assign}{cvector.assign (int, const TC*, int, int)}\verb" (int n, const TC* p, int size, tint incr);"\\
 \verb"    cvector& "\GOT{assign}{cvector.assign (int, const cvector&)}\verb" (int n, const cvector& v) throw (cvmexception);"\\
 \verb"    cvector& "\GOT{set}{cvector.set (TC)}\verb" (TC x);"\\
 \verb"    cvector& "\GOT{assign\_real}{cvector.assignreal}\verb" (const rvector& vRe) throw (cvmexception);"\\
 \verb"    cvector& "\GOT{assign\_imag}{cvector.assignimag}\verb" (const rvector& vIm) throw (cvmexception);"\\
 \verb"    cvector& "\GOT{set\_real}{cvector.setreal}\verb" (TR x);"\\
 \verb"    cvector& "\GOT{set\_imag}{cvector.setimag}\verb" (TR x);"\\
-\verb"    cvector& "\GOT{resize}{cvector.resize}\verb" (int nNewSize) throw (cvmexception);"\\
+\verb"    cvector& "\GOT{resize}{cvector.resize}\verb" (int new_size) throw (cvmexception);"\\
 \verb"    bool "\GOT{operator ==}{cvector.operator ==}\verb" (const cvector& v) const;"\\
 \verb"    bool "\GOT{operator !=}{cvector.operator !=}\verb" (const cvector& v) const;"\\
 \verb"    cvector& "\GOT{operator <{}<}{cvector.operator <<}\verb" (const cvector& v) throw (cvmexception);"\\
@@ -162,9 +162,9 @@ prints
 Constructor%
 \pdfdest name {cvector.cvector (int)} fit
 \begin{verbatim}
-explicit cvector::cvector (int nSize);
+explicit cvector::cvector (int size);
 \end{verbatim}
-creates \verb"cvector" object of size equal to \verb"nSize".
+creates \verb"cvector" object of size equal to \verb"size".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed or memory allocation failure.
 See also \GOT{cvector}{cvector}.
@@ -226,9 +226,9 @@ cvector v = { 1.2+3.4_i, 3.4+5.6_i, 99.99 };
 Constructor%
 \pdfdest name {cvector.cvector (int, TC)} fit
 \begin{verbatim}
-cvector::cvector (int nSize, TC c);
+cvector::cvector (int size, TC c);
 \end{verbatim}
-creates  \verb"cvector" object of size equal to \verb"nSize"
+creates  \verb"cvector" object of size equal to \verb"size"
 and fills it with a value of \verb"c".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed or memory allocation failure.
@@ -254,12 +254,12 @@ prints
 Constructor%
 \pdfdest name {cvector.cvector (TC*,int,int)} fit
 \begin{verbatim}
-cvector::cvector (TC* pD, int nSize, int nIncr = 1);
+cvector::cvector (TC* pD, int size, int incr = 1);
 \end{verbatim}
-creates  \verb"cvector" object of size equal to \verb"nSize".
+creates  \verb"cvector" object of size equal to \verb"size".
 Unlike others, this constructor \textit{does not allocate memory}.
 It just shares memory with an array pointed to by \verb"pD" with
- distance between elements equal to \verb"nIncr".
+ distance between elements equal to \verb"incr".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed.
 See also \GOT{cvector}{cvector}, \GOT{cvector (const TC*,int,int)}{cvector.cvector (const TC*,int,int)}.
@@ -300,11 +300,11 @@ prints
 Constructor%
 \pdfdest name {cvector.cvector (const TC*,int,int)} fit
 \begin{verbatim}
-cvector::cvector (const TC* pD, int nSize, int nIncr = 1);
+cvector::cvector (const TC* pD, int size, int incr = 1);
 \end{verbatim}
-creates  \verb"cvector" object of size equal to \verb"nSize"
-and copies \verb"nSize" elements of
- array \verb"pD" to it using increment \verb"nIncr" ($1$ by default).
+creates  \verb"cvector" object of size equal to \verb"size"
+and copies \verb"size" elements of
+ array \verb"pD" to it using increment \verb"incr" ($1$ by default).
 The object created has an increment set to $1$.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed.
@@ -381,14 +381,14 @@ prints
 Constructor%
 \pdfdest name {cvector.cvector (TR*,TR*,int,int,int)} fit
 \begin{verbatim}
-cvector::cvector (const TR* pRe, const TR* pIm, int nSize,
-                  tint nIncrRe = 1, tint nIncrIm = 1);
+cvector::cvector (const TR* pRe, const TR* pIm, int size,
+                  tint incr_re = 1, tint incr_im = 1);
 \end{verbatim}
 creates  \verb"cvector" object
-of size equal to \verb"nSize" and copies 
-every \verb"nIncrRe"-th element of an array  pointed to by \verb"pRe" 
+of size equal to \verb"size" and copies
+every \verb"incr_re"-th element of an array  pointed to by \verb"pRe"
 and 
-every \verb"nIncrIm"-th element of an array  pointed to by \verb"pIm"
+every \verb"incr_im"-th element of an array  pointed to by \verb"pIm"
 to real and imaginary part of the object created.
 It throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed or memory allocation failure.
@@ -465,12 +465,12 @@ prints
 Constructor%
 \pdfdest name {cvector.cvector (const TR*,int,bool,int)} fit
 \begin{verbatim}
-cvector::cvector (const TR* pA, int nSize,
-                  bool bRealPart = true, int nIncr = 1);
+cvector::cvector (const TR* pA, int size,
+                  bool bRealPart = true, int incr = 1);
 \end{verbatim}
 creates  \verb"cvector" object
-of size equal to \verb"nSize" and copies every
-\verb"nIncr"-th element of an array  pointed to by \verb"pA"
+of size equal to \verb"size" and copies every
+\verb"incr"-th element of an array  pointed to by \verb"pA"
 to  real (if \verb"bRealPart" is \verb"true")
 or imaginary (if \verb"bRealPart" is \verb"false")
 part of the object created.
@@ -645,10 +645,10 @@ prints
 Function%
 \pdfdest name {cvector.assign (const TC*, int)} fit
 \begin{verbatim}
-cvector& cvector::assign (const TC* p, int nIncr = 1);
+cvector& cvector::assign (const TC* p, int incr = 1);
 \end{verbatim}
 sets every element of a calling vector to be equal to
-every \verb"nIncr"-th element of an array  pointed to by parameter \verb"p"
+every \verb"incr"-th element of an array  pointed to by parameter \verb"p"
 and returns a reference to the vector changed.
 See also \GOT{cvector}{cvector}.
 Example:
@@ -680,11 +680,11 @@ prints
 Function%
 \pdfdest name {cvector.assign (int, const TC*, int)} fit
 \begin{verbatim}
-cvector& cvector::assign (int n, const TC* p, int nIncr = 1);
+cvector& cvector::assign (int n, const TC* p, int incr = 1);
 \end{verbatim}
 sets every element of a calling vector, starting from \Based \verb"n"-th one,
 to be equal to
-every \verb"nIncr"-th element of an array  pointed to by parameter \verb"p"
+every \verb"incr"-th element of an array  pointed to by parameter \verb"p"
 and returns a reference to the vector changed.
 See also \GOT{cvector}{cvector}.
 Example:
@@ -713,14 +713,14 @@ prints
 Function%
 \pdfdest name {cvector.assign (int, const TC*, int, int)} fit
 \begin{verbatim}
-cvector& cvector::assign (int n, const TC* p, int nSize, tint nIncr);
+cvector& cvector::assign (int n, const TC* p, int size, tint incr);
 \end{verbatim}
 sets every element of a calling vector, starting from \Based \verb"n"-th one,
-up to \verb"nSize" total,
+up to \verb"size" total,
 to be equal to
-every \verb"nIncr"-th element of an array  pointed to by parameter \verb"p"
+every \verb"incr"-th element of an array  pointed to by parameter \verb"p"
 and returns a reference to the vector changed.
-If \verb"n + nSize" goes beyond vector boundaries assignment stops at the last element.
+If \verb"n + size" goes beyond vector boundaries assignment stops at the last element.
 See also \GOT{cvector}{cvector}.
 Example:
 \begin{Verbatim}
@@ -922,10 +922,10 @@ prints
 Function%
 \pdfdest name {cvector.resize} fit
 \begin{verbatim}
-cvector& cvector::resize (int nNewSize) throw (cvmexception);
+cvector& cvector::resize (int new_size) throw (cvmexception);
 \end{verbatim}
 changes  size of a calling vector to be equal to
-\verb"nNewSize" and returns a reference to
+\verb"new_size" and returns a reference to
 the vector changed.
 In case of increasing of its size, the vector
 is filled up with zeroes.
@@ -2693,27 +2693,27 @@ Functions%
 \begin{verbatim}
 cvector& 
 cvector::geneig (const srmatrix& mA, const srmatrix& mB, rvector& vBeta)
-                 throw(cvmexception);
+                ;
 cvector& 
 cvector::geneig (const srmatrix& mA, const srmatrix& mB, rvector& vBeta,
                  scmatrix& mEigVectLeft, scmatrix& mEigVectRight) 
-                 throw(cvmexception);
+                ;
 cvector& 
 cvector::geneig (const srmatrix& mA, const srmatrix& mB, rvector& vBeta,
                  scmatrix& mEigVect, bool bRightVect = true)
-                 throw(cvmexception);
+                ;
 
 cvector& 
 cvector::geneig (const scmatrix& mA, const scmatrix& mB, cvector& vBeta)
-                 throw(cvmexception);
+                ;
 cvector& 
 cvector::geneig (const scmatrix& mA, const scmatrix& mB, cvector& vBeta,
                  scmatrix& mEigVectLeft, scmatrix& mEigVectRight)
-                 throw(cvmexception);
+                ;
 cvector& 
 cvector::geneig (const scmatrix& mA, const scmatrix& mB, cvector& vBeta,
                  scmatrix& mEigVect, bool bRightVect = true)
-                 throw(cvmexception);
+                ;
 \end{verbatim}
 solve generalized eigenvalue problem and
 set  calling vector to be equal to generalized eigenvalues

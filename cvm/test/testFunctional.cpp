@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2016
+//          Copyright Sergei Nikolaev 1992-2022
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -38,8 +38,8 @@ TYPED_TEST(FunctionalTest, TestMoveFVector) {
     EXPECT_EQ(TP(23.6), y[1]) << "rfvector - value";
 
     basic_rvector<TP> yv = fb(x);
-    EXPECT_EQ(TP(-2.), yv[CVM0]) << "rfvector - value";
-    EXPECT_EQ(TP(23.6), yv[CVM0+1]) << "rfvector - value";
+    EXPECT_EQ(TP(-2.), yv[0]) << "rfvector - value";
+    EXPECT_EQ(TP(23.6), yv[1]) << "rfvector - value";
 
     basic_rfvector<TP> fc = fb + fa;
     EXPECT_STREQ("sign(x+2)*3", fc.simp()[0].format().c_str()) << "a + b - format()";
@@ -62,8 +62,8 @@ TYPED_TEST(FunctionalTest, TestMoveFMatrix) {
     x[1] = 8.8;
 
     basic_rmatrix<TP> ym = fb(x);
-    EXPECT_EQ(TP(-2.), ym(CVM0, CVM0)) << "rfmatrix - value";
-    EXPECT_EQ(TP(23.6), ym(CVM0+1, CVM0)) << "rfmatrix - value";
+    EXPECT_EQ(TP(-2.), ym(0, 0)) << "rfmatrix - value";
+    EXPECT_EQ(TP(23.6), ym(1, 0)) << "rfmatrix - value";
 
     basic_rfmatrix<TP> fc = fb - fa;
     EXPECT_EQ("sign(x+2)", fc.simp().at(0, 0).format()) << "a - b - format()";
@@ -1184,8 +1184,8 @@ TYPED_TEST(FunctionalTest, TestRFVector) {
     EXPECT_EQ(TP(11.8), y[1]) << "rfvector - value";
     
     basic_rvector<TP> yv = fa(x);
-    EXPECT_EQ(TP(-1.), yv[CVM0]) << "rfvector - value";
-    EXPECT_EQ(TP(11.8), yv[CVM0+1]) << "rfvector - value";
+    EXPECT_EQ(TP(-1.), yv[0]) << "rfvector - value";
+    EXPECT_EQ(TP(11.8), yv[1]) << "rfvector - value";
     
     basic_rfvector<TP> fcp(fa);
     basic_rfvector<TP> fcpcp;
@@ -1248,8 +1248,8 @@ TYPED_TEST(FunctionalTest, TestCFVector) {
     EXPECT_NEAR(std::abs(TPC(TP(11.8), 2.9)), std::abs(y[1]), s<TP>()) << "cfvector value";
     
     basic_cvector<TP,TPC> yv = fa(x);
-    EXPECT_NEAR(std::abs(TPC(-1.,0.)), std::abs(yv[CVM0]), s<TP>()) << "cfvector value";
-    EXPECT_NEAR(std::abs(TPC(TP(11.8), 2.9)), std::abs(yv[CVM0+1]), s<TP>()) << "cfvector value";
+    EXPECT_NEAR(std::abs(TPC(-1.,0.)), std::abs(yv[0]), s<TP>()) << "cfvector value";
+    EXPECT_NEAR(std::abs(TPC(TP(11.8), 2.9)), std::abs(yv[1]), s<TP>()) << "cfvector value";
     
     basic_cfvector<TP,TPC> fcp(fa);
     basic_cfvector<TP,TPC> fcpcp;
@@ -1308,10 +1308,10 @@ TYPED_TEST(FunctionalTest, TestRFmatrix) {
     basic_rfmatrix<TP> fm(2, 3, sa2);
 
     fm.value(rm);
-    EXPECT_EQ(TP(4.), rm(CVM0+1, CVM0+1)) << "rfmatrix - value";
+    EXPECT_EQ(TP(4.), rm(1, 1)) << "rfmatrix - value";
 
     rm = fm();
-    EXPECT_EQ(TP(4.), rm(CVM0+1, CVM0+1)) << "rfmatrix - value";
+    EXPECT_EQ(TP(4.), rm(1, 1)) << "rfmatrix - value";
 
     std::ostringstream oss1, oss2;
     oss1 << fm;
@@ -1326,14 +1326,14 @@ TYPED_TEST(FunctionalTest, TestRFmatrix) {
     fm.set_col(2, fv);
     fm.value(3, rm);
 
-    EXPECT_EQ(TP(3.), rm(CVM0, CVM0+1)) << "rfmatrix set_col";
-    EXPECT_EQ(TP(9.), rm(CVM0, CVM0+2)) << "rfmatrix set_col";
-    EXPECT_NEAR(sin(3.), rm(CVM0+1, CVM0+2), s<TP>()) << "rfmatrix set_col";
+    EXPECT_EQ(TP(3.), rm(0, 1)) << "rfmatrix set_col";
+    EXPECT_EQ(TP(9.), rm(0, 2)) << "rfmatrix set_col";
+    EXPECT_NEAR(sin(3.), rm(1, 2), s<TP>()) << "rfmatrix set_col";
 
     rm = fm(3);
-    EXPECT_EQ(TP(3.), rm(CVM0, CVM0+1)) << "rfmatrix set_col";
-    EXPECT_EQ(TP(9.), rm(CVM0, CVM0+2)) << "rfmatrix set_col";
-    EXPECT_NEAR(sin(3.), rm(CVM0+1, CVM0+2), s<TP>()) << "rfmatrix set_col";
+    EXPECT_EQ(TP(3.), rm(0, 1)) << "rfmatrix set_col";
+    EXPECT_EQ(TP(9.), rm(0, 2)) << "rfmatrix set_col";
+    EXPECT_NEAR(sin(3.), rm(1, 2), s<TP>()) << "rfmatrix set_col";
 }
 
 // cfmatrix
@@ -1350,10 +1350,10 @@ TYPED_TEST(FunctionalTest, TestCFmatrix) {
     basic_cfmatrix<TP,TPC> fm(2, 3, sa2);
 
     fm.value(cm);
-    EXPECT_EQ(TPC(4., -4.), cm(CVM0+1, CVM0+1)) << "cfmatrix - value";
+    EXPECT_EQ(TPC(4., -4.), cm(1, 1)) << "cfmatrix - value";
 
     cm = fm();
-    EXPECT_EQ(TPC(4., -4.), cm(CVM0+1, CVM0+1)) << "cfmatrix - value";
+    EXPECT_EQ(TPC(4., -4.), cm(1, 1)) << "cfmatrix - value";
 
     std::ostringstream oss1, oss2;
     oss1 << fm;
@@ -1369,18 +1369,18 @@ TYPED_TEST(FunctionalTest, TestCFmatrix) {
     TPC c = TPC(3.,-1.);
     fm.value(c, cm);
 
-    EXPECT_EQ(TPC(3., -3.), cm(CVM0, CVM0+1)) << "cfmatrix - value";
-    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).real(), cm(CVM0, CVM0+2).real(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).imag(), cm(CVM0, CVM0+2).imag(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::sin(c).real(), cm(CVM0+1, CVM0+2).real(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::sin(c).imag(), cm(CVM0+1, CVM0+2).imag(), s<TP>()) << "cfmatrix - value";
+    EXPECT_EQ(TPC(3., -3.), cm(0, 1)) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).real(), cm(0, 2).real(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).imag(), cm(0, 2).imag(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).real(), cm(1, 2).real(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).imag(), cm(1, 2).imag(), s<TP>()) << "cfmatrix - value";
 
     cm = fm(c);
-    EXPECT_EQ(TPC(3., -3.), cm(CVM0, CVM0+1)) << "cfmatrix - value";
-    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).real(), cm(CVM0, CVM0+2).real(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).imag(), cm(CVM0, CVM0+2).imag(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::sin(c).real(), cm(CVM0+1, CVM0+2).real(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::sin(c).imag(), cm(CVM0+1, CVM0+2).imag(), s<TP>()) << "cfmatrix - value";
+    EXPECT_EQ(TPC(3., -3.), cm(0, 1)) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).real(), cm(0, 2).real(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).imag(), cm(0, 2).imag(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).real(), cm(1, 2).real(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).imag(), cm(1, 2).imag(), s<TP>()) << "cfmatrix - value";
 }
 
 // rfvector scalar product

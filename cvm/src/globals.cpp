@@ -1,23 +1,22 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2016
+//          Copyright Sergei Nikolaev 1992-2022
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "cvm.h"
-#include "cfun.h"
 
-#include <stdio.h>
-#include <ctype.h>
+#include <cstdio>
+#include <cctype>
 
 extern "C" {
     void __stdcall XERBLA(const char* szSubName,
     #ifdef CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES
                         const tint,
     #endif
-                        const tint* pnParam) throw(cvm::cvmexception)
+                        const tint* pnParam)
     {
         throw cvm::cvmexception(CVM_WRONGMKLARG2, *pnParam, szSubName);
     }
@@ -111,9 +110,6 @@ CriticalSection::~CriticalSection()
 }
 
 void CriticalSection::enter()
-#if defined(CVM_MT)
-throw(cvmexception)
-#endif
 {
 #if defined(CVM_MT)
 #if defined(WIN32) || defined(_WIN32)
@@ -136,9 +132,6 @@ throw(cvmexception)
 }
 
 void CriticalSection::leave()
-#if defined(CVM_MT)
-throw(cvmexception)
-#endif
 {
 #if defined(CVM_MT)
 #if defined(WIN32) || defined(_WIN32)
@@ -165,7 +158,7 @@ throw(cvmexception)
 
 
 // 5.5.2 - moved out of cvm.h
-cvmexception::cvmexception(int nCause, ...)
+cvmexception::cvmexception(int nCause, ...)  // NOLINT
     : mnCause(nCause)
 {
     va_list argList;
@@ -173,7 +166,7 @@ cvmexception::cvmexception(int nCause, ...)
 #if defined(CVM_VSNPRINTF_S_DEFINED)
     const tint nLength = CVM_VSNPRINTF(mszMsg, sizeof(mszMsg), sizeof(mszMsg) - 1, _get_message(mnCause), argList);
 #else
-    const tint nLength = CVM_VSNPRINTF(mszMsg, sizeof(mszMsg) - 1, _get_message(mnCause), argList);
+    const tint nLength = CVM_VSNPRINTF(mszMsg, sizeof(mszMsg) - 1, cvmexception::_get_message(mnCause), argList);
 #endif
     va_end(argList);
     if (nLength >= (int) sizeof(mszMsg))
@@ -182,13 +175,23 @@ cvmexception::cvmexception(int nCause, ...)
     }
 }
 
-cvmexception::cvmexception(const cvmexception& e)
+cvmexception::cvmexception(const cvmexception& e) noexcept  // NOLINT
     : std::exception(e), mnCause(e.mnCause)
 {
 #if defined(CVM_STRCPY_S_DEFINED)
     strcpy_s(mszMsg, sizeof(mszMsg), e.mszMsg);
 #else
     strcpy(mszMsg, e.mszMsg);
+#endif
+}
+
+cvmexception::cvmexception(cvmexception&& e) noexcept  // NOLINT
+        : mnCause(e.mnCause)
+{
+#if defined(CVM_STRCPY_S_DEFINED)
+  strcpy_s(mszMsg, sizeof(mszMsg), e.mszMsg);
+#else
+  strcpy(mszMsg, e.mszMsg);
 #endif
 }
 
@@ -463,4 +466,3 @@ CVM_API void cvmExit()
 }
 
 CVM_NAMESPACE_END
-

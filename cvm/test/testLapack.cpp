@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2016
+//          Copyright Sergei Nikolaev 1992-2022
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -22,19 +22,19 @@ TYPED_TEST_CASE(LapackTest, TestTypes);
 TYPED_TEST(LapackTest, TestSyrkReal) {
     basic_srsmatrix<TP> mat1(2), mat2(2);
     basic_rmatrix<TP> v(2,2);
-    v(CVM0,CVM0) = 1;
-    v(CVM0,CVM0+1) = 2;
-    v(CVM0+1,CVM0) = 3;
-    v(CVM0+1,CVM0+1) = 4;
+    v(0,0) = 1;
+    v(0,1) = 2;
+    v(1,0) = 3;
+    v(1,1) = 4;
 
     basic_rvector<TP> vrow(2);
-    vrow = v[CVM0];
-    mat1.syrk(1.0, v[CVM0], 0.0);
+    vrow = v[0];
+    mat1.syrk(1.0, v[0], 0.0);
     mat2.syrk(1.0, vrow, 0.0);
 
     EXPECT_EQ(0., (mat1 - mat2).norm()) << "srsmatrix::syrk with incr=2";
 
-    mat1.syr2k(1.0, v[CVM0], v[CVM0], 0.0);
+    mat1.syr2k(1.0, v[0], v[0], 0.0);
     mat2.syr2k(1.0, vrow, vrow, 0.0);
     EXPECT_EQ(0., (mat1 - mat2).norm()) << "srsmatrix::syr2k with incr=2";
 }
@@ -43,22 +43,22 @@ TYPED_TEST(LapackTest, TestSyrkReal) {
 TYPED_TEST(LapackTest, TestSyrkComplex) {
     basic_schmatrix<TP,TPC> mat1(2), mat2(2);
     basic_cmatrix<TP,TPC> v(2,2);
-    v(CVM0,CVM0) = TPC(1.,1.);
-    v(CVM0,CVM0+1) = TPC(2.,2.);
-    v(CVM0+1,CVM0) = TPC(3.,3.);
-    v(CVM0+1,CVM0+1) = TPC(4.,4.);
+    v(0,0) = TPC(1.,1.);
+    v(0,1) = TPC(2.,2.);
+    v(1,0) = TPC(3.,3.);
+    v(1,1) = TPC(4.,4.);
 
     basic_cvector<TP,TPC> vrow(2);
-    vrow = v[CVM0];
+    vrow = v[0];
 
     TPC c1(1.43, -0.391);
     TP r1(1.17), r2(-0.632);
 
-    mat1.herk(r1, v[CVM0], r2);
+    mat1.herk(r1, v[0], r2);
     mat2.herk(r1, vrow, r2);
     EXPECT_EQ(0., (mat1 - mat2).norm()) << "schmatrix::herk with incr=2";
 
-    mat1.her2k(c1, v[CVM0], v[CVM0], r2);
+    mat1.her2k(c1, v[0], v[0], r2);
     mat2.her2k(c1, vrow, vrow, r2);
     EXPECT_EQ(0., (mat1 - mat2).norm()) << "schmatrix::her2k with incr=2";
 }
@@ -132,9 +132,9 @@ TYPED_TEST(LapackTest, TestSlashComplex) {
     EXPECT_NEAR(0,(vX * scbm - vB).norm(),sp<TP>()) << "scbmatrix % cvector";
 
     vX = vB / schm;
-    EXPECT_NEAR(0,(vX * schm - vB).norm(),spp<TP>(1.e-3, 2.e-2)) << "cvector / schmatrix";
+    EXPECT_NEAR(0,(vX * schm - vB).norm(),spp<TP>(1.e-3, 2.e-1)) << "cvector / schmatrix";
     vX = schm % vB;
-    EXPECT_NEAR(0,(vX * schm - vB).norm(),spp<TP>(1.e-3, 2.e-2)) << "schmatrix % cvector";
+    EXPECT_NEAR(0,(vX * schm - vB).norm(),spp<TP>(1.e-3, 2.e-1)) << "schmatrix % cvector";
 
     vX = vB % scm;
     EXPECT_NEAR(0,(scm * vX - vB).norm(),sp<TP>()) << "scmatrix % cvector";
@@ -174,13 +174,13 @@ TYPED_TEST(LapackTest, TestVEigSymmetricRealHermitianComplex) {
     m.randomize(1., 3.);
     
     v.eig(m, me);
-    EXPECT_NEAR(TP(0.), (m * me(CVM0) - me(CVM0) * v(CVM0)).norm(), sf<TP>()) << "srsmatrix::eig";
-    EXPECT_NEAR(TP(0.), (m * me(CVM0+1) - me(CVM0+1) * v(CVM0+1)).norm(), sf<TP>()) << "srsmatrix::eig";
-    EXPECT_NEAR(TP(0.), (m * me(CVM0+2) - me(CVM0+2) * v(CVM0+2)).norm(), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(TP(0.), (m * me(0) - me(0) * v(0)).norm(), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(TP(0.), (m * me(1) - me(1) * v(1)).norm(), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(TP(0.), (m * me(2) - me(2) * v(2)).norm(), sf<TP>()) << "srsmatrix::eig";
     
-    EXPECT_NEAR(TP(0.), me(CVM0) * me(CVM0+1), sf<TP>()) << "srsmatrix::eig";
-    EXPECT_NEAR(TP(0.), me(CVM0) * me(CVM0+2), sf<TP>()) << "srsmatrix::eig";
-    EXPECT_NEAR(TP(0.), me(CVM0+2) * me(CVM0+1), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(TP(0.), me(0) * me(1), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(TP(0.), me(0) * me(2), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(TP(0.), me(2) * me(1), sf<TP>()) << "srsmatrix::eig";
     
     basic_schmatrix<TP,TPC> mc(3);
     basic_scmatrix<TP,TPC> mce(3);
@@ -189,13 +189,13 @@ TYPED_TEST(LapackTest, TestVEigSymmetricRealHermitianComplex) {
     
     v.eig(mc, mce);
     
-    EXPECT_NEAR(TP(0.), (mc * mce(CVM0) - mce(CVM0) * v(CVM0)).norm(), sf<TP>()) << "schmatrix::eig";
-    EXPECT_NEAR(TP(0.), (mc * mce(CVM0+1) - mce(CVM0+1) * v(CVM0+1)).norm(), sf<TP>()) << "schmatrix::eig";
-    EXPECT_NEAR(TP(0.), (mc * mce(CVM0+2) - mce(CVM0+2) * v(CVM0+2)).norm(), sf<TP>()) << "schmatrix::eig";
+    EXPECT_NEAR(TP(0.), (mc * mce(0) - mce(0) * v(0)).norm(), sf<TP>()) << "schmatrix::eig";
+    EXPECT_NEAR(TP(0.), (mc * mce(1) - mce(1) * v(1)).norm(), sf<TP>()) << "schmatrix::eig";
+    EXPECT_NEAR(TP(0.), (mc * mce(2) - mce(2) * v(2)).norm(), sf<TP>()) << "schmatrix::eig";
     
-    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(mce(CVM0) % mce(CVM0+1)), sf<TP>()) << "srsmatrix::eig";
-    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(mce(CVM0) % mce(CVM0+2)), sf<TP>()) << "srsmatrix::eig";
-    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(mce(CVM0+2) % mce(CVM0+1)), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(mce(0) % mce(1)), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(mce(0) % mce(2)), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(mce(2) % mce(1)), sf<TP>()) << "srsmatrix::eig";
 }
 
 TYPED_TEST(LapackTest, TestEigSymmetricReal) {
@@ -204,9 +204,9 @@ TYPED_TEST(LapackTest, TestEigSymmetricReal) {
     basic_srmatrix<TP> me(3);
     basic_rvector<TP> v(3);
     v = m.eig(me);
-    EXPECT_NEAR(TP(0.), (m * me(CVM0) - me(CVM0) * v(CVM0)).norm(), sf<TP>()) << "srsmatrix::eig";
-    EXPECT_NEAR(TP(0.), (m * me(CVM0+1) - me(CVM0+1) * v(CVM0+1)).norm(), sf<TP>()) << "srsmatrix::eig";
-    EXPECT_NEAR(TP(0.), (m * me(CVM0+2) - me(CVM0+2) * v(CVM0+2)).norm(), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(TP(0.), (m * me(0) - me(0) * v(0)).norm(), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(TP(0.), (m * me(1) - me(1) * v(1)).norm(), sf<TP>()) << "srsmatrix::eig";
+    EXPECT_NEAR(TP(0.), (m * me(2) - me(2) * v(2)).norm(), sf<TP>()) << "srsmatrix::eig";
 }
 
 TYPED_TEST(LapackTest, TestEigHermitianComplex) {
@@ -217,12 +217,12 @@ TYPED_TEST(LapackTest, TestEigHermitianComplex) {
     basic_rvector<TP> v(3);
     v = m.eig(me);
     basic_cvector<TP,TPC> vc{v};
-    EXPECT_NEAR(TP(0.), (m * me(CVM0) - me(CVM0) * vc(CVM0)).norm(), sf<TP>()) << "schmatrix::eig";
-    EXPECT_NEAR(TP(0.), (m * me(CVM0+1) - me(CVM0+1) * vc(CVM0+1)).norm(), sf<TP>()) << "schmatrix::eig";
-    EXPECT_NEAR(TP(0.), (m * me(CVM0+2) - me(CVM0+2) * vc(CVM0+2)).norm(), sf<TP>()) << "schmatrix::eig";
-    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(me(CVM0) % me(CVM0+1)), sf<TP>()) << "schmatrix::eig";
-    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(me(CVM0+1) % me(CVM0+2)), sf<TP>()) << "schmatrix::eig";
-    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(me(CVM0) % me(CVM0+2)), sf<TP>()) << "schmatrix::eig";
+    EXPECT_NEAR(TP(0.), (m * me(0) - me(0) * vc(0)).norm(), sf<TP>()) << "schmatrix::eig";
+    EXPECT_NEAR(TP(0.), (m * me(1) - me(1) * vc(1)).norm(), sf<TP>()) << "schmatrix::eig";
+    EXPECT_NEAR(TP(0.), (m * me(2) - me(2) * vc(2)).norm(), sf<TP>()) << "schmatrix::eig";
+    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(me(0) % me(1)), sf<TP>()) << "schmatrix::eig";
+    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(me(1) % me(2)), sf<TP>()) << "schmatrix::eig";
+    EXPECT_NEAR(std::abs(TPC(0.,0.)), std::abs(me(0) % me(2)), sf<TP>()) << "schmatrix::eig";
 }
 
 TYPED_TEST(LapackTest, TestInvHermitianComplex) {
@@ -239,21 +239,21 @@ TYPED_TEST(LapackTest, TestSyrkSymmetricReal1) {
     basic_srsmatrix<TP> ms(4);
     ms.set(1.);
     ms.syrk(2., v, 1.);
-    EXPECT_NEAR(TP(33.), ms(CVM0+3, CVM0+3), s<TP>()) << "srsmatrix::syrk";
-    EXPECT_NEAR(TP(9.), ms(CVM0, CVM0+3), s<TP>()) << "srsmatrix::syrk";
+    EXPECT_NEAR(TP(33.), ms(3, 3), s<TP>()) << "srsmatrix::syrk";
+    EXPECT_NEAR(TP(9.), ms(0, 3), s<TP>()) << "srsmatrix::syrk";
     
     basic_rmatrix<TP> m(4, 2);
-    m(CVM0) = v;
-    m(CVM0+1).set(1.);
+    m(0) = v;
+    m(1).set(1.);
     ms.syrk(false, 2., m, 0.);
-    EXPECT_NEAR(TP(34.), ms(CVM0+3, CVM0+3), s<TP>()) << "srsmatrix::syrk";
-    EXPECT_NEAR(TP(10.), ms(CVM0, CVM0+3), s<TP>()) << "srsmatrix::syrk";
+    EXPECT_NEAR(TP(34.), ms(3, 3), s<TP>()) << "srsmatrix::syrk";
+    EXPECT_NEAR(TP(10.), ms(0, 3), s<TP>()) << "srsmatrix::syrk";
     
     basic_srsmatrix<TP> ms2(2);
     ms2.syrk(true, 1., m, 0.);
-    EXPECT_NEAR(TP(30.), ms2(CVM0, CVM0), s<TP>()) << "srsmatrix::syrk";
-    EXPECT_NEAR(TP(10.), ms2(CVM0, CVM0+1), s<TP>()) << "srsmatrix::syrk";
-    EXPECT_NEAR(TP(4.), ms2(CVM0+1, CVM0+1), s<TP>()) << "srsmatrix::syrk";
+    EXPECT_NEAR(TP(30.), ms2(0, 0), s<TP>()) << "srsmatrix::syrk";
+    EXPECT_NEAR(TP(10.), ms2(0, 1), s<TP>()) << "srsmatrix::syrk";
+    EXPECT_NEAR(TP(4.), ms2(1, 1), s<TP>()) << "srsmatrix::syrk";
 }
 
 TYPED_TEST(LapackTest, TestSyrkSymmetricReal2) {
@@ -292,7 +292,7 @@ TYPED_TEST(LapackTest, TestSyrkSymmetricReal4) {
     ms2 = ms;
     ms.syrk(true, alpha, m, beta);
     ms2 = alpha * basic_srsmatrix<TP>(~m * m) + beta * ms2;
-    EXPECT_NEAR(TP(0.), (ms - ms2).norm(), s<TP>()) << "srsmatrix::syrk";
+    EXPECT_NEAR(TP(0.), (ms - ms2).norm(), spp<TP>()) << "srsmatrix::syrk";
 }
 
 TYPED_TEST(LapackTest, TestHerkHermitianComplex1) {
@@ -335,8 +335,8 @@ TYPED_TEST(LapackTest, TestHerkHermitianComplex3) {
     mh.randomize_imag(-2., 3.);
     mh2 = mh;
     mh.herk(true, alpha, m, beta);
-    mh2 = alpha * basic_schmatrix<TP,TPC>(~m * m, 1.e-14) + beta * mh2;
-    EXPECT_NEAR(TP(0.), (mh - mh2).norm(), spp<TP>(1.e-14, 6.)) << "schmatrix::herk";
+    mh2 = alpha * basic_schmatrix<TP,TPC>(~m * m, 1.e-13) + beta * mh2;
+    EXPECT_NEAR(TP(0.), (mh - mh2).norm(), spp<TP>(1.e-13, 6.)) << "schmatrix::herk";
 }
 
 TYPED_TEST(LapackTest, TestSyr2kSymmetricReal1) {
@@ -347,21 +347,21 @@ TYPED_TEST(LapackTest, TestSyr2kSymmetricReal1) {
     basic_srsmatrix<TP> ms(4);
     ms.set(1.);
     ms.syr2k(2., v1, v2, 1.);
-    EXPECT_NEAR(TP(65.), ms(CVM0+3, CVM0+3), s<TP>()) << "srsmatrix::syr2k";
-    EXPECT_NEAR(TP(17.), ms(CVM0, CVM0+3), s<TP>()) << "srsmatrix::syr2k";
+    EXPECT_NEAR(TP(65.), ms(3, 3), s<TP>()) << "srsmatrix::syr2k";
+    EXPECT_NEAR(TP(17.), ms(0, 3), s<TP>()) << "srsmatrix::syr2k";
     
     basic_rmatrix<TP> m1(4, 2);
     basic_rmatrix<TP> m2(4, 2);
     m1.set(1.);
     m2.set(2.);
     ms.syr2k(false, 2., m1, m2, 0.);
-    EXPECT_NEAR(TP(16.), ms(CVM0+3, CVM0+3), s<TP>()) << "srsmatrix::syr2k";
-    EXPECT_NEAR(TP(16.), ms(CVM0, CVM0+3), s<TP>()) << "srsmatrix::syr2k";
+    EXPECT_NEAR(TP(16.), ms(3, 3), s<TP>()) << "srsmatrix::syr2k";
+    EXPECT_NEAR(TP(16.), ms(0, 3), s<TP>()) << "srsmatrix::syr2k";
     
     basic_srsmatrix<TP> ms2(2);
     ms2.syr2k(true, 1., m1, m2, 0.);
-    EXPECT_NEAR(TP(16.), ms2(CVM0+1, CVM0+1), s<TP>()) << "srsmatrix::syr2k";
-    EXPECT_NEAR(TP(16.), ms2(CVM0, CVM0+1), s<TP>()) << "srsmatrix::syr2k";
+    EXPECT_NEAR(TP(16.), ms2(1, 1), s<TP>()) << "srsmatrix::syr2k";
+    EXPECT_NEAR(TP(16.), ms2(0, 1), s<TP>()) << "srsmatrix::syr2k";
 }
 
 TYPED_TEST(LapackTest, TestSyr2kSymmetricReal2) {
@@ -714,9 +714,9 @@ TYPED_TEST(LapackTest, TestGercComplex) {
 TYPED_TEST(LapackTest, TestPinvReal) {
     // Gantmaher, p. 33
     basic_rmatrix<TP> mA(3, 4);
-    mA(CVM0, CVM0) =  1.; mA(CVM0, CVM0+1) = -1.; mA(CVM0, CVM0+2) =  2.; mA(CVM0, CVM0+3) =  0.;
-    mA(CVM0+1, CVM0) = -1.; mA(CVM0+1, CVM0+1) =  2.; mA(CVM0+1, CVM0+2) = -3.; mA(CVM0+1, CVM0+3) =  1.;
-    mA(CVM0+2, CVM0) =  0.; mA(CVM0+2, CVM0+1) =  1.; mA(CVM0+2, CVM0+2) = -1.; mA(CVM0+2, CVM0+3) =  1.;
+    mA(0, 0) =  1.; mA(0, 1) = -1.; mA(0, 2) =  2.; mA(0, 3) =  0.;
+    mA(1, 0) = -1.; mA(1, 1) =  2.; mA(1, 2) = -3.; mA(1, 3) =  1.;
+    mA(2, 0) =  0.; mA(2, 1) =  1.; mA(2, 2) = -1.; mA(2, 3) =  1.;
 
     // lower rank case
     basic_rmatrix<TP> mX = mA.pinv(sf<TP>());
@@ -729,7 +729,7 @@ TYPED_TEST(LapackTest, TestPinvReal) {
 
     // full rank case
     mA.transpose();
-    mA(CVM0, CVM0+2) = 4.;
+    mA(0, 2) = 4.;
     mX.pinv(mA);
     EXPECT_NEAR(TP(0.), (mA * mX * mA - mA).norm2(), sf<TP>()) << "pinv, full rank, m < n";
 
@@ -820,7 +820,7 @@ TYPED_TEST(LapackTest, TestQRReal) {
     mh.qr(h, s3);
 
     EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) -
-        ~basic_rmatrix<TP>(h,CVM0,CVM0,2,2) * basic_rmatrix<TP>(h,CVM0,CVM0,2,2)).norm(),
+        ~basic_rmatrix<TP>(h,0,0,2,2) * basic_rmatrix<TP>(h,0,0,2,2)).norm(),
         sf<TP>()) << "rmatrix QR";
     EXPECT_NEAR(TP(0.), (mh - h * s3).norm(), sf<TP>()) << "rmatrix QR";
     mh.qr(s2, h);
@@ -863,7 +863,7 @@ TYPED_TEST(LapackTest, TestQRComplex) {
 
     mh.qr(h, s3);
     EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) -
-            ~basic_cmatrix<TP,TPC>(h,CVM0,CVM0,2,2) * basic_cmatrix<TP,TPC>(h,CVM0,CVM0,2,2)).norm(),
+            ~basic_cmatrix<TP,TPC>(h,0,0,2,2) * basic_cmatrix<TP,TPC>(h,0,0,2,2)).norm(),
             sf<TP>()) << "cmatrix QR";
     EXPECT_NEAR(TP(0.), (mh - h * s3).norm(), sf<TP>()) << "cmatrix QR";
 
@@ -1014,7 +1014,7 @@ TYPED_TEST(LapackTest, TestRQReal) {
     basic_rmatrix<TP>  h(2, 3), v(3, 2);
     mh.rq(h, s3);
     EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) -
-            basic_rmatrix<TP>(s3,CVM0+1,CVM0,2,3) * ~basic_rmatrix<TP>(s3,CVM0+1,CVM0,2,3)).norm(),
+            basic_rmatrix<TP>(s3,1,0,2,3) * ~basic_rmatrix<TP>(s3,1,0,2,3)).norm(),
             sf<TP>()) << "rmatrix RQ (full mode)";
     EXPECT_NEAR(TP(0.), (mh - h * s3).norm(), sf<TP>()) << "rmatrix RQ (full mode)";
     mh.rq(s2, h);
@@ -1034,7 +1034,7 @@ TYPED_TEST(LapackTest, TestRQComplex) {
 
     mh.rq(h, s3);
     EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) -
-            basic_cmatrix<TP,TPC>(s3,CVM0+1,CVM0,2,3) * ~basic_cmatrix<TP,TPC>(s3,CVM0+1,CVM0,2,3)).norm(),
+            basic_cmatrix<TP,TPC>(s3,1,0,2,3) * ~basic_cmatrix<TP,TPC>(s3,1,0,2,3)).norm(),
             sf<TP>()) << "cmatrix RQ (full mode)";
     EXPECT_NEAR(TP(0.), (mh - h * s3).norm(), sf<TP>()) << "cmatrix RQ (full mode)";
 
@@ -1123,7 +1123,7 @@ TYPED_TEST(LapackTest, TestLQReal) {
     mv.lq(s3, v);
 
     EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) -
-            ~basic_rmatrix<TP>(v,CVM0,CVM0,2,2) * basic_rmatrix<TP>(v,CVM0,CVM0,2,2)).norm(),
+            ~basic_rmatrix<TP>(v,0,0,2,2) * basic_rmatrix<TP>(v,0,0,2,2)).norm(),
             sf<TP>()) << "rmatrix LQ (economy)";
     EXPECT_NEAR(TP(0.), (mv - s3 * v).norm(), sf<TP>()) << "rmatrix LQ (economy)";
 
@@ -1150,7 +1150,7 @@ TYPED_TEST(LapackTest, TestLQComplex) {
 
     mv.lq(s3, v);
     EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) -
-            ~basic_cmatrix<TP,TPC>(v,CVM0,CVM0,2,2) * basic_cmatrix<TP,TPC>(v,CVM0,CVM0,2,2)).norm(),
+            ~basic_cmatrix<TP,TPC>(v,0,0,2,2) * basic_cmatrix<TP,TPC>(v,0,0,2,2)).norm(),
             sf<TP>()) << "cmatrix LQ (economy)";
     EXPECT_NEAR(TP(0.), (mv - s3 * v).norm(), sf<TP>()) << "cmatrix LQ (economy)";
 
@@ -1241,7 +1241,7 @@ TYPED_TEST(LapackTest, TestQLReal) {
 
     mv.ql(s3, v);
     EXPECT_NEAR(TP(0.), (basic_eye_real<TP>(2) -
-            ~basic_rmatrix<TP>(s3,CVM0,CVM0+1,3,2) * basic_rmatrix<TP>(s3,CVM0,CVM0+1,3,2)).norm(),
+            ~basic_rmatrix<TP>(s3,0,1,3,2) * basic_rmatrix<TP>(s3,0,1,3,2)).norm(),
             sf<TP>()) << "rmatrix QL (full)";
     EXPECT_NEAR(TP(0.), (mv - s3 * v).norm(), sf<TP>()) << "rmatrix QL (full)";
 }
@@ -1259,7 +1259,7 @@ TYPED_TEST(LapackTest, TestQLComplex) {
 
     mv.ql(s3, v);
     EXPECT_NEAR(TP(0.), (basic_eye_complex<TP,TPC>(2) -
-            ~basic_cmatrix<TP,TPC>(s3,CVM0,CVM0+1,3,2) * basic_cmatrix<TP,TPC>(s3,CVM0,CVM0+1,3,2)).norm(),
+            ~basic_cmatrix<TP,TPC>(s3,0,1,3,2) * basic_cmatrix<TP,TPC>(s3,0,1,3,2)).norm(),
             sf<TP>()) << "cmatrix QL (full)";
     EXPECT_NEAR(TP(0.), (mv - s3 * v).norm(), sf<TP>()) << "cmatrix QL (full)";
 }
@@ -1664,11 +1664,11 @@ TYPED_TEST(LapackTest, TestGelsyReal) {
     EXPECT_EQ(2, rank) << "gelsy real rank";
     EXPECT_NEAR(TP(0.), (a*x - b).norm(), sf<TP>()) << "gelsy real";
     // see MATLAB's lsqr
-    EXPECT_NEAR(TP(0.6), x(CVM0, CVM0), sf<TP>()) << "gelsy real (lsqr)";
-    EXPECT_NEAR(TP(0.4), x(CVM0+1, CVM0), sf<TP>()) << "gelsy real (lsqr)";
-    EXPECT_NEAR(TP(0.2), x(CVM0+2, CVM0), sf<TP>()) << "gelsy real (lsqr)";
-    EXPECT_NEAR(TP(0.), x(CVM0+3, CVM0), sf<TP>()) << "gelsy real (lsqr)";
-    EXPECT_NEAR(TP(-0.2), x(CVM0+4, CVM0), sf<TP>()) << "gelsy real (lsqr)";
+    EXPECT_NEAR(TP(0.6), x(0, 0), sf<TP>()) << "gelsy real (lsqr)";
+    EXPECT_NEAR(TP(0.4), x(1, 0), sf<TP>()) << "gelsy real (lsqr)";
+    EXPECT_NEAR(TP(0.2), x(2, 0), sf<TP>()) << "gelsy real (lsqr)";
+    EXPECT_NEAR(TP(0.), x(3, 0), sf<TP>()) << "gelsy real (lsqr)";
+    EXPECT_NEAR(TP(-0.2), x(4, 0), sf<TP>()) << "gelsy real (lsqr)";
 
     basic_rmatrix<TP> x2(5, 2);
     x2.gelsy(a, b, rank);
@@ -1708,11 +1708,11 @@ TYPED_TEST(LapackTest, TestGelssGelsdReal) {
     EXPECT_EQ(2, rank) << "gelss real rank";
     EXPECT_NEAR(TP(0.), (a*x - b).norm(), sf<TP>()) << "gelss real";
     // see MATLAB's lsqr
-    EXPECT_NEAR(TP(0.6), x(CVM0, CVM0), sf<TP>()) << "gelss real (lsqr)";
-    EXPECT_NEAR(TP(0.4), x(CVM0+1, CVM0), sf<TP>()) << "gelss real (lsqr)";
-    EXPECT_NEAR(TP(0.2), x(CVM0+2, CVM0), sf<TP>()) << "gelss real (lsqr)";
-    EXPECT_NEAR(TP(0.), x(CVM0+3, CVM0), sf<TP>()) << "gelss real (lsqr)";
-    EXPECT_NEAR(TP(-0.2), x(CVM0+4, CVM0), sf<TP>()) << "gelss real (lsqr)";
+    EXPECT_NEAR(TP(0.6), x(0, 0), sf<TP>()) << "gelss real (lsqr)";
+    EXPECT_NEAR(TP(0.4), x(1, 0), sf<TP>()) << "gelss real (lsqr)";
+    EXPECT_NEAR(TP(0.2), x(2, 0), sf<TP>()) << "gelss real (lsqr)";
+    EXPECT_NEAR(TP(0.), x(3, 0), sf<TP>()) << "gelss real (lsqr)";
+    EXPECT_NEAR(TP(-0.2), x(4, 0), sf<TP>()) << "gelss real (lsqr)";
 
     basic_rmatrix<TP> x2(5, 2);
     x2.gelss(a, b, sv, rank);
@@ -1859,29 +1859,29 @@ TYPED_TEST(LapackTest, TestLeftEigReal) {
     basic_scmatrix<TP,TPC> e(3);
     basic_scmatrix<TP,TPC> e_(3);
     basic_cvector<TP,TPC> cv(3), cv1(3);
-    m(CVM0, CVM0)=0.1; m(CVM0, CVM0+1)=0.5; m(CVM0, CVM0+2)=0.9;
-    m(CVM0+1, CVM0)=0.2; m(CVM0+1, CVM0+1)=0.6; m(CVM0+1, CVM0+2)=1.0;
-    m(CVM0+2, CVM0)=0.3; m(CVM0+2, CVM0+1)=0.7; m(CVM0+2, CVM0+2)=1.0;
+    m(0, 0)=0.1; m(0, 1)=0.5; m(0, 2)=0.9;
+    m(1, 0)=0.2; m(1, 1)=0.6; m(1, 2)=1.0;
+    m(2, 0)=0.3; m(2, 1)=0.7; m(2, 2)=1.0;
 
     cv.eig(m, e);
     cv1 = m.eig(e_);
     EXPECT_NEAR(TP(0), (cv - cv1).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e(CVM0) - e(CVM0) * cv(CVM0)).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e(CVM0+1) - e(CVM0+1) * cv(CVM0+1)).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e(CVM0+2) - e(CVM0+2) * cv(CVM0+2)).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e_(CVM0) - e_(CVM0) * cv1(CVM0)).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e_(CVM0+1) - e_(CVM0+1) * cv1(CVM0+1)).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e_(CVM0+2) - e_(CVM0+2) * cv1(CVM0+2)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e(0) - e(0) * cv(0)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e(1) - e(1) * cv(1)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e(2) - e(2) * cv(2)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e_(0) - e_(0) * cv1(0)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e_(1) - e_(1) * cv1(1)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(m) * e_(2) - e_(2) * cv1(2)).norm(), sf<TP>()) << "scmatrix eig";
 
     cv.eig(m, e, false);
     cv1 = m.eig(e_, false);
     EXPECT_NEAR(TP(0), (cv - cv1).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e(CVM0) * basic_scmatrix<TP,TPC>(m) - ~e(CVM0) * cv(CVM0)).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e(CVM0+1) * basic_scmatrix<TP,TPC>(m) - ~e(CVM0+1) * cv(CVM0+1)).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e(CVM0+2) * basic_scmatrix<TP,TPC>(m) - ~e(CVM0+2) * cv(CVM0+2)).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e_(CVM0) * basic_scmatrix<TP,TPC>(m) - ~e_(CVM0) * cv1(CVM0)).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e_(CVM0+1) * basic_scmatrix<TP,TPC>(m) - ~e_(CVM0+1) * cv1(CVM0+1)).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e_(CVM0+2) * basic_scmatrix<TP,TPC>(m) - ~e_(CVM0+2) * cv1(CVM0+2)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e(0) * basic_scmatrix<TP,TPC>(m) - ~e(0) * cv(0)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e(1) * basic_scmatrix<TP,TPC>(m) - ~e(1) * cv(1)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e(2) * basic_scmatrix<TP,TPC>(m) - ~e(2) * cv(2)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e_(0) * basic_scmatrix<TP,TPC>(m) - ~e_(0) * cv1(0)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e_(1) * basic_scmatrix<TP,TPC>(m) - ~e_(1) * cv1(1)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e_(2) * basic_scmatrix<TP,TPC>(m) - ~e_(2) * cv1(2)).norm(), sf<TP>()) << "scmatrix eig, left";
 }
 
 TYPED_TEST(LapackTest, TestLeftEigComplex) {
@@ -1889,29 +1889,29 @@ TYPED_TEST(LapackTest, TestLeftEigComplex) {
     basic_scmatrix<TP,TPC> e(3);
     basic_scmatrix<TP,TPC> e_(3);
     basic_cvector<TP,TPC> cv(3), cv1(3);
-    m(CVM0, CVM0)=TPC(0.1,0.01); m(CVM0, CVM0+1)=TPC(0.5, 0.05); m(CVM0, CVM0+2)=TPC(0.9, 0.09);
-    m(CVM0+1, CVM0)=TPC(0.2,0.02); m(CVM0+1, CVM0+1)=TPC(0.6, 0.06); m(CVM0+1, CVM0+2)=TPC(1.0, 0.1);
-    m(CVM0+2, CVM0)=TPC(0.3,0.03); m(CVM0+2, CVM0+1)=TPC(0.7, 0.07); m(CVM0+2, CVM0+2)=TPC(1.0, -1.0);
+    m(0, 0)=TPC(0.1,0.01); m(0, 1)=TPC(0.5, 0.05); m(0, 2)=TPC(0.9, 0.09);
+    m(1, 0)=TPC(0.2,0.02); m(1, 1)=TPC(0.6, 0.06); m(1, 2)=TPC(1.0, 0.1);
+    m(2, 0)=TPC(0.3,0.03); m(2, 1)=TPC(0.7, 0.07); m(2, 2)=TPC(1.0, -1.0);
 
     cv.eig(m, e);
     cv1 = m.eig(e_);
     EXPECT_NEAR(TP(0), (cv - cv1).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (m * e(CVM0) - e(CVM0) * cv(CVM0)).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (m * e(CVM0+1) - e(CVM0+1) * cv(CVM0+1)).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (m * e(CVM0+2) - e(CVM0+2) * cv(CVM0+2)).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (m * e_(CVM0) - e_(CVM0) * cv1(CVM0)).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (m * e_(CVM0+1) - e_(CVM0+1) * cv1(CVM0+1)).norm(), sf<TP>()) << "scmatrix eig";
-    EXPECT_NEAR(TP(0), (m * e_(CVM0+2) - e_(CVM0+2) * cv1(CVM0+2)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (m * e(0) - e(0) * cv(0)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (m * e(1) - e(1) * cv(1)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (m * e(2) - e(2) * cv(2)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (m * e_(0) - e_(0) * cv1(0)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (m * e_(1) - e_(1) * cv1(1)).norm(), sf<TP>()) << "scmatrix eig";
+    EXPECT_NEAR(TP(0), (m * e_(2) - e_(2) * cv1(2)).norm(), sf<TP>()) << "scmatrix eig";
 
     cv.eig(m, e, false);
     cv1 = m.eig(e_ , false);
     EXPECT_NEAR(TP(0), (cv - cv1).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e(CVM0) * m - ~e(CVM0) * cv(CVM0)).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e(CVM0+1) * m - ~e(CVM0+1) * cv(CVM0+1)).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e(CVM0+2) * m - ~e(CVM0+2) * cv(CVM0+2)).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e_(CVM0) * m - ~e_(CVM0) * cv1(CVM0)).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e_(CVM0+1) * m - ~e_(CVM0+1) * cv1(CVM0+1)).norm(), sf<TP>()) << "scmatrix eig, left";
-    EXPECT_NEAR(TP(0), (~e_(CVM0+2) * m - ~e_(CVM0+2) * cv1(CVM0+2)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e(0) * m - ~e(0) * cv(0)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e(1) * m - ~e(1) * cv(1)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e(2) * m - ~e(2) * cv(2)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e_(0) * m - ~e_(0) * cv1(0)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e_(1) * m - ~e_(1) * cv1(1)).norm(), sf<TP>()) << "scmatrix eig, left";
+    EXPECT_NEAR(TP(0), (~e_(2) * m - ~e_(2) * cv1(2)).norm(), sf<TP>()) << "scmatrix eig, left";
 }
 
 TYPED_TEST(LapackTest, TestSolveSymmetric) {
@@ -1950,11 +1950,11 @@ TYPED_TEST(LapackTest, TestSolveSymmetric) {
 
     EXPECT_NEAR(TP(0), (ev - ev1).norm(), sp<TP>()) << "srsmatrix eig";
     EXPECT_NEAR(TP(0), (ev - ev2).norm(), sp<TP>()) << "srsmatrix eig";
-    EXPECT_NEAR(TP(0), (m * evect(CVM0) - evect(CVM0) * ev1(CVM0)).norm(), sp<TP>()) << "srsmatrix eig";
-    EXPECT_NEAR(TP(0), (m * evect(CVM0+1) - evect(CVM0+1) * ev1(CVM0+1)).norm(), sp<TP>()) << "srsmatrix eig";
-    EXPECT_NEAR(TP(0), (m * evect(CVM0+2) - evect(CVM0+2) * ev1(CVM0+2)).norm(), sp<TP>()) << "srsmatrix eig";
-    EXPECT_NEAR(TP(0), (m * evect(CVM0+3) - evect(CVM0+3) * ev1(CVM0+3)).norm(), sp<TP>()) << "srsmatrix eig";
-    EXPECT_NEAR(TP(0), (m * evect(CVM0+4) - evect(CVM0+4) * ev1(CVM0+4)).norm(), sp<TP>()) << "srsmatrix eig";
+    EXPECT_NEAR(TP(0), (m * evect(0) - evect(0) * ev1(0)).norm(), sp<TP>()) << "srsmatrix eig";
+    EXPECT_NEAR(TP(0), (m * evect(1) - evect(1) * ev1(1)).norm(), sp<TP>()) << "srsmatrix eig";
+    EXPECT_NEAR(TP(0), (m * evect(2) - evect(2) * ev1(2)).norm(), sp<TP>()) << "srsmatrix eig";
+    EXPECT_NEAR(TP(0), (m * evect(3) - evect(3) * ev1(3)).norm(), sp<TP>()) << "srsmatrix eig";
+    EXPECT_NEAR(TP(0), (m * evect(4) - evect(4) * ev1(4)).norm(), sp<TP>()) << "srsmatrix eig";
 }
 
 TYPED_TEST(LapackTest, TestSolveHermitian) {
@@ -1996,11 +1996,11 @@ TYPED_TEST(LapackTest, TestSolveHermitian) {
 
     EXPECT_NEAR(TP(0), (ev - ev1).norm(), sp<TP>()) << "srsmatrix eig";
     EXPECT_NEAR(TP(0), (ev - ev2).norm(), sp<TP>()) << "srsmatrix eig";
-    EXPECT_NEAR(TP(0), (hm * basic_cvector<TP,TPC>(evect(CVM0)) - evect(CVM0) * ev1(CVM0)).norm(), sp<TP>()) << "srsmatrix eig";
-    EXPECT_NEAR(TP(0), (hm * basic_cvector<TP,TPC>(evect(CVM0+1)) - evect(CVM0+1) * ev1(CVM0+1)).norm(), sp<TP>()) << "srsmatrix eig";
-    EXPECT_NEAR(TP(0), (hm * basic_cvector<TP,TPC>(evect(CVM0+2)) - evect(CVM0+2) * ev1(CVM0+2)).norm(), sp<TP>()) << "srsmatrix eig";
-    EXPECT_NEAR(TP(0), (hm * basic_cvector<TP,TPC>(evect(CVM0+3)) - evect(CVM0+3) * ev1(CVM0+3)).norm(), sp<TP>()) << "srsmatrix eig";
-    EXPECT_NEAR(TP(0), (hm * basic_cvector<TP,TPC>(evect(CVM0+4)) - evect(CVM0+4) * ev1(CVM0+4)).norm(), sp<TP>()) << "srsmatrix eig";
+    EXPECT_NEAR(TP(0), (hm * basic_cvector<TP,TPC>(evect(0)) - evect(0) * ev1(0)).norm(), sp<TP>()) << "srsmatrix eig";
+    EXPECT_NEAR(TP(0), (hm * basic_cvector<TP,TPC>(evect(1)) - evect(1) * ev1(1)).norm(), sp<TP>()) << "srsmatrix eig";
+    EXPECT_NEAR(TP(0), (hm * basic_cvector<TP,TPC>(evect(2)) - evect(2) * ev1(2)).norm(), sp<TP>()) << "srsmatrix eig";
+    EXPECT_NEAR(TP(0), (hm * basic_cvector<TP,TPC>(evect(3)) - evect(3) * ev1(3)).norm(), sp<TP>()) << "srsmatrix eig";
+    EXPECT_NEAR(TP(0), (hm * basic_cvector<TP,TPC>(evect(4)) - evect(4) * ev1(4)).norm(), sp<TP>()) << "srsmatrix eig";
 }
 
 // positive-definite:
@@ -2041,57 +2041,57 @@ TYPED_TEST(LapackTest, TestGenEigReal) {
 
     alpha.geneig(a, b, beta);
     for (int i = 0; i < 5; ++i) {
-        if (fabs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_TRUE((basic_scmatrix<TP,TPC>(a) - alpha[CVM0+i] / beta[CVM0+i] *
+        if (fabs(beta[i]) > spp<TP>()) {
+            EXPECT_TRUE((basic_scmatrix<TP,TPC>(a) - alpha[i] / beta[i] *
                 basic_scmatrix<TP,TPC>(b)).rank(sp<TP>()) < 5) << "srmatrix geneig";
         }
     }
 
     alpha.geneig(a, b, beta, eigVectLeft, false);
     for (int i = 0; i < 5; ++i) {
-        if (fabs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_TRUE((basic_scmatrix<TP,TPC>(a) - alpha[CVM0+i] / beta[CVM0+i] *
+        if (fabs(beta[i]) > spp<TP>()) {
+            EXPECT_TRUE((basic_scmatrix<TP,TPC>(a) - alpha[i] / beta[i] *
                 basic_scmatrix<TP,TPC>(b)).rank(sp<TP>()) < 5) << "srmatrix geneig";
         }
     }
     for (int i = 0; i < 5; ++i) {
-        if (fabs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_NEAR(TP(0), (~(eigVectLeft(CVM0+i)) * basic_scmatrix<TP,TPC>(a) -
-                (alpha[CVM0+i] / beta[CVM0+i]) * ~(eigVectLeft(CVM0+i)) *
+        if (fabs(beta[i]) > spp<TP>()) {
+            EXPECT_NEAR(TP(0), (~(eigVectLeft(i)) * basic_scmatrix<TP,TPC>(a) -
+                (alpha[i] / beta[i]) * ~(eigVectLeft(i)) *
                 basic_scmatrix<TP,TPC>(b)).norm(), spp<TP>()) << "srmatrix left geneig";
         }
     }
 
     alpha.geneig(a, b, beta, eigVectRight);
     for (int i = 0; i < 5; ++i) {
-        if (fabs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_TRUE((basic_scmatrix<TP,TPC>(a) - alpha[CVM0+i] / beta[CVM0+i] *
+        if (fabs(beta[i]) > spp<TP>()) {
+            EXPECT_TRUE((basic_scmatrix<TP,TPC>(a) - alpha[i] / beta[i] *
                     basic_scmatrix<TP,TPC>(b)).rank(sp<TP>()) < 5) << "srmatrix geneig";
         }
     }
     for (int i = 0; i < 5; ++i) {
-        if (fabs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(a) * eigVectRight(CVM0+i) -
-                    (alpha[CVM0+i] / beta[CVM0+i]) * basic_scmatrix<TP,TPC>(b) * eigVectRight(CVM0+i)).norm(),
+        if (fabs(beta[i]) > spp<TP>()) {
+            EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(a) * eigVectRight(i) -
+                    (alpha[i] / beta[i]) * basic_scmatrix<TP,TPC>(b) * eigVectRight(i)).norm(),
                     spp<TP>()) << "srmatrix right geneig";
         }
     }
 
     alpha.geneig(a, b, beta, eigVectLeft, eigVectRight);
     for (int i = 0; i < 5; ++i) {
-        if (fabs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_TRUE((basic_scmatrix<TP,TPC>(a) - alpha[CVM0+i] / beta[CVM0+i] *
+        if (fabs(beta[i]) > spp<TP>()) {
+            EXPECT_TRUE((basic_scmatrix<TP,TPC>(a) - alpha[i] / beta[i] *
                     basic_scmatrix<TP,TPC>(b)).rank(sp<TP>()) < 5) << "srmatrix geneig";
         }
     }
     for (int i = 0; i < 5; ++i) {
-        if (fabs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_NEAR(TP(0), (~(eigVectLeft(CVM0+i)) * basic_scmatrix<TP,TPC>(a) -
-                    (alpha[CVM0+i] / beta[CVM0+i]) * ~(eigVectLeft(CVM0+i)) *
+        if (fabs(beta[i]) > spp<TP>()) {
+            EXPECT_NEAR(TP(0), (~(eigVectLeft(i)) * basic_scmatrix<TP,TPC>(a) -
+                    (alpha[i] / beta[i]) * ~(eigVectLeft(i)) *
                     basic_scmatrix<TP,TPC>(b)).norm(), spp<TP>()) << "srmatrix left geneig";
-            EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(a) * eigVectRight(CVM0+i) -
-                    (alpha[CVM0+i] / beta[CVM0+i]) * basic_scmatrix<TP,TPC>(b) *
-                    eigVectRight(CVM0+i)).norm(), spp<TP>()) << "srmatrix right geneig";
+            EXPECT_NEAR(TP(0), (basic_scmatrix<TP,TPC>(a) * eigVectRight(i) -
+                    (alpha[i] / beta[i]) * basic_scmatrix<TP,TPC>(b) *
+                    eigVectRight(i)).norm(), spp<TP>()) << "srmatrix right geneig";
         }
     }
 }
@@ -2109,48 +2109,48 @@ TYPED_TEST(LapackTest, TestGenEigComplex) {
 
     alpha.geneig(a, b, beta);
     for (int i = 0; i < 5; ++i) {
-        if (std::abs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_TRUE((a - alpha[CVM0+i] / beta[CVM0+i] * b).rank(sp<TP>()) < 5) << "scmatrix geneig";
+        if (std::abs(beta[i]) > spp<TP>()) {
+            EXPECT_TRUE((a - alpha[i] / beta[i] * b).rank(sp<TP>()) < 5) << "scmatrix geneig";
         }
     }
     alpha.geneig(a, b, beta, eigVectLeft, false);
     for (int i = 0; i < 5; ++i) {
-        if (std::abs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_TRUE((a - alpha[CVM0+i] / beta[CVM0+i] * b).rank(sp<TP>()) < 5) << "scmatrix geneig";
+        if (std::abs(beta[i]) > spp<TP>()) {
+            EXPECT_TRUE((a - alpha[i] / beta[i] * b).rank(sp<TP>()) < 5) << "scmatrix geneig";
         }
     }
     for (int i = 0; i < 5; ++i) {
-        if (std::abs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_NEAR(TP(0), (~(eigVectLeft(CVM0+i)) * a - (alpha[CVM0+i] / beta[CVM0+i]) *
-                    ~(eigVectLeft(CVM0+i)) * b).norm(), sp<TP>()) << "scmatrix left geneig";
+        if (std::abs(beta[i]) > spp<TP>()) {
+            EXPECT_NEAR(TP(0), (~(eigVectLeft(i)) * a - (alpha[i] / beta[i]) *
+                    ~(eigVectLeft(i)) * b).norm(), sp<TP>()) << "scmatrix left geneig";
         }
     }
 
     alpha.geneig(a, b, beta, eigVectRight);
     for (int i = 0; i < 5; ++i) {
-        if (std::abs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_TRUE((a - alpha[CVM0+i] / beta[CVM0+i] * b).rank(sp<TP>()) < 5) << "scmatrix geneig";
+        if (std::abs(beta[i]) > spp<TP>()) {
+            EXPECT_TRUE((a - alpha[i] / beta[i] * b).rank(sp<TP>()) < 5) << "scmatrix geneig";
         }
     }
     for (int i = 0; i < 5; ++i) {
-        if (std::abs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_NEAR(TP(0), (a * eigVectRight(CVM0+i) - (alpha[CVM0+i] / beta[CVM0+i]) * b *
-                    eigVectRight(CVM0+i)).norm(), sp<TP>()) << "scmatrix right geneig";
+        if (std::abs(beta[i]) > spp<TP>()) {
+            EXPECT_NEAR(TP(0), (a * eigVectRight(i) - (alpha[i] / beta[i]) * b *
+                    eigVectRight(i)).norm(), sp<TP>()) << "scmatrix right geneig";
         }
     }
 
     alpha.geneig(a, b, beta, eigVectLeft, eigVectRight);
     for (int i = 0; i < 5; ++i) {
-        if (std::abs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_TRUE((a - alpha[CVM0+i] / beta[CVM0+i] * b).rank(sp<TP>()) < 5) << "scmatrix geneig";
+        if (std::abs(beta[i]) > spp<TP>()) {
+            EXPECT_TRUE((a - alpha[i] / beta[i] * b).rank(sp<TP>()) < 5) << "scmatrix geneig";
         }
     }
     for (int i = 0; i < 5; ++i) {
-        if (std::abs(beta[CVM0+i]) > spp<TP>()) {
-            EXPECT_NEAR(TP(0), (~(eigVectLeft(CVM0+i)) * a - (alpha[CVM0+i] / beta[CVM0+i]) *
-                    ~(eigVectLeft(CVM0+i)) * b).norm(), sp<TP>()) << "scmatrix left geneig";
-            EXPECT_NEAR(TP(0), (a * eigVectRight(CVM0+i) - (alpha[CVM0+i] / beta[CVM0+i]) * b *
-                    eigVectRight(CVM0+i)).norm(), sp<TP>()) << "scmatrix right geneig";
+        if (std::abs(beta[i]) > spp<TP>()) {
+            EXPECT_NEAR(TP(0), (~(eigVectLeft(i)) * a - (alpha[i] / beta[i]) *
+                    ~(eigVectLeft(i)) * b).norm(), sp<TP>()) << "scmatrix left geneig";
+            EXPECT_NEAR(TP(0), (a * eigVectRight(i) - (alpha[i] / beta[i]) * b *
+                    eigVectRight(i)).norm(), sp<TP>()) << "scmatrix right geneig";
         }
     }
 }

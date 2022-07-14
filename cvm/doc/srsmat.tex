@@ -10,7 +10,7 @@
 \verb"    "\GOT{srsmatrix}{srsmatrix.srsmatrix (const srsmatrix&)}\verb" (const srsmatrix& m);"\\
 \verb"    explicit "\GOT{srsmatrix}{srsmatrix.srsmatrix (const rmatrix&)}\verb" (const rmatrix& m, TR tol = cvmMachSp());"\\
 \verb"    explicit "\GOT{srsmatrix}{srsmatrix.srsmatrix (const rvector&)}\verb" (const rvector& v);"\\
-\verb"    "\GOT{srsmatrix}{srsmatrix.submatrixctr}\verb" (srsmatrix& m, int nRowCol, int nSize);"\\
+\verb"    "\GOT{srsmatrix}{srsmatrix.submatrixctr}\verb" (srsmatrix& m, int nRowCol, int size);"\\
 \verb"    TR "\GOT{operator ()}{srsmatrix.operator (,)}\verb" (int im, int in) const throw (cvmexception);"\\
 \verb"    const rvector "\GOT{operator ()}{srsmatrix.operator ()}\verb" (int i) const throw (cvmexception);"\\
 \verb"    const rvector "\GOT{operator []}{srsmatrix.operator []}\verb" (int i) const throw (cvmexception);"\\
@@ -330,14 +330,14 @@ prints
 Submatrix constructor%
 \pdfdest name {srsmatrix.submatrixctr} fit
 \begin{verbatim}
-srsmatrix::srsmatrix (srsmatrix& m, int nRowCol, int nSize);
+srsmatrix::srsmatrix (srsmatrix& m, int nRowCol, int size);
 \end{verbatim}
 creates  \verb"srmatrix" object as  \emph{submatrix} of 
 symmetric matrix \verb"m".
 It means that the matrix created shares memory with some part
 of \verb"m". This part is defined by its upper left corner (parameter
 \verb"nRowCol", \Based)
-and its size (parameter \verb"nSize").
+and its size (parameter \verb"size").
 See also \GOT{srsmatrix}{srsmatrix}.
 Example:
 \begin{Verbatim}

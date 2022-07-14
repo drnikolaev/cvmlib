@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2016
+//          Copyright Sergei Nikolaev 1992-2022
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -14,11 +14,11 @@ CVM_NAMESPACE_BEG
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__gemm<std::complex<float>, basic_cmatrix<float, std::complex<float> > >
-    (const basic_cmatrix<float, std::complex<float> >& ml, bool bTrans1,
-     const basic_cmatrix<float, std::complex<float> >& mr, bool bTrans2,
+__gemm<std::complex<float>, basic_cmatrix<float, std::complex<float>>  >
+    (const basic_cmatrix<float, std::complex<float>> & ml, bool bTrans1,
+     const basic_cmatrix<float, std::complex<float>> & mr, bool bTrans2,
      std::complex<float> dAlpha, 
-     basic_cmatrix<float, std::complex<float> >& mRes, 
+     basic_cmatrix<float, std::complex<float>> & mRes,
      std::complex<float> dBeta)
 {
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
@@ -38,11 +38,11 @@ __gemm<std::complex<float>, basic_cmatrix<float, std::complex<float> > >
 
 template<>
 CVM_API void
-__gemm<std::complex<double>, basic_cmatrix<double, std::complex<double> > >
-    (const basic_cmatrix<double, std::complex<double> >& ml, bool bTrans1,
-     const basic_cmatrix<double, std::complex<double> >& mr, bool bTrans2,
+__gemm<std::complex<double>, basic_cmatrix<double, std::complex<double>>  >
+    (const basic_cmatrix<double, std::complex<double>> & ml, bool bTrans1,
+     const basic_cmatrix<double, std::complex<double>> & mr, bool bTrans2,
      std::complex<double> dAlpha,
-     basic_cmatrix<double, std::complex<double> >& mRes,
+     basic_cmatrix<double, std::complex<double>> & mRes,
      std::complex<double> dBeta)
 {
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
@@ -62,12 +62,12 @@ __gemm<std::complex<double>, basic_cmatrix<double, std::complex<double> > >
 
 template<>
 CVM_API void
-__hemm<std::complex<float>, basic_schmatrix<float, std::complex<float> >, basic_cmatrix<float, std::complex<float> > >
+__hemm<std::complex<float>, basic_schmatrix<float, std::complex<float>> , basic_cmatrix<float, std::complex<float>>  >
     (bool bLeft,
-     const basic_schmatrix<float, std::complex<float> >& ml,
-     const basic_cmatrix<float, std::complex<float> >& mr, 
+     const basic_schmatrix<float, std::complex<float>> & ml,
+     const basic_cmatrix<float, std::complex<float>> & mr,
      std::complex<float> dAlpha,
-     basic_cmatrix<float, std::complex<float> >& mRes,
+     basic_cmatrix<float, std::complex<float>> & mRes,
      std::complex<float> dBeta)
 {
     CHEMM(bLeft ? Chars::pL() : Chars::pR(),
@@ -88,12 +88,12 @@ __hemm<std::complex<float>, basic_schmatrix<float, std::complex<float> >, basic_
 
 template<>
 CVM_API void
-__hemm<std::complex<double>, basic_schmatrix<double, std::complex<double> >, basic_cmatrix<double, std::complex<double> > >
+__hemm<std::complex<double>, basic_schmatrix<double, std::complex<double>> , basic_cmatrix<double, std::complex<double>>  >
     (bool bLeft,
-     const basic_schmatrix<double, std::complex<double> >& ml,
-     const basic_cmatrix<double, std::complex<double> >& mr, 
+     const basic_schmatrix<double, std::complex<double>> & ml,
+     const basic_cmatrix<double, std::complex<double>> & mr,
      std::complex<double> dAlpha,
-     basic_cmatrix<double, std::complex<double> >& mRes,
+     basic_cmatrix<double, std::complex<double>> & mRes,
      std::complex<double> dBeta)
 {
     ZHEMM(bLeft ? Chars::pL() : Chars::pR(),
@@ -114,11 +114,11 @@ __hemm<std::complex<double>, basic_schmatrix<double, std::complex<double> >, bas
 
 template <>
 CVM_API void
-__herk<float, std::complex<float>, basic_schmatrix<float, std::complex<float> > >
+__herk<float, std::complex<float>, basic_schmatrix<float, std::complex<float>>  >
     (bool bTransp, 
     float alpha, tint k,
     const std::complex<float>* pA, tint ldA,
-    float beta, basic_schmatrix<float, std::complex<float> >& m)
+    float beta, basic_schmatrix<float, std::complex<float>> & m)
 {
     CHERK(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
@@ -133,11 +133,11 @@ __herk<float, std::complex<float>, basic_schmatrix<float, std::complex<float> > 
 
 template <>
 CVM_API void
-__herk<double, std::complex<double>, basic_schmatrix<double, std::complex<double> > >
+__herk<double, std::complex<double>, basic_schmatrix<double, std::complex<double>>  >
     (bool bTransp, 
     double alpha, tint k,
     const std::complex<double>* pA, tint ldA,
-    double beta, basic_schmatrix<double, std::complex<double> >& m)
+    double beta, basic_schmatrix<double, std::complex<double>> & m)
 {
     ZHERK(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
@@ -152,12 +152,12 @@ __herk<double, std::complex<double>, basic_schmatrix<double, std::complex<double
 
 template <>
 CVM_API void
-__her2k<float, std::complex<float>, basic_schmatrix<float, std::complex<float> > >
+__her2k<float, std::complex<float>, basic_schmatrix<float, std::complex<float>>  >
     (bool bTransp, 
     std::complex<float> alpha, tint k,
     const std::complex<float>* pA, tint ldA,
     const std::complex<float>* pB, tint ldB,
-    float beta, basic_schmatrix<float, std::complex<float> >& m)
+    float beta, basic_schmatrix<float, std::complex<float>> & m)
 {
     CHER2K(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
@@ -172,12 +172,12 @@ __her2k<float, std::complex<float>, basic_schmatrix<float, std::complex<float> >
 
 template <>
 CVM_API void
-__her2k<double, std::complex<double>, basic_schmatrix<double, std::complex<double> > >
+__her2k<double, std::complex<double>, basic_schmatrix<double, std::complex<double>>  >
     (bool bTransp, 
     std::complex<double> alpha, tint k,
     const std::complex<double>* pA, tint ldA,
     const std::complex<double>* pB, tint ldB,
-    double beta, basic_schmatrix<double, std::complex<double> >& m)
+    double beta, basic_schmatrix<double, std::complex<double>> & m)
 {
     ZHER2K(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
@@ -193,10 +193,10 @@ __her2k<double, std::complex<double>, basic_schmatrix<double, std::complex<doubl
 // QR Case 1: economy mode, A is (m x n) and Q is (m x n) and R is (n x n)
 template <>
 CVM_API void 
-__qre<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::complex<float> > >
-    (const basic_cmatrix<float, std::complex<float> >& mArg, 
-    basic_cmatrix<float, std::complex<float> >& mQ,
-    basic_scmatrix<float, std::complex<float> >& mR) throw(cvmexception)
+__qre<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+    (const basic_cmatrix<float, std::complex<float>> & mArg,
+    basic_cmatrix<float, std::complex<float>> & mQ,
+    basic_scmatrix<float, std::complex<float>> & mR)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -204,7 +204,7 @@ __qre<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_cvector<float, std::complex<float> > vTau(nK);
+    basic_cvector<float, std::complex<float>>  vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -213,7 +213,7 @@ __qre<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
     // calculate size of workspace
     CGEQRF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     CGEQRF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -221,8 +221,8 @@ __qre<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // get upper-triangular R from overwritten A
     mR.vanish();
-    for (tint row = CVM0; row < nK + CVM0; ++row)
-        for (tint col = row; col < nN + CVM0; ++col)
+    for (tint row = 0; row < nK; ++row)
+        for (tint col = row; col < nN; ++col)
             mR(row,col) = mQ(row,col);
 
     // calculate size of workspace for finding Q
@@ -239,10 +239,10 @@ __qre<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 // QR Case 1: economy mode, A is (m x n) and Q is (m x n) and R is (n x n)
 template <>
 CVM_API void 
-__qre<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::complex<double> > >
-    (const basic_cmatrix<double, std::complex<double> >& mArg, 
-    basic_cmatrix<double, std::complex<double> >& mQ,
-    basic_scmatrix<double, std::complex<double> >& mR) throw(cvmexception)
+__qre<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+    (const basic_cmatrix<double, std::complex<double>> & mArg,
+    basic_cmatrix<double, std::complex<double>> & mQ,
+    basic_scmatrix<double, std::complex<double>> & mR)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -250,7 +250,7 @@ __qre<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_cvector<double, std::complex<double> > vTau(nK);
+    basic_cvector<double, std::complex<double>>  vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -259,7 +259,7 @@ __qre<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
     // calculate size of workspace
     ZGEQRF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     ZGEQRF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -267,8 +267,8 @@ __qre<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // get upper-triangular R from overwritten A
     mR.vanish();
-    for (tint row = CVM0; row < nK + CVM0; ++row)
-        for (tint col = row; col < nN + CVM0; ++col)
+    for (tint row = 0; row < nK; ++row)
+        for (tint col = row; col < nN; ++col)
             mR(row,col) = mQ(row,col);
 
     // calculate size of workspace for finding Q
@@ -285,22 +285,22 @@ __qre<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 // QR Case 2: full mode, A is (m x n) and Q is (m x m) and R is (m x n)
 template <>
 CVM_API void 
-__qrf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::complex<float> > >
-    (const basic_cmatrix<float, std::complex<float> >& mArg, 
-    basic_scmatrix<float, std::complex<float> >& mQ,
-    basic_cmatrix<float, std::complex<float> >& mR) throw(cvmexception)
+__qrf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+    (const basic_cmatrix<float, std::complex<float>> & mArg,
+    basic_scmatrix<float, std::complex<float>> & mQ,
+    basic_cmatrix<float, std::complex<float>> & mR)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
     const tint nK = _cvm_min<tint>(nM, nN);
 
     // unlike economy mode, we need a copy here since Q will be m x m and this may be bigger than original A
-    basic_cmatrix<float, std::complex<float> > mA(nM, nN <= nM ? nM : nN);
+    basic_cmatrix<float, std::complex<float>>  mA(nM, nN <= nM ? nM : nN);
 
     // copy over argument matrix
-    mA.assign(CVM0, CVM0, mArg);
+    mA.assign(0, 0, mArg);
 
-    basic_cvector<float, std::complex<float> > vTau(nK);
+    basic_cvector<float, std::complex<float>>  vTau(nK);
 
     tint row, col;
     tint lWork = -1;
@@ -310,7 +310,7 @@ __qrf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
     // calculate size of workspace
     CGEQRF(&nM, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     CGEQRF(&nM, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -318,8 +318,8 @@ __qrf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // get upper-triangular R which is now m x n from overwritten A
     mR.vanish();
-    for (row = CVM0; row < nK + CVM0; ++row)
-        for (col = row; col < nN + CVM0; ++col)
+    for (row = 0; row < nK; ++row)
+        for (col = row; col < nN; ++col)
             mR(row,col) = mA(row,col);
 
     // calculate size of workspace for finding Q that is m x m
@@ -334,32 +334,32 @@ __qrf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // is Q big enough to have all conents of mA ?
     if (nN <= nM)
-        mQ.assign(CVM0, CVM0, mA);
+        mQ.assign(0, 0, mA);
     else
-        for (row = CVM0; row < nM + CVM0; ++row)
-            for (col = CVM0; col < nM + CVM0; ++col)
+        for (row = 0; row < nM; ++row)
+            for (col = 0; col < nM; ++col)
                 mQ(row,col) = mA(row,col);
 }
 
 // QR Case 2: full mode, A is (m x n) and Q is (m x m) and R is (m x n)
 template <>
 CVM_API void 
-__qrf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::complex<double> > >
-    (const basic_cmatrix<double, std::complex<double> >& mArg, 
-    basic_scmatrix<double, std::complex<double> >& mQ,
-    basic_cmatrix<double, std::complex<double> >& mR) throw(cvmexception)
+__qrf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+    (const basic_cmatrix<double, std::complex<double>> & mArg,
+    basic_scmatrix<double, std::complex<double>> & mQ,
+    basic_cmatrix<double, std::complex<double>> & mR)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
     const tint nK = _cvm_min<tint>(nM, nN);
 
     // unlike economy mode, we need a copy here since Q will be m x m and this may be bigger than original A
-    basic_cmatrix<double, std::complex<double> > mA(nM, nN <= nM ? nM : nN);
+    basic_cmatrix<double, std::complex<double>>  mA(nM, nN <= nM ? nM : nN);
 
     // copy over argument matrix
-    mA.assign(CVM0, CVM0, mArg);
+    mA.assign(0, 0, mArg);
 
-    basic_cvector<double, std::complex<double> > vTau(nK);
+    basic_cvector<double, std::complex<double>>  vTau(nK);
 
     tint row, col;
     tint lWork = -1;
@@ -369,7 +369,7 @@ __qrf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
     // calculate size of workspace
     ZGEQRF(&nM, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     ZGEQRF(&nM, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -377,8 +377,8 @@ __qrf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // get upper-triangular R which is now m x n from overwritten A
     mR.vanish();
-    for (row = CVM0; row < nK + CVM0; ++row)
-        for (col = row; col < nN + CVM0; ++col)
+    for (row = 0; row < nK; ++row)
+        for (col = row; col < nN; ++col)
             mR(row,col) = mA(row,col);
 
     // calculate size of workspace for finding Q that is m x m
@@ -393,10 +393,10 @@ __qrf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // is Q big enough to have all conents of mA ?
     if (nN <= nM)
-        mQ.assign(CVM0, CVM0, mA);
+        mQ.assign(0, 0, mA);
     else
-        for (row = CVM0; row < nM + CVM0; ++row)
-            for (col = CVM0; col < nM + CVM0; ++col)
+        for (row = 0; row < nM; ++row)
+            for (col = 0; col < nM; ++col)
                 mQ(row,col) = mA(row,col);
 }
 
@@ -404,10 +404,10 @@ __qrf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqe<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::complex<float> > >
-    (const basic_cmatrix<float, std::complex<float> >& mArg, 
-    basic_scmatrix<float, std::complex<float> >& mR,
-    basic_cmatrix<float, std::complex<float> >& mQ) throw(cvmexception)
+__rqe<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+    (const basic_cmatrix<float, std::complex<float>> & mArg,
+    basic_scmatrix<float, std::complex<float>> & mR,
+    basic_cmatrix<float, std::complex<float>> & mQ)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -415,7 +415,7 @@ __rqe<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
 
-    basic_cvector<float, std::complex<float> > vTau(nM);
+    basic_cvector<float, std::complex<float>>  vTau(nM);
 
     tint row, col;
     tint lWork = -1;
@@ -425,7 +425,7 @@ __rqe<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
     // calculate size of workspace
     CGERQF(&nM, &nN, mQ, mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     CGERQF(&nM, &nN, mQ, mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -433,8 +433,8 @@ __rqe<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // get upper-triangular R which is now m x m from overwritten A
     mR.vanish();
-    for (row = CVM0; row < nM + CVM0; ++row)
-        for (col = row; col < nM + CVM0; ++col)
+    for (row = 0; row < nM; ++row)
+        for (col = row; col < nM; ++col)
             mR(row,col) = mQ(row,nN - nM + col);
 
     // calculate size of workspace for finding Q that is m x n
@@ -452,10 +452,10 @@ __rqe<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqe<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::complex<double> > >
-    (const basic_cmatrix<double, std::complex<double> >& mArg, 
-    basic_scmatrix<double, std::complex<double> >& mR,
-    basic_cmatrix<double, std::complex<double> >& mQ) throw(cvmexception)
+__rqe<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+    (const basic_cmatrix<double, std::complex<double>> & mArg,
+    basic_scmatrix<double, std::complex<double>> & mR,
+    basic_cmatrix<double, std::complex<double>> & mQ)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -463,7 +463,7 @@ __rqe<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
 
-    basic_cvector<double, std::complex<double> > vTau(nM);
+    basic_cvector<double, std::complex<double>>  vTau(nM);
 
     tint row, col;
     tint lWork = -1;
@@ -473,7 +473,7 @@ __rqe<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
     // calculate size of workspace
     ZGERQF(&nM, &nN, mQ, mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     ZGERQF(&nM, &nN, mQ, mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -481,8 +481,8 @@ __rqe<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // get upper-triangular R which is now m x m from overwritten A
     mR.vanish();
-    for (row = CVM0; row < nM + CVM0; ++row)
-        for (col = row; col < nM + CVM0; ++col)
+    for (row = 0; row < nM; ++row)
+        for (col = row; col < nM; ++col)
             mR(row,col) = mQ(row,nN - nM + col);
 
     // calculate size of workspace for finding Q that is m x n
@@ -500,21 +500,21 @@ __rqe<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::complex<float> > >
-    (const basic_cmatrix<float, std::complex<float> >& mArg, 
-    basic_cmatrix<float, std::complex<float> >& mR,
-    basic_scmatrix<float, std::complex<float> >& mQ) throw(cvmexception)
+__rqf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+    (const basic_cmatrix<float, std::complex<float>> & mArg,
+    basic_cmatrix<float, std::complex<float>> & mR,
+    basic_scmatrix<float, std::complex<float>> & mQ)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
 
     // unlike economy mode, we need a copy here since Q will be n x n and this may be bigger than original A
-    basic_cmatrix<float, std::complex<float> > mA(nN, nN);
+    basic_cmatrix<float, std::complex<float>>  mA(nN, nN);
 
     // copy over argument matrix
-    mA.assign(CVM0, CVM0, mArg);
+    mA.assign(0, 0, mArg);
 
-    basic_cvector<float, std::complex<float> > vTau(nM);
+    basic_cvector<float, std::complex<float>>  vTau(nM);
 
     tint row, col;
     tint lWork = -1;
@@ -524,7 +524,7 @@ __rqf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
     // calculate size of workspace
     CGERQF(&nM, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     CGERQF(&nM, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -532,8 +532,8 @@ __rqf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // get upper-trapezoidal (triangular) R which is now m x n from overwritten A
     mR.vanish();
-    for (row = CVM0; row < nM + CVM0; ++row)
-        for (col = nN - nM + row; col < nN + CVM0; ++col)
+    for (row = 0; row < nM; ++row)
+        for (col = nN - nM + row; col < nN; ++col)
             mR(row,col) = mA(row,col);
 
     // calculate size of workspace for finding Q that is n x n
@@ -546,8 +546,8 @@ __rqf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
     CUNGRQ(&nM, &nN, &nM, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    for (row = CVM0; row < nM + CVM0; ++row)
-        for (col = CVM0; col < nN + CVM0; ++col)
+    for (row = 0; row < nM; ++row)
+        for (col = 0; col < nN; ++col)
             mQ(nN - nM + row,col) = mA(row,col);
 }
 
@@ -555,21 +555,21 @@ __rqf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::complex<double> > >
-    (const basic_cmatrix<double, std::complex<double> >& mArg, 
-    basic_cmatrix<double, std::complex<double> >& mR,
-    basic_scmatrix<double, std::complex<double> >& mQ) throw(cvmexception)
+__rqf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+    (const basic_cmatrix<double, std::complex<double>> & mArg,
+    basic_cmatrix<double, std::complex<double>> & mR,
+    basic_scmatrix<double, std::complex<double>> & mQ)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
 
     // unlike economy mode, we need a copy here since Q will be n x n and this may be bigger than original A
-    basic_cmatrix<double, std::complex<double> > mA(nN, nN);
+    basic_cmatrix<double, std::complex<double>>  mA(nN, nN);
 
     // copy over argument matrix
-    mA.assign(CVM0, CVM0, mArg);
+    mA.assign(0, 0, mArg);
 
-    basic_cvector<double, std::complex<double> > vTau(nM);
+    basic_cvector<double, std::complex<double>>  vTau(nM);
 
     tint row, col;
     tint lWork = -1;
@@ -579,7 +579,7 @@ __rqf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
     // calculate size of workspace
     ZGERQF(&nM, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     ZGERQF(&nM, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -587,8 +587,8 @@ __rqf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // get upper-trapezoidal (triangular) R which is now m x n from overwritten A
     mR.vanish();
-    for (row = CVM0; row < nM + CVM0; ++row)
-        for (col = nN - nM + row; col < nN + CVM0; ++col)
+    for (row = 0; row < nM; ++row)
+        for (col = nN - nM + row; col < nN; ++col)
             mR(row,col) = mA(row,col);
 
     // calculate size of workspace for finding Q that is n x n
@@ -601,18 +601,18 @@ __rqf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
     ZUNGRQ(&nM, &nN, &nM, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    for (row = CVM0; row < nM + CVM0; ++row)
-        for (col = CVM0; col < nN + CVM0; ++col)
+    for (row = 0; row < nM; ++row)
+        for (col = 0; col < nN; ++col)
             mQ(nN - nM + row,col) = mA(row,col);
 }
 
 // LQ Case 1: "economy" mode, A is (m x n) and L is (m x m) and Q is (m x n)
 template <>
 CVM_API void 
-__lqe<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::complex<float> > >
-    (const basic_cmatrix<float, std::complex<float> >& mArg, 
-    basic_scmatrix<float, std::complex<float> >& mL,
-    basic_cmatrix<float, std::complex<float> >& mQ) throw(cvmexception)
+__lqe<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+    (const basic_cmatrix<float, std::complex<float>> & mArg,
+    basic_scmatrix<float, std::complex<float>> & mL,
+    basic_cmatrix<float, std::complex<float>> & mQ)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -620,7 +620,7 @@ __lqe<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_cvector<float, std::complex<float> > vTau(nK);
+    basic_cvector<float, std::complex<float>>  vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -629,7 +629,7 @@ __lqe<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
     // calculate size of workspace
     CGELQF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     CGELQF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -637,8 +637,8 @@ __lqe<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // get lower-triangular L from overwritten A
     mL.vanish();
-    for (tint col = CVM0; col < nK + CVM0; ++col)
-        for (tint row = col; row < nM + CVM0; ++row)
+    for (tint col = 0; col < nK; ++col)
+        for (tint row = col; row < nM; ++row)
             mL(row,col) = mQ(row,col);
 
     // calculate size of workspace for finding Q
@@ -655,10 +655,10 @@ __lqe<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 // LQ Case 1: "economy" mode, A is (m x n) and L is (m x m) and Q is (m x n)
 template <>
 CVM_API void 
-__lqe<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::complex<double> > >
-    (const basic_cmatrix<double, std::complex<double> >& mArg, 
-    basic_scmatrix<double, std::complex<double> >& mL,
-    basic_cmatrix<double, std::complex<double> >& mQ) throw(cvmexception)
+__lqe<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+    (const basic_cmatrix<double, std::complex<double>> & mArg,
+    basic_scmatrix<double, std::complex<double>> & mL,
+    basic_cmatrix<double, std::complex<double>> & mQ)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -666,7 +666,7 @@ __lqe<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_cvector<double, std::complex<double> > vTau(nK);
+    basic_cvector<double, std::complex<double>>  vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -675,7 +675,7 @@ __lqe<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
     // calculate size of workspace
     ZGELQF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     ZGELQF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -683,8 +683,8 @@ __lqe<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // get lower-triangular L from overwritten A
     mL.vanish();
-    for (tint col = CVM0; col < nK + CVM0; ++col)
-        for (tint row = col; row < nM + CVM0; ++row)
+    for (tint col = 0; col < nK; ++col)
+        for (tint row = col; row < nM; ++row)
             mL(row,col) = mQ(row,col);
 
     // calculate size of workspace for finding Q
@@ -701,22 +701,22 @@ __lqe<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 // LQ Case 2: full mode, A is (m x n) and L is (m x n) and Q is (n x n)
 template <>
 CVM_API void 
-__lqf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::complex<float> > >
-    (const basic_cmatrix<float, std::complex<float> >& mArg, 
-    basic_cmatrix<float, std::complex<float> >& mL,
-    basic_scmatrix<float, std::complex<float> >& mQ) throw(cvmexception)
+__lqf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+    (const basic_cmatrix<float, std::complex<float>> & mArg,
+    basic_cmatrix<float, std::complex<float>> & mL,
+    basic_scmatrix<float, std::complex<float>> & mQ)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
     const tint nK = _cvm_min<tint>(nM, nN);
 
     // unlike "economy" mode, we need a copy here since Q will be n x n and this may bigger than original A
-    basic_cmatrix<float, std::complex<float> > mA(nM <= nN ? nN : nM, nN);
+    basic_cmatrix<float, std::complex<float>>  mA(nM <= nN ? nN : nM, nN);
 
     // copy over argument matrix
-    mA.assign(CVM0, CVM0, mArg);
+    mA.assign(0, 0, mArg);
 
-    basic_cvector<float, std::complex<float> > vTau(nK);
+    basic_cvector<float, std::complex<float>>  vTau(nK);
 
     tint row, col;
     tint lWork = -1;
@@ -726,7 +726,7 @@ __lqf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
     // calculate size of workspace
     CGELQF(&nM, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     CGELQF(&nM, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -734,8 +734,8 @@ __lqf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // get lower-triangular L from overwritten A
     mL.vanish();
-    for (col = CVM0; col < nK + CVM0; ++col)
-        for (row = col; row < nM + CVM0; ++row)
+    for (col = 0; col < nK; ++col)
+        for (row = col; row < nM; ++row)
             mL(row,col) = mA(row,col);
 
     // calculate size of workspace for finding Q
@@ -750,32 +750,32 @@ __lqf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // is Q big enough to have all conents of mA ?
     if (nM <= nN)
-        mQ.assign(CVM0, CVM0, mA);
+        mQ.assign(0, 0, mA);
     else
-        for (row = CVM0; row < nN + CVM0; ++row)
-            for (col = CVM0; col < nN + CVM0; ++col)
+        for (row = 0; row < nN; ++row)
+            for (col = 0; col < nN; ++col)
                 mQ(row,col) = mA(row,col);
 }
 
 // LQ Case 2: full mode, A is (m x n) and L is (m x n) and Q is (n x n)
 template <>
 CVM_API void 
-__lqf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::complex<double> > >
-    (const basic_cmatrix<double, std::complex<double> >& mArg, 
-    basic_cmatrix<double, std::complex<double> >& mL,
-    basic_scmatrix<double, std::complex<double> >& mQ) throw(cvmexception)
+__lqf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+    (const basic_cmatrix<double, std::complex<double>> & mArg,
+    basic_cmatrix<double, std::complex<double>> & mL,
+    basic_scmatrix<double, std::complex<double>> & mQ)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
     const tint nK = _cvm_min<tint>(nM, nN);
 
     // unlike "economy" mode, we need a copy here since Q will be n x n and this may bigger than original A
-    basic_cmatrix<double, std::complex<double> > mA(nM <= nN ? nN : nM, nN);
+    basic_cmatrix<double, std::complex<double>>  mA(nM <= nN ? nN : nM, nN);
 
     // copy over argument matrix
-    mA.assign(CVM0, CVM0, mArg);
+    mA.assign(0, 0, mArg);
 
-    basic_cvector<double, std::complex<double> > vTau(nK);
+    basic_cvector<double, std::complex<double>>  vTau(nK);
 
     tint row, col;
     tint lWork = -1;
@@ -785,7 +785,7 @@ __lqf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
     // calculate size of workspace
     ZGELQF(&nM, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     ZGELQF(&nM, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -793,8 +793,8 @@ __lqf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // get lower-triangular L from overwritten A
     mL.vanish();
-    for (col = CVM0; col < nK + CVM0; ++col)
-        for (row = col; row < nM + CVM0; ++row)
+    for (col = 0; col < nK; ++col)
+        for (row = col; row < nM; ++row)
             mL(row,col) = mA(row,col);
 
     // calculate size of workspace for finding Q
@@ -809,10 +809,10 @@ __lqf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // is Q big enough to have all conents of mA ?
     if (nM <= nN)
-        mQ.assign(CVM0, CVM0, mA);
+        mQ.assign(0, 0, mA);
     else
-        for (row = CVM0; row < nN + CVM0; ++row)
-            for (col = CVM0; col < nN + CVM0; ++col)
+        for (row = 0; row < nN; ++row)
+            for (col = 0; col < nN; ++col)
                 mQ(row,col) = mA(row,col);
 }
 
@@ -820,10 +820,10 @@ __lqf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 // QL Case 1: "economy" mode, A is (m x n) and Q is (m x n) and L is (n x n)
 template <>
 CVM_API void 
-__qle<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::complex<float> > >
-    (const basic_cmatrix<float, std::complex<float> >& mArg, 
-    basic_cmatrix<float, std::complex<float> >& mQ,
-    basic_scmatrix<float, std::complex<float> >& mL) throw(cvmexception)
+__qle<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+    (const basic_cmatrix<float, std::complex<float>> & mArg,
+    basic_cmatrix<float, std::complex<float>> & mQ,
+    basic_scmatrix<float, std::complex<float>> & mL)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -831,7 +831,7 @@ __qle<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_cvector<float, std::complex<float> > vTau(nK);
+    basic_cvector<float, std::complex<float>>  vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -840,7 +840,7 @@ __qle<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
     // calculate size of workspace
     CGEQLF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     CGEQLF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -848,8 +848,8 @@ __qle<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // get lower-triangular L from overwritten A
     mL.vanish();
-    for (tint col = CVM0; col < nN + CVM0; ++col)
-        for (tint row = col; row < nK + CVM0; ++row)
+    for (tint col = 0; col < nN; ++col)
+        for (tint row = col; row < nK; ++row)
             mL(row,col) = mQ(nM - nN + row,col);
 
     // calculate size of workspace for finding Q
@@ -867,10 +867,10 @@ __qle<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 // QL Case 1: "economy" mode, A is (m x n) and Q is (m x n) and L is (n x n)
 template <>
 CVM_API void 
-__qle<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::complex<double> > >
-    (const basic_cmatrix<double, std::complex<double> >& mArg, 
-    basic_cmatrix<double, std::complex<double> >& mQ,
-    basic_scmatrix<double, std::complex<double> >& mL) throw(cvmexception)
+__qle<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+    (const basic_cmatrix<double, std::complex<double>> & mArg,
+    basic_cmatrix<double, std::complex<double>> & mQ,
+    basic_scmatrix<double, std::complex<double>> & mL)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -878,7 +878,7 @@ __qle<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // we will eventually overwrite mQ to be the output matrix
     mQ = mArg;
-    basic_cvector<double, std::complex<double> > vTau(nK);
+    basic_cvector<double, std::complex<double>>  vTau(nK);
 
     tint lWork = -1;
     tint nOutInfo = 0;
@@ -887,7 +887,7 @@ __qle<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
     // calculate size of workspace
     ZGEQLF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     ZGEQLF(&nM, &nN, mQ._pd(), mQ._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -895,8 +895,8 @@ __qle<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // get lower-triangular L from overwritten A
     mL.vanish();
-    for (tint col = CVM0; col < nN + CVM0; ++col)
-        for (tint row = col; row < nK + CVM0; ++row)
+    for (tint col = 0; col < nN; ++col)
+        for (tint row = col; row < nK; ++row)
             mL(row,col) = mQ(nM - nN + row,col);
 
     // calculate size of workspace for finding Q
@@ -914,21 +914,21 @@ __qle<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 // QL Case 2: full mode, A is (m x n) and Q is (m x m) and L is (m x n)
 template <>
 CVM_API void 
-__qlf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::complex<float> > >
-    (const basic_cmatrix<float, std::complex<float> >& mArg, 
-    basic_scmatrix<float, std::complex<float> >& mQ,
-    basic_cmatrix<float, std::complex<float> >& mL) throw(cvmexception)
+__qlf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+    (const basic_cmatrix<float, std::complex<float>> & mArg,
+    basic_scmatrix<float, std::complex<float>> & mQ,
+    basic_cmatrix<float, std::complex<float>> & mL)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
 
     // unlike "economy" mode, we need a copy here since Q will be m x m and this may be bigger than original A
-    basic_cmatrix<float, std::complex<float> > mA(nM, nM);
+    basic_cmatrix<float, std::complex<float>>  mA(nM, nM);
 
     // copy over argument matrix
-    mA.assign(CVM0, CVM0, mArg);
+    mA.assign(0, 0, mArg);
 
-    basic_cvector<float, std::complex<float> > vTau(nN);
+    basic_cvector<float, std::complex<float>>  vTau(nN);
 
     tint row, col;
     tint lWork = -1;
@@ -938,7 +938,7 @@ __qlf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
     // calculate size of workspace
     CGEQLF(&nM, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     CGEQLF(&nM, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -946,8 +946,8 @@ __qlf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 
     // get lower triangular L which is now m x n from overwritten A
     mL.vanish();
-    for (col = CVM0; col < nN + CVM0; ++col)
-        for (row = nM - nN + col; row < nM + CVM0; ++row)
+    for (col = 0; col < nN; ++col)
+        for (row = nM - nN + col; row < nM; ++row)
             mL(row,col) = mA(row,col);
 
     // calculate size of workspace for finding Q that is n x n
@@ -960,8 +960,8 @@ __qlf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
     CUNGQL(&nM, &nN, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    for (row = CVM0; row < nM + CVM0; ++row)
-        for (col = CVM0; col < nN + CVM0; ++col)
+    for (row = 0; row < nM; ++row)
+        for (col = 0; col < nN; ++col)
             mQ(row,nM - nN + col) = mA(row,col);
 }
 
@@ -969,21 +969,21 @@ __qlf<basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::com
 // QL Case 2: full mode, A is (m x n) and Q is (m x m) and L is (m x n)
 template <>
 CVM_API void 
-__qlf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::complex<double> > >
-    (const basic_cmatrix<double, std::complex<double> >& mArg, 
-    basic_scmatrix<double, std::complex<double> >& mQ,
-    basic_cmatrix<double, std::complex<double> >& mL) throw(cvmexception)
+__qlf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+    (const basic_cmatrix<double, std::complex<double>> & mArg,
+    basic_scmatrix<double, std::complex<double>> & mQ,
+    basic_cmatrix<double, std::complex<double>> & mL)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
 
     // unlike "economy" mode, we need a copy here since Q will be m x m and this may be bigger than original A
-    basic_cmatrix<double, std::complex<double> > mA(nM, nM);
+    basic_cmatrix<double, std::complex<double>>  mA(nM, nM);
 
     // copy over argument matrix
-    mA.assign(CVM0, CVM0, mArg);
+    mA.assign(0, 0, mArg);
 
-    basic_cvector<double, std::complex<double> > vTau(nN);
+    basic_cvector<double, std::complex<double>>  vTau(nN);
 
     tint row, col;
     tint lWork = -1;
@@ -993,7 +993,7 @@ __qlf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
     // calculate size of workspace
     ZGEQLF(&nM, &nN, mA, mA._pld(), vTau, &dWork, &lWork, &nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
 
     // now do most of hardwork, find R and TAU and Householderish bits of Q
     ZGEQLF(&nM, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
@@ -1001,8 +1001,8 @@ __qlf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
 
     // get lower triangular L which is now m x n from overwritten A
     mL.vanish();
-    for (col = CVM0; col < nN + CVM0; ++col)
-        for (row = nM - nN + col; row < nM + CVM0; ++row)
+    for (col = 0; col < nN; ++col)
+        for (row = nM - nN + col; row < nM; ++row)
             mL(row,col) = mA(row,col);
 
     // calculate size of workspace for finding Q that is n x n
@@ -1015,20 +1015,20 @@ __qlf<basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::
     ZUNGQL(&nM, &nN, &nN, mA, mA._pld(), vTau, vWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
-    for (row = CVM0; row < nM + CVM0; ++row)
-        for (col = CVM0; col < nN + CVM0; ++col)
+    for (row = 0; row < nM; ++row)
+        for (col = 0; col < nN; ++col)
             mQ(row,nM - nN + col) = mA(row,col);
 }
 
 // LLS routines
 template <>
 CVM_API void
-__gels<basic_cmatrix<float, std::complex<float> >, basic_cvector<float, std::complex<float> > >
+__gels<basic_cmatrix<float, std::complex<float>> , basic_cvector<float, std::complex<float>>  >
     (bool transpose,
-    basic_cmatrix<float, std::complex<float> >& mA,
-    const basic_cmatrix<float, std::complex<float> >& mB,
-    basic_cmatrix<float, std::complex<float> >& mX,  // output: will be resized anyway, so better pass it empty
-    basic_cvector<float, std::complex<float> >& vErr) throw(cvmexception)
+    basic_cmatrix<float, std::complex<float>> & mA,
+    const basic_cmatrix<float, std::complex<float>> & mB,
+    basic_cmatrix<float, std::complex<float>> & mX,  // output: will be resized anyway, so better pass it empty
+    basic_cvector<float, std::complex<float>> & vErr)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1041,7 +1041,7 @@ __gels<basic_cmatrix<float, std::complex<float> >, basic_cvector<float, std::com
     const char* trans = transpose ? Chars::pC() : Chars::pN();
 
     mX.resize(nK, nrhs);   // first we might need extra space for residuals
-    mX.assign(CVM0, CVM0, mB);
+    mX.assign(0, 0, mB);
 
     // calculate size of workspace
     CGELS(trans,
@@ -1052,7 +1052,7 @@ __gels<basic_cmatrix<float, std::complex<float> >, basic_cvector<float, std::com
           &dWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
 
     CGELS(trans,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
@@ -1065,8 +1065,8 @@ __gels<basic_cmatrix<float, std::complex<float> >, basic_cvector<float, std::com
     // collecting residuals if applicable
     vErr.set(std::complex<float>(0.F));
     if ((!transpose && nM > nN) || (transpose && nM < nN)) {
-        for (tint col = CVM0; col < nrhs + CVM0; col++) {
-            for (tint row = nL + CVM0; row < nK + CVM0; row++) {
+        for (tint col = 0; col < nrhs; col++) {
+            for (tint row = nL; row < nK; row++) {
                 vErr[col] += mX(row, col) * mX(row, col);
             }
         }
@@ -1076,12 +1076,12 @@ __gels<basic_cmatrix<float, std::complex<float> >, basic_cvector<float, std::com
 
 template <>
 CVM_API void
-__gels<basic_cmatrix<double, std::complex<double> >, basic_cvector<double, std::complex<double> > >
+__gels<basic_cmatrix<double, std::complex<double>> , basic_cvector<double, std::complex<double>>  >
     (bool transpose,
-    basic_cmatrix<double, std::complex<double> >& mA,
-    const basic_cmatrix<double, std::complex<double> >& mB,
-    basic_cmatrix<double, std::complex<double> >& mX,  // output: will be resized anyway, so better pass it empty
-    basic_cvector<double, std::complex<double> >& vErr) throw(cvmexception)
+    basic_cmatrix<double, std::complex<double>> & mA,
+    const basic_cmatrix<double, std::complex<double>> & mB,
+    basic_cmatrix<double, std::complex<double>> & mX,  // output: will be resized anyway, so better pass it empty
+    basic_cvector<double, std::complex<double>> & vErr)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1094,7 +1094,7 @@ __gels<basic_cmatrix<double, std::complex<double> >, basic_cvector<double, std::
     const char* trans = transpose ? Chars::pC() : Chars::pN();
 
     mX.resize(nK, nrhs);   // first we might need extra space for residuals
-    mX.assign(CVM0, CVM0, mB);
+    mX.assign(0, 0, mB);
 
     // calculate size of workspace
     ZGELS(trans,
@@ -1105,7 +1105,7 @@ __gels<basic_cmatrix<double, std::complex<double> >, basic_cvector<double, std::
           &dWork, &lWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
 
     ZGELS(trans,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
@@ -1118,8 +1118,8 @@ __gels<basic_cmatrix<double, std::complex<double> >, basic_cvector<double, std::
     // collecting residuals if applicable
     vErr.set(std::complex<double>(0.));
     if ((!transpose && nM > nN) || (transpose && nM < nN)) {
-        for (tint col = CVM0; col < nrhs + CVM0; col++) {
-            for (tint row = nL + CVM0; row < nK + CVM0; row++) {
+        for (tint col = 0; col < nrhs; col++) {
+            for (tint row = nL; row < nK; row++) {
                 vErr[col] += mX(row, col) * mX(row, col);
             }
         }
@@ -1130,12 +1130,12 @@ __gels<basic_cmatrix<double, std::complex<double> >, basic_cvector<double, std::
 
 template <>
 CVM_API void
-__gelsy<float, basic_cmatrix<float, std::complex<float> > >
-    (basic_cmatrix<float, std::complex<float> >& mA,
-    const basic_cmatrix<float, std::complex<float> >& mB,
-    basic_cmatrix<float, std::complex<float> >& mX,  // output: will be resized anyway, so better pass it empty
+__gelsy<float, basic_cmatrix<float, std::complex<float>>  >
+    (basic_cmatrix<float, std::complex<float>> & mA,
+    const basic_cmatrix<float, std::complex<float>> & mB,
+    basic_cmatrix<float, std::complex<float>> & mX,  // output: will be resized anyway, so better pass it empty
     float rcond,
-    tint& rank) throw(cvmexception)
+    tint& rank)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1148,14 +1148,14 @@ __gelsy<float, basic_cmatrix<float, std::complex<float> > >
     basic_rvector<float> rWork(2*nN);
 
     mX.resize(nK, nrhs);   // we might need extra space here
-    mX.assign(CVM0, CVM0, mB);
+    mX.assign(0, 0, mB);
 
     // calculate size of workspace
     CGELSY(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
            jpvt, &rcond, &rank, &dWork, &lWork, rWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
 
     CGELSY(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             jpvt, &rcond, &rank, vWork, &lWork, rWork, &nOutInfo);
@@ -1166,12 +1166,12 @@ __gelsy<float, basic_cmatrix<float, std::complex<float> > >
 
 template <>
 CVM_API void
-__gelsy<double, basic_cmatrix<double, std::complex<double> > >
-    (basic_cmatrix<double, std::complex<double> >& mA,
-    const basic_cmatrix<double, std::complex<double> >& mB,
-    basic_cmatrix<double, std::complex<double> >& mX,  // output: will be resized anyway, so better pass it empty
+__gelsy<double, basic_cmatrix<double, std::complex<double>>  >
+    (basic_cmatrix<double, std::complex<double>> & mA,
+    const basic_cmatrix<double, std::complex<double>> & mB,
+    basic_cmatrix<double, std::complex<double>> & mX,  // output: will be resized anyway, so better pass it empty
     double rcond,
-    tint& rank) throw(cvmexception)
+    tint& rank)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1184,14 +1184,14 @@ __gelsy<double, basic_cmatrix<double, std::complex<double> > >
     basic_rvector<double> rWork(2*nN);
 
     mX.resize(nK, nrhs);   // we might need extra space here
-    mX.assign(CVM0, CVM0, mB);
+    mX.assign(0, 0, mB);
 
     // calculate size of workspace
     ZGELSY(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
            jpvt, &rcond, &rank, &dWork, &lWork, rWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
 
     ZGELSY(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
             jpvt, &rcond, &rank, vWork, &lWork, rWork, &nOutInfo);
@@ -1203,13 +1203,13 @@ __gelsy<double, basic_cmatrix<double, std::complex<double> > >
 //! @cond SPECIALIZATIONS
 template <>
 CVM_API void
-__gelss<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float> > >
-    (basic_cmatrix<float, std::complex<float> >& mA,
-    const basic_cmatrix<float, std::complex<float> >& mB,
-    basic_cmatrix<float, std::complex<float> >& mX,  // output: will be resized anyway, so better pass it empty
+__gelss<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float>>  >
+    (basic_cmatrix<float, std::complex<float>> & mA,
+    const basic_cmatrix<float, std::complex<float>> & mB,
+    basic_cmatrix<float, std::complex<float>> & mX,  // output: will be resized anyway, so better pass it empty
     float rcond,
     basic_rvector<float>& vSV, // incr=1 required
-    tint& rank) throw(cvmexception)
+    tint& rank)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1221,14 +1221,14 @@ __gelss<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float> > 
     basic_rvector<float> rWork(5 * _cvm_min<tint>(nM, nN));
 
     mX.resize(nK, nrhs);   // we might need extra space here
-    mX.assign(CVM0, CVM0, mB);
+    mX.assign(0, 0, mB);
 
     // calculate size of workspace
     CGELSS(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
            vSV, &rcond, &rank, &dWork, &lWork, rWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
 
     CGELSS(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
            vSV, &rcond, &rank, vWork, &lWork, rWork, &nOutInfo);
@@ -1239,13 +1239,13 @@ __gelss<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float> > 
 
 template <>
 CVM_API void
-__gelss<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double> > >
-    (basic_cmatrix<double, std::complex<double> >& mA,
-    const basic_cmatrix<double, std::complex<double> >& mB,
-    basic_cmatrix<double, std::complex<double> >& mX,  // output: will be resized anyway, so better pass it empty
+__gelss<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double>>  >
+    (basic_cmatrix<double, std::complex<double>> & mA,
+    const basic_cmatrix<double, std::complex<double>> & mB,
+    basic_cmatrix<double, std::complex<double>> & mX,  // output: will be resized anyway, so better pass it empty
     double rcond,
     basic_rvector<double>& vSV, // incr=1 required
-    tint& rank) throw(cvmexception)
+    tint& rank)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1257,14 +1257,14 @@ __gelss<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double
     basic_rvector<double> rWork(5 * _cvm_min<tint>(nM, nN));
 
     mX.resize(nK, nrhs);   // we might need extra space here
-    mX.assign(CVM0, CVM0, mB);
+    mX.assign(0, 0, mB);
 
     // calculate size of workspace
     ZGELSS(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
            vSV, &rcond, &rank, &dWork, &lWork, rWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
 
     ZGELSS(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
            vSV, &rcond, &rank, vWork, &lWork, rWork, &nOutInfo);
@@ -1275,13 +1275,13 @@ __gelss<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double
 
 template <>
 CVM_API void
-__gelsd<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float> > >
-    (basic_cmatrix<float, std::complex<float> >& mA,
-    const basic_cmatrix<float, std::complex<float> >& mB,
-    basic_cmatrix<float, std::complex<float> >& mX,  // output: will be resized anyway, so better pass it empty
+__gelsd<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float>>  >
+    (basic_cmatrix<float, std::complex<float>> & mA,
+    const basic_cmatrix<float, std::complex<float>> & mB,
+    basic_cmatrix<float, std::complex<float>> & mX,  // output: will be resized anyway, so better pass it empty
     float rcond,
     basic_rvector<float>& vSV, // incr=1 required
-    tint& rank) throw(cvmexception)
+    tint& rank)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1294,14 +1294,14 @@ __gelsd<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float> > 
     tint iWork = -1;
 
     mX.resize(nK, nrhs);   // we might need extra space here
-    mX.assign(CVM0, CVM0, mB);
+    mX.assign(0, 0, mB);
 
     // calculate size of workspace
     CGELSD(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
            vSV, &rcond, &rank, &dWork, &lWork, &rWork, &iWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<float, std::complex<float> > vWork(lWork);
+    basic_cvector<float, std::complex<float>>  vWork(lWork);
     basic_rvector<float> vrWork(static_cast<tint>(rWork));
     basic_array<tint,tint> viWork(iWork);
 
@@ -1314,13 +1314,13 @@ __gelsd<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float> > 
 
 template <>
 CVM_API void
-__gelsd<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double> > >
-    (basic_cmatrix<double, std::complex<double> >& mA,
-    const basic_cmatrix<double, std::complex<double> >& mB,
-    basic_cmatrix<double, std::complex<double> >& mX,  // output: will be resized anyway, so better pass it empty
+__gelsd<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double>>  >
+    (basic_cmatrix<double, std::complex<double>> & mA,
+    const basic_cmatrix<double, std::complex<double>> & mB,
+    basic_cmatrix<double, std::complex<double>> & mX,  // output: will be resized anyway, so better pass it empty
     double rcond,
     basic_rvector<double>& vSV, // incr=1 required
-    tint& rank) throw(cvmexception)
+    tint& rank)
 {
     const tint nM = mA.msize();
     const tint nN = mA.nsize();
@@ -1333,14 +1333,14 @@ __gelsd<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double
     tint iWork = -1;
 
     mX.resize(nK, nrhs);   // we might need extra space here
-    mX.assign(CVM0, CVM0, mB);
+    mX.assign(0, 0, mB);
 
     // calculate size of workspace
     ZGELSD(&nM, &nN, &nrhs, mA._pd(), mA._pld(), mX._pd(), mX._pld(),
            vSV, &rcond, &rank, &dWork, &lWork, &rWork, &iWork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     lWork = static_cast<tint>(dWork.real());
-    basic_cvector<double, std::complex<double> > vWork(lWork);
+    basic_cvector<double, std::complex<double>>  vWork(lWork);
     basic_rvector<double> vrWork(static_cast<tint>(rWork));
     basic_array<tint,tint> viWork(iWork);
 

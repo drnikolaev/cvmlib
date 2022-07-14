@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2016
+//          Copyright Sergei Nikolaev 1992-2022
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -12,20 +12,20 @@
 CVM_NAMESPACE_BEG
 
 template<>
-CVM_API float __dot<float> (const float* mpd, tint mnSize, tint mnIncr, const float* pd, tint nIncr)
+CVM_API float __dot<float> (const float* mpd, tint mn_size, tint mn_incr, const float* pd, tint incr)
 {
-    return SDOT(&mnSize, mpd, &mnIncr, pd, &nIncr);
+    return SDOT(&mn_size, mpd, &mn_incr, pd, &incr);
 }
 
 template<>
-CVM_API double __dot<double> (const double* mpd, tint mnSize, tint mnIncr, const double* pd, tint nIncr)
+CVM_API double __dot<double> (const double* mpd, tint mn_size, tint mn_incr, const double* pd, tint incr)
 {
-    return DDOT(&mnSize, mpd, &mnIncr, pd, &nIncr);
+    return DDOT(&mn_size, mpd, &mn_incr, pd, &incr);
 }
 
 template<>
 CVM_API void
-__gemv<float, basic_rmatrix<float>, basic_rvector<float> >
+__gemv<float, basic_rmatrix<float>, basic_rvector<float>>
     (bool bLeft,
     const basic_rmatrix<float>& m,
     float dAlpha,
@@ -42,7 +42,7 @@ __gemv<float, basic_rmatrix<float>, basic_rvector<float> >
 
 template<>
 CVM_API void
-__gemv<double, basic_rmatrix<double>, basic_rvector<double> >
+__gemv<double, basic_rmatrix<double>, basic_rvector<double>>
     (bool bLeft,
     const basic_rmatrix<double>& m,
     double dAlpha,
@@ -59,7 +59,7 @@ __gemv<double, basic_rmatrix<double>, basic_rvector<double> >
 
 template<>
 CVM_API void
-__gbmv<float, basic_srbmatrix<float>, basic_rvector<float> >
+__gbmv<float, basic_srbmatrix<float>, basic_rvector<float>>
     (bool bLeft,
     const basic_srbmatrix<float>& m,
     float dAlpha,
@@ -76,7 +76,7 @@ __gbmv<float, basic_srbmatrix<float>, basic_rvector<float> >
 
 template<>
 CVM_API void
-__gbmv<double, basic_srbmatrix<double>, basic_rvector<double> >
+__gbmv<double, basic_srbmatrix<double>, basic_rvector<double>>
     (bool bLeft,
     const basic_srbmatrix<double>& m,
     double dAlpha,
@@ -93,7 +93,7 @@ __gbmv<double, basic_srbmatrix<double>, basic_rvector<double> >
 
 template<>
 CVM_API void
-__symv<float, basic_srsmatrix<float>, basic_rvector<float> >
+__symv<float, basic_srsmatrix<float>, basic_rvector<float>>
     (const basic_srsmatrix<float>& m,
     float dAlpha,
     const basic_rvector<float>& v,
@@ -109,7 +109,7 @@ __symv<float, basic_srsmatrix<float>, basic_rvector<float> >
 
 template<>
 CVM_API void
-__symv<double, basic_srsmatrix<double>, basic_rvector<double> >
+__symv<double, basic_srsmatrix<double>, basic_rvector<double>>
     (const basic_srsmatrix<double>& m,
     double dAlpha,
     const basic_rvector<double>& v,
@@ -125,11 +125,11 @@ __symv<double, basic_srsmatrix<double>, basic_rvector<double> >
 
 template<>
 CVM_API void
-__svd<float, basic_rmatrix<float>, basic_srmatrix<float> >
-    (float* pd, tint nSize, tint nIncr, 
+__svd<float, basic_rmatrix<float>, basic_srmatrix<float>>
+    (float* pd, tint size, tint incr,
     const basic_rmatrix<float>& mArg,
     basic_srmatrix<float>* mU,
-    basic_srmatrix<float>* mVH) throw(cvmexception)
+    basic_srmatrix<float>* mVH)
 {
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     const tint nM = mArg.msize();
@@ -141,10 +141,10 @@ __svd<float, basic_rmatrix<float>, basic_srmatrix<float> >
     tint lwork = -1; // to calculate lwork
     tint nOutInfo = 0;
 
-    _check_ne(CVM_SIZESMISMATCH, m, nSize);
+    _check_ne(CVM_SIZESMISMATCH, m, size);
 
-    basic_rvector<float> mD(nSize);
-    mD.assign(pd, nIncr);
+    basic_rvector<float> mD(size);
+    mD.assign(pd, incr);
 
     basic_rvector<float> vOffDiag(_cvm_max<tint>(1, m - 1));
     basic_rvector<float> vTauQ(m);
@@ -243,16 +243,16 @@ __svd<float, basic_rmatrix<float>, basic_srmatrix<float> >
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "SBDSQR", __FILE__, __LINE__);
 
-    __copy<float> (nSize, mD, mD.incr(), pd, nIncr);
+    __copy<float> (size, mD, mD.incr(), pd, incr);
 }
 
 template<>
 CVM_API void
-__svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
-    (double* pd, tint nSize, tint nIncr, 
+__svd<double, basic_rmatrix<double>, basic_srmatrix<double>>
+    (double* pd, tint size, tint incr,
     const basic_rmatrix<double>& mArg,
     basic_srmatrix<double>* mU,
-    basic_srmatrix<double>* mVH) throw(cvmexception)
+    basic_srmatrix<double>* mVH)
 {
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     const tint nM = mArg.msize();
@@ -264,10 +264,10 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
     tint lwork = -1; // to calculate lwork
     tint nOutInfo = 0;
 
-    _check_ne(CVM_SIZESMISMATCH, m, nSize);
+    _check_ne(CVM_SIZESMISMATCH, m, size);
 
-    basic_rvector<double> mD(nSize);
-    mD.assign(pd, nIncr);
+    basic_rvector<double> mD(size);
+    mD.assign(pd, incr);
 
     basic_rvector<double> vOffDiag(_cvm_max<tint>(1, m - 1));
     basic_rvector<double> vTauQ(m);
@@ -366,17 +366,17 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double> >
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "DBDSQR", __FILE__, __LINE__);
 
-    __copy<double> (nSize, mD, mD.incr(), pd, nIncr);
+    __copy<double> (size, mD, mD.incr(), pd, incr);
 }
 
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, std::complex<float> > >
-    (float* pd, tint nSize, tint nIncr,
-    const basic_cmatrix<float, std::complex<float> >& mArg,
-    basic_scmatrix<float, std::complex<float> >* mU,
-    basic_scmatrix<float, std::complex<float> >* mVH) throw(cvmexception)
+__svd<float, basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+    (float* pd, tint size, tint incr,
+    const basic_cmatrix<float, std::complex<float>> & mArg,
+    basic_scmatrix<float, std::complex<float>> * mU,
+    basic_scmatrix<float, std::complex<float>> * mVH)
 {
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     const tint nM = mArg.msize();
@@ -387,21 +387,21 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
     tint lwork = -1; // to calculate lwork
     tint nOutInfo = 0;
 
-    _check_ne(CVM_SIZESMISMATCH, m, nSize);
+    _check_ne(CVM_SIZESMISMATCH, m, size);
 
-    basic_rvector<float> mD(nSize);
-    mD.assign(pd, nIncr);
+    basic_rvector<float> mD(size);
+    mD.assign(pd, incr);
 
     basic_rvector<float> vOffDiag(_cvm_max<tint>(1, m - 1));
-    basic_cvector<float, std::complex<float> > vTauQ(m);
-    basic_cvector<float, std::complex<float> > vTauP(m);
-    basic_cmatrix<float, std::complex<float> > mA(mArg);
+    basic_cvector<float, std::complex<float>>  vTauQ(m);
+    basic_cvector<float, std::complex<float>>  vTauP(m);
+    basic_cmatrix<float, std::complex<float>>  mA(mArg);
     basic_rvector<float> rwork(m * 4);
     std::complex<float> dwork;
 
     CGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork.real());
-    basic_cvector<float, std::complex<float> > vwork(lwork);
+    basic_cvector<float, std::complex<float>>  vwork(lwork);
     CGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
@@ -419,8 +419,8 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
     }
     else
     {
-        basic_cmatrix<float, std::complex<float> > Q(mA);
-        basic_cmatrix<float, std::complex<float> > P(mA);
+        basic_cmatrix<float, std::complex<float>>  Q(mA);
+        basic_cmatrix<float, std::complex<float>>  P(mA);
 
         if (nM > nN) Q.resize(nM, nM);
         if (nM < nN) P.resize(nN, nN);
@@ -482,22 +482,22 @@ __svd<float, basic_cmatrix<float, std::complex<float> >, basic_scmatrix<float, s
                P, P._pld(), Q, Q._pld(), nullptr, &one,
                rwork, &nOutInfo);
 
-        (*mU)  = basic_scmatrix<float, std::complex<float> >(Q.resize(nM, nM));
-        (*mVH) = basic_scmatrix<float, std::complex<float> >(P.resize(nN, nN));
+        (*mU)  = basic_scmatrix<float, std::complex<float>> (Q.resize(nM, nM));
+        (*mVH) = basic_scmatrix<float, std::complex<float>> (P.resize(nN, nN));
     }
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "CBDSQR", __FILE__, __LINE__);
 
-    __copy<float> (nSize, mD, mD.incr(), pd, nIncr);
+    __copy<float> (size, mD, mD.incr(), pd, incr);
 }
 
 template<>
 CVM_API void
-__svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<double, std::complex<double> > >
-    (double* pd, tint nSize, tint nIncr,
-    const basic_cmatrix<double, std::complex<double> >& mArg,
-    basic_scmatrix<double, std::complex<double> >* mU,
-    basic_scmatrix<double, std::complex<double> >* mVH) throw(cvmexception)
+__svd<double, basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+    (double* pd, tint size, tint incr,
+    const basic_cmatrix<double, std::complex<double>> & mArg,
+    basic_scmatrix<double, std::complex<double>> * mU,
+    basic_scmatrix<double, std::complex<double>> * mVH)
 {
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     const tint nM = mArg.msize();
@@ -508,21 +508,21 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
     tint lwork = -1; // to calculate lwork
     tint nOutInfo = 0;
 
-    _check_ne(CVM_SIZESMISMATCH, m, nSize);
+    _check_ne(CVM_SIZESMISMATCH, m, size);
 
-    basic_rvector<double> mD(nSize);
-    mD.assign(pd, nIncr);
+    basic_rvector<double> mD(size);
+    mD.assign(pd, incr);
 
     basic_rvector<double> vOffDiag(_cvm_max<tint>(1, m - 1));
-    basic_cvector<double, std::complex<double> > vTauQ(m);
-    basic_cvector<double, std::complex<double> > vTauP(m);
-    basic_cmatrix<double, std::complex<double> > mA(mArg);
+    basic_cvector<double, std::complex<double>>  vTauQ(m);
+    basic_cvector<double, std::complex<double>>  vTauP(m);
+    basic_cmatrix<double, std::complex<double>>  mA(mArg);
     basic_rvector<double> rwork(m * 4);
     std::complex<double> dwork;
 
     ZGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork.real());
-    basic_cvector<double, std::complex<double> > vwork(lwork);
+    basic_cvector<double, std::complex<double>>  vwork(lwork);
     ZGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
@@ -540,8 +540,8 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
     }
     else
     {
-        basic_cmatrix<double, std::complex<double> > Q(mA);
-        basic_cmatrix<double, std::complex<double> > P(mA);
+        basic_cmatrix<double, std::complex<double>>  Q(mA);
+        basic_cmatrix<double, std::complex<double>>  P(mA);
 
         if (nM > nN) Q.resize(nM, nM);
         if (nM < nN) P.resize(nN, nN);
@@ -603,34 +603,34 @@ __svd<double, basic_cmatrix<double, std::complex<double> >, basic_scmatrix<doubl
                P, P._pld(), Q, Q._pld(), nullptr, &one,
                rwork, &nOutInfo);
 
-        (*mU)  = basic_scmatrix<double, std::complex<double> >(Q.resize(nM, nM));
-        (*mVH) = basic_scmatrix<double, std::complex<double> >(P.resize(nN, nN));
+        (*mU)  = basic_scmatrix<double, std::complex<double>> (Q.resize(nM, nM));
+        (*mVH) = basic_scmatrix<double, std::complex<double>> (P.resize(nN, nN));
     }
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "ZBDSQR", __FILE__, __LINE__);
 
-    __copy<double> (nSize, mD, mD.incr(), pd, nIncr);
+    __copy<double> (size, mD, mD.incr(), pd, incr);
 }
 //! @endcond
 
 template<>
 CVM_API void
-__svd<float, basic_srbmatrix<float>, basic_srmatrix<float> >
-    (float* pd, tint nSize, tint nIncr,
+__svd<float, basic_srbmatrix<float>, basic_srmatrix<float>>
+    (float* pd, tint size, tint incr,
     const basic_srbmatrix<float>& mArg,
     basic_srmatrix<float>* mU,
-    basic_srmatrix<float>* mVH) throw(cvmexception)
+    basic_srmatrix<float>* mVH)
 {
     const tint zero(0);
     const tint m = mArg.msize();
 
-    _check_ne(CVM_SIZESMISMATCH, m, nSize);
+    _check_ne(CVM_SIZESMISMATCH, m, size);
 
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     tint nOutInfo = 0;
 
-    basic_rvector<float> mD(nSize);
-    mD.assign(pd, nIncr);
+    basic_rvector<float> mD(size);
+    mD.assign(pd, incr);
 
     basic_rvector  <float> vOffDiag(_cvm_max<tint>(1, m - 1));
     basic_srmatrix <float> mQ(bSimple ? 1 : m);
@@ -673,27 +673,27 @@ __svd<float, basic_srbmatrix<float>, basic_srmatrix<float> >
         (*mVH) = mPT;
     }
 
-    __copy<float> (nSize, mD, mD.incr(), pd, nIncr);
+    __copy<float> (size, mD, mD.incr(), pd, incr);
 }
 
 template<>
 CVM_API void
-__svd<double, basic_srbmatrix<double>, basic_srmatrix<double> >
-    (double* pd, tint nSize, tint nIncr,
+__svd<double, basic_srbmatrix<double>, basic_srmatrix<double>>
+    (double* pd, tint size, tint incr,
     const basic_srbmatrix<double>& mArg,
     basic_srmatrix<double>* mU,
-    basic_srmatrix<double>* mVH) throw(cvmexception)
+    basic_srmatrix<double>* mVH)
 {
     const tint zero(0);
     const tint m = mArg.msize();
 
-    _check_ne(CVM_SIZESMISMATCH, m, nSize);
+    _check_ne(CVM_SIZESMISMATCH, m, size);
 
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     tint nOutInfo = 0;
 
-    basic_rvector<double> mD(nSize);
-    mD.assign(pd, nIncr);
+    basic_rvector<double> mD(size);
+    mD.assign(pd, incr);
 
     basic_rvector  <double> vOffDiag(_cvm_max<tint>(1, m - 1));
     basic_srmatrix <double> mQ(bSimple ? 1 : m);
@@ -736,35 +736,35 @@ __svd<double, basic_srbmatrix<double>, basic_srmatrix<double> >
         (*mVH) = mPT;
     }
 
-    __copy<double> (nSize, mD, mD.incr(), pd, nIncr);
+    __copy<double> (size, mD, mD.incr(), pd, incr);
 }
 
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__svd<float, basic_scbmatrix<float, std::complex<float> >, basic_scmatrix<float, std::complex<float> > >
-    (float* pd, tint nSize, tint nIncr,
-    const basic_scbmatrix<float, std::complex<float> >& mArg,
-    basic_scmatrix<float, std::complex<float> >* mU,
-    basic_scmatrix<float, std::complex<float> >* mVH) throw(cvmexception)
+__svd<float, basic_scbmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+    (float* pd, tint size, tint incr,
+    const basic_scbmatrix<float, std::complex<float>> & mArg,
+    basic_scmatrix<float, std::complex<float>> * mU,
+    basic_scmatrix<float, std::complex<float>> * mVH)
 {
     const tint zero(0);
     const tint m = mArg.msize();
 
-    _check_ne(CVM_SIZESMISMATCH, m, nSize);
+    _check_ne(CVM_SIZESMISMATCH, m, size);
 
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     tint nOutInfo = 0;
 
-    basic_rvector<float> mD(nSize);
-    mD.assign(pd, nIncr);
+    basic_rvector<float> mD(size);
+    mD.assign(pd, incr);
 
     basic_rvector  <float> vOffDiag(_cvm_max<tint>(1, m - 1));
-    basic_scmatrix <float, std::complex<float> > mQ(bSimple ? 1 : m);
-    basic_scmatrix <float, std::complex<float> > mPT(bSimple ? 1 : m);
-    basic_scmatrix <float, std::complex<float> > mC(1);
-    basic_cvector  <float, std::complex<float> > vwork(m);
-    basic_scbmatrix<float, std::complex<float> > mA(mArg);
+    basic_scmatrix <float, std::complex<float>>  mQ(bSimple ? 1 : m);
+    basic_scmatrix <float, std::complex<float>>  mPT(bSimple ? 1 : m);
+    basic_scmatrix <float, std::complex<float>>  mC(1);
+    basic_cvector  <float, std::complex<float>>  vwork(m);
+    basic_scbmatrix<float, std::complex<float>>  mA(mArg);
     basic_rvector  <float> vrwork(m * 4); // max(M,N), but M==N, so sharing it with 4*N
 
     CGBBRD(bSimple ? Chars::pN() : Chars::pB(), 
@@ -801,34 +801,34 @@ __svd<float, basic_scbmatrix<float, std::complex<float> >, basic_scmatrix<float,
         (*mVH) = mPT;
     }
 
-    __copy<float> (nSize, mD, mD.incr(), pd, nIncr);
+    __copy<float> (size, mD, mD.incr(), pd, incr);
 }
 
 template<>
 CVM_API void
-__svd<double, basic_scbmatrix<double, std::complex<double> >, basic_scmatrix<double, std::complex<double> > >
-    (double* pd, tint nSize, tint nIncr,
-    const basic_scbmatrix<double, std::complex<double> >& mArg,
-    basic_scmatrix<double, std::complex<double> >* mU,
-    basic_scmatrix<double, std::complex<double> >* mVH) throw(cvmexception)
+__svd<double, basic_scbmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+    (double* pd, tint size, tint incr,
+    const basic_scbmatrix<double, std::complex<double>> & mArg,
+    basic_scmatrix<double, std::complex<double>> * mU,
+    basic_scmatrix<double, std::complex<double>> * mVH)
 {
     const tint zero(0);
     const tint m = mArg.msize();
 
-    _check_ne(CVM_SIZESMISMATCH, m, nSize);
+    _check_ne(CVM_SIZESMISMATCH, m, size);
 
     const bool bSimple = (mU == nullptr || mVH == nullptr);
     tint nOutInfo = 0;
 
-    basic_rvector<double> mD(nSize);
-    mD.assign(pd, nIncr);
+    basic_rvector<double> mD(size);
+    mD.assign(pd, incr);
 
     basic_rvector  <double> vOffDiag(_cvm_max<tint>(1, m - 1));
-    basic_scmatrix <double, std::complex<double> > mQ(bSimple ? 1 : m);
-    basic_scmatrix <double, std::complex<double> > mPT(bSimple ? 1 : m);
-    basic_scmatrix <double, std::complex<double> > mC(1);
-    basic_cvector  <double, std::complex<double> > vwork(m);
-    basic_scbmatrix<double, std::complex<double> > mA(mArg);
+    basic_scmatrix <double, std::complex<double>>  mQ(bSimple ? 1 : m);
+    basic_scmatrix <double, std::complex<double>>  mPT(bSimple ? 1 : m);
+    basic_scmatrix <double, std::complex<double>>  mC(1);
+    basic_cvector  <double, std::complex<double>>  vwork(m);
+    basic_scbmatrix<double, std::complex<double>>  mA(mArg);
     basic_rvector  <double> vrwork(m * 4); // max(M,N), but M==N, so sharing it with 4*N
 
     ZGBBRD(bSimple ? Chars::pN() : Chars::pB(),
@@ -866,17 +866,17 @@ __svd<double, basic_scbmatrix<double, std::complex<double> >, basic_scmatrix<dou
         (*mVH) = mPT;
     }
 
-    __copy<double> (nSize, mD, mD.incr(), pd, nIncr);
+    __copy<double> (size, mD, mD.incr(), pd, incr);
 }
 //! @endcond
 
 template<>
 CVM_API void
-__eig<basic_rvector<float>, basic_srsmatrix<float>, basic_srmatrix<float> >
+__eig<basic_rvector<float>, basic_srsmatrix<float>, basic_srmatrix<float>>
     (basic_rvector<float>& vRes,
     const basic_srsmatrix<float>& mArg,
     basic_srmatrix<float>* mEigVect,
-    bool /*bRightVect*/) throw(cvmexception)
+    bool /*bRightVect*/)
 {
     const tint nM = mArg.msize();
     _check_ne(CVM_SIZESMISMATCH, nM, vRes.size());
@@ -884,12 +884,12 @@ __eig<basic_rvector<float>, basic_srsmatrix<float>, basic_srmatrix<float> >
 
     if (nM == 1)
     {
-        vRes[CVM0] = mArg(CVM0,CVM0);
+        vRes[0] = mArg(0,0);
         if (bEigVect)
         {
             const float one(1.F);
             mEigVect -> resize(1);
-            (*mEigVect)[CVM0].set(one);
+            (*mEigVect)[0].set(one);
         }
     }
     else
@@ -936,11 +936,11 @@ __eig<basic_rvector<float>, basic_srsmatrix<float>, basic_srmatrix<float> >
 
 template<>
 CVM_API void
-__eig<basic_rvector<double>, basic_srsmatrix<double>, basic_srmatrix<double> >
+__eig<basic_rvector<double>, basic_srsmatrix<double>, basic_srmatrix<double>>
     (basic_rvector<double>& vRes,
     const basic_srsmatrix<double>& mArg,
     basic_srmatrix<double>* mEigVect,
-    bool /*bRightVect*/) throw(cvmexception)
+    bool /*bRightVect*/)
 {
     const tint nM = mArg.msize();
     _check_ne(CVM_SIZESMISMATCH, nM, vRes.size());
@@ -948,12 +948,12 @@ __eig<basic_rvector<double>, basic_srsmatrix<double>, basic_srmatrix<double> >
 
     if (nM == 1)
     {
-        vRes[CVM0] = mArg(CVM0,CVM0);
+        vRes[0] = mArg(0,0);
         if (bEigVect)
         {
             const double one(1.);
             mEigVect -> resize(1);
-            (*mEigVect)[CVM0].set(one);
+            (*mEigVect)[0].set(one);
         }
     }
     else
@@ -1001,11 +1001,11 @@ __eig<basic_rvector<double>, basic_srsmatrix<double>, basic_srmatrix<double> >
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float> >, basic_scmatrix<float, std::complex<float> > >
+__eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (basic_rvector<float>& vRes,
-    const basic_schmatrix<float, std::complex<float> >& mArg,
-    basic_scmatrix<float, std::complex<float> >* mEigVect,
-    bool /*bRightVect*/) throw(cvmexception)
+    const basic_schmatrix<float, std::complex<float>> & mArg,
+    basic_scmatrix<float, std::complex<float>> * mEigVect,
+    bool /*bRightVect*/)
 {
     const tint nM = mArg.msize();
     _check_ne(CVM_SIZESMISMATCH, nM, vRes.size());
@@ -1013,17 +1013,17 @@ __eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float> >, basic_
 
     if (nM == 1)
     {
-        vRes[CVM0] = 1.F;
+        vRes[0] = 1.F;
         if (bEigVect)
         {
             mEigVect -> resize(1);
-            (*mEigVect)[CVM0].set(mArg(CVM0,CVM0));
+            (*mEigVect)[0].set(mArg(0,0));
         }
     }
     else
     {
         const char* pcJob = bEigVect ? Chars::pV() : Chars::pN();
-        basic_schmatrix<float, std::complex<float> > mA(mArg);
+        basic_schmatrix<float, std::complex<float>>  mA(mArg);
         tint lwork = -1, lrwork = -1, liwork = -1;
         std::complex<float> work_size;
         float rwork_size = 0.;
@@ -1044,7 +1044,7 @@ __eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float> >, basic_
         lwork  = static_cast<tint> (work_size.real());
         lrwork = static_cast<tint> (rwork_size);
         liwork = iwork_size;
-        basic_cvector<float, std::complex<float> > work(lwork);
+        basic_cvector<float, std::complex<float>>  work(lwork);
         basic_rvector<float> rwork(lrwork);
         basic_array<tint,tint> iwork(liwork);
 
@@ -1071,11 +1071,11 @@ __eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float> >, basic_
 
 template<>
 CVM_API void
-__eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double> >, basic_scmatrix<double, std::complex<double> > >
+__eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (basic_rvector<double>& vRes,
-    const basic_schmatrix<double, std::complex<double> >& mArg,
-    basic_scmatrix<double, std::complex<double> >* mEigVect,
-    bool /*bRightVect*/) throw(cvmexception)
+    const basic_schmatrix<double, std::complex<double>> & mArg,
+    basic_scmatrix<double, std::complex<double>> * mEigVect,
+    bool /*bRightVect*/)
 {
     const tint nM = mArg.msize();
     _check_ne(CVM_SIZESMISMATCH, nM, vRes.size());
@@ -1083,17 +1083,17 @@ __eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double> >, bas
 
     if (nM == 1)
     {
-        vRes[CVM0] = 1.;
+        vRes[0] = 1.;
         if (bEigVect)
         {
             mEigVect -> resize(1);
-            (*mEigVect)[CVM0].set(mArg(CVM0,CVM0));
+            (*mEigVect)[0].set(mArg(0,0));
         }
     }
     else
     {
         const char* pcJob = bEigVect ? Chars::pV() : Chars::pN();
-        basic_schmatrix<double, std::complex<double> > mA(mArg);
+        basic_schmatrix<double, std::complex<double>>  mA(mArg);
         tint lwork = -1, lrwork = -1, liwork = -1;
         std::complex<double> work_size;
         double rwork_size = 0.;
@@ -1114,7 +1114,7 @@ __eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double> >, bas
         lwork  = static_cast<tint> (work_size.real());
         lrwork = static_cast<tint> (rwork_size);
         liwork = iwork_size;
-        basic_cvector<double, std::complex<double> > work(lwork);
+        basic_cvector<double, std::complex<double>>  work(lwork);
         basic_rvector<double> rwork(lrwork);
         basic_array<tint,tint> iwork(liwork);
 
@@ -1143,9 +1143,9 @@ __eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double> >, bas
 // pseudo(generalized) inversion routines
 template<>
 CVM_API void
-__pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
+__pinv<float, basic_rmatrix<float>, basic_rmatrix<float>>
     (basic_rmatrix<float>& mX,
-    const basic_rmatrix<float>& mArg, float threshold) throw(cvmexception)
+    const basic_rmatrix<float>& mArg, float threshold)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -1242,7 +1242,7 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
 
     if (nM > nN) P.resize(nN, nN);   // VH
     if (nM < nN) Q.resize(nM, nM);   // U
-    for (tint i = CVM0; i < P.msize() + CVM0; ++i) {
+    for (tint i = 0; i < P.msize(); ++i) {
         if (mD[i] > threshold) {
             P[i] /= mD[i];  // multiplying V by S^-1
         }
@@ -1255,9 +1255,9 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float> >
 
 template<>
 CVM_API void
-__pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
+__pinv<double, basic_rmatrix<double>, basic_rmatrix<double>>
     (basic_rmatrix<double>& mX,
-    const basic_rmatrix<double>& mArg, double threshold) throw(cvmexception)
+    const basic_rmatrix<double>& mArg, double threshold)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -1354,7 +1354,7 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
 
     if (nM > nN) P.resize(nN, nN);   // VH
     if (nM < nN) Q.resize(nM, nM);   // U
-    for (tint i = CVM0; i < P.msize() + CVM0; ++i) {
+    for (tint i = 0; i < P.msize(); ++i) {
         if (mD[i] > threshold) {
             P[i] /= mD[i];  // multiplying V by S^-1
         }
@@ -1368,9 +1368,9 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double> >
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, std::complex<float> > >
-    (basic_cmatrix<float, std::complex<float> >& mX, 
-    const basic_cmatrix<float, std::complex<float> >& mArg, float threshold) throw(cvmexception)
+__pinv<float, basic_cmatrix<float, std::complex<float>> , basic_cmatrix<float, std::complex<float>>  >
+    (basic_cmatrix<float, std::complex<float>> & mX,
+    const basic_cmatrix<float, std::complex<float>> & mArg, float threshold)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -1380,14 +1380,14 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
 
     basic_rvector<float> mD(m);
     basic_rvector<float> vOffDiag(_cvm_max<tint>(1, m - 1));
-    basic_cvector<float, std::complex<float> > vTauQ(m);
-    basic_cvector<float, std::complex<float> > vTauP(m);
-    basic_cmatrix<float, std::complex<float> > mA(mArg);
+    basic_cvector<float, std::complex<float>>  vTauQ(m);
+    basic_cvector<float, std::complex<float>>  vTauP(m);
+    basic_cmatrix<float, std::complex<float>>  mA(mArg);
     std::complex<float> dwork;
 
     CGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork.real());
-    basic_cvector<float, std::complex<float> > vwork(lwork);
+    basic_cvector<float, std::complex<float>>  vwork(lwork);
     CGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
@@ -1398,8 +1398,8 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
     // for m > n case we care about m-by-n matrix U and n-by-n matrix VH
     // for m < n case we care about m-by-m matrix U and m-by-n matrix VH
     // however, the whole matrix A is needed to start computations
-    basic_cmatrix<float, std::complex<float> > Q(mA);
-    basic_cmatrix<float, std::complex<float> > P(mA);
+    basic_cmatrix<float, std::complex<float>>  Q(mA);
+    basic_cmatrix<float, std::complex<float>>  P(mA);
 
     {
         lwork = -1;
@@ -1414,7 +1414,7 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = static_cast<tint>(dwork.real());
-        basic_cvector<float, std::complex<float> > vwork3(lwork);
+        basic_cvector<float, std::complex<float>>  vwork3(lwork);
         CUNGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                1,
@@ -1439,7 +1439,7 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     
         lwork = static_cast<tint>(dwork.real());
-        basic_cvector<float, std::complex<float> > vwork3(lwork);
+        basic_cvector<float, std::complex<float>>  vwork3(lwork);
         CUNGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                1,
@@ -1467,7 +1467,7 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
 
     if (nM > nN) P.resize(nN, nN);   // VH
     if (nM < nN) Q.resize(nM, nM);   // U
-    for (tint i = CVM0; i < P.msize() + CVM0; ++i) {
+    for (tint i = 0; i < P.msize(); ++i) {
         if (mD[i] > threshold) {
             P[i] /= mD[i];  // multiplying V by S^-1
         }
@@ -1480,9 +1480,9 @@ __pinv<float, basic_cmatrix<float, std::complex<float> >, basic_cmatrix<float, s
 
 template<>
 CVM_API void
-__pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<double, std::complex<double> > >
-    (basic_cmatrix<double, std::complex<double> >& mX,
-    const basic_cmatrix<double, std::complex<double> >& mArg, double threshold) throw(cvmexception)
+__pinv<double, basic_cmatrix<double, std::complex<double>> , basic_cmatrix<double, std::complex<double>>  >
+    (basic_cmatrix<double, std::complex<double>> & mX,
+    const basic_cmatrix<double, std::complex<double>> & mArg, double threshold)
 {
     const tint nM = mArg.msize();
     const tint nN = mArg.nsize();
@@ -1492,14 +1492,14 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
 
     basic_rvector<double> mD(m);
     basic_rvector<double> vOffDiag(_cvm_max<tint>(1, m - 1));
-    basic_cvector<double, std::complex<double> > vTauQ(m);
-    basic_cvector<double, std::complex<double> > vTauP(m);
-    basic_cmatrix<double, std::complex<double> > mA(mArg);
+    basic_cvector<double, std::complex<double>>  vTauQ(m);
+    basic_cvector<double, std::complex<double>>  vTauP(m);
+    basic_cmatrix<double, std::complex<double>>  mA(mArg);
     std::complex<double> dwork;
 
     ZGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, &dwork, &lwork, &nOutInfo);
     lwork = static_cast<tint>(dwork.real());
-    basic_cvector<double, std::complex<double> > vwork(lwork);
+    basic_cvector<double, std::complex<double>>  vwork(lwork);
     ZGEBRD(&nM, &nN, mA, mA._pld(), mD, vOffDiag, vTauQ, vTauP, vwork, &lwork, &nOutInfo);
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
@@ -1510,8 +1510,8 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
     // for m > n case we care about m-by-n matrix U and n-by-n matrix VH
     // for m < n case we care about m-by-m matrix U and m-by-n matrix VH
     // however, the whole matrix A is needed to start computations
-    basic_cmatrix<double, std::complex<double> > Q(mA);
-    basic_cmatrix<double, std::complex<double> > P(mA);
+    basic_cmatrix<double, std::complex<double>>  Q(mA);
+    basic_cmatrix<double, std::complex<double>>  P(mA);
 
     {
         lwork = -1;
@@ -1526,7 +1526,7 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
     
         lwork = static_cast<tint>(dwork.real());
-        basic_cvector<double, std::complex<double> > vwork3(lwork);
+        basic_cvector<double, std::complex<double>>  vwork3(lwork);
         ZUNGBR(Chars::pQ(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                1,
@@ -1551,7 +1551,7 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
 
         lwork = static_cast<tint>(dwork.real());
-        basic_cvector<double, std::complex<double> > vwork3(lwork);
+        basic_cvector<double, std::complex<double>>  vwork3(lwork);
         ZUNGBR(Chars::pP(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                1,
@@ -1579,7 +1579,7 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
 
     if (nM > nN) P.resize(nN, nN);   // VH
     if (nM < nN) Q.resize(nM, nM);   // U
-    for (tint i = CVM0; i < P.msize() + CVM0; ++i) {
+    for (tint i = 0; i < P.msize(); ++i) {
         if (mD[i] > threshold) {
             P[i] /= mD[i];  // multiplying V by S^-1
         }
@@ -1593,9 +1593,9 @@ __pinv<double, basic_cmatrix<double, std::complex<double> >, basic_cmatrix<doubl
 
 template<>
 CVM_API void
-__pinv<float, basic_srbmatrix<float>, basic_rmatrix<float> >
+__pinv<float, basic_srbmatrix<float>, basic_rmatrix<float>>
     (basic_rmatrix<float>& mX, 
-    const basic_srbmatrix<float>& mArg, float threshold) throw(cvmexception)
+    const basic_srbmatrix<float>& mArg, float threshold)
 {
     const tint zero(0);
     const tint m = mArg.msize();
@@ -1635,7 +1635,7 @@ __pinv<float, basic_srbmatrix<float>, basic_rmatrix<float> >
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "SBDSQR", __FILE__, __LINE__);
 
-    for (tint i = CVM0; i < m + CVM0; ++i) {
+    for (tint i = 0; i < m; ++i) {
         if (mD[i] > threshold) {
             mPT[i] /= mD[i];  // multiplying V by S^-1
         }
@@ -1648,9 +1648,9 @@ __pinv<float, basic_srbmatrix<float>, basic_rmatrix<float> >
 
 template<>
 CVM_API void
-__pinv<double, basic_srbmatrix<double>, basic_rmatrix<double> >
+__pinv<double, basic_srbmatrix<double>, basic_rmatrix<double>>
     (basic_rmatrix<double>& mX, 
-    const basic_srbmatrix<double>& mArg, double threshold) throw(cvmexception)
+    const basic_srbmatrix<double>& mArg, double threshold)
 {
     const tint zero(0);
     const tint m = mArg.msize();
@@ -1690,7 +1690,7 @@ __pinv<double, basic_srbmatrix<double>, basic_rmatrix<double> >
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "DBDSQR", __FILE__, __LINE__);
 
-    for (tint i = CVM0; i < m + CVM0; ++i) {
+    for (tint i = 0; i < m; ++i) {
         if (mD[i] > threshold) {
             mPT[i] /= mD[i];  // multiplying V by S^-1
         }
@@ -1705,9 +1705,9 @@ __pinv<double, basic_srbmatrix<double>, basic_rmatrix<double> >
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__pinv<float, basic_scbmatrix<float, std::complex<float> >, basic_cmatrix<float, std::complex<float> > >
-    (basic_cmatrix<float, std::complex<float> >& mX, 
-    const basic_scbmatrix<float, std::complex<float> >& mArg, float threshold) throw(cvmexception)
+__pinv<float, basic_scbmatrix<float, std::complex<float>> , basic_cmatrix<float, std::complex<float>>  >
+    (basic_cmatrix<float, std::complex<float>> & mX,
+    const basic_scbmatrix<float, std::complex<float>> & mArg, float threshold)
 {
     const tint zero(0);
     const tint m = mArg.msize();
@@ -1715,11 +1715,11 @@ __pinv<float, basic_scbmatrix<float, std::complex<float> >, basic_cmatrix<float,
 
     basic_rvector  <float> mD(m);
     basic_rvector  <float> vOffDiag(_cvm_max<tint>(1, m - 1));
-    basic_scmatrix <float, std::complex<float> > mQ(m);
-    basic_scmatrix <float, std::complex<float> > mPT(m);
-    basic_scmatrix <float, std::complex<float> > mC(1);
-    basic_cvector  <float, std::complex<float> > vwork(2 * m);
-    basic_scbmatrix<float, std::complex<float> > mA(mArg);
+    basic_scmatrix <float, std::complex<float>>  mQ(m);
+    basic_scmatrix <float, std::complex<float>>  mPT(m);
+    basic_scmatrix <float, std::complex<float>>  mC(1);
+    basic_cvector  <float, std::complex<float>>  vwork(2 * m);
+    basic_scbmatrix<float, std::complex<float>>  mA(mArg);
     basic_rvector  <float> vRwork(m);
 
     CGBBRD(Chars::pB(), 
@@ -1748,7 +1748,7 @@ __pinv<float, basic_scbmatrix<float, std::complex<float> >, basic_cmatrix<float,
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "CBDSQR", __FILE__, __LINE__);
 
-    for (tint i = CVM0; i < m + CVM0; ++i) {
+    for (tint i = 0; i < m; ++i) {
         if (mD[i] > threshold) {
             mPT[i] /= mD[i];  // multiplying V by S^-1
         }
@@ -1761,9 +1761,9 @@ __pinv<float, basic_scbmatrix<float, std::complex<float> >, basic_cmatrix<float,
 
 template<>
 CVM_API void
-__pinv<double, basic_scbmatrix<double, std::complex<double> >, basic_cmatrix<double, std::complex<double> > >
-    (basic_cmatrix<double, std::complex<double> >& mX, 
-    const basic_scbmatrix<double, std::complex<double> >& mArg, double threshold) throw(cvmexception)
+__pinv<double, basic_scbmatrix<double, std::complex<double>> , basic_cmatrix<double, std::complex<double>>  >
+    (basic_cmatrix<double, std::complex<double>> & mX,
+    const basic_scbmatrix<double, std::complex<double>> & mArg, double threshold)
 {
     const tint zero(0);
     const tint m = mArg.msize();
@@ -1771,12 +1771,12 @@ __pinv<double, basic_scbmatrix<double, std::complex<double> >, basic_cmatrix<dou
 
     basic_rvector  <double> mD(m);
     basic_rvector  <double> vOffDiag(_cvm_max<tint>(1, m - 1));
-    basic_scmatrix <double, std::complex<double> > mQ(m);
-    basic_scmatrix <double, std::complex<double> > mPT(m);
-    basic_scmatrix <double, std::complex<double> > mC(1);
-    basic_cvector  <double, std::complex<double> > vwork(2 * m);
+    basic_scmatrix <double, std::complex<double>>  mQ(m);
+    basic_scmatrix <double, std::complex<double>>  mPT(m);
+    basic_scmatrix <double, std::complex<double>>  mC(1);
+    basic_cvector  <double, std::complex<double>>  vwork(2 * m);
     basic_rvector  <double> vRwork(m);
-    basic_scbmatrix<double, std::complex<double> > mA(mArg);
+    basic_scbmatrix<double, std::complex<double>>  mA(mArg);
 
     ZGBBRD(Chars::pB(), 
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
@@ -1804,7 +1804,7 @@ __pinv<double, basic_scbmatrix<double, std::complex<double> >, basic_cmatrix<dou
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "ZBDSQR", __FILE__, __LINE__);
 
-    for (tint i = CVM0; i < m + CVM0; ++i) {
+    for (tint i = 0; i < m; ++i) {
         if (mD[i] > threshold) {
             mPT[i] /= mD[i];  // multiplying V by S^-1
         }

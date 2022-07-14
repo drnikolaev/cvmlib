@@ -1,13 +1,13 @@
 ifdef MKL
-  ifndef MKL_PATH
-    MKL_PATH=/opt/intel/mkl/lib
-  endif
+#  ifndef MKL_PATH
+#    MKL_PATH=/opt/intel/mkl/lib
+#  endif
   ifdef EM64T
-    ifdef MAC
-      MKL_PATHL=$(MKL_PATH)
-    else
-      MKL_PATHL=$(MKL_PATH)/intel64
-    endif
+#    ifdef MAC
+#      MKL_PATHL=$(MKL_PATH)
+#    else
+#      MKL_PATHL=$(MKL_PATH)/intel64
+#    endif
     ifdef ICC
       MKL_LIBS  += -lmkl_intel_thread
       ifdef ILP64
@@ -34,7 +34,7 @@ ifdef MKL
     endif
     MKL_LIBS += -lmkl_sequential -lmkl_core -liomp5
   else
-    MKL_PATHL=$(MKL_PATH)/ia32
+#    MKL_PATHL=$(MKL_PATH)/ia32
     MKL_LIBS += -liomp5
     ifdef ICC
       MKL_LIBS += -lmkl_intel_thread -lmkl_intel
@@ -47,7 +47,7 @@ ifdef MKL
     endif
     MKL_LIBS += -lmkl_sequential -lmkl_core
   endif
-  COMMON_LD_FLAGS += -L$(MKL_PATHL)
+#  COMMON_LD_FLAGS += -L$(MKL_PATHL)
   LIBS  += $(MKL_LIBS)
   DLIBS += $(MKL_LIBS)
 else

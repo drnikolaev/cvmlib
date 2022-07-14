@@ -26,9 +26,6 @@ COMMON_FLAGS += -Wall -D_REENTRANT -I../../gtest/googletest/include
 ifdef CVM_FLOAT
   COMMON_FLAGS += -DCVM_FLOAT
 endif
-ifdef CVM_ZERO_BASED
-  COMMON_FLAGS += -DCVM_ZERO_BASED
-endif
 ifdef VERBOSE
 #  COMMON_FLAGS += -v
 endif
@@ -62,7 +59,7 @@ endif
 LIBS  += -lgtest
 DLIBS += -lgtest
 
-COMMON_FLAGS += -std=c++0x
+COMMON_FLAGS += -std=c++17
 ifdef MAC
 COMMON_LD_FLAGS=-L$(OUTDIR) -L$(OUTDIR)/../gtest -L/usr/local/lib
 else
