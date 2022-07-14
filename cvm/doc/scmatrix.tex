@@ -13,7 +13,7 @@
 \verb"    explicit "\GOT{scmatrix}{scmatrix.scmatrix (const srmatrix&,bool)}\verb" (const srmatrix& m, bool bRealPart = true);"\\
 \verb"    "\GOT{scmatrix}{scmatrix.scmatrix (TR*,TR*,int)}\verb" (const TR* pRe, const TR* pIm, int nMN);"\\
 \verb"    "\GOT{scmatrix}{scmatrix.scmatrix (const srmatrix&, const srmatrix&)}\verb" (const srmatrix& mRe, const srmatrix& mIm);"\\
-\verb"    "\GOT{scmatrix}{scmatrix.submatrixctr}\verb" (cmatrix& m, int nRow, int nCol, int nSize);"\\
+\verb"    "\GOT{scmatrix}{scmatrix.submatrixctr}\verb" (cmatrix& m, int nRow, int nCol, int size);"\\
 \verb"    TC& "\GOT{operator ()}{scmatrix.operator (,)}\verb" (int im, int in) throw (cvmexception);"\\
 \verb"    TC "\GOT{operator ()}{scmatrix.operator (,)}\verb" (int im, int in) const throw (cvmexception);"\\
 \verb"    cvector "\GOT{operator ()}{scmatrix.operator ()}\verb" (int i) throw (cvmexception);"\\
@@ -507,13 +507,13 @@ prints
 Submatrix constructor%
 \pdfdest name {scmatrix.submatrixctr} fit
 \begin{verbatim}
-scmatrix::scmatrix (cmatrix& m, int nRow, int nCol, int nSize);
+scmatrix::scmatrix (cmatrix& m, int nRow, int nCol, int size);
 \end{verbatim}
 creates  \verb"scmatrix" object as  \emph{submatrix} of \verb"m".
 It means that the matrix object created shares  memory with some part
 of \verb"m". This part is defined by its upper left corner (parameters 
 \verb"nRow" and \verb"nCol", both are \Based)
-and its size (parameter \verb"nSize").
+and its size (parameter \verb"size").
 See also \GOT{scmatrix}{scmatrix}.
 Example:
 \begin{Verbatim}

@@ -1876,9 +1876,9 @@ prints
 Operator and functions%
 \pdfdest name {scbmatrix.conj} fit
 \begin{verbatim}
-scbmatrix scbmatrix::operator ~ () const throw(cvmexception);
-scbmatrix& scbmatrix::conj (const scbmatrix& m) throw(cvmexception);
-scbmatrix& scbmatrix::conj () throw(cvmexception);
+scbmatrix scbmatrix::operator ~ () const;
+scbmatrix& scbmatrix::conj (const scbmatrix& m);
+scbmatrix& scbmatrix::conj ();
 \end{verbatim}
 implement complex band matrix conjugation.
 First operator creates \verb"scbmatrix" object as

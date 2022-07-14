@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2016
+//          Copyright Sergei Nikolaev 1992-2022
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -41,7 +41,7 @@ TYPED_TEST(BlasTest, TestVectorNorminf) {
     EXPECT_EQ(TP(16.), m2.norminf()) << "srsmatrix * rmatrix";
     
     m2 = m1 + ssm1;
-    EXPECT_EQ(TP(2.), m2(CVM0+2, CVM0+3)) << "srsmatrix + rmatrix";
+    EXPECT_EQ(TP(2.), m2(2, 3)) << "srsmatrix + rmatrix";
     
     m2 = m1 * ssm1;
     EXPECT_EQ(TP(16.), m2.norminf()) << "rmatrix * srsmatrix";
@@ -54,8 +54,8 @@ TYPED_TEST(BlasTest, TestMatrixSumReal) {
     basic_rmatrix<TP> m{2, 3};
     m2.set(1.);
     
-    EXPECT_EQ(TP(5.), m.sum(m1,m2)(CVM0+1,CVM0+1)) << "rmatrix::sum";
-    EXPECT_EQ(TP(7.), m.sum(m,m2)(CVM0,CVM0+2)) << "rmatrix::sum";
+    EXPECT_EQ(TP(5.), m.sum(m1,m2)(1,1)) << "rmatrix::sum";
+    EXPECT_EQ(TP(7.), m.sum(m,m2)(0,2)) << "rmatrix::sum";
 }
 
 TYPED_TEST(BlasTest, TestMatrixDiffReal) {
@@ -65,8 +65,8 @@ TYPED_TEST(BlasTest, TestMatrixDiffReal) {
     basic_rmatrix<TP> m{2, 3};
     m2.set(1.);
     
-    EXPECT_EQ(TP(3.), m.diff(m1,m2)(CVM0+1,CVM0+1)) << "rmatrix::diff";
-    EXPECT_EQ(TP(3.), m.diff(m,m2)(CVM0,CVM0+2)) << "rmatrix::diff";
+    EXPECT_EQ(TP(3.), m.diff(m1,m2)(1,1)) << "rmatrix::diff";
+    EXPECT_EQ(TP(3.), m.diff(m,m2)(0,2)) << "rmatrix::diff";
 }
 
 TYPED_TEST(BlasTest, TestMatrixSumComplex) {
@@ -77,8 +77,8 @@ TYPED_TEST(BlasTest, TestMatrixSumComplex) {
     basic_cmatrix<TP,TPC> m {2, 3};
     mb.set(TPC(1.,1.));
     
-    EXPECT_EQ(TPC(8.,9.),m.sum(ma, mb)(CVM0+1,CVM0+1)) << "cmatrix::sum";
-    EXPECT_EQ(TPC(11.,12.),m.sum(m, mb)(CVM0,CVM0+2)) << "cmatrix::sum";
+    EXPECT_EQ(TPC(8.,9.),m.sum(ma, mb)(1,1)) << "cmatrix::sum";
+    EXPECT_EQ(TPC(11.,12.),m.sum(m, mb)(0,2)) << "cmatrix::sum";
 }
 
 TYPED_TEST(BlasTest, TestMatrixDiffComplex) {
@@ -89,8 +89,8 @@ TYPED_TEST(BlasTest, TestMatrixDiffComplex) {
     basic_cmatrix<TP,TPC> m {2, 3};
     mb.set(TPC(1.,1.));
     
-    EXPECT_EQ(TPC(6.,7.),m.diff(ma, mb)(CVM0+1,CVM0+1)) << "cmatrix::diff";
-    EXPECT_EQ(TPC(7.,8.),m.diff(m, mb)(CVM0,CVM0+2)) << "cmatrix::diff";
+    EXPECT_EQ(TPC(6.,7.),m.diff(ma, mb)(1,1)) << "cmatrix::diff";
+    EXPECT_EQ(TPC(7.,8.),m.diff(m, mb)(0,2)) << "cmatrix::diff";
 }
 
 TYPED_TEST(BlasTest, TestBandMatrixSumReal) {
@@ -99,11 +99,11 @@ TYPED_TEST(BlasTest, TestBandMatrixSumReal) {
     basic_srbmatrix<TP> m2{3, 1, 0};
     basic_srbmatrix<TP> m{3, 1, 0};
     m2.set(1.);
-    EXPECT_EQ(TP(4.), m.sum(m1,m2)(CVM0+1,CVM0+1)) << "srbmatrix::sum";
-    EXPECT_EQ(TP(0.), m(CVM0+1,CVM0+2)) << "srbmatrix::sum";
-    EXPECT_EQ(TP(3.), m(CVM0+1,CVM0)) << "srbmatrix::sum";
-    EXPECT_EQ(TP(4.), m.sum(m,m2)(CVM0+1,CVM0)) << "srbmatrix::sum";
-    EXPECT_EQ(TP(7.), m(CVM0+2,CVM0+2)) << "srbmatrix::sum";
+    EXPECT_EQ(TP(4.), m.sum(m1,m2)(1,1)) << "srbmatrix::sum";
+    EXPECT_EQ(TP(0.), m(1,2)) << "srbmatrix::sum";
+    EXPECT_EQ(TP(3.), m(1,0)) << "srbmatrix::sum";
+    EXPECT_EQ(TP(4.), m.sum(m,m2)(1,0)) << "srbmatrix::sum";
+    EXPECT_EQ(TP(7.), m(2,2)) << "srbmatrix::sum";
 }
 
 TYPED_TEST(BlasTest, TestBandMatrixDiffReal) {
@@ -112,11 +112,11 @@ TYPED_TEST(BlasTest, TestBandMatrixDiffReal) {
     basic_srbmatrix<TP> m2{3, 1, 0};
     basic_srbmatrix<TP> m{3, 1, 0};
     m2.set(1.);
-    EXPECT_EQ(TP(2.), m.diff(m1,m2)(CVM0+1,CVM0+1)) << "srbmatrix::diff";
-    EXPECT_EQ(TP(0.), m(CVM0+1,CVM0+2)) << "srbmatrix::diff";
-    EXPECT_EQ(TP(1.), m(CVM0+1,CVM0)) << "srbmatrix::diff";
-    EXPECT_EQ(TP(0.), m.diff(m,m2)(CVM0+1,CVM0)) << "srbmatrix::diff";
-    EXPECT_EQ(TP(3.), m(CVM0+2,CVM0+2)) << "srbmatrix::diff";
+    EXPECT_EQ(TP(2.), m.diff(m1,m2)(1,1)) << "srbmatrix::diff";
+    EXPECT_EQ(TP(0.), m(1,2)) << "srbmatrix::diff";
+    EXPECT_EQ(TP(1.), m(1,0)) << "srbmatrix::diff";
+    EXPECT_EQ(TP(0.), m.diff(m,m2)(1,0)) << "srbmatrix::diff";
+    EXPECT_EQ(TP(3.), m(2,2)) << "srbmatrix::diff";
 }
 
 TYPED_TEST(BlasTest, TestBandMatrixSumComplex) {
@@ -125,13 +125,13 @@ TYPED_TEST(BlasTest, TestBandMatrixSumComplex) {
     basic_scbmatrix<TP,TPC> m2{3, 1, 0};
     basic_scbmatrix<TP,TPC> m{3, 1, 0};
     m2.set(TPC(1.,1.));
-    EXPECT_EQ(TPC(4.,5.),m.sum(m1, m2)(CVM0+1,CVM0)) << "scbmatrix::sum";
-    EXPECT_EQ(TPC(10.,11.),m(CVM0+2,CVM0+2)) << "scbmatrix::sum";
-    EXPECT_EQ(TPC(0.,0.),m(CVM0+1,CVM0+2)) << "scbmatrix::sum";
+    EXPECT_EQ(TPC(4.,5.),m.sum(m1, m2)(1,0)) << "scbmatrix::sum";
+    EXPECT_EQ(TPC(10.,11.),m(2,2)) << "scbmatrix::sum";
+    EXPECT_EQ(TPC(0.,0.),m(1,2)) << "scbmatrix::sum";
     
-    EXPECT_EQ(TPC(5.,6.),m.sum(m, m2)(CVM0+1,CVM0)) << "scbmatrix::sum";
-    EXPECT_EQ(TPC(11.,12.),m(CVM0+2,CVM0+2)) << "scbmatrix::sum";
-    EXPECT_EQ(TPC(0.,0.),m(CVM0+1,CVM0+2)) << "scbmatrix::sum";
+    EXPECT_EQ(TPC(5.,6.),m.sum(m, m2)(1,0)) << "scbmatrix::sum";
+    EXPECT_EQ(TPC(11.,12.),m(2,2)) << "scbmatrix::sum";
+    EXPECT_EQ(TPC(0.,0.),m(1,2)) << "scbmatrix::sum";
 }
 
 TYPED_TEST(BlasTest, TestBandMatrixDiffComplex) {
@@ -140,12 +140,12 @@ TYPED_TEST(BlasTest, TestBandMatrixDiffComplex) {
     basic_scbmatrix<TP,TPC> m2{3, 1, 0};
     basic_scbmatrix<TP,TPC> m{3, 1, 0};
     m2.set(TPC(1.,1.));
-    EXPECT_EQ(TPC(2.,3.),m.diff(m1, m2)(CVM0+1,CVM0)) << "scbmatrix::diff";
-    EXPECT_EQ(TPC(8.,9.),m(CVM0+2,CVM0+2)) << "scbmatrix::diff";
-    EXPECT_EQ(TPC(0.,0.),m(CVM0+1,CVM0+2)) << "scbmatrix::diff";
-    EXPECT_EQ(TPC(1.,2.),m.diff(m, m2)(CVM0+1,CVM0)) << "scbmatrix::diff";
-    EXPECT_EQ(TPC(7.,8.),m(CVM0+2,CVM0+2)) << "scbmatrix::diff";
-    EXPECT_EQ(TPC(0.,0.),m(CVM0+1,CVM0+2)) << "scbmatrix::diff";
+    EXPECT_EQ(TPC(2.,3.),m.diff(m1, m2)(1,0)) << "scbmatrix::diff";
+    EXPECT_EQ(TPC(8.,9.),m(2,2)) << "scbmatrix::diff";
+    EXPECT_EQ(TPC(0.,0.),m(1,2)) << "scbmatrix::diff";
+    EXPECT_EQ(TPC(1.,2.),m.diff(m, m2)(1,0)) << "scbmatrix::diff";
+    EXPECT_EQ(TPC(7.,8.),m(2,2)) << "scbmatrix::diff";
+    EXPECT_EQ(TPC(0.,0.),m(1,2)) << "scbmatrix::diff";
 }
 
 TYPED_TEST(BlasTest, TestSymmetricMatrixSumReal) {
@@ -154,12 +154,12 @@ TYPED_TEST(BlasTest, TestSymmetricMatrixSumReal) {
     basic_srsmatrix<TP> m2(3);
     basic_srsmatrix<TP> m(3);
     m2.set(1.);
-    EXPECT_EQ(TP(6.), m.sum(m1,m2)(CVM0+1,CVM0+1)) << "srsmatrix::sum";
-    EXPECT_EQ(TP(4.), m(CVM0,CVM0+2)) << "srsmatrix::sum";
-    EXPECT_EQ(TP(4.), m(CVM0+2,CVM0)) << "srsmatrix::sum";
-    EXPECT_EQ(TP(7.), m.sum(m,m2)(CVM0+1,CVM0+1)) << "srsmatrix::sum";
-    EXPECT_EQ(TP(5.), m(CVM0,CVM0+2)) << "srsmatrix::sum";
-    EXPECT_EQ(TP(5.), m(CVM0+2,CVM0)) << "srsmatrix::sum";
+    EXPECT_EQ(TP(6.), m.sum(m1,m2)(1,1)) << "srsmatrix::sum";
+    EXPECT_EQ(TP(4.), m(0,2)) << "srsmatrix::sum";
+    EXPECT_EQ(TP(4.), m(2,0)) << "srsmatrix::sum";
+    EXPECT_EQ(TP(7.), m.sum(m,m2)(1,1)) << "srsmatrix::sum";
+    EXPECT_EQ(TP(5.), m(0,2)) << "srsmatrix::sum";
+    EXPECT_EQ(TP(5.), m(2,0)) << "srsmatrix::sum";
 }
 
 TYPED_TEST(BlasTest, TestSymmetricMatrixDiffReal) {
@@ -168,12 +168,12 @@ TYPED_TEST(BlasTest, TestSymmetricMatrixDiffReal) {
     basic_srsmatrix<TP> m2(3);
     basic_srsmatrix<TP> m(3);
     m2.set(1.);
-    EXPECT_EQ(TP(4.), m.diff(m1,m2)(CVM0+1,CVM0+1)) << "srsmatrix::diff";
-    EXPECT_EQ(TP(2.), m(CVM0,CVM0+2)) << "srsmatrix::diff";
-    EXPECT_EQ(TP(2.), m(CVM0+2,CVM0)) << "srsmatrix::diff";
-    EXPECT_EQ(TP(3.), m.diff(m,m2)(CVM0+1,CVM0+1)) << "srsmatrix::diff";
-    EXPECT_EQ(TP(1.), m(CVM0,CVM0+2)) << "srsmatrix::diff";
-    EXPECT_EQ(TP(1.), m(CVM0+2,CVM0)) << "srsmatrix::diff";
+    EXPECT_EQ(TP(4.), m.diff(m1,m2)(1,1)) << "srsmatrix::diff";
+    EXPECT_EQ(TP(2.), m(0,2)) << "srsmatrix::diff";
+    EXPECT_EQ(TP(2.), m(2,0)) << "srsmatrix::diff";
+    EXPECT_EQ(TP(3.), m.diff(m,m2)(1,1)) << "srsmatrix::diff";
+    EXPECT_EQ(TP(1.), m(0,2)) << "srsmatrix::diff";
+    EXPECT_EQ(TP(1.), m(2,0)) << "srsmatrix::diff";
 }
 
 TYPED_TEST(BlasTest, TestHermitianMatrixSumComplex) {
@@ -184,10 +184,10 @@ TYPED_TEST(BlasTest, TestHermitianMatrixSumComplex) {
     basic_schmatrix<TP,TPC> m1{(TPC*)a, 3};
     basic_schmatrix<TP,TPC> m2{(TPC*)b, 3};
     basic_schmatrix<TP,TPC> m{3};
-    EXPECT_EQ(TPC(3.,2.),m.sum(m1, m2)(CVM0+1,CVM0)) << "schmatrix::sum";
-    EXPECT_EQ(TPC(4.,0.),m(CVM0+2,CVM0+2)) << "schmatrix::sum";
-    EXPECT_EQ(TPC(1.,-4.),m(CVM0+1,CVM0+2)) << "schmatrix::sum";
-    EXPECT_EQ(TPC(1.,4.),m(CVM0+2,CVM0+1)) << "schmatrix::sum";
+    EXPECT_EQ(TPC(3.,2.),m.sum(m1, m2)(1,0)) << "schmatrix::sum";
+    EXPECT_EQ(TPC(4.,0.),m(2,2)) << "schmatrix::sum";
+    EXPECT_EQ(TPC(1.,-4.),m(1,2)) << "schmatrix::sum";
+    EXPECT_EQ(TPC(1.,4.),m(2,1)) << "schmatrix::sum";
 }
 
 TYPED_TEST(BlasTest, TestHermitianMatrixDiffComplex) {
@@ -198,10 +198,10 @@ TYPED_TEST(BlasTest, TestHermitianMatrixDiffComplex) {
     basic_schmatrix<TP,TPC> m1{(TPC*)a, 3};
     basic_schmatrix<TP,TPC> m2{(TPC*)b, 3};
     basic_schmatrix<TP,TPC> m{3};
-    EXPECT_EQ(TPC(1.,0.),m.diff(m1, m2)(CVM0+1,CVM0)) << "schmatrix::diff";
-    EXPECT_EQ(TPC(2.,0.),m(CVM0+2,CVM0+2)) << "schmatrix::diff";
-    EXPECT_EQ(TPC(-1.,-2.),m(CVM0+1,CVM0+2)) << "schmatrix::diff";
-    EXPECT_EQ(TPC(-1.,2.),m(CVM0+2,CVM0+1)) << "schmatrix::diff";
+    EXPECT_EQ(TPC(1.,0.),m.diff(m1, m2)(1,0)) << "schmatrix::diff";
+    EXPECT_EQ(TPC(2.,0.),m(2,2)) << "schmatrix::diff";
+    EXPECT_EQ(TPC(-1.,-2.),m(1,2)) << "schmatrix::diff";
+    EXPECT_EQ(TPC(-1.,2.),m(2,1)) << "schmatrix::diff";
 }
 
 TYPED_TEST(BlasTest, TestMatrixGemvReal) {
@@ -274,15 +274,15 @@ TYPED_TEST(BlasTest, TestSymmetricMatrixPolynom1) {
     const basic_rvector<TP> v(av, 11);
     const basic_srsmatrix<TP> m(a, 3);
     const basic_srsmatrix<TP> mp = m.polynom(v);
-    EXPECT_NEAR(TP(6.212740000000001e+004), mp(CVM0, CVM0), spp<TP>(1.e-10,4.e-3)) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(2.399800000000000e+004), mp(CVM0+1, CVM0), sp<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(3.410055000000000e+004), mp(CVM0+2, CVM0), sp<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(2.399800000000000e+004), mp(CVM0, CVM0+1), sp<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(2.802685000000000e+004), mp(CVM0+1, CVM0+1), sp<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(1.010255000000000e+004), mp(CVM0+2, CVM0+1), spp<TP>(1.e-11,2.e-3)) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(3.410055000000000e+004), mp(CVM0, CVM0+2), sp<TP>()) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(1.010255000000000e+004), mp(CVM0+1, CVM0+2), spp<TP>(1.e-13,2.e-3)) << "srsmatrix::polynom";
-    EXPECT_NEAR(TP(5.202485000000000e+004), mp(CVM0+2, CVM0+2), sp<TP>()) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(6.212740000000001e+004), mp(0, 0), spp<TP>(1.e-10,4.e-3)) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(2.399800000000000e+004), mp(1, 0), sp<TP>()) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(3.410055000000000e+004), mp(2, 0), sp<TP>()) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(2.399800000000000e+004), mp(0, 1), sp<TP>()) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(2.802685000000000e+004), mp(1, 1), sp<TP>()) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(1.010255000000000e+004), mp(2, 1), spp<TP>(1.e-11,2.e-3)) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(3.410055000000000e+004), mp(0, 2), sp<TP>()) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(1.010255000000000e+004), mp(1, 2), spp<TP>(1.e-13,2.e-3)) << "srsmatrix::polynom";
+    EXPECT_NEAR(TP(5.202485000000000e+004), mp(2, 2), sp<TP>()) << "srsmatrix::polynom";
 }
 
 TYPED_TEST(BlasTest, TestHermitianMatrixPolynom1) {
@@ -295,23 +295,23 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom1) {
     basic_schmatrix<TP,TPC> mp{3};
     mp.polynom(m, vr);
     EXPECT_NEAR(std::abs(TPC(1.231954875800000e+008,0.)),
-                std::abs(mp(CVM0, CVM0)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 0)), s<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.417932391600000e+008,7.089661958000000e+007)),
-                std::abs(mp(CVM0+1, CVM0)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
+                std::abs(mp(1, 0)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-8.080273845999999e+007,1.616054769200000e+008)),
-                std::abs(mp(CVM0+2, CVM0)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
+                std::abs(mp(2, 0)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.417932391600000e+008,-7.089661958000000e+007)),
-                std::abs(mp(CVM0, CVM0+1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
+                std::abs(mp(0, 1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(2.039982260400000e+008,0.)),
-                std::abs(mp(CVM0+1, CVM0+1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
+                std::abs(mp(1, 1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(0.,2.325020965000000e+008)),
-                std::abs(mp(CVM0+2, CVM0+1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
+                std::abs(mp(2, 1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-8.080273845999999e+007,-1.616054769200000e+008)),
-                std::abs(mp(CVM0, CVM0+2)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 2)), s<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(TP(0.), 2.325020965000000e+008)),
-                std::abs(mp(CVM0+1, CVM0+2)), spp<TP>()) << "schmatrix::polynom";
-    EXPECT_NEAR(std::abs(TPC(2.649887267400000e+008,0.)),
-                std::abs(mp(CVM0+2, CVM0+2)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(1, 2)), spp<TP>()) << "schmatrix::polynom";
+    EXPECT_NEAR(std::abs(TPC(2.649887267400000e+008,0.) / TP(1.e4)),
+                std::abs(mp(2, 2) / TP(1.e4)), spp<TP>()) << "schmatrix::polynom";
 }
 
 TYPED_TEST(BlasTest, TestHermitianMatrixPolynom2) {
@@ -325,38 +325,38 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom2) {
     basic_scmatrix<TP,TPC> mp{3};
     mp.polynom(m, vc);
     EXPECT_NEAR(std::abs(TPC(1.231954875800000e+008,6.128500650000000e+007)),
-                std::abs(mp(CVM0, CVM0)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 0)), s<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.065249031600000e+008,1.414332915800000e+008)),
-                std::abs(mp(CVM0+1, CVM0)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
+                std::abs(mp(1, 0)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-1.611952344600000e+008,1.214092289200000e+008)),
-                std::abs(mp(CVM0+2, CVM0)), spp<TP>()) << "schmatrix::polynom";
+                std::abs(mp(2, 0)), spp<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.770615751600000e+008,-3.599475799999982e+005)),
-                std::abs(mp(CVM0, CVM0+1)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 1)), s<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(2.039982260400000e+008,1.014812545000000e+008)),
-                std::abs(mp(CVM0+1, CVM0+1)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(1, 1)), s<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-1.156608320000000e+008,2.325020965000000e+008)),
-                std::abs(mp(CVM0+2, CVM0+1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
+                std::abs(mp(2, 1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-4.102424600000009e+005,-2.018017249200000e+008)),
-                std::abs(mp(CVM0, CVM0+2)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 2)), s<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.156608320000000e+008,-2.325020965000000e+008)),
-                std::abs(mp(CVM0+1, CVM0+2)), spp<TP>()) << "schmatrix::polynom";
+                std::abs(mp(1, 2)), spp<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(2.649887267400000e+008,1.318216785000000e+008)),
-                std::abs(mp(CVM0+2, CVM0+2)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(2, 2)), s<TP>()) << "schmatrix::polynom";
 }
 
 TYPED_TEST(BlasTest, TestSymmetricMatrixExponent) {
     TP a[] = {1., 2., 1., 2., 0., -1., 1., -1., 2.};
     const basic_srsmatrix<TP> m(a, 3);
     const basic_srsmatrix<TP> me = m.exp();
-    EXPECT_NEAR(TP(9.198262499129212e+000), me(CVM0, CVM0), sf<TP>()) << "srsmatrix::exp";
-    EXPECT_NEAR(TP(5.558586002658865e+000), me(CVM0+1, CVM0), sf<TP>()) << "srsmatrix::exp";
-    EXPECT_NEAR(TP(3.852443363622600e+000), me(CVM0+2, CVM0), sf<TP>()) << "srsmatrix::exp";
-    EXPECT_NEAR(TP(5.558586002658862e+000), me(CVM0, CVM0+1), sf<TP>()) << "srsmatrix::exp";
-    EXPECT_NEAR(TP(5.345819135506588e+000), me(CVM0+1, CVM0+1), sf<TP>()) << "srsmatrix::exp";
-    EXPECT_NEAR(TP(-1.706142639036258e+000), me(CVM0+2, CVM0+1), sf<TP>()) << "srsmatrix::exp";
-    EXPECT_NEAR(TP(3.852443363622601e+000), me(CVM0, CVM0+2), sf<TP>()) << "srsmatrix::exp";
-    EXPECT_NEAR(TP(-1.706142639036260e+000), me(CVM0+1, CVM0+2), sf<TP>()) << "srsmatrix::exp";
-    EXPECT_NEAR(TP(1.090440513816545e+001), me(CVM0+2, CVM0+2), sf<TP>()) << "srsmatrix::exp";
+    EXPECT_NEAR(TP(9.198262499129212e+000), me(0, 0), sf<TP>()) << "srsmatrix::exp";
+    EXPECT_NEAR(TP(5.558586002658865e+000), me(1, 0), sf<TP>()) << "srsmatrix::exp";
+    EXPECT_NEAR(TP(3.852443363622600e+000), me(2, 0), sf<TP>()) << "srsmatrix::exp";
+    EXPECT_NEAR(TP(5.558586002658862e+000), me(0, 1), sf<TP>()) << "srsmatrix::exp";
+    EXPECT_NEAR(TP(5.345819135506588e+000), me(1, 1), sf<TP>()) << "srsmatrix::exp";
+    EXPECT_NEAR(TP(-1.706142639036258e+000), me(2, 1), sf<TP>()) << "srsmatrix::exp";
+    EXPECT_NEAR(TP(3.852443363622601e+000), me(0, 2), sf<TP>()) << "srsmatrix::exp";
+    EXPECT_NEAR(TP(-1.706142639036260e+000), me(1, 2), sf<TP>()) << "srsmatrix::exp";
+    EXPECT_NEAR(TP(1.090440513816545e+001), me(2, 2), sf<TP>()) << "srsmatrix::exp";
     /*
      Columns 1 through 2
      
@@ -379,21 +379,21 @@ TYPED_TEST(BlasTest, TestHermitianMatrixExponent) {
     basic_schmatrix<TP,TPC> me{3};
     me.exp(m);
     EXPECT_NEAR(std::abs(TPC(2.673228708371998e+002,0.)),
-                std::abs(me(CVM0, CVM0)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(0, 0)), sp<TP>()) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(3.071187567026802e+002,1.535593783513401e+002)),
-                std::abs(me(CVM0+1, CVM0)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(1, 0)), sp<TP>()) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(-1.749365628720764e+002,3.498731257441527e+002)),
-                std::abs(me(CVM0+2, CVM0)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(2, 0)), sp<TP>()) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(3.071187567026802e+002,-1.535593783513401e+002)),
-                std::abs(me(CVM0, CVM0+1)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(0, 1)), sp<TP>()) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(4.422594337092769e+002,0.)),
-                std::abs(me(CVM0+1, CVM0+1)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(1, 1)), sp<TP>()) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(3.549798266275454e-015,5.034325040954932e+002)),
-                std::abs(me(CVM0+2, CVM0+1)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(2, 1)), sp<TP>()) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(-1.749365628720763e+002,-3.498731257441526e+002)),
-                std::abs(me(CVM0, CVM0+2)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(0, 2)), sp<TP>()) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(-1.776065298147746e-014,-5.034325040954931e+002)),
-                std::abs(me(CVM0+1, CVM0+2)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(1, 2)), sp<TP>()) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(5.744416275398801e+002,0.)),
-                std::abs(me(CVM0+2, CVM0+2)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(2, 2)), sp<TP>()) << "schmatrix::exp";
 }

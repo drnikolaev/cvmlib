@@ -4,19 +4,19 @@
 \verb"class rvector : public Array<TR,TR> {"\\
 \verb"public:"\\
 \verb"    "\GOT{rvector}{rvector.rvector ()}\verb" ();"\\
-\verb"    explicit "\GOT{rvector}{rvector.rvector (int)}\verb" (int nSize);"\\
+\verb"    explicit "\GOT{rvector}{rvector.rvector (int)}\verb" (int size);"\\
 \verb"    "\GOT{rvector}{rvector (std::initializerlist)}\verb" (std::initializer_list<TR> list);"\\
-\verb"    "\GOT{rvector}{rvector.rvector (int, TR)}\verb" (int nSize, TR d);"\\
-\verb"    "\GOT{rvector}{rvector.rvector (TR*,int,int)}\verb" (TR* pD, int nSize, int nIncr = 1);"\\
-\verb"    "\GOT{rvector}{rvector.rvector (const TR*,int,int)}\verb" (const TR* pD, int nSize, int nIncr = 1);"\\
+\verb"    "\GOT{rvector}{rvector.rvector (int, TR)}\verb" (int size, TR d);"\\
+\verb"    "\GOT{rvector}{rvector.rvector (TR*,int,int)}\verb" (TR* pD, int size, int incr = 1);"\\
+\verb"    "\GOT{rvector}{rvector.rvector (const TR*,int,int)}\verb" (const TR* pD, int size, int incr = 1);"\\
 \verb"    "\GOT{rvector}{rvector.rvector (const rvector&)}\verb" (const rvector& v);"\\
 \verb"    rvector& "\GOT{operator =}{rvector.operator = (const rvector&)}\verb" (const rvector& v) throw (cvmexception);"\\
-\verb"    rvector& "\GOT{assign}{rvector.assign (const TR*, int)}\verb" (const TR* p, int nIncr = 1);"\\
-\verb"    rvector& "\GOT{assign}{rvector.assign (int, const TR*, int)}\verb" (int n, const TR* p, int nIncr = 1);"\\
-\verb"    rvector& "\GOT{assign}{rvector.assign (int, const TR*, int, int)}\verb" (int n, const TR* p, int nSize, int nIncr);"\\
+\verb"    rvector& "\GOT{assign}{rvector.assign (const TR*, int)}\verb" (const TR* p, int incr = 1);"\\
+\verb"    rvector& "\GOT{assign}{rvector.assign (int, const TR*, int)}\verb" (int n, const TR* p, int incr = 1);"\\
+\verb"    rvector& "\GOT{assign}{rvector.assign (int, const TR*, int, int)}\verb" (int n, const TR* p, int size, int incr);"\\
 \verb"    rvector& "\GOT{assign}{rvector.assign (int, const rvector&)}\verb" (int n, const rvector& v) throw (cvmexception);"\\
 \verb"    rvector& "\GOT{set}{rvector.set (TR)}\verb" (TR x);"\\
-\verb"    rvector& "\GOT{resize}{rvector.resize}\verb" (int nNewSize) throw (cvmexception);"\\
+\verb"    rvector& "\GOT{resize}{rvector.resize}\verb" (int new_size) throw (cvmexception);"\\
 \verb"    bool "\GOT{operator ==}{rvector.operator ==}\verb" (const rvector& v) const;"\\
 \verb"    bool "\GOT{operator !=}{rvector.operator !=}\verb" (const rvector& v) const;"\\
 \verb"    rvector& "\GOT{operator <{}<}{rvector.operator <<}\verb" (const rvector& v) throw (cvmexception);"\\
@@ -125,9 +125,9 @@ prints
 Constructor%
 \pdfdest name {rvector.rvector (int)} fit
 \begin{verbatim}
-explicit rvector::rvector (int nSize);
+explicit rvector::rvector (int size);
 \end{verbatim}
-creates \verb"rvector" object of size equal to \verb"nSize".
+creates \verb"rvector" object of size equal to \verb"size".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed or memory allocation failure.
 See also \GOT{rvector}{rvector}.
@@ -182,9 +182,9 @@ prints
 Constructor%
 \pdfdest name {rvector.rvector (int, TR)} fit
 \begin{verbatim}
-rvector::rvector (int nSize, TR d);
+rvector::rvector (int size, TR d);
 \end{verbatim}
-creates \verb"rvector" object of size equal to \verb"nSize"
+creates \verb"rvector" object of size equal to \verb"size"
 and fills it with a value of \verb"d".
 It throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed or memory allocation failure.
@@ -210,12 +210,12 @@ prints
 Constructor%
 \pdfdest name {rvector.rvector (TR*,int,int)} fit
 \begin{verbatim}
-rvector::rvector (TR* pD, int nSize, int nIncr = 1);
+rvector::rvector (TR* pD, int size, int incr = 1);
 \end{verbatim}
-creates \verb"rvector" object of size equal to \verb"nSize".
+creates \verb"rvector" object of size equal to \verb"size".
 Unlike others, this constructor \emph{does not allocate memory}.
 It just shares memory with an array pointed to by \verb"pD" using
-distance between elements equal to \verb"nIncr".
+distance between elements equal to \verb"incr".
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed.
 See also \GOT{rvector}{rvector}, \GOT{rvector (const TR*,int,int)}{rvector.rvector (const TR*,int,int)}.
@@ -257,11 +257,11 @@ prints
 Constructor%
 \pdfdest name {rvector.rvector (const TR*,int,int)} fit
 \begin{verbatim}
-rvector::rvector (const TR* pD, int nSize, int nIncr = 1);
+rvector::rvector (const TR* pD, int size, int incr = 1);
 \end{verbatim}
-creates \verb"rvector" object of size equal to \verb"nSize"
-and copies \verb"nSize" elements of
- array \verb"pD" to it using increment \verb"nIncr" ($1$ by default).
+creates \verb"rvector" object of size equal to \verb"size"
+and copies \verb"size" elements of
+ array \verb"pD" to it using increment \verb"incr" ($1$ by default).
 Object created has an increment set to $1$.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed.
@@ -378,10 +378,10 @@ prints
 Function%
 \pdfdest name {rvector.assign (const TR*, int)} fit
 \begin{verbatim}
-rvector& rvector::assign (const TR* p, int nIncr = 1);
+rvector& rvector::assign (const TR* p, int incr = 1);
 \end{verbatim}
 sets every element of a calling vector to be equal to
-every \verb"nIncr"-th element of an array  pointed to by parameter \verb"p"
+every \verb"incr"-th element of an array  pointed to by parameter \verb"p"
 and returns a reference to the vector changed.
 See also \GOT{rvector}{rvector}.
 Example:
@@ -411,11 +411,11 @@ prints
 Function%
 \pdfdest name {rvector.assign (int, const TR*, int)} fit
 \begin{verbatim}
-rvector& rvector::assign (int n, const TR* p, int nIncr = 1);
+rvector& rvector::assign (int n, const TR* p, int incr = 1);
 \end{verbatim}
 sets every element of a calling vector, starting from \Based \verb"n"-th one,
 to be equal to
-every \verb"nIncr"-th element of an array  pointed to by parameter \verb"p"
+every \verb"incr"-th element of an array  pointed to by parameter \verb"p"
 and returns a reference to the vector changed.
 See also \GOT{rvector}{rvector}.
 Example:
@@ -445,14 +445,14 @@ prints
 Function%
 \pdfdest name {rvector.assign (int, const TR*, int, int)} fit
 \begin{verbatim}
-rvector& rvector::assign (int n, const TR* p, int nSize, tint nIncr);
+rvector& rvector::assign (int n, const TR* p, int size, tint incr);
 \end{verbatim}
 sets every element of a calling vector, starting from \Based \verb"n"-th one,
-up to \verb"nSize" total,
+up to \verb"size" total,
 to be equal to
-every \verb"nIncr"-th element of an array  pointed to by parameter \verb"p"
+every \verb"incr"-th element of an array  pointed to by parameter \verb"p"
 and returns a reference to the vector changed.
-If \verb"n + nSize" goes beyond vector boundaries assignment stops at the last element.
+If \verb"n + size" goes beyond vector boundaries assignment stops at the last element.
 See also \GOT{rvector}{rvector}.
 Example:
 \begin{Verbatim}
@@ -544,10 +544,10 @@ prints
 Function%
 \pdfdest name {rvector.resize} fit
 \begin{verbatim}
-rvector& rvector::resize (int nNewSize) throw (cvmexception);
+rvector& rvector::resize (int new_size) throw (cvmexception);
 \end{verbatim}
 changes size of a calling vector to be equal to
-\verb"nNewSize" and returns a reference to
+\verb"new_size" and returns a reference to
 the vector changed.
 In case of increasing of its size, the vector
 is filled up with zeroes.

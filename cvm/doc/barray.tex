@@ -4,9 +4,9 @@
 \verb"class basic_array {"\\
 \verb"public:"\\
 \verb"    int "\GOT{basic\_array}{basicarray.ctr}\verb" ();"\\
-\verb"    explicit "\GOT{basic\_array}{basicarray.ctr2}\verb" (int nSize, bool bZeroMemory = true);"\\
-\verb"    "\GOT{basic\_array}{basicarray.ctr2.5}\verb" (T* p, int nSize);"\\
-\verb"    "\GOT{basic\_array}{basicarray.ctr3}\verb" (const T* p, int nSize);"\\
+\verb"    explicit "\GOT{basic\_array}{basicarray.ctr2}\verb" (int size, bool bZeroMemory = true);"\\
+\verb"    "\GOT{basic\_array}{basicarray.ctr2.5}\verb" (T* p, int size);"\\
+\verb"    "\GOT{basic\_array}{basicarray.ctr3}\verb" (const T* p, int size);"\\
 \verb"    "\GOT{basic\_array}{basicarray.ctrstl}\verb" (const T* first, const T* last);"\\
 \verb"    "\GOT{basic\_array}{basicarray.copyctr}\verb" (const basic_array& a);"\\
 \verb"    int "\GOT{size}{basicarray.size}\verb" () const;"\\
@@ -23,7 +23,7 @@
 \verb"    basic_array& "\GOT{operator =}{basicarray.operator =}\verb" (const basic_array& a) throw (cvmexception);"\\
 \verb"    basic_array& "\GOT{assign}{basicarray.assign}\verb" (const T* p);"\\
 \verb"    basic_array& "\GOT{set}{basicarray.set}\verb" (T x);"\\
-\verb"    basic_array& "\GOT{resize}{basicarray.resize}\verb" (int nNewSize) throw (cvmexception);"\\
+\verb"    basic_array& "\GOT{resize}{basicarray.resize}\verb" (int new_size) throw (cvmexception);"\\
 \verb"    // "\GOT{STL-specific type definitions}{basicarray.typedefs}\\
 \verb"    typedef T value_type;"\\
 \verb"    typedef value_type* pointer;"\\
@@ -56,7 +56,7 @@
 \verb"    void "\GOT{assign}{basicarray.beginend}\verb" (size_type n, const T& val) throw (cvmexception);"\\
 \verb"    void "\GOT{assign}{basicarray.beginend}\verb" (const_iterator first,"\\
 \verb"                 const_iterator last) throw (cvmexception);"\\
-\verb"    void "\GOT{resize}{basicarray.beginend}\verb" (size_type nNewSize) throw (cvmexception);"\\
+\verb"    void "\GOT{resize}{basicarray.beginend}\verb" (size_type new_size) throw (cvmexception);"\\
 \verb"    void "\GOT{clear}{basicarray.beginend}\verb" ();"\\
 \verb"    void "\GOT{swap}{basicarray.beginend}\verb" (basic_array& v);"\\
 \verb"    reference "\GOT{at}{basicarray.at}\verb" (size_type n) throw (cvmexception);"\\
@@ -106,9 +106,9 @@ prints
 Constructor%
 \pdfdest name {basicarray.ctr2} fit
 \begin{verbatim}
-explicit basic_array<T>::basic_array(int nSize, bool bZeroMemory = true);
+explicit basic_array<T>::basic_array(int size, bool bZeroMemory = true);
 \end{verbatim}
-creates  \verb"basic_array" object of size equal to \verb"nSize". 
+creates  \verb"basic_array" object of size equal to \verb"size".
 Allocated memory is initialized with zero values by default 
 (you can pass \verb"false" in second argument in order to 
 avoid this initialization). 
@@ -134,10 +134,10 @@ prints
 Constructor%
 \pdfdest name {basicarray.ctr2.5} fit
 \begin{verbatim}
-basic_array<T>::basic_array (T* p, int nSize);
+basic_array<T>::basic_array (T* p, int size);
 \end{verbatim}
 creates  \verb"basic_array" object of size equal to 
-\verb"nSize" and shares memory (shallow copy) with an array pointed to by \verb"p" parameter.
+\verb"size" and shares memory (shallow copy) with an array pointed to by \verb"p" parameter.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed.
 See also \GOT{basic\_array}{basicarray}.
@@ -163,10 +163,10 @@ prints
 Constructor%
 \pdfdest name {basicarray.ctr3} fit
 \begin{verbatim}
-basic_array<T>::basic_array (const T* p, int nSize);
+basic_array<T>::basic_array (const T* p, int size);
 \end{verbatim}
 creates  \verb"basic_array" object of size equal to 
-\verb"nSize" and copies \verb"nSize" elements of
+\verb"size" and copies \verb"size" elements of
 an array \verb"p" to it.
 Constructor throws  \GOT{cvmexception}{cvmexception}
 in case of non-positive size passed or memory allocation failure.
@@ -467,10 +467,10 @@ Function%
 \pdfdest name {basicarray.resize} fit
 \begin{verbatim}
 basic_array<T>&
-basic_array<T>::resize (int nNewSize) throw (cvmexception);
+basic_array<T>::resize (int new_size) throw (cvmexception);
 \end{verbatim}
 changes  size of a calling array to be equal to
-\verb"nNewSize" and returns a reference to
+\verb"new_size" and returns a reference to
 the array changed. Calling array
 will be filled with zeroes in case of increasing of its size.
 This function is \emph{reimplemented} in all classes of the library:
@@ -600,7 +600,7 @@ void basic_array<T>::assign (size_type n,
                              const T& val) throw (cvmexception);
 void basic_array<T>::assign (const_iterator first, 
                              const_iterator last) throw (cvmexception);
-void basic_array<T>::resize (size_type nNewSize) throw (cvmexception);
+void basic_array<T>::resize (size_type new_size) throw (cvmexception);
 void basic_array<T>::clear();
 void basic_array<T>::swap (basic_array& v) throw (cvmexception);
 \end{verbatim}

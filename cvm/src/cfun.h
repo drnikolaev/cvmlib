@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2016
+//          Copyright Sergei Nikolaev 1992-2022
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -183,13 +183,13 @@ class ElementaryFunctions
     using TC = std::complex<T>;
 
 public:
-    static T asin(const T& v) throw(cvmexception)
+    static T asin(const T& v)
     {
         if (v < cfun_mone<T>() || v > cfun_one<T>())
             throw cvmexception(CFUN_DOMAINERROR, "asin", v);
         return ::asin(v);
     }
-    static T acos(const T& v) throw(cvmexception)
+    static T acos(const T& v)
     {
         if (v < cfun_mone<T>() || v > cfun_one<T>())
             throw cvmexception(CFUN_DOMAINERROR, "acos", v);
@@ -215,19 +215,19 @@ public:
     {
         return ::tanh(v);
     }
-    static T sqrt(const T& v) throw(cvmexception)
+    static T sqrt(const T& v)
     {
         if (v < cfun_zero<T>())
             throw cvmexception(CFUN_DOMAINERROR, "sqrt", v);
         return ::sqrt(v);
     }
-    static T log(const T& v) throw(cvmexception)
+    static T log(const T& v)
     {
         if (v < cvm::basic_cvmMachMin<T>())
             throw cvmexception(CFUN_DOMAINERROR, "log", v);
         return ::log(v);
     }
-    static T log10(const T& v) throw(cvmexception)
+    static T log10(const T& v)
     {
         if (v < cvm::basic_cvmMachMin<T>())
             throw cvmexception(CFUN_DOMAINERROR, "log", v);
@@ -239,7 +239,7 @@ public:
     }
 
     // Sine integral
-    static T sinint(const T& x, const T& eps) throw(cvmexception)
+    static T sinint(const T& x, const T& eps)
     {
         T si = cfun_zero<T>();
         T xa = std::abs(x);
@@ -273,7 +273,7 @@ public:
     }
 
     // Cosine integral
-    static T cosint(const T& x, const T& eps) throw(cvmexception)
+    static T cosint(const T& x, const T& eps)
     {
         if (x <= cfun_zero<T>()) {
             throw cvmexception(CFUN_DOMAINERROR, "cosint", x);
@@ -304,10 +304,10 @@ public:
     }
 
     // Exponential integral routine
-    static TC e1(const T& x, const T& eps) throw(cvmexception)
+    static TC e1(const T& x, const T& eps)
     {
-        static const TC c1(cfun_one<T>(), cfun_zero<T>());
-        static const TC c2(cfun_two<T>(), cfun_zero<T>());
+        const TC c1(cfun_one<T>(), cfun_zero<T>());
+        const TC c2(cfun_two<T>(), cfun_zero<T>());
         TC a;
         TC b(cfun_one<T>(), x);
         TC c(cfun_one<T>() / (eps * eps), cfun_zero<T>());
@@ -332,20 +332,20 @@ public:
 };
 
 template <typename T>
-class ElementaryFunctions<std::complex<T> >
+class ElementaryFunctions<std::complex<T>>
 {
     using TC = std::complex<T>;
 public:
     static TC asin(const TC& v)
     {
-        static const TC c1(cfun_one<T>(), cfun_zero<T>());
-        static const TC cmi(cfun_zero<T>(), cfun_mone<T>());
+        const TC c1(cfun_one<T>(), cfun_zero<T>());
+        const TC cmi(cfun_zero<T>(), cfun_mone<T>());
         return cmi * std::log(std::sqrt(c1 - v * v) - cmi * v);
     }
     static TC acos(const TC& v)
     {
-        static const TC c1(cfun_one<T>(), cfun_zero<T>());
-        static const TC cmi(cfun_zero<T>(), cfun_mone<T>());
+        const TC c1(cfun_one<T>(), cfun_zero<T>());
+        const TC cmi(cfun_zero<T>(), cfun_mone<T>());
         return cmi * std::log(v - cmi * std::sqrt(c1 - v * v));
     }
     static TC tan(const TC& v)
@@ -362,8 +362,8 @@ public:
     }
     static TC atan(const TC& v)
     {
-        static const TC ci(cfun_zero<T>(), cfun_one<T>());
-        static const TC ci2(cfun_zero<T>(), cfun_half<T>());
+        const TC ci(cfun_zero<T>(), cfun_one<T>());
+        const TC ci2(cfun_zero<T>(), cfun_half<T>());
         return ci2 * std::log((ci + v) / (ci - v));
     }
     static TC sinh(const TC& v)
@@ -396,7 +396,7 @@ public:
     }
 
     // Sine integral
-    static TC sinint(const TC& x, const T& eps) throw(cvmexception)
+    static TC sinint(const TC& x, const T& eps)
     {
         TC si(x);
         if (std::abs(x) > eps) {
@@ -419,9 +419,9 @@ public:
     }
 
     // Cosine integral
-    static TC cosint(const TC& x, const T& eps) throw(cvmexception)
+    static TC cosint(const TC& x, const T& eps)
     {
-        static const TC gamma(cfun_gamma<T>(), cfun_zero<T>());
+        const TC gamma(cfun_gamma<T>(), cfun_zero<T>());
         if (std::abs(x) < eps) {
             throw cvmexception(CFUN_DOMAINERROR_C, "cosint", x.real(), x.imag());
         }
@@ -509,7 +509,7 @@ Creates pair of shared_ptr instances.
 
 Returns one of two shared_ptr instances.
 */
-    std::shared_ptr<T> operator[](size_t i) throw(cvmexception)
+    std::shared_ptr<T> operator[](size_t i)
     {
         if (i == 0) {
             return mp1;
@@ -588,8 +588,8 @@ inline std::string::const_iterator __trim_end(const std::string& s, size_t nEdge
 // returns false if empty
 inline bool __strip_parenth(const std::string& s, size_t& nFirst, size_t& nLast)
 {
-    static const char szSpaces[] = CFUN_SPACES;
-    static const std::string sSigns(CFUN_SIGNS);
+    const char szSpaces[] = CFUN_SPACES;
+    const std::string sSigns(CFUN_SIGNS);
     bool bRet = true;
     int nLevel;
     char c;
@@ -714,7 +714,7 @@ inline bool __arrays_equal(const string_array& a1, const string_array& a2)
 inline void __add_to_array(string_array& a, const std::string& sSrc,
                            std::string::const_iterator iBeg, std::string::const_iterator iEnd)
 {
-    static const char szSpaces[] = CFUN_SPACES;
+    const char szSpaces[] = CFUN_SPACES;
     if (iEnd > iBeg) {
         size_t nFirst = sSrc.find_first_not_of(szSpaces, iBeg - sSrc.begin());
 
@@ -780,7 +780,7 @@ inline int is_alpha(int c)
 
 // k*x & k=a+b ---> (a+b)*x
 inline bool __subst_parameter(std::string& sBody, const string_array& saParameters,
-                              const string_array& saMeanings) throw(cvmexception)
+                              const string_array& saMeanings)
 {
     bool ret = false;
     const size_t nPsz = saParameters.size();
@@ -812,7 +812,7 @@ inline bool __subst_parameter(std::string& sBody, const string_array& saParamete
 // returns true if body looks like 1.e+12 or 1.e-12
 inline bool __ifbodynum(const std::string& sBody, size_t nBodyLength, size_t nSignPos)
 {
-    static const char ccExp = 'e', ccExpb = 'E', ccPoint = '.';
+    const char ccExp = 'e', ccExpb = 'E', ccPoint = '.';
     return nSignPos < nBodyLength - 1 &&
            isdigit(sBody[nSignPos + 1]) &&
            nSignPos > 1 &&
@@ -903,6 +903,7 @@ public:
 
 private:
     struct Creator {
+        virtual ~Creator() = default;
         virtual BasePointer create(const std::string& sBody, size_t nLeft,
                                    size_t nBodyLength, const string_array& saVars,
                                    const string_array& saParameters, const string_array& saMeanings) const = 0;
@@ -970,6 +971,7 @@ private:
 //! @endcond
 
 public:
+    virtual ~FunctionFactory() = default;
 
 /**
 @brief Parser and factory interface (not end-user)
@@ -980,11 +982,11 @@ Parses incoming strings and instantiates function object
                                const string_array& saVars,
                                const string_array& saParameters,
                                const string_array& saMeanings,
-                               bool subst = true) throw(cvmexception)
+                               bool subst = true)
     {
         size_t i;
-        static const char pccSigns[] = CFUN_SIGNS;
-        static const char pccInfinity[] = CFUN_INF;
+        const char pccSigns[] = CFUN_SIGNS;
+        const char pccInfinity[] = CFUN_INF;
         std::string sBody, sLeft;
         size_t nBodyLength = __tassign(sBody, sPar, nFirst, nLast);
 
@@ -1188,11 +1190,11 @@ public:
         return pRet;
     }
 
-    static void parse_err(const std::string& sBody, const char* var = nullptr) throw(cvmexception) {
+    static void parse_err(const std::string& sBody, const char* var = nullptr) {
         throw cvmexception(CFUN_PARSEERROR, sBody.c_str(), var == nullptr ? "n/a" : var);
     }
 
-    static void parse_err(const std::string& sBody, const string_array& saVars) throw(cvmexception) {
+    static void parse_err(const std::string& sBody, const string_array& saVars) {
         parse_err(sBody, __format_vars(saVars).c_str());
     }
     
@@ -1341,7 +1343,7 @@ protected:
     void BinCtr(const std::string& sBodyCommaBody,              // for bodies like pow(a,b) and sat(a,b)
                 size_t nFirst, size_t nLast,
                 const string_array& saVars,
-                const string_array& saParameters, const string_array& saMeanings) throw(cvmexception)
+                const string_array& saParameters, const string_array& saMeanings)
     {
         std::string sLeft, sRight;
         if (__separate(sBodyCommaBody, nFirst, nLast, sLeft, sRight) == 1) {
@@ -1585,7 +1587,7 @@ protected:
             }
             return osBuf.str();
         }
-        static bool convert(const std::string& s, U& u, bool bThrow) throw(cvmexception)
+        static bool convert(const std::string& s, U& u, bool bThrow)
         {
             bool ret = __parse_num<U>(s, u);
             if (bThrow && !ret) {
@@ -1596,7 +1598,7 @@ protected:
     };
 
     template<typename U>
-    class Helper<std::complex<U> > {
+    class Helper<std::complex<U>>  {
         using UC = std::complex<U>;
     public:
         static std::string _format(const UC& v, int nPrecision)
@@ -1609,7 +1611,7 @@ protected:
             osBuf << v;
             return osBuf.str();
         }
-        static bool convert(const std::string& s, UC& uc, bool bThrow) throw(cvmexception)
+        static bool convert(const std::string& s, UC& uc, bool bThrow)
         {
             bool ret1 = true, ret2 = true;
             std::string sRe, sIm;
@@ -3169,7 +3171,7 @@ protected:
     };
 
     template<typename U>
-    class Helper<std::complex<U> > {
+    class Helper<std::complex<U>>  {
         using UC = std::complex<U>;
     public:
         static UC _value(const BaseFunction<UC>* pfArg0, BaseFunction<UC>* pfArg1, const UC* pdVars)
@@ -4153,7 +4155,7 @@ protected:
         }
     };
     template<typename U>
-    class Helper<std::complex<U> > {
+    class Helper<std::complex<U>>  {
         using UC = std::complex<U>;
     public:
         static UC _value(const BaseFunction<UC>* pfArg, const UC* pdVars)
@@ -4239,7 +4241,7 @@ protected:
         }
     };
     template<typename U>
-    class Helper<std::complex<U> > {
+    class Helper<std::complex<U>>  {
         using UC = std::complex<U>;
     public:
         static UC _value(const BaseFunction<UC>* pfArg, const UC* pdVars)
@@ -4462,7 +4464,7 @@ protected:
     };
 
     template<typename U>
-    class Helper<std::complex<U> > {
+    class Helper<std::complex<U>>  {
         using UC = std::complex<U>;
     public:
         static UC _value(const BaseFunction<UC>* pfArg, const UC* pdVars)
@@ -4637,7 +4639,7 @@ protected:
     };
 
     template<typename U>
-    class Helper<std::complex<U> > {
+    class Helper<std::complex<U>>  {
         using UC = std::complex<U>;
     public:
         static UC _value(const BaseFunction<UC>* pfArg0, const BaseFunction<UC>* pfArg1, const UC* pdVars)
@@ -4745,7 +4747,7 @@ private:
 protected:
     void TriCtr(const std::string& sBodyCommaBodyCommaBody, size_t nFirst, size_t nLast,
                 const string_array& saVars,
-                const string_array& saParameters, const string_array& saMeanings) throw(cvmexception)
+                const string_array& saParameters, const string_array& saMeanings)
     {
         std::string sF, sLeft, sRight;
         if (__separate(sBodyCommaBodyCommaBody, nFirst, nLast, sF, sRight) == 1) {
@@ -4835,7 +4837,7 @@ protected:
     };
 
     template<typename U>
-    class Helper<std::complex<U> > {
+    class Helper<std::complex<U>>  {
         using UC = std::complex<U>;
     public:
         static bool left(const BaseFunction<UC>* pfArg0, const UC* pdVars)
@@ -4977,7 +4979,7 @@ protected:
     BasePointer mp; //!< Pointer to function's instance
 
 //! @cond INTERNAL
-    const string_array& _check_vars(const string_array& saVars) const throw(cvmexception)
+    const string_array& _check_vars(const string_array& saVars) const
     {
         if (this->vars_num() > 0 && saVars.size() > 0 && !__arrays_equal(mvars, saVars)) {
             throw cvmexception(CFUN_VARSDONTMATCH, __format_vars(mvars).c_str(), __format_vars(saVars).c_str());
@@ -5541,7 +5543,7 @@ prints
 */
     T operator () () const
     {
-        static const T dZero = T();
+        const T dZero = T();
         return mp->_value(&dZero);
     }
 
@@ -5910,7 +5912,7 @@ prints
 @param[in] rf Const reference to function to add.
 @return %Function object.
 */
-    basic_function operator + (const basic_function& rf) const throw(cvmexception) {
+    basic_function operator + (const basic_function& rf) const {
         return basic_function(this->_check_vars(rf.mvars), std::make_shared<Fplus<T>>(mp, rf.mp));
     }
 
@@ -5944,7 +5946,7 @@ prints
 @param[in] rf Const reference to function to subtract.
 @return %Function object.
 */
-    basic_function operator - (const basic_function& rf) const throw(cvmexception) {
+    basic_function operator - (const basic_function& rf) const {
         return basic_function(this->_check_vars(rf.mvars), std::make_shared<Fminus<T>>(mp, rf.mp));
     }
 
@@ -5982,7 +5984,7 @@ prints
 @param[in] rf Const reference to function to multiply by.
 @return %Function object.
 */
-    basic_function operator * (const basic_function& rf) const throw(cvmexception) {
+    basic_function operator * (const basic_function& rf) const {
         return basic_function(this->_check_vars(rf.mvars), std::make_shared<Fmult<T>>(mp, rf.mp));
     }
 
@@ -6020,7 +6022,7 @@ prints
 @param[in] rf Const reference to function to divide by.
 @return %Function object.
 */
-    basic_function operator / (const basic_function& rf) const throw(cvmexception) {
+    basic_function operator / (const basic_function& rf) const {
         return basic_function(this->_check_vars(rf.mvars), std::make_shared<Fdiv<T>>(mp, rf.mp));
     }
 
@@ -6054,7 +6056,7 @@ prints
 @param[in] rf Const reference to function to power to.
 @return %Function object.
 */
-    basic_function operator ^ (const basic_function& rf) const throw(cvmexception) {
+    basic_function operator ^ (const basic_function& rf) const {
         return basic_function(this->_check_vars(rf.mvars), std::make_shared<Fpower<T>>(mp, rf.mp));
     }
 
@@ -6091,7 +6093,7 @@ prints
 @param[in] rf Const reference to function to add.
 @return Reference to changed calling function.
 */
-    basic_function& operator += (const basic_function& rf) throw(cvmexception)
+    basic_function& operator += (const basic_function& rf)
     {
         mvars = this->_check_vars(rf.mvars);
         mp = std::make_shared<Fplus<T>>(mp, rf.mp);
@@ -6131,7 +6133,7 @@ prints
 @param[in] rf Const reference to function to subtract.
 @return Reference to changed calling function.
 */
-    basic_function& operator -= (const basic_function& rf) throw(cvmexception)
+    basic_function& operator -= (const basic_function& rf)
     {
         mvars = this->_check_vars(rf.mvars);
         mp = std::make_shared<Fminus<T>>(mp, rf.mp);
@@ -6175,7 +6177,7 @@ prints
 @param[in] rf Const reference to function to multiply by.
 @return Reference to changed calling function.
 */
-    basic_function& operator *= (const basic_function& rf) throw(cvmexception)
+    basic_function& operator *= (const basic_function& rf)
     {
         mvars = this->_check_vars(rf.mvars);
         mp = std::make_shared<Fmult<T>>(mp, rf.mp);
@@ -6219,7 +6221,7 @@ prints
 @param[in] rf Const reference to function to multiply by.
 @return Reference to changed calling function.
 */
-    basic_function& operator /= (const basic_function& rf) throw(cvmexception)
+    basic_function& operator /= (const basic_function& rf)
     {
         mvars = this->_check_vars(rf.mvars);
         mp = std::make_shared<Fdiv<T>>(mp, rf.mp);
@@ -6248,7 +6250,7 @@ prints
 @param[in] d Const reference to number to add.
 @return %Function object.
 */
-    basic_function operator + (const T& d) const throw(cvmexception) {
+    basic_function operator + (const T& d) const {
         return basic_function(mvars, std::make_shared<Fplus<T>>(mp, std::make_shared<Fconst<T>>(d)));
     }
 
@@ -6275,7 +6277,7 @@ prints
 @param[in] d Const reference to number to subtract.
 @return %Function object.
 */
-    basic_function operator - (const T& d) const throw(cvmexception) {
+    basic_function operator - (const T& d) const {
         return basic_function(mvars, std::make_shared<Fminus<T>>(mp, std::make_shared<Fconst<T>>(d)));
     }
 
@@ -6306,7 +6308,7 @@ prints
 @param[in] d Const reference to number to multiply by.
 @return %Function object.
 */
-    basic_function operator * (const T& d) const throw(cvmexception) {
+    basic_function operator * (const T& d) const {
         return basic_function(mvars, std::make_shared<Fmult<T>>(mp, std::make_shared<Fconst<T>>(d)));
     }
 
@@ -6336,7 +6338,7 @@ prints
 @param[in] d Const reference to number to multiply by.
 @return %Function object.
 */
-    basic_function operator / (const T& d) const throw(cvmexception) {
+    basic_function operator / (const T& d) const {
         return basic_function(mvars, std::make_shared<Fdiv<T>>(mp, std::make_shared<Fconst<T>>(d)));
     }
 
@@ -6362,7 +6364,7 @@ prints
 @param[in] d Const reference to number to power to.
 @return %Function object.
 */
-    basic_function operator ^ (const T& d) const throw(cvmexception) {
+    basic_function operator ^ (const T& d) const {
         return basic_function(mvars, std::make_shared<Fpower<T>>(mp, std::make_shared<Fconst<T>>(d)));
     }
 
@@ -6391,7 +6393,7 @@ prints
 @param[in] d Number to add.
 @return Reference to changed calling function.
 */
-    basic_function& operator += (const T& d) throw(cvmexception)
+    basic_function& operator += (const T& d)
     {
         mp = std::make_shared<Fplus<T>>(mp, std::make_shared<Fconst<T>>(d));
         return *this;
@@ -6422,7 +6424,7 @@ prints
 @param[in] d Number to subtract.
 @return Reference to changed calling function.
 */
-    basic_function& operator -= (const T& d) throw(cvmexception)
+    basic_function& operator -= (const T& d)
     {
         mp = std::make_shared<Fminus<T>>(mp, std::make_shared<Fconst<T>>(d));
         return *this;
@@ -6457,7 +6459,7 @@ prints
 @param[in] d Number to multiply by.
 @return Reference to changed calling function.
 */
-    basic_function& operator *= (const T& d) throw(cvmexception)
+    basic_function& operator *= (const T& d)
     {
         mp = std::make_shared<Fmult<T>>(mp, std::make_shared<Fconst<T>>(d));
         return *this;
@@ -6492,7 +6494,7 @@ prints
 @param[in] d Number to divide by.
 @return Reference to changed calling function.
 */
-    basic_function& operator /= (const T& d) throw(cvmexception)
+    basic_function& operator /= (const T& d)
     {
         mp = std::make_shared<Fdiv<T>>(mp, std::make_shared<Fconst<T>>(d));
         return *this;
@@ -6523,7 +6525,7 @@ prints
 @param[in] d Number to power to.
 @return Reference to changed calling function.
 */
-    basic_function& operator ^= (const T& d) throw(cvmexception)
+    basic_function& operator ^= (const T& d)
     {
         mp = std::make_shared<Fpower<T>>(mp, std::make_shared<Fconst<T>>(d));
         return *this;
@@ -6588,7 +6590,7 @@ prints
 @param[in] rf Const reference to other function.
 @return %Function object.
 */
-    basic_function sat(const basic_function& rf) const throw(cvmexception) {
+    basic_function sat(const basic_function& rf) const {
         return basic_function(this->_check_vars(rf.mvars), std::make_shared<Fsat<T>>(mp, rf.mp));
     }
 
@@ -7197,7 +7199,7 @@ prints
 @param[in] rf Const reference to other function.
 @return %Function object.
 */
-    basic_function delta(const basic_function& rf) const throw(cvmexception) {
+    basic_function delta(const basic_function& rf) const {
         return basic_function(this->_check_vars(rf.mvars), std::make_shared<Fdelta<T>>(mp, rf.mp));
     }
 
@@ -7260,7 +7262,7 @@ prints
 @return %Function object.
 */
     basic_function iif (const basic_function& rfNeg,
-                        const basic_function& rfNotNeg) const throw(cvmexception)
+                        const basic_function& rfNotNeg) const
     {
         const string_array& saVarsT = this->_check_vars(rfNeg.mvars);
         const string_array& saVarsF = this->_check_vars(rfNotNeg.mvars);
@@ -7448,9 +7450,9 @@ prints
 
 //! @cond INTERNAL
     // sets caller to be equal to scalar product of fa1 and fa2
-    basic_function& _scalar_product(size_t nSize,
+    basic_function& _scalar_product(size_t size,
                                     const basic_function* fa1, size_t incr1,
-                                    const basic_function* fa2, size_t incr2) throw(cvmexception)
+                                    const basic_function* fa2, size_t incr2)
     {
         const string_array& saVars1 = this->_check_vars(fa1->vars());
         const string_array& saVars2 = this->_check_vars(fa2->vars());
@@ -7459,7 +7461,7 @@ prints
         mvars = saVars;
         mp = std::make_shared<Fconst<T>>();
 
-        for (size_t i = 0; i < nSize; ++i, fa1 += incr1, fa2 += incr2)
+        for (size_t i = 0; i < size; ++i, fa1 += incr1, fa2 += incr2)
         {
             *this += (*fa1) * (*fa2);
         }
@@ -7471,11 +7473,11 @@ prints
 
 //! @cond INTERNAL
 template<typename BaseFunction>
-inline void _copy(size_t nSize,
+inline void _copy(size_t size,
                   const BaseFunction* faFrom, size_t incrFrom,
                   BaseFunction* faTo, size_t incrTo)
 {
-    for (size_t i = 0; i < nSize; ++i, faFrom += incrFrom, faTo += incrTo) {
+    for (size_t i = 0; i < size; ++i, faFrom += incrFrom, faTo += incrTo) {
         *faTo = *faFrom;
     }
 }
@@ -7521,11 +7523,11 @@ public:
     /**
      * @brief Constructor
      *
-     * Creates function array of \c nSize size.
-     * @param[in] nSize Number of functions in array.
+     * Creates function array of \c size size.
+     * @param[in] size Number of functions in array.
      */
-    explicit FArray(size_t nSize)
-      : mv(nSize)
+    explicit FArray(size_t size)
+      : mv(size)
     {
     }
 
@@ -7630,8 +7632,7 @@ columns.
 /**
 @brief Constant reference to element (\e not l-value, \e zero-based)
 
-Returns constant reference to array's element by its index (\e 
-zero based). 
+Returns constant reference to array's element by its index.
 @param[in] n Index of element to return reference to.
 @return basic_function<T>
 */
@@ -7996,7 +7997,7 @@ protected:
     using BaseFunction = typename BaseFArray::BaseFunction; //!< Vector element, i.e. \ref rfunction or \ref cfunction
 
 //! @cond INTERNAL
-    void _check_size(size_t size) const throw(cvmexception)
+    void _check_size(size_t size) const
     {
         _check_ne(CVM_SIZESMISMATCH, size, this->size());
     }
@@ -8016,7 +8017,7 @@ Creates empty vector of functions. No memory gets allocated.
 /**
 @brief Constructor
 
-Creates vector of zero functions of \c nSize size.
+Creates vector of zero functions of \c size size.
 \par Example:
 \code
 using namespace cvm;
@@ -8030,10 +8031,10 @@ prints
 0 0 0
 (0,0) (0,0) (0,0)
 \endcode
-@param[in] nSize Number of functions in array.
+@param[in] size Number of functions in array.
 */
-    explicit basic_fvector(size_t nSize)
-      : BaseFArray(nSize)
+    explicit basic_fvector(size_t size)
+      : BaseFArray(size)
     {
     }
 
@@ -8178,7 +8179,7 @@ prints
 @param[in] fv Const reference to a vector of functions to assign.
 @return Reference to changed calling vector.
 */
-    basic_fvector& operator = (const basic_fvector& fv) throw(cvmexception)
+    basic_fvector& operator = (const basic_fvector& fv)
     {
         this->_check_size(fv.size());
         this->_assign(fv);
@@ -8188,7 +8189,7 @@ prints
 /**
 @brief Move sssignment operator
 */
-    basic_fvector& operator = (basic_fvector&& fv) throw(cvmexception)
+    basic_fvector& operator = (basic_fvector&& fv)
     {
         this->_check_size(fv.size());
         this->mv = std::move(fv.mv);
@@ -8402,7 +8403,7 @@ prints
 @param[in] fv Const reference to a vector to add.
 @return %Vector of functions object.
 */
-    basic_fvector operator + (const basic_fvector& fv) const throw(cvmexception)
+    basic_fvector operator + (const basic_fvector& fv) const
     {
         this->_check_size(fv.size());
         basic_fvector vRet(this->size());
@@ -8444,7 +8445,7 @@ prints
 @param[in] fv Const reference to a vector to subtract.
 @return %Vector of functions object.
 */
-    basic_fvector operator - (const basic_fvector& fv) const throw(cvmexception)
+    basic_fvector operator - (const basic_fvector& fv) const
     {
         this->_check_size(fv.size());
         basic_fvector vRet(this->size());
@@ -8489,7 +8490,7 @@ prints
 @param[in] fv Const reference to a vector to add.
 @return Reference to changed calling vector.
 */
-    basic_fvector& operator += (const basic_fvector& fv) throw(cvmexception)
+    basic_fvector& operator += (const basic_fvector& fv)
     {
         this->_check_size(fv.size());
         this->_add(fv);
@@ -8533,7 +8534,7 @@ prints
 @param[in] fv Const reference to a vector to add.
 @return Reference to changed calling vector.
 */
-    basic_fvector& operator -= (const basic_fvector& fv) throw(cvmexception)
+    basic_fvector& operator -= (const basic_fvector& fv)
     {
         this->_check_size(fv.size());
         this->_subtract(fv);
@@ -8914,7 +8915,7 @@ prints
 @param[in] fv Vector of functions to multiply by.
 @return \ref basic_function object.
 */
-    BaseFunction operator * (const basic_fvector& fv) const throw(cvmexception)
+    BaseFunction operator * (const basic_fvector& fv) const
     {
         this->_check_size(fv.size());
         BaseFunction fRet;
@@ -8967,7 +8968,7 @@ prints
 @param[in] fm %Matrix of functions to multiply by.
 @return %Vector of functions.
 */
-    basic_fvector operator * (const basic_fmatrix<T>& fm) const throw(cvmexception)
+    basic_fvector operator * (const basic_fmatrix<T>& fm) const
     {
         this->_check_size(fm.msize());
         basic_fvector vRet(fm.nsize());
@@ -9026,7 +9027,7 @@ prints
 @param[in] fm %Matrix of functions to multiply by.
 @return Reference to changed calling vector.
 */
-    basic_fvector& mult(const basic_fvector& fv, const basic_fmatrix<T>& fm) throw(cvmexception)
+    basic_fvector& mult(const basic_fvector& fv, const basic_fmatrix<T>& fm)
     {
         fv._check_size(fm.msize());
         this->_check_size(fm.nsize());
@@ -9084,7 +9085,7 @@ prints
 @param[in] fv %Vector of functions to multiply by.
 @return Reference to changed calling vector.
 */
-    basic_fvector& mult(const basic_fmatrix<T>& fm, const basic_fvector& fv) throw(cvmexception)
+    basic_fvector& mult(const basic_fmatrix<T>& fm, const basic_fvector& fv)
     {
         fv._check_size(fm.nsize());
         this->_check_size(fm.msize());
@@ -9291,7 +9292,7 @@ prints
 protected:
 //! @cond INTERNAL
     // internal version, it doesn't verify anything
-    basic_fvector& _mult(const basic_fvector& fv, const basic_fmatrix<T>& fm) throw(cvmexception)
+    basic_fvector& _mult(const basic_fvector& fv, const basic_fmatrix<T>& fm)
     {
         for (size_t i = 0; i < fm.nsize(); ++i) {
             this->mv.at(i)._scalar_product(fv.size(), &fv.mv.at(0), 1, &fm.mv.at(fm.msize() * i), 1);
@@ -9299,7 +9300,7 @@ protected:
         return *this;
     }
     // internal version, it doesn't verify anything
-    basic_fvector& _mult(const basic_fmatrix<T>& fm, const basic_fvector& fv) throw(cvmexception)
+    basic_fvector& _mult(const basic_fmatrix<T>& fm, const basic_fvector& fv)
     {
         for (size_t i = 0; i < fm.msize(); ++i) {
             this->mv.at(i)._scalar_product(fm.nsize(), &fm.mv.at(i), fm.msize(), &fv.mv.at(0), 1);
@@ -9346,7 +9347,7 @@ Creates empty vector of functions. No memory gets allocated.
 /**
 @brief Constructor
 
-Creates vector of zero functions of \c nSize size.
+Creates vector of zero functions of \c size size.
 \par Example:
 \code
 using namespace cvm;
@@ -9360,10 +9361,10 @@ prints
 0 0 0
 (0,0) (0,0) (0,0)
 \endcode
-@param[in] nSize Number of functions in array.
+@param[in] size Number of functions in array.
 */
-    explicit basic_rfvector(size_t nSize)
-      : BaseFVector(nSize)
+    explicit basic_rfvector(size_t size)
+      : BaseFVector(size)
     {
     }
 
@@ -9692,7 +9693,7 @@ Creates empty vector of functions. No memory gets allocated.
 /**
 @brief Constructor
 
-Creates vector of zero functions of \c nSize size.
+Creates vector of zero functions of \c size size.
 \par Example:
 \code
 using namespace cvm;
@@ -9706,10 +9707,10 @@ prints
 0 0 0
 (0,0) (0,0) (0,0)
 \endcode
-@param[in] nSize Number of functions in array.
+@param[in] size Number of functions in array.
 */
-    explicit basic_cfvector(size_t nSize)
-      : BaseFVector(nSize)
+    explicit basic_cfvector(size_t size)
+      : BaseFVector(size)
     {
     }
 
@@ -10034,14 +10035,14 @@ protected:
     size_t mN; //!< %Number of columns
 
 //! @cond INTERNAL
-    void _check_sizes(const basic_fmatrix& fm) const throw(cvmexception)
+    void _check_sizes(const basic_fmatrix& fm) const
     {
         _check_ne(CVM_SIZESMISMATCH, fm.msize(), this->msize());
         _check_ne(CVM_SIZESMISMATCH, fm.nsize(), this->nsize());
     }
-    void _check_sizes() const throw(cvmexception)
+    void _check_sizes() const
     {
-        static const size_t ZERO(0);
+        const size_t ZERO(0);
         _check_le(CVM_WRONGSIZE_LE, this->msize(), ZERO);
         _check_le(CVM_WRONGSIZE_LE, this->nsize(), ZERO);
         _check_ne(CVM_SIZESMISMATCH, mM * mN, this->size());
@@ -10284,7 +10285,7 @@ prints
 @param[in] fm Const reference to a matrix of functions to assign.
 @return Reference to changed calling matrix.
 */
-    basic_fmatrix& operator = (const basic_fmatrix& fm) throw(cvmexception)
+    basic_fmatrix& operator = (const basic_fmatrix& fm)
     {
         this->_check_sizes(fm);
         this->_assign(fm);
@@ -10294,7 +10295,7 @@ prints
 /**
 @brief Assignment operator
 */
-    basic_fmatrix& operator = (basic_fmatrix&& fm) throw(cvmexception)
+    basic_fmatrix& operator = (basic_fmatrix&& fm)
     {
         this->_check_sizes(fm);
         this->mp = std::move(fm.mv);
@@ -10617,7 +10618,7 @@ prints
 @param[in] fm Const reference to a matrix to add.
 @return %Matrix of functions object.
 */
-    basic_fmatrix operator + (const basic_fmatrix& fm) const throw(cvmexception)
+    basic_fmatrix operator + (const basic_fmatrix& fm) const
     {
         this->_check_sizes(fm);
         basic_fmatrix fmRet(this->mM, this->mN);
@@ -10662,7 +10663,7 @@ prints
 @param[in] fm Const reference to a matrix to subtract.
 @return %Matrix of functions object.
 */
-    basic_fmatrix operator - (const basic_fmatrix& fm) const throw(cvmexception)
+    basic_fmatrix operator - (const basic_fmatrix& fm) const
     {
         this->_check_sizes(fm);
         basic_fmatrix fmRet(this->mM, this->mN);
@@ -10711,7 +10712,7 @@ prints
 @param[in] fm Const reference to a matrix to add.
 @return Reference to changed calling matrix.
 */
-    basic_fmatrix& operator += (const basic_fmatrix& fm) throw(cvmexception)
+    basic_fmatrix& operator += (const basic_fmatrix& fm)
     {
         this->_check_sizes(fm);
         this->_add(fm);
@@ -10759,7 +10760,7 @@ prints
 @param[in] fm Const reference to a matrix to subtract.
 @return Reference to changed calling matrix.
 */
-    basic_fmatrix& operator -= (const basic_fmatrix& fm) throw(cvmexception)
+    basic_fmatrix& operator -= (const basic_fmatrix& fm)
     {
         this->_check_sizes(fm);
         this->_subtract(fm);
@@ -11180,7 +11181,7 @@ prints
 @see set_row(size_t,const basic_fvector<T>&)
 @return \ref basic_fvector Row value.
 */
-    basic_fvector<T> get_row(size_t nRow) const throw(cvmexception)
+    basic_fvector<T> get_row(size_t nRow) const
     {
         _check_ge(CVM_INDEX_GE, nRow, this->mM);
         basic_fvector<T> fvRet(this->mN);
@@ -11231,7 +11232,7 @@ prints
 @see set_col(size_t,const basic_fvector<T>&)
 @return \ref basic_fvector Column value.
 */
-    basic_fvector<T> get_col(size_t nCol) const throw(cvmexception)
+    basic_fvector<T> get_col(size_t nCol) const
     {
         _check_ge(CVM_INDEX_GE, nCol, this->mN);
         basic_fvector<T> fvRet(this->mM);
@@ -11286,7 +11287,7 @@ prints
 @see get_row(size_t)
 @return Reference to changed calling matrix.
 */
-    basic_fmatrix& set_row(size_t nRow, const basic_fvector<T>& fv) throw(cvmexception)
+    basic_fmatrix& set_row(size_t nRow, const basic_fvector<T>& fv)
     {
         _check_ge(CVM_INDEX_GE, nRow, this->mM);
         _check_ne(CVM_SIZESMISMATCH, fv.size(), this->nsize());
@@ -11341,7 +11342,7 @@ prints
 @see get_col(size_t)
 @return Reference to changed calling matrix.
 */
-    basic_fmatrix& set_col(size_t nCol, const basic_fvector<T>& fv) throw(cvmexception)
+    basic_fmatrix& set_col(size_t nCol, const basic_fvector<T>& fv)
     {
         _check_ge(CVM_INDEX_GE, nCol, this->nsize());
         _check_ne(CVM_SIZESMISMATCH, fv.size(), this->msize());
@@ -11398,7 +11399,7 @@ prints
 @param[in] fv Vector of functions to multiply by.
 @return %Vector of functions object.
 */
-    basic_fvector<T> operator * (const basic_fvector<T>& fv) const throw(cvmexception)
+    basic_fvector<T> operator * (const basic_fvector<T>& fv) const
     {
         _check_ne(CVM_SIZESMISMATCH, fv.size(), this->nsize());
         basic_fvector<T> vRet(this->msize());
@@ -11465,7 +11466,7 @@ prints
 @param[in] fm %Matrix of functions to multiply by.
 @return %Matrix of functions object.
 */
-    basic_fmatrix operator * (const basic_fmatrix& fm) const throw(cvmexception)
+    basic_fmatrix operator * (const basic_fmatrix& fm) const
     {
         _check_ne(CVM_SIZESMISMATCH, fm.msize(), this->nsize());
         basic_fmatrix mRet(this->msize(), fm.nsize());
@@ -11535,7 +11536,7 @@ prints
 @param[in] fmB %Matrix of functions to multiply by.
 @return Reference to changed calling matrix.
 */
-    basic_fmatrix& mult(const basic_fmatrix& fmA, const basic_fmatrix& fmB) throw(cvmexception)
+    basic_fmatrix& mult(const basic_fmatrix& fmA, const basic_fmatrix& fmB)
     {
         _check_ne(CVM_SIZESMISMATCH, fmA.msize(), this->msize());
         _check_ne(CVM_SIZESMISMATCH, fmB.nsize(), this->nsize());
@@ -11588,7 +11589,7 @@ prints
 //! @cond INTERNAL
 protected:
     // internal version, it doesn't verify anything
-    basic_fmatrix& _mult(const basic_fmatrix& fmA, const basic_fmatrix& fmB) throw(cvmexception)
+    basic_fmatrix& _mult(const basic_fmatrix& fmA, const basic_fmatrix& fmB)
     {
         for (size_t i = 0; i < this->mM; ++i) {
             for (size_t j = 0; j < this->mN; ++j) {
@@ -12386,7 +12387,7 @@ public:
 };
 
 template<typename T>
-class Comparator<std::complex<T>, std::complex<T> >
+class Comparator<std::complex<T>, std::complex<T>>
 {
 public:
     static bool lt(const std::complex<T>& l, const std::complex<T>& r)
@@ -12413,7 +12414,7 @@ public:
 };
 
 template<typename T>
-class Comparator<T,std::complex<T> >
+class Comparator<T,std::complex<T>>
 {
 public:
     static bool lt(const T& l, const std::complex<T>& r)

@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2016
+//          Copyright Sergei Nikolaev 1992-2022
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -13,15 +13,15 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __exp<basic_scmatrix<float, std::complex<float> >, float>
-            (basic_scmatrix<float, std::complex<float> > &m,
-             const basic_scmatrix<float, std::complex<float> > &mArg,
-             float tol) throw(cvmexception) {
+    __exp<basic_scmatrix<float, std::complex<float>> , float>
+            (basic_scmatrix<float, std::complex<float>>  &m,
+             const basic_scmatrix<float, std::complex<float>>  &mArg,
+             float tol) {
       tint nR = 0, nI = 0, nQ = 0, nJ = 0;
       const tint mnM = m.msize();
       _check_ne(CVM_SIZESMISMATCH, mnM, mArg.msize());
 
-      basic_scmatrix<float, std::complex<float> > mTmp;
+      basic_scmatrix<float, std::complex<float>>  mTmp;
       const std::complex<float> *pd = mArg._pd();
 
       if (pd == m.get()) {
@@ -30,7 +30,7 @@ CVM_NAMESPACE_BEG
       }
 
       CMEXPC(&mnM, pd, pd == m.get() ? mTmp._pld() : mArg._pldm(), &tol, &nR, &nI, &nQ, &nJ);
-      basic_cvector<float, std::complex<float> > vR(nR);
+      basic_cvector<float, std::complex<float>>  vR(nR);
       basic_array<tint, tint> vI(nI);
 
       const tint issymm = 0;
@@ -43,15 +43,15 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __exp<basic_scmatrix<double, std::complex<double> >, double>
-            (basic_scmatrix<double, std::complex<double> > &m,
-             const basic_scmatrix<double, std::complex<double> > &mArg,
-             double tol) throw(cvmexception) {
+    __exp<basic_scmatrix<double, std::complex<double>> , double>
+            (basic_scmatrix<double, std::complex<double>>  &m,
+             const basic_scmatrix<double, std::complex<double>>  &mArg,
+             double tol) {
       tint nR = 0, nI = 0, nQ = 0, nJ = 0;
       const tint mnM = m.msize();
       _check_ne(CVM_SIZESMISMATCH, mnM, mArg.msize());
 
-      basic_scmatrix<double, std::complex<double> > mTmp;
+      basic_scmatrix<double, std::complex<double>>  mTmp;
       const std::complex<double> *pd = mArg._pd();
 
       if (pd == m.get()) {
@@ -60,7 +60,7 @@ CVM_NAMESPACE_BEG
       }
 
       ZMEXPC(&mnM, pd, pd == m.get() ? mTmp._pld() : mArg._pldm(), &tol, &nR, &nI, &nQ, &nJ);
-      basic_cvector<double, std::complex<double> > vR(nR);
+      basic_cvector<double, std::complex<double>>  vR(nR);
       basic_array<tint, tint> vI(nI);
 
       const tint issymm = 0;
@@ -73,15 +73,15 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __exp_symm<basic_schmatrix<float, std::complex<float> >, float>
-            (basic_schmatrix<float, std::complex<float> > &m,
-             const basic_schmatrix<float, std::complex<float> > &mArg,
-             float tol) throw(cvmexception) {
+    __exp_symm<basic_schmatrix<float, std::complex<float>> , float>
+            (basic_schmatrix<float, std::complex<float>>  &m,
+             const basic_schmatrix<float, std::complex<float>>  &mArg,
+             float tol) {
       tint nR = 0, nI = 0, nQ = 0, nJ = 0;
       const tint nM = m.msize();
       _check_ne(CVM_SIZESMISMATCH, nM, mArg.msize());
 
-      basic_schmatrix<float, std::complex<float> > mTmp;
+      basic_schmatrix<float, std::complex<float>>  mTmp;
       const std::complex<float> *pd = mArg._pd();
 
       if (pd == m.get()) {
@@ -90,12 +90,12 @@ CVM_NAMESPACE_BEG
       }
 
       CMEXPC(&nM, pd, pd == m.get() ? mTmp._pld() : mArg._pldm(), &tol, &nR, &nI, &nQ, &nJ);
-      basic_cvector<float, std::complex<float> > vR(nR);
+      basic_cvector<float, std::complex<float>>  vR(nR);
       basic_array<tint, tint> vI(nI);
 
       const tint ishem = 1;
       const tint lwork = 64 * nM;
-      basic_cvector<float, std::complex<float> > work(lwork);
+      basic_cvector<float, std::complex<float>>  work(lwork);
 
       CMEXP(&nM, pd, pd == m.get() ? mTmp._pld() : mArg._pldm(), m, m._pld(),
             vR, vI, &nR, &nI, &nQ, &nJ, &ishem, work, &lwork);
@@ -103,15 +103,15 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __exp_symm<basic_schmatrix<double, std::complex<double> >, double>
-            (basic_schmatrix<double, std::complex<double> > &m,
-             const basic_schmatrix<double, std::complex<double> > &mArg,
-             double tol) throw(cvmexception) {
+    __exp_symm<basic_schmatrix<double, std::complex<double>> , double>
+            (basic_schmatrix<double, std::complex<double>>  &m,
+             const basic_schmatrix<double, std::complex<double>>  &mArg,
+             double tol) {
       tint nR = 0, nI = 0, nQ = 0, nJ = 0;
       const tint nM = m.msize();
       _check_ne(CVM_SIZESMISMATCH, nM, mArg.msize());
 
-      basic_schmatrix<double, std::complex<double> > mTmp;
+      basic_schmatrix<double, std::complex<double>>  mTmp;
       const std::complex<double> *pd = mArg._pd();
 
       if (pd == m.get()) {
@@ -120,12 +120,12 @@ CVM_NAMESPACE_BEG
       }
 
       ZMEXPC(&nM, pd, pd == m.get() ? mTmp._pld() : mArg._pldm(), &tol, &nR, &nI, &nQ, &nJ);
-      basic_cvector<double, std::complex<double> > vR(nR);
+      basic_cvector<double, std::complex<double>>  vR(nR);
       basic_array<tint, tint> vI(nI);
 
       const tint ishem = 1;
       const tint lwork = 64 * nM;
-      basic_cvector<double, std::complex<double> > work(lwork);
+      basic_cvector<double, std::complex<double>>  work(lwork);
 
       ZMEXP(&nM, pd, pd == m.get() ? mTmp._pld() : mArg._pldm(), m, m._pld(),
             vR, vI, &nR, &nI, &nQ, &nJ, &ishem, work, &lwork);
@@ -133,13 +133,13 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __cond_num<float, basic_scmatrix<float, std::complex<float> > >
-            (const basic_scmatrix<float, std::complex<float> > &mArg, float &dCond) throw(cvmexception) {
+    __cond_num<float, basic_scmatrix<float, std::complex<float>>  >
+            (const basic_scmatrix<float, std::complex<float>>  &mArg, float &dCond) {
       dCond = 0.F;
       const tint mnM = mArg.msize();
       tint nOutInfo = 0;
-      basic_scmatrix<float, std::complex<float> > mA(mArg);
-      basic_cvector<float, std::complex<float> > work(mnM * 2);
+      basic_scmatrix<float, std::complex<float>>  mA(mArg);
+      basic_cvector<float, std::complex<float>>  work(mnM * 2);
       basic_rvector<float> rwork(mnM * 2);
       basic_array<tint, tint> iwork(mnM);
 
@@ -158,13 +158,13 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __cond_num<double, basic_scmatrix<double, std::complex<double> > >
-            (const basic_scmatrix<double, std::complex<double> > &mArg, double &dCond) throw(cvmexception) {
+    __cond_num<double, basic_scmatrix<double, std::complex<double>>  >
+            (const basic_scmatrix<double, std::complex<double>>  &mArg, double &dCond) {
       dCond = 0.;
       const tint mnM = mArg.msize();
       tint nOutInfo = 0;
-      basic_scmatrix<double, std::complex<double> > mA(mArg);
-      basic_cvector<double, std::complex<double> > work(mnM * 2);
+      basic_scmatrix<double, std::complex<double>>  mA(mArg);
+      basic_cvector<double, std::complex<double>>  work(mnM * 2);
       basic_rvector<double> rwork(mnM * 2);
       basic_array<tint, tint> iwork(mnM);
 
@@ -183,17 +183,17 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __inv<basic_scmatrix<float, std::complex<float> > >
-            (basic_scmatrix<float, std::complex<float> > &m,
-             const basic_scmatrix<float, std::complex<float> > &mArg) throw(cvmexception) {
+    __inv<basic_scmatrix<float, std::complex<float>>  >
+            (basic_scmatrix<float, std::complex<float>>  &m,
+             const basic_scmatrix<float, std::complex<float>>  &mArg) {
       const tint mnM = m.msize();
       _check_ne(CVM_SIZESMISMATCH, mnM, mArg.msize());
 
       if (mnM == 1) {
-        if (std::abs(mArg(CVM0, CVM0)) <= basic_cvmMachMin<float>()) {
+        if (std::abs(mArg(0, 0)) <= basic_cvmMachMin<float>()) {
           throw cvmexception(CVM_SINGULARMATRIX, 1);
         }
-        m(CVM0, CVM0) = 1.F / mArg(CVM0, CVM0);
+        m(0, 0) = 1.F / mArg(0, 0);
       } else {
         basic_array<tint, tint> nPivots(mnM);
         m.low_up(mArg, nPivots);
@@ -204,7 +204,7 @@ CVM_NAMESPACE_BEG
         CGETRI(&mnM, m, m._pld(), nPivots, &dWork, &lWork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         lWork = static_cast<tint>(dWork.real());
-        basic_cvector<float, std::complex<float> > vWork(lWork);
+        basic_cvector<float, std::complex<float>>  vWork(lWork);
 
         CGETRI(&mnM, m, m._pld(), nPivots, vWork, &lWork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
@@ -214,17 +214,17 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __inv<basic_scmatrix<double, std::complex<double> > >
-            (basic_scmatrix<double, std::complex<double> > &m,
-             const basic_scmatrix<double, std::complex<double> > &mArg) throw(cvmexception) {
+    __inv<basic_scmatrix<double, std::complex<double>>  >
+            (basic_scmatrix<double, std::complex<double>>  &m,
+             const basic_scmatrix<double, std::complex<double>>  &mArg) {
       const tint mnM = m.msize();
       _check_ne(CVM_SIZESMISMATCH, mnM, mArg.msize());
 
       if (mnM == 1) {
-        if (std::abs(mArg(CVM0, CVM0)) <= basic_cvmMachMin<double>()) {
+        if (std::abs(mArg(0, 0)) <= basic_cvmMachMin<double>()) {
           throw cvmexception(CVM_SINGULARMATRIX, 1);
         }
-        m(CVM0, CVM0) = 1. / mArg(CVM0, CVM0);
+        m(0, 0) = 1. / mArg(0, 0);
       } else {
         basic_array<tint, tint> nPivots(mnM);
         m.low_up(mArg, nPivots);
@@ -234,7 +234,7 @@ CVM_NAMESPACE_BEG
         std::complex<double> dWork;
         ZGETRI(&mnM, m, m._pld(), nPivots, &dWork, &lWork, &nOutInfo);
         lWork = static_cast<tint>(dWork.real());
-        basic_cvector<double, std::complex<double> > vWork(lWork);
+        basic_cvector<double, std::complex<double>>  vWork(lWork);
 
         ZGETRI(&mnM, m, m._pld(), nPivots, vWork, &lWork, &nOutInfo);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
@@ -244,17 +244,17 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __inv<basic_schmatrix<float, std::complex<float> > >
-            (basic_schmatrix<float, std::complex<float> > &m,
-             const basic_schmatrix<float, std::complex<float> > &mArg) throw(cvmexception) {
+    __inv<basic_schmatrix<float, std::complex<float>>  >
+            (basic_schmatrix<float, std::complex<float>>  &m,
+             const basic_schmatrix<float, std::complex<float>>  &mArg) {
       const tint nM = m.msize();
       _check_ne(CVM_SIZESMISMATCH, nM, mArg.msize());
 
       if (nM == 1) {
-        if (std::abs(mArg(CVM0, CVM0)) <= basic_cvmMachMin<float>()) {
+        if (std::abs(mArg(0, 0)) <= basic_cvmMachMin<float>()) {
           throw cvmexception(CVM_SINGULARMATRIX, 1);
         }
-        m.set(CVM0, CVM0, 1.F / mArg(CVM0, CVM0));
+        m.set(0, 0, 1.F / mArg(0, 0));
       } else {
         bool bPositiveDefinite = false;
         tint nOutInfo = 0;
@@ -271,7 +271,7 @@ CVM_NAMESPACE_BEG
           _check_negative(CVM_WRONGMKLARG, nOutInfo);
           _check_positive(CVM_WRONGCHOLESKYFACTOR, nOutInfo);
         } else {
-          basic_cvector<float, std::complex<float> > vWork(nM);
+          basic_cvector<float, std::complex<float>>  vWork(nM);
           CHETRI(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                   1,
@@ -286,17 +286,17 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __inv<basic_schmatrix<double, std::complex<double> > >
-            (basic_schmatrix<double, std::complex<double> > &m,
-             const basic_schmatrix<double, std::complex<double> > &mArg) throw(cvmexception) {
+    __inv<basic_schmatrix<double, std::complex<double>>  >
+            (basic_schmatrix<double, std::complex<double>>  &m,
+             const basic_schmatrix<double, std::complex<double>>  &mArg) {
       const tint nM = m.msize();
       _check_ne(CVM_SIZESMISMATCH, nM, mArg.msize());
 
       if (nM == 1) {
-        if (std::abs(mArg(CVM0, CVM0)) <= basic_cvmMachMin<double>()) {
+        if (std::abs(mArg(0, 0)) <= basic_cvmMachMin<double>()) {
           throw cvmexception(CVM_SINGULARMATRIX, 1);
         }
-        m.set(CVM0, CVM0, 1. / mArg(CVM0, CVM0));
+        m.set(0, 0, 1. / mArg(0, 0));
       } else {
         bool bPositiveDefinite = false;
         tint nOutInfo = 0;
@@ -313,7 +313,7 @@ CVM_NAMESPACE_BEG
           _check_negative(CVM_WRONGMKLARG, nOutInfo);
           _check_positive(CVM_WRONGCHOLESKYFACTOR, nOutInfo);
         } else {
-          basic_cvector<double, std::complex<double> > vWork(nM);
+          basic_cvector<double, std::complex<double>>  vWork(nM);
           ZHETRI(Chars::pU(),
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                   1,
@@ -329,23 +329,23 @@ CVM_NAMESPACE_BEG
 //! @cond SPECIALIZATIONS
     template<>
     CVM_API void
-    __polynom<std::complex<float>, basic_cvector<float, std::complex<float> > >
+    __polynom<std::complex<float>, basic_cvector<float, std::complex<float>>  >
             (std::complex<float> *mpd, tint ldP,
              tint mnM,
              const std::complex<float> *pd, tint ldA,
-             const basic_cvector<float, std::complex<float> > &v) {
-      basic_cvector<float, std::complex<float> > vWork(NPOLY(&mnM, v._psize()));
+             const basic_cvector<float, std::complex<float>>  &v) {
+      basic_cvector<float, std::complex<float>>  vWork(NPOLY(&mnM, v._psize()));
       CPOLY(&mnM, pd, &ldA, v._psize(), v, mpd, &ldP, vWork);
     }
 
     template<>
     CVM_API void
-    __polynom<std::complex<double>, basic_cvector<double, std::complex<double> > >
+    __polynom<std::complex<double>, basic_cvector<double, std::complex<double>>  >
             (std::complex<double> *mpd, tint ldP,
              tint mnM,
              const std::complex<double> *pd, tint ldA,
-             const basic_cvector<double, std::complex<double> > &v) {
-      basic_cvector<double, std::complex<double> > vWork(NPOLY(&mnM, v._psize()));
+             const basic_cvector<double, std::complex<double>>  &v) {
+      basic_cvector<double, std::complex<double>>  vWork(NPOLY(&mnM, v._psize()));
       ZPOLY(&mnM, pd, &ldA, v._psize(), v, mpd, &ldP, vWork);
     }
 
@@ -354,26 +354,26 @@ CVM_NAMESPACE_BEG
 // in case of vectors passed increment MUST be 1 (since those methods assume matrices)
     template<>
     CVM_API void
-    __solve<float, std::complex<float>, basic_scmatrix<float, std::complex<float> > >
-            (const basic_scmatrix<float, std::complex<float> > &m,
+    __solve<float, std::complex<float>, basic_scmatrix<float, std::complex<float>>  >
+            (const basic_scmatrix<float, std::complex<float>>  &m,
              tint nrhs,
              const std::complex<float> *pB, tint ldB,
              std::complex<float> *pX, tint ldX,
              float &dErr,
-             const std::complex<float> *pLU, const tint *pPivots, int transp_mode) throw(cvmexception) {
+             const std::complex<float> *pLU, const tint *pPivots, int transp_mode) {
       const tint mnM = m.msize();
       const bool bGivenLU = pLU != nullptr && pPivots != nullptr;
       tint nOutInfo = 0;
       basic_rvector<float> vFerr(nrhs);
       basic_rvector<float> vBerr(nrhs);
-      basic_cvector<float, std::complex<float> > vWork(2 * mnM);
+      basic_cvector<float, std::complex<float>>  vWork(2 * mnM);
       basic_rvector<float> rWork(mnM);
       basic_array<tint, tint> nPivots(mnM);
       // 0 - none, 1 - just transposed, 2 - conjugated
       const char *transp = transp_mode == 0 ? Chars::pN() : (transp_mode == 1 ? Chars::pT() : Chars::pC());
 
       if (bGivenLU) nPivots.assign(pPivots);
-      basic_scmatrix<float, std::complex<float> > mLU(mnM);
+      basic_scmatrix<float, std::complex<float>>  mLU(mnM);
       if (bGivenLU) {
         mLU.assign(pLU);
       } else {
@@ -405,26 +405,26 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __solve<double, std::complex<double>, basic_scmatrix<double, std::complex<double> > >
-            (const basic_scmatrix<double, std::complex<double> > &m,
+    __solve<double, std::complex<double>, basic_scmatrix<double, std::complex<double>>  >
+            (const basic_scmatrix<double, std::complex<double>>  &m,
              tint nrhs,
              const std::complex<double> *pB, tint ldB,
              std::complex<double> *pX, tint ldX,
              double &dErr,
-             const std::complex<double> *pLU, const tint *pPivots, int transp_mode) throw(cvmexception) {
+             const std::complex<double> *pLU, const tint *pPivots, int transp_mode) {
       const tint mnM = m.msize();
       const bool bGivenLU = pLU != nullptr && pPivots != nullptr;
       tint nOutInfo = 0;
       basic_rvector<double> vBerr(nrhs);
       basic_rvector<double> vFerr(nrhs);
-      basic_cvector<double, std::complex<double> > vWork(2 * mnM);
+      basic_cvector<double, std::complex<double>>  vWork(2 * mnM);
       basic_rvector<double> rWork(mnM);
       basic_array<tint, tint> nPivots(mnM);
       // 0 - none, 1 - just transposed, 2 - conjugated
       const char *transp = transp_mode == 0 ? Chars::pN() : (transp_mode == 1 ? Chars::pT() : Chars::pC());
 
       if (bGivenLU) nPivots.assign(pPivots);
-      basic_scmatrix<double, std::complex<double> > mLU(mnM);
+      basic_scmatrix<double, std::complex<double>>  mLU(mnM);
       if (bGivenLU) {
         mLU.assign(pLU);
       } else {
@@ -456,13 +456,13 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __solve<float, std::complex<float>, basic_scbmatrix<float, std::complex<float> > >
-            (const basic_scbmatrix<float, std::complex<float> > &m,
+    __solve<float, std::complex<float>, basic_scbmatrix<float, std::complex<float>>  >
+            (const basic_scbmatrix<float, std::complex<float>>  &m,
              tint nrhs,
              const std::complex<float> *pB, tint ldB,
              std::complex<float> *pX, tint ldX,
              float &dErr,
-             const std::complex<float> *pLU, const tint *pPivots, int transp_mode) throw(cvmexception) {
+             const std::complex<float> *pLU, const tint *pPivots, int transp_mode) {
       const tint mnM = m.msize();
       const tint mnKL = m.lsize();
       const tint mnKU = m.usize();
@@ -470,14 +470,14 @@ CVM_NAMESPACE_BEG
       tint nOutInfo = 0;
       basic_rvector<float> vFerr(nrhs);
       basic_rvector<float> vBerr(nrhs);
-      basic_cvector<float, std::complex<float> > vWork(2 * mnM);
+      basic_cvector<float, std::complex<float>>  vWork(2 * mnM);
       basic_rvector<float> rWork(mnM);
       basic_array<tint, tint> nPivots(mnM);
       // 0 - none, 1 - just transposed, 2 - conjugated
       const char *transp = transp_mode == 0 ? Chars::pN() : (transp_mode == 1 ? Chars::pT() : Chars::pC());
 
       if (bGivenLU) nPivots.assign(pPivots);
-      basic_scbmatrix<float, std::complex<float> > mLU(mnM, mnKL, mnKL + mnKU);
+      basic_scbmatrix<float, std::complex<float>>  mLU(mnM, mnKL, mnKL + mnKU);
       if (bGivenLU) {
         mLU.assign(pLU);
       } else {
@@ -509,13 +509,13 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __solve<double, std::complex<double>, basic_scbmatrix<double, std::complex<double> > >
-            (const basic_scbmatrix<double, std::complex<double> > &m,
+    __solve<double, std::complex<double>, basic_scbmatrix<double, std::complex<double>>  >
+            (const basic_scbmatrix<double, std::complex<double>>  &m,
              tint nrhs,
              const std::complex<double> *pB, tint ldB,
              std::complex<double> *pX, tint ldX,
              double &dErr,
-             const std::complex<double> *pLU, const tint *pPivots, int transp_mode) throw(cvmexception) {
+             const std::complex<double> *pLU, const tint *pPivots, int transp_mode) {
       const tint mnM = m.msize();
       const tint mnKL = m.lsize();
       const tint mnKU = m.usize();
@@ -523,14 +523,14 @@ CVM_NAMESPACE_BEG
       tint nOutInfo = 0;
       basic_rvector<double> vFerr(nrhs);
       basic_rvector<double> vBerr(nrhs);
-      basic_cvector<double, std::complex<double> > vWork(2 * mnM);
+      basic_cvector<double, std::complex<double>>  vWork(2 * mnM);
       basic_rvector<double> rWork(mnM);
       basic_array<tint, tint> nPivots(mnM);
       // 0 - none, 1 - just transposed, 2 - conjugated
       const char *transp = transp_mode == 0 ? Chars::pN() : (transp_mode == 1 ? Chars::pT() : Chars::pC());
 
       if (bGivenLU) nPivots.assign(pPivots);
-      basic_scbmatrix<double, std::complex<double> > mLU(mnM, mnKL, mnKL + mnKU);
+      basic_scbmatrix<double, std::complex<double>>  mLU(mnM, mnKL, mnKL + mnKU);
       if (bGivenLU) {
         mLU.assign(pLU);
       } else {
@@ -565,13 +565,13 @@ CVM_NAMESPACE_BEG
 // don't forget to make pX equal to pB before call
     template<>
     CVM_API void
-    __solve<float, std::complex<float>, basic_schmatrix<float, std::complex<float> > >
-            (const basic_schmatrix<float, std::complex<float> > &m,
+    __solve<float, std::complex<float>, basic_schmatrix<float, std::complex<float>>  >
+            (const basic_schmatrix<float, std::complex<float>>  &m,
              tint nrhs,
              const std::complex<float> *pB, tint ldB,
              std::complex<float> *pX, tint ldX,
              float &dErr,
-             const std::complex<float> *pLU, const tint *pPivots, int) throw(cvmexception) {
+             const std::complex<float> *pLU, const tint *pPivots, int) {
       const tint nM = m.msize();
       const bool bCholeskyGiven = pLU != nullptr && pPivots == nullptr;        // no pivots means Cholesky
       const bool bBunchKaufmanGiven = pLU != nullptr && pPivots != nullptr;
@@ -581,12 +581,12 @@ CVM_NAMESPACE_BEG
       tint nOutInfo = 0;
       basic_rvector<float> vBerr(nrhs);
       basic_rvector<float> vFerr(nrhs);
-      basic_cvector<float, std::complex<float> > vWork(2 * nM);
+      basic_cvector<float, std::complex<float>>  vWork(2 * nM);
       basic_rvector<float> vrWork(nM);
       basic_array<tint, tint> nPivots(nM);
 
       if (bBunchKaufmanGiven) nPivots.assign(pPivots);
-      basic_schmatrix<float, std::complex<float> > mLU(nM);
+      basic_schmatrix<float, std::complex<float>>  mLU(nM);
       if (bCalc) {
         mLU._factorize(m, nPivots, bPositiveDefinite);
       } else {
@@ -642,13 +642,13 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __solve<double, std::complex<double>, basic_schmatrix<double, std::complex<double> > >
-            (const basic_schmatrix<double, std::complex<double> > &m,
+    __solve<double, std::complex<double>, basic_schmatrix<double, std::complex<double>>  >
+            (const basic_schmatrix<double, std::complex<double>>  &m,
              tint nrhs,
              const std::complex<double> *pB, tint ldB,
              std::complex<double> *pX, tint ldX,
              double &dErr,
-             const std::complex<double> *pLU, const tint *pPivots, int) throw(cvmexception) {
+             const std::complex<double> *pLU, const tint *pPivots, int) {
       const tint nM = m.msize();
       const bool bCholeskyGiven = pLU != nullptr && pPivots == nullptr;        // no pivots means Cholesky
       const bool bBunchKaufmanGiven = pLU != nullptr && pPivots != nullptr;
@@ -658,12 +658,12 @@ CVM_NAMESPACE_BEG
       tint nOutInfo = 0;
       basic_rvector<double> vBerr(nrhs);
       basic_rvector<double> vFerr(nrhs);
-      basic_cvector<double, std::complex<double> > vWork(2 * nM);
+      basic_cvector<double, std::complex<double>>  vWork(2 * nM);
       basic_rvector<double> vrWork(nM);
       basic_array<tint, tint> nPivots(nM);
 
       if (bBunchKaufmanGiven) nPivots.assign(pPivots);
-      basic_schmatrix<double, std::complex<double> > mLU(nM);
+      basic_schmatrix<double, std::complex<double>>  mLU(nM);
       if (bCalc) {
         mLU._factorize(m, nPivots, bPositiveDefinite);
       } else {

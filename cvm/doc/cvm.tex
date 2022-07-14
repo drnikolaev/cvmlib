@@ -95,7 +95,7 @@ goto name{#2}%
 \newcommand{\conj}{\operatorname{conj}}
 \newcommand{\floor}{\operatorname{floor}}
 \newcommand{\pinv}{\operatorname{pinv}}
-\newcommand{\CVMVERSION}{8.2\xspace}
+\newcommand{\CVMVERSION}{9.0\xspace}
 %\newcommand{\MKLVERSION}{11.1 Update~1\xspace}
 \newcommand{\MKLVERSION}{11.3}
 %\newcommand{\ACMLVERSION}{4.4.0\xspace}
@@ -138,7 +138,7 @@ CVM%
 C++ class library%
 \footnote{\,This document describes version \CVMVERSION. 
 Copyright
-\copyright{ } Sergei Nikolaev, 1992--2016,
+\copyright{ } Sergei Nikolaev, 1992--2022,
 \URL{http://cvmlib.com}{http://cvmlib.com}} encapsulates
 concepts of vector and different kinds of matrices including square,
 band, symmetric and hermitian ones, in Euclidean space of real and
@@ -319,8 +319,7 @@ library distribution has the following directory structure.
 This source code
 is the part of the library: it implements some
 numerical algorithms.
-\item \verb"lib" is the directory for 32-bit libraries.
-\item \verb"lib64" is the directory for 64-bit libraries.
+\item \verb"lib" is the directory for libraries.
 \item \verb"test" contains regression test code and projects.
 \item \verb"src" contains source code of the library
 along with \verb"cvm.h" and \verb"cfun.h" header files.
@@ -420,7 +419,7 @@ compiler (\verb'gfortran' is the default)
 (\verb'g++' is the default)
 \item \verb'MKL=1' instructs to use Intel~MKL library (it uses
   native BLAS and LAPACK libraries by default)
-\item \verb'MKL_PATH=path' specifies the directory where the~MKL is installed to.
+%\item \verb'MKL_PATH=path' specifies the directory where the~MKL is installed to.
 It's set to \verb'/opt/intel/mkl/lib' by default.
 \item \verb'EM64T=1' instructs to build EM64T version of the library.
 \item \verb'ILP64=1' instructs to build INT64-based version of the library (EM64T must be turned on).

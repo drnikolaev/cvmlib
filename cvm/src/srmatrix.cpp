@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2016
+//          Copyright Sergei Nikolaev 1992-2022
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -16,7 +16,7 @@ CVM_API void
 __exp<basic_srmatrix<float>, float>
     (basic_srmatrix<float>& m,
     const basic_srmatrix<float>& mArg,
-    float tol) throw(cvmexception)
+    float tol)
 {
     tint nR = 0, nI = 0, nQ = 0, nJ = 0;
     const tint nM = m.msize();
@@ -48,7 +48,7 @@ CVM_API void
 __exp<basic_srmatrix<double>, double>
     (basic_srmatrix<double>& m,
     const basic_srmatrix<double>& mArg,
-    double tol) throw(cvmexception)
+    double tol)
 {
     tint nR = 0, nI = 0, nQ = 0, nJ = 0;
     const tint nM = m.msize();
@@ -80,7 +80,7 @@ CVM_API void
 __exp_symm<basic_srsmatrix<float>, float>
     (basic_srsmatrix<float>& m, 
     const basic_srsmatrix<float>& mArg, 
-    float tol) throw(cvmexception)
+    float tol)
 {
     tint nR = 0, nI = 0, nQ = 0, nJ = 0;
     const tint nM = m.msize();
@@ -112,7 +112,7 @@ CVM_API void
 __exp_symm<basic_srsmatrix<double>, double>
     (basic_srsmatrix<double>& m,
     const basic_srsmatrix<double>& mArg,
-    double tol) throw(cvmexception)
+    double tol)
 {
     tint nR = 0, nI = 0, nQ = 0, nJ = 0;
     const tint nM = m.msize();
@@ -141,8 +141,8 @@ __exp_symm<basic_srsmatrix<double>, double>
 
 template<>
 CVM_API void
-__cond_num<float, basic_srmatrix<float> >
-    (const basic_srmatrix<float>& mArg, float& dCond) throw(cvmexception)
+__cond_num<float, basic_srmatrix<float>>
+    (const basic_srmatrix<float>& mArg, float& dCond)
 {
     dCond = 0.F;
     const tint mnM = mArg.msize();
@@ -166,8 +166,8 @@ __cond_num<float, basic_srmatrix<float> >
 
 template<>
 CVM_API void
-__cond_num<double, basic_srmatrix<double> >
-    (const basic_srmatrix<double>& mArg, double& dCond) throw(cvmexception)
+__cond_num<double, basic_srmatrix<double>>
+    (const basic_srmatrix<double>& mArg, double& dCond)
 {
     dCond = 0.;
     const tint mnM = mArg.msize();
@@ -191,18 +191,18 @@ __cond_num<double, basic_srmatrix<double> >
 
 template<>
 CVM_API void
-__inv<basic_srmatrix<float> >
+__inv<basic_srmatrix<float>>
     (basic_srmatrix<float>& m,
-    const basic_srmatrix<float>& mArg) throw(cvmexception)
+    const basic_srmatrix<float>& mArg)
 {
     const tint mnM = m.msize();
     _check_ne(CVM_SIZESMISMATCH, mnM, mArg.msize());
     if (mnM == 1)
     {
-        if (std::abs(mArg(CVM0,CVM0)) <= basic_cvmMachMin<float>()) {
+        if (std::abs(mArg(0,0)) <= basic_cvmMachMin<float>()) {
             throw cvmexception(CVM_SINGULARMATRIX, 1);
         }
-        m(CVM0,CVM0) = 1.F / mArg(CVM0,CVM0);
+        m(0,0) = 1.F / mArg(0,0);
     }
     else
     {
@@ -225,19 +225,19 @@ __inv<basic_srmatrix<float> >
 
 template<>
 CVM_API void
-__inv<basic_srmatrix<double> >
+__inv<basic_srmatrix<double>>
     (basic_srmatrix<double>& m,
-    const basic_srmatrix<double>& mArg) throw(cvmexception)
+    const basic_srmatrix<double>& mArg)
 {
     const tint mnM = m.msize();
     _check_ne(CVM_SIZESMISMATCH, mnM, mArg.msize());
 
     if (mnM == 1)
     {
-        if (std::abs(mArg(CVM0,CVM0)) <= basic_cvmMachMin<double>()) {
+        if (std::abs(mArg(0,0)) <= basic_cvmMachMin<double>()) {
             throw cvmexception(CVM_SINGULARMATRIX, 1);
         }
-        m(CVM0,CVM0) = 1. / mArg(CVM0,CVM0);
+        m(0,0) = 1. / mArg(0,0);
     }
     else
     {
@@ -260,7 +260,7 @@ __inv<basic_srmatrix<double> >
 
 template<>
 CVM_API void
-__polynom<float, basic_rvector<float> >
+__polynom<float, basic_rvector<float>>
     (float* mpd, tint ldP, tint mnM, const float* pd, tint ldA, const basic_rvector<float>& v)
 {
     basic_rvector<float> vWork(NPOLY(&mnM, v._psize()));
@@ -269,7 +269,7 @@ __polynom<float, basic_rvector<float> >
 
 template<>
 CVM_API void
-__polynom<double, basic_rvector<double> >
+__polynom<double, basic_rvector<double>>
     (double* mpd, tint ldP, tint mnM, const double* pd, tint ldA, const basic_rvector<double>& v)
 {
     basic_rvector<double> vWork(NPOLY(&mnM, v._psize()));
@@ -280,13 +280,13 @@ __polynom<double, basic_rvector<double> >
 // don't forget to make pX equal to pB before call
 template<>
 CVM_API void
-__solve<float, float, basic_srmatrix<float> >
+__solve<float, float, basic_srmatrix<float>>
     (const basic_srmatrix<float>& m,
     tint nrhs,
     const float* pB, tint ldB, 
     float* pX, tint ldX,
     float& dErr,
-    const float* pLU, const tint* pPivots, int transp_mode) throw(cvmexception)
+    const float* pLU, const tint* pPivots, int transp_mode)
 {
     const tint mnM = m.msize();
     const bool bGivenLU = pLU != nullptr && pPivots != nullptr;
@@ -335,13 +335,13 @@ __solve<float, float, basic_srmatrix<float> >
 
 template<>
 CVM_API void
-__solve<double, double, basic_srmatrix<double> >
+__solve<double, double, basic_srmatrix<double>>
     (const basic_srmatrix<double>& m,
     tint nrhs,
     const double* pB, tint ldB,
     double* pX, tint ldX,
     double& dErr,
-    const double* pLU, const tint* pPivots, int transp_mode) throw(cvmexception)
+    const double* pLU, const tint* pPivots, int transp_mode)
 {
     const tint mnM = m.msize();
     const bool bGivenLU = pLU != nullptr && pPivots != nullptr;
@@ -390,13 +390,13 @@ __solve<double, double, basic_srmatrix<double> >
 
 template<>
 CVM_API void
-__solve<float, float, basic_srbmatrix<float> >
+__solve<float, float, basic_srbmatrix<float>>
     (const basic_srbmatrix<float>& m,
     tint nrhs,
     const float* pB, tint ldB,
     float* pX, tint ldX,
     float& dErr, 
-    const float* pLU, const tint* pPivots, int transp_mode) throw(cvmexception)
+    const float* pLU, const tint* pPivots, int transp_mode)
 {
     const tint mnM = m.msize();
     const tint mnKL = m.lsize();
@@ -447,13 +447,13 @@ __solve<float, float, basic_srbmatrix<float> >
 
 template<>
 CVM_API void
-__solve<double, double, basic_srbmatrix<double> >
+__solve<double, double, basic_srbmatrix<double>>
     (const basic_srbmatrix<double>& m,
     tint nrhs,
     const double* pB, tint ldB,
     double* pX, tint ldX,
     double& dErr,
-    const double* pLU, const tint* pPivots, int transp_mode) throw(cvmexception)
+    const double* pLU, const tint* pPivots, int transp_mode)
 {
     const tint mnM = m.msize();
     const tint mnKL = m.lsize();
@@ -506,13 +506,13 @@ __solve<double, double, basic_srbmatrix<double> >
 // don't forget to make pX equal to pB before call
 template<>
 CVM_API void
-__solve<float, float, basic_srsmatrix<float> >
+__solve<float, float, basic_srsmatrix<float>>
     (const basic_srsmatrix<float>& m,
     tint nrhs,
     const float* pB, tint ldB,
     float* pX, tint ldX,
     float& dErr,
-    const float* pLU, const tint* pPivots, int) throw(cvmexception)
+    const float* pLU, const tint* pPivots, int)
 {
     const tint nM = m.msize();
     const bool bCholeskyGiven = pLU != nullptr && pPivots == nullptr;        // no pivots means Cholesky
@@ -590,13 +590,13 @@ __solve<float, float, basic_srsmatrix<float> >
 
 template<>
 CVM_API void
-__solve<double, double, basic_srsmatrix<double> >
+__solve<double, double, basic_srsmatrix<double>>
     (const basic_srsmatrix<double>& m,
     tint nrhs,
     const double* pB, tint ldB,
     double* pX, tint ldX,
     double& dErr,
-    const double* pLU, const tint* pPivots, int) throw(cvmexception)
+    const double* pLU, const tint* pPivots, int)
 {
     const tint nM = m.msize();
     const bool bCholeskyGiven = pLU != nullptr && pPivots == nullptr;        // no pivots means Cholesky
@@ -674,19 +674,19 @@ __solve<double, double, basic_srsmatrix<double> >
 
 template<>
 CVM_API void
-__inv<basic_srsmatrix<float> >
+__inv<basic_srsmatrix<float>>
     (basic_srsmatrix<float>& m,
-    const basic_srsmatrix<float>& mArg) throw(cvmexception)
+    const basic_srsmatrix<float>& mArg)
 {
     const tint nM = m.msize();
     _check_ne(CVM_SIZESMISMATCH, nM, mArg.msize());
 
     if (nM == 1)
     {
-        if (std::abs(mArg(CVM0,CVM0)) <= basic_cvmMachMin<float>()) {
+        if (std::abs(mArg(0,0)) <= basic_cvmMachMin<float>()) {
             throw cvmexception(CVM_SINGULARMATRIX, 1);
         }
-        m.set(CVM0, CVM0, 1.F / mArg(CVM0,CVM0));
+        m.set(0, 0, 1.F / mArg(0,0));
     }
     else
     {
@@ -723,19 +723,19 @@ __inv<basic_srsmatrix<float> >
 
 template<>
 CVM_API void
-__inv<basic_srsmatrix<double> >
+__inv<basic_srsmatrix<double>>
     (basic_srsmatrix<double>& m,
-    const basic_srsmatrix<double>& mArg) throw(cvmexception)
+    const basic_srsmatrix<double>& mArg)
 {
     const tint nM = m.msize();
     _check_ne(CVM_SIZESMISMATCH, nM, mArg.msize());
 
     if (nM == 1)
     {
-        if (std::abs(mArg(CVM0,CVM0)) <= basic_cvmMachMin<double>()) {
+        if (std::abs(mArg(0,0)) <= basic_cvmMachMin<double>()) {
             throw cvmexception(CVM_SINGULARMATRIX, 1);
         }
-        m.set(CVM0, CVM0, 1. / mArg(CVM0,CVM0));
+        m.set(0, 0, 1. / mArg(0,0));
     }
     else
     {

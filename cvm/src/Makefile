@@ -15,10 +15,6 @@ ifdef CVM_USE_POOL_MANAGER
   COMMON_FLAGS += -DCVM_USE_POOL_MANAGER
 endif
 
-ifdef CVM_ZERO_BASED
-  COMMON_FLAGS += -DCVM_ZERO_BASED
-endif
-
 include $(INC_PATH)/libs.inc
 # gfortran must be the las one starting from gcc 4.6.1
 ifndef IFORT
@@ -44,7 +40,7 @@ endif
 
 include $(INC_PATH)/suffixes.inc
 
-FLIBDIR=../ftn
+FLIBDIR=./ftn
 FLIB      =$(call concat,libftn,$(NF),$(NM),$(NE),$(NI),.a)
 DFLIB     =$(call concat,libftn,$(NF),$(NM),$(NE),$(NI),_debug.a)
 
@@ -85,7 +81,7 @@ ifdef CVM_STLPORT
   DLIBS += -lstlportg
 endif
 
-COMMON_FLAGS += -std=c++0x
+COMMON_FLAGS += -std=c++17
 
 CFLAGS    =$(COMMON_FLAGS) -O3
 CFLAGSD   =$(COMMON_FLAGS) -g -DDEBUG
