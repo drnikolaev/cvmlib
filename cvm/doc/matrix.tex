@@ -27,7 +27,7 @@ Function%
 \begin{verbatim}
 int Matrix<TR,TC>::msize () const;
 \end{verbatim}
-returns  number of rows of  calling matrix.
+returns  number of rows of a calling matrix.
 Function is \emph{inherited} in all matrix classes
 of the library:
 \GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
@@ -56,7 +56,7 @@ Function%
 \begin{verbatim}
 int Matrix<TR,TC>::nsize () const;
 \end{verbatim}
-returns  number of columns of  calling matrix.
+returns  number of columns of a calling matrix.
 Function is \emph{inherited} in all matrix classes
 of the library:
 \GOT{rmatrix}{rmatrix},   \GOT{cmatrix}{cmatrix},
@@ -86,7 +86,7 @@ Function%
 \begin{verbatim}
 int Matrix<TR,TC>::ld () const;
 \end{verbatim}
-returns  leading dimension of  calling matrix.
+returns  leading dimension of a calling matrix.
 Leading dimension is equal to  number of rows
 for every matrix except submatrices. For submatrices
 it's equal to  number of rows of parent matrix.
@@ -119,7 +119,7 @@ Function%
 \begin{verbatim}
 int Matrix<TR,TC>::rowofmax () const;
 \end{verbatim}
-returns  \Based number of calling matrix row
+returns  \Based number of a calling matrix row
 where the element with the maximum absolute value is located.
 Function is \emph{inherited}%
 \footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
@@ -157,7 +157,7 @@ Function%
 \begin{verbatim}
 int Matrix<TR,TC>::rowofmin () const;
 \end{verbatim}
-returns  \Based number of calling matrix row
+returns  \Based number of a calling matrix row
 where the element with the minimum absolute value is located.
 Function is \emph{inherited}%
 \footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
@@ -195,7 +195,7 @@ Function%
 \begin{verbatim}
 int Matrix<TR,TC>::colofmax () const;
 \end{verbatim}
-returns  \Based number of calling matrix column 
+returns  \Based number of a calling matrix column 
 where the element with the maximum absolute value is located.
 Function is \emph{inherited}%
 \footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
@@ -232,7 +232,7 @@ Function%
 \begin{verbatim}
 int Matrix<TR,TC>::colofmin () const;
 \end{verbatim}
-returns  \Based number of  calling matrix column 
+returns  \Based number of a calling matrix column 
 where the element with the minimum absolute value is located.
 Function is \emph{inherited}%
 \footnote{Calls \GO{virtual function}{SubSectionPolymorphism} inside}
@@ -270,7 +270,7 @@ Virtual function%
 \begin{verbatim}
 virtual TR Matrix<TR,TC>::norm1 () const;
 \end{verbatim}
-returns  1-norm of  calling matrix that is defined as
+returns  1-norm of a calling matrix that is defined as
 \begin{equation*}
 {\|A\|}_{1}=\max_{j=1,\dots,n} \sum_{i=1}^{m} |a_{ij}|,
 \end{equation*}

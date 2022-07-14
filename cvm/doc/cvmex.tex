@@ -47,7 +47,7 @@ Exception 2: Out of range
 Function%
 \pdfdest name {cvmexception.what} fit
 \begin{verbatim}
-virtual const char* cvmexception::what () const throw();
+virtual const char* cvmexception::what () const noexcept;
 \end{verbatim}
 returns a string describing an exception happened.
 This function overrides \Code{std::ex\-cep\-ti\-on::what()}.

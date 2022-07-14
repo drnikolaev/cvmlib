@@ -9,14 +9,14 @@
 \verb"    ComplexArray& "\GOT{operator *=}{ComplexArray.operator *= (tcomplex)}\verb" (const tcomplex cMult);"\\
 \verb"    ComplexArray& "\GOT{operator /=}{ComplexArray.operator /= (tcomplex)}\verb" (const tcomplex cDiv);"\\
 \verb"    ComplexArray& "\GOT{assign}{ComplexArray.assign (*,*,int,int)}\verb" (const treal* pRe, const treal* pIm,"\\
-\verb"                          int nReIncr = 1, int nImIncr = 1);"\\
+\verb"                          int incr_re = 1, int incr_im = 1);"\\
 \verb"    ComplexArray& "\GOT{assign}{ComplexArray.assign (RealArray&,RealArray&)}\verb" (const RealArray& vRe,"\\
 \verb"                          const RealArray& vIm)"\\
 \verb"                          throw (cvmexception);"\\
 \verb"    ComplexArray& "\GOT{assign\_real}{ComplexArray.assign_real (*,int)}\verb" (const treal* pRe,"\\
-\verb"                               int nReIncr = 1);"\\
+\verb"                               int incr_re = 1);"\\
 \verb"    ComplexArray& "\GOT{assign\_imag}{ComplexArray.assign_imag (*,int)}\verb" (const treal* pIm,"\\
-\verb"                               int nImIncr = 1);"\\
+\verb"                               int incr_im = 1);"\\
 \verb"    ComplexArray& "\GOT{assign\_real}{ComplexArray.assign_real (RealArray&)}\verb" (const RealArray& vRe)"\\
 \verb"                               throw (cvmexception);"\\
 \verb"    ComplexArray& "\GOT{assign\_imag}{ComplexArray.assign_imag (RealArray&)}\verb" (const RealArray& vIm)"\\
@@ -281,13 +281,13 @@ function
 \begin{verbatim}
 ComplexArray&
 ComplexArray::assign (const treal* pRe, const treal* pIm,
-                      int nReIncr = 1, int nImIncr = 1);
+                      int incr_re = 1, int incr_im = 1);
 \end{verbatim}
 assigns to a calling object's real and imaginary parts
 values of arrays pointed to by the parameters
 \verb"pRe" and \verb"pIm" and returns the reference to
 the object it changes. The increments between array elements
-are equal to values of the parameters \verb"nReIncr" and \verb"nImIncr"
+are equal to values of the parameters \verb"incr_re" and \verb"incr_im"
 accordingly.
 The function is inherited in the classes
 \GOT{cvector}{cvector},
@@ -375,13 +375,13 @@ The%
 function
 \begin{verbatim}
 ComplexArray&
-ComplexArray::assign_real (const treal* pRe, int nReIncr = 1);
+ComplexArray::assign_real (const treal* pRe, int incr_re = 1);
 \end{verbatim}
 assigns to a calling object's real part
 a value of an array pointed to by the parameter
 \verb"pRe" and returns the reference to
 the object it changes. The increment between array elements
-is equal to a value of the parameter \verb"nReIncr".
+is equal to a value of the parameter \verb"incr_re".
 The function is inherited in the classes
 \GOT{cvector}{cvector},
 \GOT{cmatrix}{cmatrix},
@@ -420,13 +420,13 @@ The%
 function
 \begin{verbatim}
 ComplexArray&
-ComplexArray::assign_imag (const treal* pIm, int nImIncr = 1);
+ComplexArray::assign_imag (const treal* pIm, int incr_im = 1);
 \end{verbatim}
 assigns to a calling object's imaginary part
 a value of an array pointed to by the parameter
 \verb"pIm" and returns the reference to
 the object it changes. The increment between array elements
-is equal to a value of the parameter \verb"nImIncr".
+is equal to a value of the parameter \verb"incr_im".
 The function is inherited in the classes
 \GOT{cvector}{cvector},
 \GOT{cmatrix}{cmatrix},

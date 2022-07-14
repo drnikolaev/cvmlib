@@ -9,7 +9,7 @@ name=cvm
 pkg_extIsRegExp=false
 pkg_extensions=.cls .sty .dtx
 src_extIsRegExp=false
-src_extensions=.tex .ltx .bib .mp
+src_extensions=.tex .ltx .bib .p_
 
 [Tools]
 MakeIndex=

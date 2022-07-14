@@ -3,21 +3,28 @@ SHELL=/bin/sh
 ROOT_PATH=../..
 INC_PATH=$(ROOT_PATH)/makes
 include $(INC_PATH)/defines.inc
+include $(INC_PATH)/makecmd.inc
 
 .SUFFIXES:
 
 # override ICC
 ifdef ICCT
   CC=icpc
+ifndef DEBUG
+  COMMON_FLAGS += -O0 #intel's glitch
+endif
+else
+ifdef MAC
+  CC=clang++
+else
+  CC=g++
+endif
 endif
 
-COMMON_FLAGS += -Wall -D_REENTRANT
+COMMON_FLAGS += -Wall -D_REENTRANT -I../../gtest/googletest/include
 
 ifdef CVM_FLOAT
   COMMON_FLAGS += -DCVM_FLOAT
-endif
-ifdef CVM_ZERO_BASED
-  COMMON_FLAGS += -DCVM_ZERO_BASED
 endif
 ifdef VERBOSE
 #  COMMON_FLAGS += -v
@@ -32,8 +39,8 @@ ifdef COMSPEC
   STATIC_ONLY=1
 else
   COMMON_FLAGS += -pthread -fPIC
-  LIBS+=-lpthread
-  DLIBS+=-lpthread
+#  LIBS+=-lpthread
+#  DLIBS+=-lpthread
 endif
 
 ifdef CVM_STLPORT
@@ -49,14 +56,17 @@ else
   DLIBS += -lgfortran
 endif
 
-COMMON_FLAGS += -std=c++0x
-COMMON_LD_FLAGS=-L$(OUTDIR) -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
+LIBS  += -lgtest
+DLIBS += -lgtest
 
-include $(INC_PATH)/suffixes.inc
-
-ifdef STATIC_ONLY
+COMMON_FLAGS += -std=c++17
+ifdef MAC
+COMMON_LD_FLAGS=-L$(OUTDIR) -L$(OUTDIR)/../gtest -L/usr/local/lib
+else
+COMMON_LD_FLAGS=-L$(OUTDIR) -L$(OUTDIR)/../gtest -L/usr/local/lib/gcc46 -L/usr/local/lib/gcc47 -L/usr/local/lib/gcc48
 endif
 
+include $(INC_PATH)/suffixes.inc
 
 ifdef STATIC_ONLY
   LIBS  +=$(call concat,-lftn,$(NF),$(NM),$(NE),$(NI))
@@ -91,6 +101,30 @@ ifdef PROF
   CFLAGSD += -pg
   LFLAGSD += -pg
 endif
+
+ifdef STATIC_ONLY
+ifndef MKL
+ifdef GF_BLAS
+  ifdef MAC
+    BLAS_PATH = mac/gf  
+  else
+    BLAS_PATH = linux/gf
+  endif
+else
+  ifdef MAC
+    BLAS_PATH = mac/ifort
+  else
+    BLAS_PATH = linux/ifort
+  endif
+endif
+endif
+LFLAGS  += -L$(OUTDIR)/$(BLAS_PATH)
+LFLAGSD += -L$(OUTDIR)/$(BLAS_PATH)
+endif
+
+LIBS  += -lpthread
+DLIBS += -lpthread
+
 
 all: debug release
 release : $(OUTDIR)/$(OUTNAME_RELEASE)

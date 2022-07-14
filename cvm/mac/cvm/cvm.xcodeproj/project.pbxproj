@@ -114,15 +114,16 @@
 		556B9D1A162688180048AFFE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 1320;
 				ORGANIZATIONNAME = "Nikolaev, Sergei";
 			};
 			buildConfigurationList = 556B9D1D162688180048AFFE /* Build configuration list for PBXProject "cvm" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 556B9D18162688180048AFFE;
 			productRefGroup = 556B9D24162688180048AFFE /* Products */;
@@ -158,12 +159,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -186,6 +189,7 @@
 					"-lftn_em64t_debug",
 				);
 				SDKROOT = macosx;
+				SYMROOT = "";
 			};
 			name = Debug;
 		};
@@ -193,8 +197,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -225,20 +230,22 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				EXECUTABLE_PREFIX = lib;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = "";
-				INSTALL_PATH = /Users/sam/cvmlib/lib64;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../lib64\"",
-					/usr/local/lib,
-				);
+				INSTALL_PATH = "";
+				LD_DYLIB_INSTALL_NAME = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				"OTHER_LDFLAGS[arch=*]" = (
 					"-lgfortran",
 					"-lftn_em64t_debug",
 					"-llapack_em64t_debug",
 					"-lblas_em64t_debug",
+					"-L../../../lib64",
+					"-L/usr/local/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -252,20 +259,22 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				EXECUTABLE_PREFIX = lib;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = "";
-				INSTALL_PATH = /Users/sam/cvmlib/lib64;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../lib64\"",
-					/usr/local/lib,
-				);
+				INSTALL_PATH = "";
+				LD_DYLIB_INSTALL_NAME = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				"OTHER_LDFLAGS[arch=*]" = (
 					"-lgfortran",
 					"-lftn_em64t",
 					"-llapack_em64t",
 					"-lblas_em64t",
+					"-L../../../lib64",
+					"-L/usr/local/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;

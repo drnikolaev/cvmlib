@@ -2,7 +2,7 @@
 \noindent
 \verb"class iarray : public Array<int> {"\\
 \verb"public:"\\
-\verb"    explicit "\GOT{iarray}{iarray.iarray (int)}\verb" (const int nSize);"\\
+\verb"    explicit "\GOT{iarray}{iarray.iarray (int)}\verb" (const int size);"\\
 \verb"    "\GOT{operator int*}{iarray.operator int*}\verb" ();"\\
 \verb"    "\GOT{operator const int*}{iarray.operator const int*}\verb" () const;"\\
 \verb"    int& "\GOT{operator []}{iarray.operator []}\verb" (const int nI) throw (cvmexception);"\\
@@ -21,9 +21,9 @@ The%
 \pdfdest name {iarray.iarray (int)} fit
 constructor
 \begin{verbatim}
-explicit iarray::iarray (const int nSize);
+explicit iarray::iarray (const int size);
 \end{verbatim}
-creates an \verb"iarray" object with the size equal to \verb"nSize".
+creates an \verb"iarray" object with the size equal to \verb"size".
 See also \GOT{iarray}{iarray}.
 
 Example of usage:

@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2014
+//          Copyright Sergei Nikolaev 1992-2022
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -14,701 +14,360 @@
 extern "C" {
 #endif
 
-#if defined (_MSC_VER)
-#    if defined (CVM_ACML)
-#        define CVM_FTN_CALL
-#        define CVM_STD_CALL
-#    else
-#        define CVM_FTN_CALL __stdcall
-#        define CVM_STD_CALL __stdcall
-#    endif
+#if defined(_MSC_VER)
+#    define CVM_FTN_CALL __stdcall
+#    define CVM_STD_CALL __stdcall
 #else
-#    if defined (__BORLANDC__)
-
-#        define CVM_FTN_CALL __stdcall
-#        define CVM_STD_CALL
-
-// blas & lapack stuff
-
-#        define ISAMAX  isamax
-#        define IDAMAX  idamax
-#        define ISAMIN  isamin
-#        define IDAMIN  idamin
-
-#        define ICAMAX  icamax
-#        define IZAMAX  izamax
-#        define ICAMIN  icamin
-#        define IZAMIN  izamin
-
-#        define SNRM2   snrm2
-#        define DNRM2   dnrm2
-#        define SCNRM2  scnrm2
-#        define DZNRM2  dznrm2
-
-#        define SSWAP   sswap
-#        define DSWAP   dswap
-#        define CSWAP   cswap
-#        define ZSWAP   zswap
-
-#        define SDOT    sdot
-#        define DDOT    ddot
-
-// complex dot wrappers:
-
-#    if defined (CVM_COMPLEX_NUMBER_RETURNED)
-#        define VCDOTU  cdotu
-#        define VZDOTU  zdotu
-#        define VCDOTC  cdotc
-#        define VZDOTC  zdotc
-#    else
-#        define VCDOTU  vcdotu
-#        define VZDOTU  vzdotu
-#        define VCDOTC  vcdotc
-#        define VZDOTC  vzdotc
-#    endif
-
-#        define SAXPY   saxpy
-#        define DAXPY   daxpy
-#        define CAXPY   caxpy
-#        define ZAXPY   zaxpy
-
-#        define SCOPY   scopy
-#        define DCOPY   dcopy
-#        define CCOPY   ccopy
-#        define ZCOPY   zcopy
-
-#        define SSCAL   sscal
-#        define DSCAL   dscal
-#        define CSCAL   cscal
-#        define ZSCAL   zscal
-
-#        define CLACGV  clacgv
-#        define ZLACGV  zlacgv
-
-#        define CSSCAL  csscal
-#        define ZDSCAL  zdscal
-
-#        define SGER    sger
-#        define DGER    dger
-
-#        define CGERU   cgeru
-#        define ZGERU   zgeru
-
-#        define CGERC   cgerc
-#        define ZGERC   zgerc
-
-#        define SGEMV   sgemv
-#        define DGEMV   dgemv
-#        define CGEMV   cgemv
-#        define ZGEMV   zgemv
-
-#        define SGBMV   sgbmv
-#        define DGBMV   dgbmv
-#        define CGBMV   cgbmv
-#        define ZGBMV   zgbmv
-
-#        define SGEMM   sgemm
-#        define DGEMM   dgemm
-#        define CGEMM   cgemm
-#        define ZGEMM   zgemm
-
-#        define SGETRF  sgetrf
-#        define DGETRF  dgetrf
-#        define CGETRF  cgetrf
-#        define ZGETRF  zgetrf
-
-#        define SGBTRF  sgbtrf
-#        define DGBTRF  dgbtrf
-#        define CGBTRF  cgbtrf
-#        define ZGBTRF  zgbtrf
-
-#        define SGETRS  sgetrs
-#        define DGETRS  dgetrs
-#        define CGETRS  cgetrs
-#        define ZGETRS  zgetrs
-
-#        define SGBTRS  sgbtrs
-#        define DGBTRS  dgbtrs
-#        define CGBTRS  cgbtrs
-#        define ZGBTRS  zgbtrs
-
-#        define SGERFS  sgerfs
-#        define DGERFS  dgerfs
-#        define CGERFS  cgerfs
-#        define ZGERFS  zgerfs
-
-#        define SGBRFS  sgbrfs
-#        define DGBRFS  dgbrfs
-#        define CGBRFS  cgbrfs
-#        define ZGBRFS  zgbrfs
-
-#        define SGETRI  sgetri
-#        define DGETRI  dgetri
-#        define CGETRI  cgetri
-#        define ZGETRI  zgetri
-
-#        define SGEBRD  sgebrd
-#        define DGEBRD  dgebrd
-#        define CGEBRD  cgebrd
-#        define ZGEBRD  zgebrd
-
-#        define SGBBRD  sgbbrd
-#        define DGBBRD  dgbbrd
-#        define CGBBRD  cgbbrd
-#        define ZGBBRD  zgbbrd
-
-#        define SORGBR  sorgbr
-#        define DORGBR  dorgbr
-
-#        define CUNGBR  cungbr
-#        define ZUNGBR  zungbr
-
-#        define SBDSQR  sbdsqr
-#        define DBDSQR  dbdsqr
-#        define CBDSQR  cbdsqr
-#        define ZBDSQR  zbdsqr
-
-#        define SGEBAL  sgebal
-#        define DGEBAL  dgebal
-#        define CGEBAL  cgebal
-#        define ZGEBAL  zgebal
-
-#        define SGEHRD  sgehrd
-#        define DGEHRD  dgehrd
-#        define CGEHRD  cgehrd
-#        define ZGEHRD  zgehrd
-
-#        define SORGHR  sorghr
-#        define DORGHR  dorghr
-
-#        define CUNGHR  cunghr
-#        define ZUNGHR  zunghr
-
-#        define SHSEQR  shseqr
-#        define DHSEQR  dhseqr
-#        define CHSEQR  chseqr
-#        define ZHSEQR  zhseqr
-
-#        define STREVC  strevc
-#        define DTREVC  dtrevc
-#        define CTREVC  ctrevc
-#        define ZTREVC  ztrevc
-
-#        define SGEBAK  sgebak
-#        define DGEBAK  dgebak
-#        define CGEBAK  cgebak
-#        define ZGEBAK  zgebak
-
-#        define SGECON  sgecon
-#        define DGECON  dgecon
-#        define CGECON  cgecon
-#        define ZGECON  zgecon
-
-#        define SSPMV   sspmv
-#        define DSPMV   dspmv
-
-#        define SSYMM   ssymm
-#        define DSYMM   dsymm
-#        define CSYMM   csymm
-#        define ZSYMM   zsymm
-#        define CHEMM   chemm
-#        define ZHEMM   zhemm
-
-#        define SPOTRF  spotrf
-#        define DPOTRF  dpotrf
-#        define CPOTRF  cpotrf
-#        define ZPOTRF  zpotrf
-
-#        define SSYTRF  ssytrf
-#        define DSYTRF  dsytrf
-#        define CSYTRF  csytrf
-#        define ZSYTRF  zsytrf
-#        define CHETRF  chetrf
-#        define ZHETRF  zhetrf
-
-#        define SPOTRS  spotrs
-#        define DPOTRS  dpotrs
-#        define CPOTRS  cpotrs
-#        define ZPOTRS  zpotrs
-
-#        define SPORFS  sporfs
-#        define DPORFS  dporfs
-#        define CPORFS  cporfs
-#        define ZPORFS  zporfs
-
-#        define SSYTRS  ssytrs
-#        define DSYTRS  dsytrs
-#        define CSYTRS  csytrs
-#        define ZSYTRS  zsytrs
-#        define CHETRS  chetrs
-#        define ZHETRS  zhetrs
-
-#        define SSYRFS  ssyrfs
-#        define DSYRFS  dsyrfs
-#        define CSYRFS  csyrfs
-#        define ZSYRFS  zsyrfs
-#        define CHERFS  cherfs
-#        define ZHERFS  zherfs
-
-#        define SPOTRI  spotri
-#        define DPOTRI  dpotri
-#        define CPOTRI  cpotri
-#        define ZPOTRI  zpotri
-
-#        define SSYTRI  ssytri
-#        define DSYTRI  dsytri
-#        define CSYTRI  csytri
-#        define ZSYTRI  zsytri
-#        define CHETRI  chetri
-#        define ZHETRI  zhetri
-
-#        define SSYEVD  ssyevd
-#        define DSYEVD  dsyevd
-#        define CHEEVD  cheevd
-#        define ZHEEVD  zheevd
-
-#        define SPOEQU  spoequ
-#        define DPOEQU  dpoequ
-#        define CPOEQU  cpoequ
-#        define ZPOEQU  zpoequ
-
-#        define SSYMV   ssymv
-#        define DSYMV   dsymv
-#        define CHEMV   chemv
-#        define ZHEMV   zhemv
-
-#        define SSYRK   ssyrk
-#        define DSYRK   dsyrk
-#        define CSYRK   csyrk
-#        define ZSYRK   zsyrk
-#        define CHERK   cherk
-#        define ZHERK   zherk
-
-#        define SSYR2K  ssyr2k
-#        define DSYR2K  dsyr2k
-#        define CSYR2K  csyr2k
-#        define ZSYR2K  zsyr2k
-#        define CHER2K  cher2k
-#        define ZHER2K  zher2k
-
-#        define SGEQRF  sgeqrf
-#        define DGEQRF  dgeqrf
-#        define CGEQRF  cgeqrf
-#        define ZGEQRF  zgeqrf
-
-#        define SORGQR  sorgqr
-#        define DORGQR  dorgqr
-#        define CUNGQR  cungqr
-#        define ZUNGQR  zungqr
-
-#        define SGERQF sgerqf
-#        define DGERQF dgerqf
-#        define CGERQF cgerqf
-#        define ZGERQF zgerqf
-
-#        define SORGRQ sorgrq
-#        define DORGRQ dorgrq
-#        define CUNGRQ cungrq
-#        define ZUNGRQ zungrq
-
-#        define SGELQF sgelqf
-#        define DGELQF dgelqf
-#        define CGELQF cgelqf
-#        define ZGELQF zgelqf
-
-#        define SORGLQ sorglq
-#        define DORGLQ dorglq
-#        define CUNGLQ cunglq
-#        define ZUNGLQ zunglq
-
-#        define SGEQLF sgeqlf
-#        define DGEQLF dgeqlf
-#        define CGEQLF cgeqlf
-#        define ZGEQLF zgeqlf
-
-#        define SORGQL sorgql
-#        define DORGQL dorgql
-#        define CUNGQL cungql
-#        define ZUNGQL zungql
-
-#        define SGELS  sgels
-#        define DGELS  dgels
-#        define CGELS  cgels
-#        define ZGELS  zgels
-
-#        define SGELSY sgelsy
-#        define DGELSY dgelsy
-#        define CGELSY cgelsy
-#        define ZGELSY zgelsy
-
-#        define SGELSS sgelss
-#        define DGELSS dgelss
-#        define CGELSS cgelss
-#        define ZGELSS zgelss
-
-#        define SGELSD sgelsd
-#        define DGELSD dgelsd
-#        define CGELSD cgelsd
-#        define ZGELSD zgelsd
-
-#        define SGGEV  sggev
-#        define DGGEV  dggev
-#        define CGGEV  cggev
-#        define ZGGEV  zggev
-
-#    else      // !__BORLANDC__
-
-#        define  CVM_FTN_CALL
-#        define  CVM_STD_CALL
+#    define CVM_FTN_CALL
+#    define CVM_STD_CALL
 
 // my fortran stuff
 
-#        define DPOLY   dpoly_
-#        define SPOLY   spoly_
-#        define CPOLY   cpoly_
-#        define ZPOLY   zpoly_
+#    define DPOLY   dpoly_
+#    define SPOLY   spoly_
+#    define CPOLY   cpoly_
+#    define ZPOLY   zpoly_
 
-#        define NPOLY   npoly_
+#    define NPOLY   npoly_
 
-#        define SMEXP   smexp_
-#        define DMEXP   dmexp_
-#        define CMEXP   cmexp_
-#        define ZMEXP   zmexp_
+#    define SMEXP   smexp_
+#    define DMEXP   dmexp_
+#    define CMEXP   cmexp_
+#    define ZMEXP   zmexp_
 
-#        define SMEXPC  smexpc_
-#        define DMEXPC  dmexpc_
-#        define CMEXPC  cmexpc_
-#        define ZMEXPC  zmexpc_
+#    define SMEXPC  smexpc_
+#    define DMEXPC  dmexpc_
+#    define CMEXPC  cmexpc_
+#    define ZMEXPC  zmexpc_
 
 // blas & lapack stuff
 
-#        define ISAMAX  isamax_
-#        define IDAMAX  idamax_
-#        define ISAMIN  isamin_
-#        define IDAMIN  idamin_
+#    define ISAMAX  isamax_
+#    define IDAMAX  idamax_
+#    define ISAMIN  isamin_
+#    define IDAMIN  idamin_
 
-#        define ICAMAX  icamax_
-#        define IZAMAX  izamax_
-#        define ICAMIN  icamin_
-#        define IZAMIN  izamin_
+#    define ICAMAX  icamax_
+#    define IZAMAX  izamax_
+#    define ICAMIN  icamin_
+#    define IZAMIN  izamin_
 
-#        define SNRM2   snrm2_
-#        define DNRM2   dnrm2_
-#        define SCNRM2  scnrm2_
-#        define DZNRM2  dznrm2_
+#    define SNRM2   snrm2_
+#    define DNRM2   dnrm2_
+#    define SCNRM2  scnrm2_
+#    define DZNRM2  dznrm2_
 
-#        define SSWAP   sswap_
-#        define DSWAP   dswap_
-#        define CSWAP   cswap_
-#        define ZSWAP   zswap_
+#    define SSWAP   sswap_
+#    define DSWAP   dswap_
+#    define CSWAP   cswap_
+#    define ZSWAP   zswap_
 
-#        define SDOT    sdot_
-#        define DDOT    ddot_
+#    define SDOT    sdot_
+#    define DDOT    ddot_
 
 // complex dot wrappers
 
-#    if defined (CVM_COMPLEX_NUMBER_RETURNED)
-#        define VCDOTU  cdotu_
-#        define VZDOTU  zdotu_
-#        define VCDOTC  cdotc_
-#        define VZDOTC  zdotc_
+#    if defined(CVM_COMPLEX_NUMBER_RETURNED)
+#    define VCDOTU  cdotu_
+#    define VZDOTU  zdotu_
+#    define VCDOTC  cdotc_
+#    define VZDOTC  zdotc_
 #    else
-#        define VCDOTU  vcdotu_
-#        define VZDOTU  vzdotu_
-#        define VCDOTC  vcdotc_
-#        define VZDOTC  vzdotc_
+#    define VCDOTU  vcdotu_
+#    define VZDOTU  vzdotu_
+#    define VCDOTC  vcdotc_
+#    define VZDOTC  vzdotc_
 #    endif
 
-#        define SAXPY   saxpy_
-#        define DAXPY   daxpy_
-#        define CAXPY   caxpy_
-#        define ZAXPY   zaxpy_
+#    define SAXPY   saxpy_
+#    define DAXPY   daxpy_
+#    define CAXPY   caxpy_
+#    define ZAXPY   zaxpy_
 
-#        define SCOPY   scopy_
-#        define DCOPY   dcopy_
-#        define CCOPY   ccopy_
-#        define ZCOPY   zcopy_
+#    define SCOPY   scopy_
+#    define DCOPY   dcopy_
+#    define CCOPY   ccopy_
+#    define ZCOPY   zcopy_
 
-#        define SSCAL   sscal_
-#        define DSCAL   dscal_
-#        define CSCAL   cscal_
-#        define ZSCAL   zscal_
+#    define SSCAL   sscal_
+#    define DSCAL   dscal_
+#    define CSCAL   cscal_
+#    define ZSCAL   zscal_
 
-#        define CLACGV  clacgv_
-#        define ZLACGV  zlacgv_
+#    define CLACGV  clacgv_
+#    define ZLACGV  zlacgv_
 
-#        define CSSCAL  csscal_
-#        define ZDSCAL  zdscal_
+#    define CSSCAL  csscal_
+#    define ZDSCAL  zdscal_
 
-#        define SGER    sger_
-#        define DGER    dger_
+#    define SGER    sger_
+#    define DGER    dger_
 
-#        define CGERU   cgeru_
-#        define ZGERU   zgeru_
+#    define CGERU   cgeru_
+#    define ZGERU   zgeru_
 
-#        define CGERC   cgerc_
-#        define ZGERC   zgerc_
+#    define CGERC   cgerc_
+#    define ZGERC   zgerc_
 
-#        define SGEMV   sgemv_
-#        define DGEMV   dgemv_
-#        define CGEMV   cgemv_
-#        define ZGEMV   zgemv_
+#    define SGEMV   sgemv_
+#    define DGEMV   dgemv_
+#    define CGEMV   cgemv_
+#    define ZGEMV   zgemv_
 
-#        define SGBMV   sgbmv_
-#        define DGBMV   dgbmv_
-#        define CGBMV   cgbmv_
-#        define ZGBMV   zgbmv_
+#    define SGBMV   sgbmv_
+#    define DGBMV   dgbmv_
+#    define CGBMV   cgbmv_
+#    define ZGBMV   zgbmv_
 
-#        define SGEMM   sgemm_
-#        define DGEMM   dgemm_
-#        define CGEMM   cgemm_
-#        define ZGEMM   zgemm_
+#    define SGEMM   sgemm_
+#    define DGEMM   dgemm_
+#    define CGEMM   cgemm_
+#    define ZGEMM   zgemm_
 
-#        define SGETRF  sgetrf_
-#        define DGETRF  dgetrf_
-#        define CGETRF  cgetrf_
-#        define ZGETRF  zgetrf_
+#    define SGETRF  sgetrf_
+#    define DGETRF  dgetrf_
+#    define CGETRF  cgetrf_
+#    define ZGETRF  zgetrf_
 
-#        define SGBTRF  sgbtrf_
-#        define DGBTRF  dgbtrf_
-#        define CGBTRF  cgbtrf_
-#        define ZGBTRF  zgbtrf_
+#    define SGBTRF  sgbtrf_
+#    define DGBTRF  dgbtrf_
+#    define CGBTRF  cgbtrf_
+#    define ZGBTRF  zgbtrf_
 
-#        define SGETRS  sgetrs_
-#        define DGETRS  dgetrs_
-#        define CGETRS  cgetrs_
-#        define ZGETRS  zgetrs_
+#    define SGETRS  sgetrs_
+#    define DGETRS  dgetrs_
+#    define CGETRS  cgetrs_
+#    define ZGETRS  zgetrs_
 
-#        define SGBTRS  sgbtrs_
-#        define DGBTRS  dgbtrs_
-#        define CGBTRS  cgbtrs_
-#        define ZGBTRS  zgbtrs_
+#    define SGBTRS  sgbtrs_
+#    define DGBTRS  dgbtrs_
+#    define CGBTRS  cgbtrs_
+#    define ZGBTRS  zgbtrs_
 
-#        define SGERFS  sgerfs_
-#        define DGERFS  dgerfs_
-#        define CGERFS  cgerfs_
-#        define ZGERFS  zgerfs_
+#    define SGERFS  sgerfs_
+#    define DGERFS  dgerfs_
+#    define CGERFS  cgerfs_
+#    define ZGERFS  zgerfs_
 
-#        define SGBRFS  sgbrfs_
-#        define DGBRFS  dgbrfs_
-#        define CGBRFS  cgbrfs_
-#        define ZGBRFS  zgbrfs_
+#    define SGBRFS  sgbrfs_
+#    define DGBRFS  dgbrfs_
+#    define CGBRFS  cgbrfs_
+#    define ZGBRFS  zgbrfs_
 
-#        define SGETRI  sgetri_
-#        define DGETRI  dgetri_
-#        define CGETRI  cgetri_
-#        define ZGETRI  zgetri_
+#    define SGETRI  sgetri_
+#    define DGETRI  dgetri_
+#    define CGETRI  cgetri_
+#    define ZGETRI  zgetri_
 
-#        define SGEBRD  sgebrd_
-#        define DGEBRD  dgebrd_
-#        define CGEBRD  cgebrd_
-#        define ZGEBRD  zgebrd_
+#    define SGEBRD  sgebrd_
+#    define DGEBRD  dgebrd_
+#    define CGEBRD  cgebrd_
+#    define ZGEBRD  zgebrd_
 
-#        define SGBBRD  sgbbrd_
-#        define DGBBRD  dgbbrd_
-#        define CGBBRD  cgbbrd_
-#        define ZGBBRD  zgbbrd_
+#    define SGBBRD  sgbbrd_
+#    define DGBBRD  dgbbrd_
+#    define CGBBRD  cgbbrd_
+#    define ZGBBRD  zgbbrd_
 
-#        define SORGBR  sorgbr_
-#        define DORGBR  dorgbr_
+#    define SORGBR  sorgbr_
+#    define DORGBR  dorgbr_
 
-#        define CUNGBR  cungbr_
-#        define ZUNGBR  zungbr_
+#    define CUNGBR  cungbr_
+#    define ZUNGBR  zungbr_
 
-#        define SBDSQR  sbdsqr_
-#        define DBDSQR  dbdsqr_
-#        define CBDSQR  cbdsqr_
-#        define ZBDSQR  zbdsqr_
+#    define SBDSQR  sbdsqr_
+#    define DBDSQR  dbdsqr_
+#    define CBDSQR  cbdsqr_
+#    define ZBDSQR  zbdsqr_
 
-#        define SGEBAL  sgebal_
-#        define DGEBAL  dgebal_
-#        define CGEBAL  cgebal_
-#        define ZGEBAL  zgebal_
+#    define SGEBAL  sgebal_
+#    define DGEBAL  dgebal_
+#    define CGEBAL  cgebal_
+#    define ZGEBAL  zgebal_
 
-#        define SGEHRD  sgehrd_
-#        define DGEHRD  dgehrd_
-#        define CGEHRD  cgehrd_
-#        define ZGEHRD  zgehrd_
+#    define SGEHRD  sgehrd_
+#    define DGEHRD  dgehrd_
+#    define CGEHRD  cgehrd_
+#    define ZGEHRD  zgehrd_
 
-#        define SORGHR  sorghr_
-#        define DORGHR  dorghr_
+#    define SORGHR  sorghr_
+#    define DORGHR  dorghr_
 
-#        define CUNGHR  cunghr_
-#        define ZUNGHR  zunghr_
+#    define CUNGHR  cunghr_
+#    define ZUNGHR  zunghr_
 
-#        define SHSEQR  shseqr_
-#        define DHSEQR  dhseqr_
-#        define CHSEQR  chseqr_
-#        define ZHSEQR  zhseqr_
+#    define SHSEQR  shseqr_
+#    define DHSEQR  dhseqr_
+#    define CHSEQR  chseqr_
+#    define ZHSEQR  zhseqr_
 
-#        define STREVC  strevc_
-#        define DTREVC  dtrevc_
-#        define CTREVC  ctrevc_
-#        define ZTREVC  ztrevc_
+#    define STREVC  strevc_
+#    define DTREVC  dtrevc_
+#    define CTREVC  ctrevc_
+#    define ZTREVC  ztrevc_
 
-#        define SGEBAK  sgebak_
-#        define DGEBAK  dgebak_
-#        define CGEBAK  cgebak_
-#        define ZGEBAK  zgebak_
+#    define SGEBAK  sgebak_
+#    define DGEBAK  dgebak_
+#    define CGEBAK  cgebak_
+#    define ZGEBAK  zgebak_
 
-#        define SGECON  sgecon_
-#        define DGECON  dgecon_
-#        define CGECON  cgecon_
-#        define ZGECON  zgecon_
+#    define SGECON  sgecon_
+#    define DGECON  dgecon_
+#    define CGECON  cgecon_
+#    define ZGECON  zgecon_
 
-#        define SSPMV   sspmv_
-#        define DSPMV   dspmv_
+#    define SSPMV   sspmv_
+#    define DSPMV   dspmv_
 
-#        define SSYMM   ssymm_
-#        define DSYMM   dsymm_
-#        define CSYMM   csymm_
-#        define ZSYMM   zsymm_
-#        define CHEMM   chemm_
-#        define ZHEMM   zhemm_
+#    define SSYMM   ssymm_
+#    define DSYMM   dsymm_
+#    define CSYMM   csymm_
+#    define ZSYMM   zsymm_
+#    define CHEMM   chemm_
+#    define ZHEMM   zhemm_
 
-#        define SPOTRF  spotrf_
-#        define DPOTRF  dpotrf_
-#        define CPOTRF  cpotrf_
-#        define ZPOTRF  zpotrf_
+#    define SPOTRF  spotrf_
+#    define DPOTRF  dpotrf_
+#    define CPOTRF  cpotrf_
+#    define ZPOTRF  zpotrf_
 
-#        define SSYTRF  ssytrf_
-#        define DSYTRF  dsytrf_
-#        define CSYTRF  csytrf_
-#        define ZSYTRF  zsytrf_
-#        define CHETRF  chetrf_
-#        define ZHETRF  zhetrf_
+#    define SSYTRF  ssytrf_
+#    define DSYTRF  dsytrf_
+#    define CSYTRF  csytrf_
+#    define ZSYTRF  zsytrf_
+#    define CHETRF  chetrf_
+#    define ZHETRF  zhetrf_
 
-#        define SPOTRS  spotrs_
-#        define DPOTRS  dpotrs_
-#        define CPOTRS  cpotrs_
-#        define ZPOTRS  zpotrs_
+#    define SPOTRS  spotrs_
+#    define DPOTRS  dpotrs_
+#    define CPOTRS  cpotrs_
+#    define ZPOTRS  zpotrs_
 
-#        define SPORFS  sporfs_
-#        define DPORFS  dporfs_
-#        define CPORFS  cporfs_
-#        define ZPORFS  zporfs_
+#    define SPORFS  sporfs_
+#    define DPORFS  dporfs_
+#    define CPORFS  cporfs_
+#    define ZPORFS  zporfs_
 
-#        define SSYTRS  ssytrs_
-#        define DSYTRS  dsytrs_
-#        define CSYTRS  csytrs_
-#        define ZSYTRS  zsytrs_
-#        define CHETRS  chetrs_
-#        define ZHETRS  zhetrs_
+#    define SSYTRS  ssytrs_
+#    define DSYTRS  dsytrs_
+#    define CSYTRS  csytrs_
+#    define ZSYTRS  zsytrs_
+#    define CHETRS  chetrs_
+#    define ZHETRS  zhetrs_
 
-#        define SSYRFS  ssyrfs_
-#        define DSYRFS  dsyrfs_
-#        define CSYRFS  csyrfs_
-#        define ZSYRFS  zsyrfs_
-#        define CHERFS  cherfs_
-#        define ZHERFS  zherfs_
+#    define SSYRFS  ssyrfs_
+#    define DSYRFS  dsyrfs_
+#    define CSYRFS  csyrfs_
+#    define ZSYRFS  zsyrfs_
+#    define CHERFS  cherfs_
+#    define ZHERFS  zherfs_
 
-#        define SPOTRI  spotri_
-#        define DPOTRI  dpotri_
-#        define CPOTRI  cpotri_
-#        define ZPOTRI  zpotri_
+#    define SPOTRI  spotri_
+#    define DPOTRI  dpotri_
+#    define CPOTRI  cpotri_
+#    define ZPOTRI  zpotri_
 
-#        define SSYTRI  ssytri_
-#        define DSYTRI  dsytri_
-#        define CSYTRI  csytri_
-#        define ZSYTRI  zsytri_
-#        define CHETRI  chetri_
-#        define ZHETRI  zhetri_
+#    define SSYTRI  ssytri_
+#    define DSYTRI  dsytri_
+#    define CSYTRI  csytri_
+#    define ZSYTRI  zsytri_
+#    define CHETRI  chetri_
+#    define ZHETRI  zhetri_
 
-#        define SSYEVD  ssyevd_
-#        define DSYEVD  dsyevd_
-#        define CHEEVD  cheevd_
-#        define ZHEEVD  zheevd_
+#    define SSYEVD  ssyevd_
+#    define DSYEVD  dsyevd_
+#    define CHEEVD  cheevd_
+#    define ZHEEVD  zheevd_
 
-#        define SPOEQU  spoequ_
-#        define DPOEQU  dpoequ_
-#        define CPOEQU  cpoequ_
-#        define ZPOEQU  zpoequ_
+#    define SPOEQU  spoequ_
+#    define DPOEQU  dpoequ_
+#    define CPOEQU  cpoequ_
+#    define ZPOEQU  zpoequ_
 
-#        define SSYMV   ssymv_
-#        define DSYMV   dsymv_
-#        define CHEMV   chemv_
-#        define ZHEMV   zhemv_
+#    define SSYMV   ssymv_
+#    define DSYMV   dsymv_
+#    define CHEMV   chemv_
+#    define ZHEMV   zhemv_
 
-#        define SSYRK   ssyrk_
-#        define DSYRK   dsyrk_
-#        define CSYRK   csyrk_
-#        define ZSYRK   zsyrk_
-#        define CHERK   cherk_
-#        define ZHERK   zherk_
+#    define SSYRK   ssyrk_
+#    define DSYRK   dsyrk_
+#    define CSYRK   csyrk_
+#    define ZSYRK   zsyrk_
+#    define CHERK   cherk_
+#    define ZHERK   zherk_
 
-#        define SSYR2K  ssyr2k_
-#        define DSYR2K  dsyr2k_
-#        define CSYR2K  csyr2k_
-#        define ZSYR2K  zsyr2k_
-#        define CHER2K  cher2k_
-#        define ZHER2K  zher2k_
+#    define SSYR2K  ssyr2k_
+#    define DSYR2K  dsyr2k_
+#    define CSYR2K  csyr2k_
+#    define ZSYR2K  zsyr2k_
+#    define CHER2K  cher2k_
+#    define ZHER2K  zher2k_
 
-#        define SGEQRF  sgeqrf_
-#        define DGEQRF  dgeqrf_
-#        define CGEQRF  cgeqrf_
-#        define ZGEQRF  zgeqrf_
+#    define SGEQRF  sgeqrf_
+#    define DGEQRF  dgeqrf_
+#    define CGEQRF  cgeqrf_
+#    define ZGEQRF  zgeqrf_
 
-#        define SORGQR  sorgqr_
-#        define DORGQR  dorgqr_
-#        define CUNGQR  cungqr_
-#        define ZUNGQR  zungqr_
+#    define SORGQR  sorgqr_
+#    define DORGQR  dorgqr_
+#    define CUNGQR  cungqr_
+#    define ZUNGQR  zungqr_
 
-#        define SGERQF  sgerqf_
-#        define DGERQF  dgerqf_
-#        define CGERQF  cgerqf_
-#        define ZGERQF  zgerqf_
+#    define SGERQF  sgerqf_
+#    define DGERQF  dgerqf_
+#    define CGERQF  cgerqf_
+#    define ZGERQF  zgerqf_
 
-#        define SORGRQ  sorgrq_
-#        define DORGRQ  dorgrq_
-#        define CUNGRQ  cungrq_
-#        define ZUNGRQ  zungrq_
+#    define SORGRQ  sorgrq_
+#    define DORGRQ  dorgrq_
+#    define CUNGRQ  cungrq_
+#    define ZUNGRQ  zungrq_
 
-#        define SGELQF  sgelqf_
-#        define DGELQF  dgelqf_
-#        define CGELQF  cgelqf_
-#        define ZGELQF  zgelqf_
+#    define SGELQF  sgelqf_
+#    define DGELQF  dgelqf_
+#    define CGELQF  cgelqf_
+#    define ZGELQF  zgelqf_
 
-#        define SORGLQ  sorglq_
-#        define DORGLQ  dorglq_
-#        define CUNGLQ  cunglq_
-#        define ZUNGLQ  zunglq_
+#    define SORGLQ  sorglq_
+#    define DORGLQ  dorglq_
+#    define CUNGLQ  cunglq_
+#    define ZUNGLQ  zunglq_
 
-#        define SGEQLF  sgeqlf_
-#        define DGEQLF  dgeqlf_
-#        define CGEQLF  cgeqlf_
-#        define ZGEQLF  zgeqlf_
+#    define SGEQLF  sgeqlf_
+#    define DGEQLF  dgeqlf_
+#    define CGEQLF  cgeqlf_
+#    define ZGEQLF  zgeqlf_
 
-#        define SORGQL  sorgql_
-#        define DORGQL  dorgql_
-#        define CUNGQL  cungql_
-#        define ZUNGQL  zungql_
+#    define SORGQL  sorgql_
+#    define DORGQL  dorgql_
+#    define CUNGQL  cungql_
+#    define ZUNGQL  zungql_
 
-#        define SGELS   sgels_
-#        define DGELS   dgels_
-#        define CGELS   cgels_
-#        define ZGELS   zgels_
+#    define SGELS   sgels_
+#    define DGELS   dgels_
+#    define CGELS   cgels_
+#    define ZGELS   zgels_
 
-#        define SGELSY  sgelsy_
-#        define DGELSY  dgelsy_
-#        define CGELSY  cgelsy_
-#        define ZGELSY  zgelsy_
+#    define SGELSY  sgelsy_
+#    define DGELSY  dgelsy_
+#    define CGELSY  cgelsy_
+#    define ZGELSY  zgelsy_
 
-#        define SGELSS  sgelss_
-#        define DGELSS  dgelss_
-#        define CGELSS  cgelss_
-#        define ZGELSS  zgelss_
+#    define SGELSS  sgelss_
+#    define DGELSS  dgelss_
+#    define CGELSS  cgelss_
+#    define ZGELSS  zgelss_
 
-#        define SGELSD  sgelsd_
-#        define DGELSD  dgelsd_
-#        define CGELSD  cgelsd_
-#        define ZGELSD  zgelsd_
+#    define SGELSD  sgelsd_
+#    define DGELSD  dgelsd_
+#    define CGELSD  cgelsd_
+#    define ZGELSD  zgelsd_
 
-#        define SGGEV   sggev_
-#        define DGGEV   dggev_
-#        define CGGEV   cggev_
-#        define ZGGEV   zggev_
+#    define SGGEV   sggev_
+#    define DGGEV   dggev_
+#    define CGGEV   cggev_
+#    define ZGGEV   zggev_
 
-#    endif      // !__BORLANDC__
 #endif      // !_MSC_VER
 
 void  CVM_FTN_CALL SPOLY       (const tint* m,
@@ -991,7 +650,7 @@ void  CVM_STD_CALL ZGERC       (const tint* m,
                                 const tint* lda);
 
 void  CVM_STD_CALL SGEMV       (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -1005,7 +664,7 @@ void  CVM_STD_CALL SGEMV       (const char* trans,
                                       float* y,
                                 const tint* incy);
 void  CVM_STD_CALL DGEMV       (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -1020,7 +679,7 @@ void  CVM_STD_CALL DGEMV       (const char* trans,
                                 const tint* incy);
 
 void  CVM_STD_CALL CGEMV       (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -1034,7 +693,7 @@ void  CVM_STD_CALL CGEMV       (const char* trans,
                                       std::complex<float>* y,
                                 const tint* incy);
 void  CVM_STD_CALL ZGEMV       (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -1049,7 +708,7 @@ void  CVM_STD_CALL ZGEMV       (const char* trans,
                                 const tint* incy);
 
 void  CVM_STD_CALL SGBMV       (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -1065,7 +724,7 @@ void  CVM_STD_CALL SGBMV       (const char* trans,
                                       float* y,
                                 const tint* incy);
 void  CVM_STD_CALL DGBMV       (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -1081,7 +740,7 @@ void  CVM_STD_CALL DGBMV       (const char* trans,
                                       double* y,
                                 const tint* incy);
 void  CVM_STD_CALL CGBMV       (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -1097,7 +756,7 @@ void  CVM_STD_CALL CGBMV       (const char* trans,
                                       std::complex<float>* y,
                                 const tint* incy);
 void  CVM_STD_CALL ZGBMV       (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -1114,11 +773,11 @@ void  CVM_STD_CALL ZGBMV       (const char* trans,
                                 const tint* incy);
 
 void  CVM_STD_CALL DGEMM       (const char* transa,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transasz,
 #endif
                                 const char* transb,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transbsz,
 #endif
                                 const tint* m,
@@ -1134,11 +793,11 @@ void  CVM_STD_CALL DGEMM       (const char* transa,
                                 const tint* ldc);
 
 void  CVM_STD_CALL SGEMM       (const char* transa,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transasz,
 #endif
                                 const char* transb,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transbsz,
 #endif
                                 const tint* m,
@@ -1154,11 +813,11 @@ void  CVM_STD_CALL SGEMM       (const char* transa,
                                 const tint* ldc);
 
 void  CVM_STD_CALL CGEMM       (const char* transa,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transasz,
 #endif
                                 const char* transb,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transbsz,
 #endif
                                 const tint* m,
@@ -1173,11 +832,11 @@ void  CVM_STD_CALL CGEMM       (const char* transa,
                                       std::complex<float>* c,
                                 const tint* ldc);
 void  CVM_STD_CALL ZGEMM       (const char* transa,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transasz,
 #endif
                                 const char* transb,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transbsz,
 #endif
                                 const tint* m,
@@ -1347,7 +1006,7 @@ void  CVM_STD_CALL ZGBTRF      (const tint* m,
                                       tint* info);
 
 void  CVM_STD_CALL SGETRS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1359,7 +1018,7 @@ void  CVM_STD_CALL SGETRS      (const char* trans,
                                 const tint* ldb,
                                       tint* info);
 void  CVM_STD_CALL DGETRS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1372,7 +1031,7 @@ void  CVM_STD_CALL DGETRS      (const char* trans,
                                       tint* info);
 
 void  CVM_STD_CALL SGBTRS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1386,7 +1045,7 @@ void  CVM_STD_CALL SGBTRS      (const char* trans,
                                 const tint* ldb,
                                       tint* info);
 void  CVM_STD_CALL DGBTRS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1401,7 +1060,7 @@ void  CVM_STD_CALL DGBTRS      (const char* trans,
                                       tint* info);
 
 void  CVM_STD_CALL SGERFS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1421,7 +1080,7 @@ void  CVM_STD_CALL SGERFS      (const char* trans,
                                       tint* iwork,
                                       tint* info);
 void  CVM_STD_CALL DGERFS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1442,7 +1101,7 @@ void  CVM_STD_CALL DGERFS      (const char* trans,
                                       tint* info);
 
 void  CVM_STD_CALL SGBRFS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1464,7 +1123,7 @@ void  CVM_STD_CALL SGBRFS      (const char* trans,
                                       tint* iwork,
                                       tint* info);
 void  CVM_STD_CALL DGBRFS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1487,7 +1146,7 @@ void  CVM_STD_CALL DGBRFS      (const char* trans,
                                       tint* info);
 
 void  CVM_STD_CALL CGETRS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1499,7 +1158,7 @@ void  CVM_STD_CALL CGETRS      (const char* trans,
                                 const tint* ldb,
                                       tint* info);
 void  CVM_STD_CALL ZGETRS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1512,7 +1171,7 @@ void  CVM_STD_CALL ZGETRS      (const char* trans,
                                       tint* info);
 
 void  CVM_STD_CALL CGBTRS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1526,7 +1185,7 @@ void  CVM_STD_CALL CGBTRS      (const char* trans,
                                 const tint* ldb,
                                       tint* info);
 void  CVM_STD_CALL ZGBTRS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1541,7 +1200,7 @@ void  CVM_STD_CALL ZGBTRS      (const char* trans,
                                       tint* info);
 
 void  CVM_STD_CALL CGERFS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1561,7 +1220,7 @@ void  CVM_STD_CALL CGERFS      (const char* trans,
                                       float* rwork,
                                       tint* info);
 void  CVM_STD_CALL ZGERFS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1582,7 +1241,7 @@ void  CVM_STD_CALL ZGERFS      (const char* trans,
                                       tint* info);
 
 void  CVM_STD_CALL CGBRFS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1604,7 +1263,7 @@ void  CVM_STD_CALL CGBRFS      (const char* trans,
                                       float* rwork,
                                       tint* info);
 void  CVM_STD_CALL ZGBRFS      (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -1703,7 +1362,7 @@ void  CVM_STD_CALL ZGEBRD      (const tint* m,
                                       tint* info);
 
 void  CVM_STD_CALL SGBBRD      (const char* vect,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint vectsz,
 #endif
                                 const tint* m,
@@ -1725,7 +1384,7 @@ void  CVM_STD_CALL SGBBRD      (const char* vect,
                                       tint* info);
 
 void  CVM_STD_CALL DGBBRD      (const char* vect,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint vectsz,
 #endif
                                 const tint* m,
@@ -1747,7 +1406,7 @@ void  CVM_STD_CALL DGBBRD      (const char* vect,
                                       tint* info);
 
 void  CVM_STD_CALL CGBBRD      (const char* vect,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint vectsz,
 #endif
                                 const tint* m,
@@ -1770,7 +1429,7 @@ void  CVM_STD_CALL CGBBRD      (const char* vect,
                                       tint* info);
 
 void  CVM_STD_CALL ZGBBRD      (const char* vect,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint vectsz,
 #endif
                                 const tint* m,
@@ -1793,7 +1452,7 @@ void  CVM_STD_CALL ZGBBRD      (const char* vect,
                                       tint* info);
 
 void  CVM_STD_CALL SORGBR      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* m,
@@ -1806,7 +1465,7 @@ void  CVM_STD_CALL SORGBR      (const char* uplo,
                                 const tint* lwork,
                                       tint* info);
 void  CVM_STD_CALL DORGBR      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* m,
@@ -1821,7 +1480,7 @@ void  CVM_STD_CALL DORGBR      (const char* uplo,
                                       );
 
 void  CVM_STD_CALL CUNGBR      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* m,
@@ -1834,7 +1493,7 @@ void  CVM_STD_CALL CUNGBR      (const char* uplo,
                                 const tint* lwork,
                                       tint* info);
 void  CVM_STD_CALL ZUNGBR      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* m,
@@ -1848,7 +1507,7 @@ void  CVM_STD_CALL ZUNGBR      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL SBDSQR      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -1866,7 +1525,7 @@ void  CVM_STD_CALL SBDSQR      (const char* uplo,
                                       float* work,
                                       tint* info);
 void  CVM_STD_CALL DBDSQR      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -1885,7 +1544,7 @@ void  CVM_STD_CALL DBDSQR      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CBDSQR      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -1903,7 +1562,7 @@ void  CVM_STD_CALL CBDSQR      (const char* uplo,
                                       float* work,
                                       tint* info);
 void  CVM_STD_CALL ZBDSQR      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -1922,7 +1581,7 @@ void  CVM_STD_CALL ZBDSQR      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL SGEBAL      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const tint* n,
@@ -1934,7 +1593,7 @@ void  CVM_STD_CALL SGEBAL      (const char* job,
                                       float* scale,
                                       tint* info);
 void  CVM_STD_CALL DGEBAL      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const tint* n,
@@ -1947,7 +1606,7 @@ void  CVM_STD_CALL DGEBAL      (const char* job,
                                       tint* info);
 
 void  CVM_STD_CALL CGEBAL      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const tint* n,
@@ -1958,7 +1617,7 @@ void  CVM_STD_CALL CGEBAL      (const char* job,
                                       float* scale,
                                       tint* info);
 void  CVM_STD_CALL ZGEBAL      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const tint* n,
@@ -2046,11 +1705,11 @@ void  CVM_STD_CALL ZUNGHR      (const tint* n,
                                       tint* info);
 
 void  CVM_STD_CALL SHSEQR      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* compz,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint compzsz,
 #endif
                                 const tint* n,
@@ -2066,11 +1725,11 @@ void  CVM_STD_CALL SHSEQR      (const char* job,
                                 const tint* lwork,
                                       tint* info);
 void  CVM_STD_CALL DHSEQR      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* compz,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint compzsz,
 #endif
                                 const tint* n,
@@ -2087,11 +1746,11 @@ void  CVM_STD_CALL DHSEQR      (const char* job,
                                       tint* info);
 
 void  CVM_STD_CALL CHSEQR      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* compz,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint compzsz,
 #endif
                                 const tint* n,
@@ -2106,11 +1765,11 @@ void  CVM_STD_CALL CHSEQR      (const char* job,
                                 const tint* lwork,
                                       tint* info);
 void  CVM_STD_CALL ZHSEQR      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* compz,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint compzsz,
 #endif
                                 const tint* n,
@@ -2126,11 +1785,11 @@ void  CVM_STD_CALL ZHSEQR      (const char* job,
                                       tint* info);
 
 void  CVM_STD_CALL STREVC      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* howmny,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint howmnysz,
 #endif
                                 const tint* select,                                  // CAUTION! We assume that LOGICAL datatype is 4-byte long
@@ -2146,11 +1805,11 @@ void  CVM_STD_CALL STREVC      (const char* job,
                                       float* work,
                                       tint* info);
 void  CVM_STD_CALL DTREVC      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* howmny,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint howmnysz,
 #endif
                                 const tint* select,                                  // CAUTION! We assume that LOGICAL datatype is 4-byte long
@@ -2167,11 +1826,11 @@ void  CVM_STD_CALL DTREVC      (const char* job,
                                       tint* info);
 
 void  CVM_STD_CALL CTREVC      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* howmny,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint howmnysz,
 #endif
                                 const tint* select,                                  // CAUTION! We assume that LOGICAL datatype is 4-byte long
@@ -2188,11 +1847,11 @@ void  CVM_STD_CALL CTREVC      (const char* job,
                                       float* rwork,
                                       tint* info);
 void  CVM_STD_CALL ZTREVC      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* howmny,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint howmnysz,
 #endif
                                 const tint* select,                                  // CAUTION! We assume that LOGICAL datatype is 4-byte long
@@ -2210,11 +1869,11 @@ void  CVM_STD_CALL ZTREVC      (const char* job,
                                       tint* info);
 
 void  CVM_STD_CALL SGEBAK      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* side,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint sidesz,
 #endif
                                 const tint* n,
@@ -2226,11 +1885,11 @@ void  CVM_STD_CALL SGEBAK      (const char* job,
                                 const tint* ldv,
                                       tint* info);
 void  CVM_STD_CALL DGEBAK      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* side,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint sidesz,
 #endif
                                 const tint* n,
@@ -2243,11 +1902,11 @@ void  CVM_STD_CALL DGEBAK      (const char* job,
                                       tint* info);
 
 void  CVM_STD_CALL CGEBAK      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* side,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint sidesz,
 #endif
                                 const tint* n,
@@ -2259,11 +1918,11 @@ void  CVM_STD_CALL CGEBAK      (const char* job,
                                 const tint* ldv,
                                       tint* info);
 void  CVM_STD_CALL ZGEBAK      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* side,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint sidesz,
 #endif
                                 const tint* n,
@@ -2276,7 +1935,7 @@ void  CVM_STD_CALL ZGEBAK      (const char* job,
                                       tint* info);
 
 void  CVM_STD_CALL SGECON      (const char* norm,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint normsz,
 #endif
                                 const tint* n,
@@ -2288,7 +1947,7 @@ void  CVM_STD_CALL SGECON      (const char* norm,
                                       tint* iwork,
                                       tint* info);
 void  CVM_STD_CALL DGECON      (const char* norm,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint normsz,
 #endif
                                 const tint* n,
@@ -2301,7 +1960,7 @@ void  CVM_STD_CALL DGECON      (const char* norm,
                                       tint* info);
 
 void  CVM_STD_CALL CGECON      (const char* norm,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint normsz,
 #endif
                                 const tint* n,
@@ -2313,7 +1972,7 @@ void  CVM_STD_CALL CGECON      (const char* norm,
                                       float* rwork,
                                       tint* info);
 void  CVM_STD_CALL ZGECON      (const char* norm,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint normsz,
 #endif
                                 const tint* n,
@@ -2326,7 +1985,7 @@ void  CVM_STD_CALL ZGECON      (const char* norm,
                                       tint* info);
 
 void  CVM_STD_CALL SSPMV       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2339,7 +1998,7 @@ void  CVM_STD_CALL SSPMV       (const char* uplo,
                                 const tint* incy);
 
 void  CVM_STD_CALL DSPMV       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2352,11 +2011,11 @@ void  CVM_STD_CALL DSPMV       (const char* uplo,
                                 const tint* incy);
 
 void  CVM_STD_CALL SSYMM       (const char* side,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint sidesz,
 #endif
                                 const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* m,
@@ -2371,11 +2030,11 @@ void  CVM_STD_CALL SSYMM       (const char* side,
                                 const tint* ldc);
 
 void  CVM_STD_CALL DSYMM       (const char* side,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint sidesz,
 #endif
                                 const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* m,
@@ -2390,11 +2049,11 @@ void  CVM_STD_CALL DSYMM       (const char* side,
                                 const tint* ldc);
 
 void  CVM_STD_CALL CSYMM       (const char* side,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint sidesz,
 #endif
                                 const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* m,
@@ -2409,11 +2068,11 @@ void  CVM_STD_CALL CSYMM       (const char* side,
                                 const tint* ldc);
 
 void  CVM_STD_CALL ZSYMM       (const char* side,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint sidesz,
 #endif
                                 const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* m,
@@ -2428,11 +2087,11 @@ void  CVM_STD_CALL ZSYMM       (const char* side,
                                 const tint* ldc);
 
 void  CVM_STD_CALL CHEMM       (const char* side,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint sidesz,
 #endif
                                 const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* m,
@@ -2447,11 +2106,11 @@ void  CVM_STD_CALL CHEMM       (const char* side,
                                 const tint* ldc);
 
 void  CVM_STD_CALL ZHEMM       (const char* side,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint sidesz,
 #endif
                                 const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* m,
@@ -2466,7 +2125,7 @@ void  CVM_STD_CALL ZHEMM       (const char* side,
                                 const tint* ldc);
 
 void  CVM_STD_CALL SPOTRF      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2475,7 +2134,7 @@ void  CVM_STD_CALL SPOTRF      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL DPOTRF      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2484,7 +2143,7 @@ void  CVM_STD_CALL DPOTRF      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CPOTRF      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2493,7 +2152,7 @@ void  CVM_STD_CALL CPOTRF      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZPOTRF      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2502,7 +2161,7 @@ void  CVM_STD_CALL ZPOTRF      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL SSYTRF      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2514,7 +2173,7 @@ void  CVM_STD_CALL SSYTRF      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL DSYTRF      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2526,7 +2185,7 @@ void  CVM_STD_CALL DSYTRF      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CSYTRF      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2538,7 +2197,7 @@ void  CVM_STD_CALL CSYTRF      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZSYTRF      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2550,7 +2209,7 @@ void  CVM_STD_CALL ZSYTRF      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CHETRF      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2562,7 +2221,7 @@ void  CVM_STD_CALL CHETRF      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZHETRF      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2574,7 +2233,7 @@ void  CVM_STD_CALL ZHETRF      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL SPOTRS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2586,7 +2245,7 @@ void  CVM_STD_CALL SPOTRS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL DPOTRS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2598,7 +2257,7 @@ void  CVM_STD_CALL DPOTRS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CPOTRS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2610,7 +2269,7 @@ void  CVM_STD_CALL CPOTRS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZPOTRS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2622,7 +2281,7 @@ void  CVM_STD_CALL ZPOTRS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL SPORFS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2642,7 +2301,7 @@ void  CVM_STD_CALL SPORFS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL DPORFS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2662,7 +2321,7 @@ void  CVM_STD_CALL DPORFS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CPORFS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2682,7 +2341,7 @@ void  CVM_STD_CALL CPORFS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZPORFS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2702,7 +2361,7 @@ void  CVM_STD_CALL ZPORFS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL SSYTRS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2715,7 +2374,7 @@ void  CVM_STD_CALL SSYTRS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL DSYTRS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2728,7 +2387,7 @@ void  CVM_STD_CALL DSYTRS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CSYTRS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2741,7 +2400,7 @@ void  CVM_STD_CALL CSYTRS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZSYTRS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2754,7 +2413,7 @@ void  CVM_STD_CALL ZSYTRS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CHETRS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2767,7 +2426,7 @@ void  CVM_STD_CALL CHETRS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZHETRS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2780,7 +2439,7 @@ void  CVM_STD_CALL ZHETRS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL SSYRFS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2801,7 +2460,7 @@ void  CVM_STD_CALL SSYRFS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL DSYRFS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2822,7 +2481,7 @@ void  CVM_STD_CALL DSYRFS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CSYRFS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2843,7 +2502,7 @@ void  CVM_STD_CALL CSYRFS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZSYRFS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2864,7 +2523,7 @@ void  CVM_STD_CALL ZSYRFS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CHERFS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2885,7 +2544,7 @@ void  CVM_STD_CALL CHERFS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZHERFS      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2906,7 +2565,7 @@ void  CVM_STD_CALL ZHERFS      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL SPOTRI      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2915,7 +2574,7 @@ void  CVM_STD_CALL SPOTRI      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL DPOTRI      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2924,7 +2583,7 @@ void  CVM_STD_CALL DPOTRI      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CPOTRI      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2933,7 +2592,7 @@ void  CVM_STD_CALL CPOTRI      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZPOTRI      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2942,7 +2601,7 @@ void  CVM_STD_CALL ZPOTRI      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL SSYTRI      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2953,7 +2612,7 @@ void  CVM_STD_CALL SSYTRI      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL DSYTRI      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2964,7 +2623,7 @@ void  CVM_STD_CALL DSYTRI      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CSYTRI      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2975,7 +2634,7 @@ void  CVM_STD_CALL CSYTRI      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZSYTRI      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2986,7 +2645,7 @@ void  CVM_STD_CALL ZSYTRI      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL CHETRI      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -2997,7 +2656,7 @@ void  CVM_STD_CALL CHETRI      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL ZHETRI      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -3008,11 +2667,11 @@ void  CVM_STD_CALL ZHETRI      (const char* uplo,
                                       tint* info);
 
 void  CVM_STD_CALL SSYEVD      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -3026,11 +2685,11 @@ void  CVM_STD_CALL SSYEVD      (const char* job,
                                       tint* info);
 
 void  CVM_STD_CALL DSYEVD      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -3044,11 +2703,11 @@ void  CVM_STD_CALL DSYEVD      (const char* job,
                                       tint* info);
 
 void  CVM_STD_CALL CHEEVD      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -3064,11 +2723,11 @@ void  CVM_STD_CALL CHEEVD      (const char* job,
                                       tint* info);
 
 void  CVM_STD_CALL ZHEEVD      (const char* job,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobsz,
 #endif
                                 const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -3116,7 +2775,7 @@ void  CVM_STD_CALL ZPOEQU      (const tint* n,
                                       tint* info);
 
 void  CVM_STD_CALL SSYMV       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -3130,7 +2789,7 @@ void  CVM_STD_CALL SSYMV       (const char* uplo,
                                 const tint* incy);
 
 void  CVM_STD_CALL DSYMV       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -3144,7 +2803,7 @@ void  CVM_STD_CALL DSYMV       (const char* uplo,
                                 const tint* incy);
 
 void  CVM_STD_CALL CHEMV       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -3158,7 +2817,7 @@ void  CVM_STD_CALL CHEMV       (const char* uplo,
                                 const tint* incy);
 
 void  CVM_STD_CALL ZHEMV       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const tint* n,
@@ -3173,11 +2832,11 @@ void  CVM_STD_CALL ZHEMV       (const char* uplo,
 
 
 void  CVM_STD_CALL SSYRK       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3190,11 +2849,11 @@ void  CVM_STD_CALL SSYRK       (const char* uplo,
                                 const tint* ldc);
 
 void  CVM_STD_CALL DSYRK       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3207,11 +2866,11 @@ void  CVM_STD_CALL DSYRK       (const char* uplo,
                                 const tint* ldc);
 
 void  CVM_STD_CALL CSYRK       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3224,11 +2883,11 @@ void  CVM_STD_CALL CSYRK       (const char* uplo,
                                 const tint* ldc);
 
 void  CVM_STD_CALL ZSYRK       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3241,11 +2900,11 @@ void  CVM_STD_CALL ZSYRK       (const char* uplo,
                                 const tint* ldc);
 
 void  CVM_STD_CALL CHERK       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3258,11 +2917,11 @@ void  CVM_STD_CALL CHERK       (const char* uplo,
                                 const tint* ldc);
 
 void  CVM_STD_CALL ZHERK       (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3275,11 +2934,11 @@ void  CVM_STD_CALL ZHERK       (const char* uplo,
                                 const tint* ldc);
 
 void  CVM_STD_CALL SSYR2K      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3294,11 +2953,11 @@ void  CVM_STD_CALL SSYR2K      (const char* uplo,
                                 const tint* ldc);
 
 void  CVM_STD_CALL DSYR2K      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3313,11 +2972,11 @@ void  CVM_STD_CALL DSYR2K      (const char* uplo,
                                 const tint* ldc);
 
 void  CVM_STD_CALL CSYR2K      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3332,11 +2991,11 @@ void  CVM_STD_CALL CSYR2K      (const char* uplo,
                                 const tint* ldc);
 
 void  CVM_STD_CALL ZSYR2K      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3351,11 +3010,11 @@ void  CVM_STD_CALL ZSYR2K      (const char* uplo,
                                 const tint* ldc);
 
 void  CVM_STD_CALL CHER2K      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3370,11 +3029,11 @@ void  CVM_STD_CALL CHER2K      (const char* uplo,
                                 const tint* ldc);
 
 void  CVM_STD_CALL ZHER2K      (const char* uplo,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint uplosz,
 #endif
                                 const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* n,
@@ -3699,7 +3358,7 @@ void CVM_FTN_CALL ZUNGQL       (const tint* m,
 
 // LLS routines, 6.0
 void CVM_FTN_CALL SGELS        (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -3714,7 +3373,7 @@ void CVM_FTN_CALL SGELS        (const char* trans,
                                       tint* info);
 
 void CVM_FTN_CALL DGELS        (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -3729,7 +3388,7 @@ void CVM_FTN_CALL DGELS        (const char* trans,
                                       tint* info);
 
 void CVM_FTN_CALL CGELS        (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -3744,7 +3403,7 @@ void CVM_FTN_CALL CGELS        (const char* trans,
                                       tint* info);
 
 void CVM_FTN_CALL ZGELS        (const char* trans,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint transsz,
 #endif
                                 const tint* m,
@@ -3938,11 +3597,11 @@ void CVM_FTN_CALL ZGELSD       (const tint* m,
 
 // 8.1 generalized eigenvalues
 void CVM_FTN_CALL SGGEV        (const char* jobvl,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobvlsz,
 #endif
                                 const char* jobvr,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobvrsz,
 #endif
                                 const tint* n,
@@ -3962,11 +3621,11 @@ void CVM_FTN_CALL SGGEV        (const char* jobvl,
                                 tint* info);
 
 void CVM_FTN_CALL DGGEV        (const char* jobvl,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobvlsz,
 #endif
                                 const char* jobvr,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobvrsz,
 #endif
                                 const tint* n,
@@ -3986,11 +3645,11 @@ void CVM_FTN_CALL DGGEV        (const char* jobvl,
                                 tint* info);
 
 void CVM_FTN_CALL CGGEV        (const char* jobvl,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobvlsz,
 #endif
                                 const char* jobvr,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobvrsz,
 #endif
                                 const tint* n,
@@ -4010,11 +3669,11 @@ void CVM_FTN_CALL CGGEV        (const char* jobvl,
                                 tint* info);
 
 void CVM_FTN_CALL ZGGEV        (const char* jobvl,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobvlsz,
 #endif
                                 const char* jobvr,
-#if defined (CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
+#if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                                 const tint jobvrsz,
 #endif
                                 const tint* n,
