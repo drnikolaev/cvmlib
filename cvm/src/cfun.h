@@ -864,11 +864,7 @@ template <typename T> class Fdelta;
 template <typename T> class Fvar;
 template <typename T> class Fiif;
 
-#ifdef CVM_USE_VARIADIC_TEMPLATES
-#   define CFUN_NEW_FUNC(cls, ...) std::make_shared<cls<T>>(__VA_ARGS__)
-#else
-#   define CFUN_NEW_FUNC(cls, ...) BasePointer(new cls<T>(__VA_ARGS__))
-#endif
+#define CFUN_NEW_FUNC(cls, ...) std::make_shared<cls<T>>(__VA_ARGS__)
 
 //! @endcond
 

@@ -1,41 +1,33 @@
 cmake_minimum_required(VERSION 3.18)
-project(ftn)
-enable_language(Fortran)
+project(ftn LANGUAGES Fortran)
+get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
+message("Discovered Fortran compiler: " ${Fortran_COMPILER_NAME})
 
-#SET(CMAKE_Fortran_COMPILER_WORKS 1)
-SET(CMAKE_Fortran_COMPILER /opt/intel/oneapi/compiler/latest/mac/bin/intel64/ifort)
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_compile_options(-O3)
+else()
+    add_compile_options(-O0 -g)
+endif()
 
-#get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
-#
-#message(${Fortran_COMPILER_NAME})
-#
-#if (Fortran_COMPILER_NAME MATCHES "gfortran.*")
-#    # gfortran
-#    set (CMAKE_Fortran_FLAGS_RELEASE "-funroll-all-loops -fno-f2c -O3")
-#    set (CMAKE_Fortran_FLAGS_DEBUG   "-fno-f2c -O0 -g")
-#elseif (Fortran_COMPILER_NAME MATCHES "ifort.*")
-    # ifort (untested)
-#    set (CMAKE_Fortran_FLAGS_RELEASE "-O3")
-#    set (CMAKE_Fortran_FLAGS_DEBUG   "-O0 -g")
-#elseif (Fortran_COMPILER_NAME MATCHES "g77")
-#    # g77
-#    set (CMAKE_Fortran_FLAGS_RELEASE "-funroll-all-loops -fno-f2c -O3 -m32")
-#    set (CMAKE_Fortran_FLAGS_DEBUG   "-fno-f2c -O0 -g -m32")
-#endif (Fortran_COMPILER_NAME MATCHES "gfortran.*")
+if (Fortran_COMPILER_NAME MATCHES "gfortran.*")
+    add_compile_options(-pthread)
+    if(ILP64)
+        add_compile_options(-fdefault-integer-8)
+    endif()
+elseif (Fortran_COMPILER_NAME MATCHES "ifort.*")
+    add_compile_options(-threads)
+    if(ILP64)
+        add_compile_options(-i8)
+    endif()
+elseif (Fortran_COMPILER_NAME MATCHES "f95.*")
+    add_compile_options(-pthread)
+    if(ILP64)
+        add_compile_options(-fdefault-integer-8)
+    endif()
+endif ()
 
 FILE(GLOB SOURCE_FILES *.f)
-
-if (NOT TARGET ftn)
-    add_library(ftn STATIC ${SOURCE_FILES})
-endif()
-
-if(ILP64)
-    add_compile_options(-i8)
-endif()
-
-add_compile_options(-threads
-        $<$<CONFIG:Release>:-O3>
-        $<$<CONFIG:Debug>:-O0 -g>)
+add_library(ftn STATIC ${SOURCE_FILES})
 
 set_target_properties(ftn
         PROPERTIES

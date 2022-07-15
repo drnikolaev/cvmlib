@@ -247,8 +247,8 @@ TYPED_TEST(FunctionalTest, TestFmult) {
         a[0] = TPC(7.31,3.18);
         a[1] = TPC(2.44,3.12);
         TPC expected = TPC(7.31,3.18) * TPC(2.44,3.12);
-        EXPECT_DOUBLE_EQ(expected.real(), cfmult.value(a).real()) << "cfunction mult - value";
-        EXPECT_DOUBLE_EQ(expected.imag(), cfmult.value(a).imag()) << "cfunction mult - value";
+        EXPECT_FLOAT_EQ(expected.real(), cfmult.value(a).real()) << "cfunction mult - value";
+        EXPECT_FLOAT_EQ(expected.imag(), cfmult.value(a).imag()) << "cfunction mult - value";
     }
     EXPECT_EQ(std::string("(2,0)*x"), cfmult2.drv().format()) << "cfunction mult - drv() - format()";
     EXPECT_EQ(std::string("y"), cfmult.drv(0).format()) << "cfunction mult - drv() - format()";
@@ -280,8 +280,8 @@ TYPED_TEST(FunctionalTest, TestFdiv) {
         a[0] = TPC(7.31,3.18);
         a[1] = TPC(2.44,3.12);
         TPC expected = TPC(7.31,3.18) / TPC(2.44,3.12);
-        EXPECT_DOUBLE_EQ(expected.real(), cfdiv.value(a).real()) << "basic_function<TPC> div - value";
-        EXPECT_DOUBLE_EQ(expected.imag(), cfdiv.value(a).imag()) << "basic_function<TPC> div - value";
+        EXPECT_FLOAT_EQ(expected.real(), cfdiv.value(a).real()) << "basic_function<TPC> div - value";
+        EXPECT_FLOAT_EQ(expected.imag(), cfdiv.value(a).imag()) << "basic_function<TPC> div - value";
     }
     EXPECT_EQ(std::string("(0,0)"), cfdiv2.drv().format()) << "basic_function<TPC> div - drv() - format()";
     EXPECT_EQ(std::string("(1,0)/y"), cfdiv.drv(0).format()) << "basic_function<TPC> div - drv() - format()";
@@ -309,17 +309,17 @@ TYPED_TEST(FunctionalTest, TestFpower) {
     basic_function<TPC> cfpow2("{x} (x^(3, 1))^(1, 2)");
 
     EXPECT_EQ(std::string("x^(1,7)"), cfpow2.simp().format()) << "basic_function<TPC> power - simp() - format()";
-    TPC expected = ElementaryFunctions<TPC>::pow(TPC(7.36,3.17), TPC(1., 7.)); 
+    TPC expected = ElementaryFunctions<TPC>::pow(TPC(7.36,3.17), TPC(1., 7.));
 
-    EXPECT_DOUBLE_EQ(expected.real(), cfpow2(TPC(7.36,3.17)).real()) << "basic_function<TPC> power - value";
-    EXPECT_DOUBLE_EQ(expected.imag(), cfpow2(TPC(7.36,3.17)).imag()) << "basic_function<TPC> power - value";
+    EXPECT_NEAR(expected.real(), cfpow2(TPC(7.36,3.17)).real(), sp<TP>()) << "basic_function<TPC> power - value";
+    EXPECT_NEAR(expected.imag(), cfpow2(TPC(7.36,3.17)).imag(), sp<TP>()) << "basic_function<TPC> power - value";
     {
         TPC a[2];
         a[0] = TPC(7.31,3.18);
         a[1] = TPC(2.44,3.12);
         expected = ElementaryFunctions<TPC>::pow(TPC(7.31,3.18), TPC(2.44,3.12));
-        EXPECT_DOUBLE_EQ(expected.real(), cfpow.value(a).real()) << "basic_function<TPC> power - value";
-        EXPECT_DOUBLE_EQ(expected.imag(), cfpow.value(a).imag()) << "basic_function<TPC> power - value";
+        EXPECT_FLOAT_EQ(expected.real(), cfpow.value(a).real()) << "basic_function<TPC> power - value";
+        EXPECT_FLOAT_EQ(expected.imag(), cfpow.value(a).imag()) << "basic_function<TPC> power - value";
     }
     EXPECT_EQ(std::string("y*x^(y-(1,-0))"), cfpow.drv().format()) << "basic_function<TPC> power - drv() - format()";
     EXPECT_EQ(std::string("x^y*log(x)"), cfpow.drv(1).format()) << "basic_function<TPC> power - drv() - format()";
@@ -1370,17 +1370,17 @@ TYPED_TEST(FunctionalTest, TestCFmatrix) {
     fm.value(c, cm);
 
     EXPECT_EQ(TPC(3., -3.), cm(0, 1)) << "cfmatrix - value";
-    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).real(), cm(0, 2).real(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).imag(), cm(0, 2).imag(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::sin(c).real(), cm(1, 2).real(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::sin(c).imag(), cm(1, 2).imag(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).real(), cm(0, 2).real(), sp<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).imag(), cm(0, 2).imag(), sp<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).real(), cm(1, 2).real(), sp<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).imag(), cm(1, 2).imag(), sp<TP>()) << "cfmatrix - value";
 
     cm = fm(c);
     EXPECT_EQ(TPC(3., -3.), cm(0, 1)) << "cfmatrix - value";
-    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).real(), cm(0, 2).real(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).imag(), cm(0, 2).imag(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::sin(c).real(), cm(1, 2).real(), s<TP>()) << "cfmatrix - value";
-    EXPECT_NEAR(std::sin(c).imag(), cm(1, 2).imag(), s<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).real(), cm(0, 2).real(), sp<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::pow(c, TPC(2.,1.)).imag(), cm(0, 2).imag(), sp<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).real(), cm(1, 2).real(), sp<TP>()) << "cfmatrix - value";
+    EXPECT_NEAR(std::sin(c).imag(), cm(1, 2).imag(), sp<TP>()) << "cfmatrix - value";
 }
 
 // rfvector scalar product

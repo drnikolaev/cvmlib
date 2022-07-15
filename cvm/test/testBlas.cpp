@@ -325,23 +325,23 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom2) {
     basic_scmatrix<TP,TPC> mp{3};
     mp.polynom(m, vc);
     EXPECT_NEAR(std::abs(TPC(1.231954875800000e+008,6.128500650000000e+007)),
-                std::abs(mp(0, 0)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 0)), spp<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.065249031600000e+008,1.414332915800000e+008)),
                 std::abs(mp(1, 0)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-1.611952344600000e+008,1.214092289200000e+008)),
                 std::abs(mp(2, 0)), spp<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.770615751600000e+008,-3.599475799999982e+005)),
-                std::abs(mp(0, 1)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 1)), spp<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(2.039982260400000e+008,1.014812545000000e+008)),
-                std::abs(mp(1, 1)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(1, 1)), spp<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-1.156608320000000e+008,2.325020965000000e+008)),
                 std::abs(mp(2, 1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-4.102424600000009e+005,-2.018017249200000e+008)),
-                std::abs(mp(0, 2)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 2)), spp<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.156608320000000e+008,-2.325020965000000e+008)),
                 std::abs(mp(1, 2)), spp<TP>()) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(2.649887267400000e+008,1.318216785000000e+008)),
-                std::abs(mp(2, 2)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(2, 2)), spp<TP>()) << "schmatrix::polynom";
 }
 
 TYPED_TEST(BlasTest, TestSymmetricMatrixExponent) {

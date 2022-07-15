@@ -32,8 +32,9 @@
 #ifndef _CVM_H
 #define _CVM_H
 
-#include <cstdint>
+#pragma once
 
+#include <cstdint>
 // 5.7 ILP64 support
 #if defined(CVM_ILP64)
     using tint = int64_t;  //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
@@ -50,69 +51,19 @@
 #   endif
 #endif
 
-//#if(_MSC_VER >= 1800) && defined(__INTEL_COMPILER)
-//#   pragma warning(disable:4267)
-//#endif
-
-#include <cmath>
-#include <array>
-#include <vector>
-#include <map>
-#include <iostream>
-
 // MSVC++ 6.0 and higher settings
 #if defined(_MSC_VER)
-#   pragma once
-#   define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
-#   ifndef _WIN32_WINNT
-#       define _WIN32_WINNT 0x500  // at least Win2000 is required for 
-                                   // InitializeCriticalSectionAndSpinCount
-#   endif
 #   include <windows.h>
 #   include <process.h>
-// 6.0 TR1 dependency added
-#   include <memory>
-
-#   if (_MSC_VER < 1400)
-#       error "Please use version 5.2 for older MSVC compilers"
-#   endif
-#   if (_MSC_VER >= 1700)  // since VC11 aka MS Visual Studio 2012
-#       define CVM_STD_MUTEX
-#       include <mutex>
-#       include <thread>
-#   endif
-#   if (_MSC_VER >= 1800)  // since VC12 aka MS Visual Studio 2013
-#       define CVM_USE_VARIADIC_TEMPLATES
-#       define CVM_USE_INITIALIZER_LISTS
-#       define CVM_USE_DELEGATING_CONSTRUCTORS
-#       include <initializer_list>
-#   endif
-#   if (_MSC_VER >= 1900)  // since VC14 aka MS Visual Studio 2015
-#       define CVM_USE_USER_LITERALS
-#   endif
-
-#   if (_MSC_VER < 1900)  // before VC14 aka MS Visual Studio 2015
-#       define constexpr
-#   endif
-
 #   if (!defined(__INTEL_COMPILER) || !defined(_WIN64)) && !(_MSC_VER >= 1500 && defined(_WIN64))
 #       define CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES
 #   endif
 #   if (defined(__INTEL_COMPILER) && (_MSC_VER == 1900))  // Intel's glitch
 #       define CVM_USE_MALLOC
 #   endif
-//#   pragma warning(disable:4290)
-#   if defined(CVM_FLOAT)
-//#       pragma warning(disable:4244)
-#   endif
 #   if defined(SRC_EXPORTS) && !defined(CVM_EXPORTS)
 #       define CVM_EXPORTS
 #   endif
-
-#   if (_MSC_VER >= 1700)
-#       include <unordered_map>
-#   endif
-
 #   define CVM_BLOCKS_MAP std::unordered_map
 #   ifdef CVM_STATIC
 #       define CVM_API
@@ -123,18 +74,6 @@
 #           define CVM_API __declspec(dllimport)
 #       endif
 #   endif
-
-using CVM_LONGEST_INT = int64_t;  //!< Longest integer possible on this platform
-
-#   if defined(_WIN64)
-using CVM_PTR_WRAPPER = unsigned long long;
-#   else
-#       if defined(CVM_ILP64)
-#           error "CVM_ILP64 is incompatible with 32 bit mode"
-#       endif
-using CVM_PTR_WRAPPER = unsigned long;
-#   endif
-
 #   define CVM_VSNPRINTF vsnprintf_s
 #   define CVM_VSNPRINTF_S_DEFINED
 #   define CVM_STRCPY_S_DEFINED
@@ -147,81 +86,32 @@ using CVM_PTR_WRAPPER = unsigned long;
 #   define __stdcall  // NOLINT
 #   include <semaphore.h>  // Unix
 
-// 8.0 - since 4.7.0 we use new std::mutex features
-#   if !defined(__INTEL_COMPILER) && \
-        (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 7)
-#       define CVM_USE_DELEGATING_CONSTRUCTORS
-#       define CVM_USE_USER_LITERALS
-#       define CVM_STD_MUTEX
-#       include <mutex>
-#       include <thread>
-#   else
-#       define override
-#   endif
-
-// 8.1 - more C++11 features, see also http://gcc.gnu.org/projects/cxx0x.html
-#   if __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 4
-#       define CVM_USE_VARIADIC_TEMPLATES
-#       define CVM_USE_INITIALIZER_LISTS
-#       include <initializer_list>
-#   endif
-
-// 6.0 TR1 dependency added
-#   include <memory>
-
 #   define CVM_API
 #   define CVM_BLOCKS_MAP std::map
+#   define CVM_VSNPRINTF vsnprintf
+#endif
 
 using CVM_LONGEST_INT = int64_t;
 
-#   if defined(__AMD64__) || defined(_WIN64) || defined(__x86_64__)
-using CVM_PTR_WRAPPER = unsigned long long;
-#   else
-#       if defined(CVM_ILP64)
-#           error "CVM_ILP64 is incompatible with 32 bit mode"
-#       endif
-using CVM_PTR_WRAPPER = unsigned long;
-#   endif
-
-#   define CVM_VSNPRINTF vsnprintf
-
-// 5.7 - looking for memset
-#   include <cstring>
-// gcc 4.6.1 fix for ptrdiff_t
-#   include <cstddef>
-
-//clang -dM -E -x c /dev/null
-#   if defined(__clang__) && __clang_major__ <= 5
-#       define CVM_NO_DEFAULT_RANDOM_ENGINE_SUPPORTED 1
-#   endif
-#   if defined(__clang__) && __clang_major__ >= 5
-#       define CVM_USE_VARIADIC_TEMPLATES
-#       define CVM_USE_INITIALIZER_LISTS
-#       define CVM_USE_USER_LITERALS
-#       define CVM_USE_DELEGATING_CONSTRUCTORS
-#   endif
-#endif
-
+#include <cmath>
+#include <array>
+#include <vector>
+#include <map>
+#include <iostream>
+#include <mutex>
+#include <thread>
+#include <initializer_list>
+#include <memory>
+#include <cstring>
+#include <cstddef>
 #include <cstdio>
 #include <cstdarg>
-#include <cmath>
 #include <cfloat>
 #include <ctime>
-
-// fix for missing __builtin_clog functions
-//#if defined(__INTEL_COMPILER)
-//#   if defined(_GLIBCXX_USE_C99_COMPLEX)
-//#       undef _GLIBCXX_USE_C99_COMPLEX
-//#       define _GLIBCXX_USE_C99_COMPLEX 0
-//#   endif
-//#endif
-
+#include <random>
 #include <complex>
 using namespace std::complex_literals;
 
-#if !defined(CVM_NO_DEFAULT_RANDOM_ENGINE_SUPPORTED)
-#   include <random>
-#endif
 
 #if defined(STLPORT)
 #   define CVM_USES_STLPORT
@@ -398,7 +288,7 @@ public:
     /**
      * @brief Exception destructor, inherited from std::exception
      */
-    ~cvmexception() override noexcept = default;
+    ~cvmexception() override {}
 
     /**
      * @brief Exception Code
@@ -1796,25 +1686,17 @@ template<typename T>
 class Randomizer
 {
     T mMax;  //!< maximum possible value
-#if !defined(CVM_NO_DEFAULT_RANDOM_ENGINE_SUPPORTED)
     std::random_device mre;  //!< standard engine
     std::uniform_int_distribution<int> mDist;  //!< standard generator
-#endif
 
     /**
      * @brief Private constructor
      * @see get()
      */
     Randomizer() noexcept
-#if defined(CVM_NO_DEFAULT_RANDOM_ENGINE_SUPPORTED)
-        : mMax(static_cast<T>(RAND_MAX)) {
-        srand(static_cast<unsigned int>(time(nullptr)));
-    }
-#else
         : mMax(static_cast<T>((std::numeric_limits<int>::max)())),
           mre(),
           mDist(0, (std::numeric_limits<int>::max)()) {}
-#endif
 
     /**
      * @brief Internal private routine
@@ -1823,12 +1705,7 @@ class Randomizer
     T _get(T dFrom, T dTo) noexcept {
         const T dMin = _cvm_min<T>(dFrom, dTo);
         const T dMax = _cvm_max<T>(dFrom, dTo);
-#if defined(CVM_NO_DEFAULT_RANDOM_ENGINE_SUPPORTED)
-        unsigned int nr = static_cast<unsigned int>(rand());
-        return dMin + static_cast<T>(nr) * (dMax - dMin) / mMax;
-#else
         return dMin + static_cast<T>(mDist(mre)) * (dMax - dMin) / mMax;
-#endif
     }
 
 public:
@@ -3373,7 +3250,6 @@ prints
       : BaseArray(nSize)
     {}
 
-#if defined(CVM_USE_INITIALIZER_LISTS)
 /**
 @brief Constructor
 
@@ -3407,7 +3283,6 @@ prints
             p[i++] = *it;
         }
     }
-#endif
 
 /**
 @brief Constructor
@@ -6180,7 +6055,6 @@ prints
       : BaseArray(nSize)
     {}
 
-#if defined(CVM_USE_INITIALIZER_LISTS)
 /**
 @brief Constructor
 
@@ -6219,7 +6093,6 @@ cvector v = { 1.2+3.4_i, 3.4+5.6_i, 99.99 };
             p[i++] = *it;
         }
     }
-#endif
 
 /**
 @brief Constructor
@@ -9961,14 +9834,7 @@ destroyed but rather moved to newly created object <tt>a</tt>.
 @param[in] m rvalue reference to other matrix.
 */
     Matrix(Matrix&& m) noexcept  // NOLINT
-#if defined(CVM_USE_DELEGATING_CONSTRUCTORS)
         : Matrix(m.size(), m.incr(), m.msize(), m.nsize(), m.ld())
-#else
-        : BaseArray(m.size(), m.incr()),
-        mm(m.msize()),
-        mn(m.nsize()),
-        mld(m.ld())
-#endif
     {
         _mmove(std::move(m));
     }
@@ -10885,8 +10751,7 @@ prints
     }
 
 
-// TODO dox, test
-#if defined(CVM_USE_INITIALIZER_LISTS)
+    // TODO dox, test
     basic_rmatrix(tint nM, tint nN, const std::initializer_list<TR>& list)
       : BaseMatrix(nM, nN, nM, false) {
         _check_ne(CVM_SIZESMISMATCH, this->size(), static_cast<tint>(list.size()));
@@ -10900,7 +10765,6 @@ prints
             p[i++] = *it;
         }
     }
-#endif
 
 
 
@@ -14870,12 +14734,10 @@ prints
 
 
 
-// TODO dox, test
-#if defined(CVM_USE_INITIALIZER_LISTS)
+    // TODO dox, test
     basic_srmatrix(tint nDim, const std::initializer_list<TR>& list)
       : BaseRMatrix(nDim, nDim, list)
     {}
-#endif
 
 
 
@@ -18570,8 +18432,7 @@ prints
         m._check_submatrix();
     }
 
-// TODO dox, test
-#if defined(CVM_USE_INITIALIZER_LISTS)
+    // TODO dox, test
     basic_cmatrix(tint nM, tint nN, const std::initializer_list<TR>& list)
       : BaseMatrix(nM, nN, nM, false) {
         _check_ne(CVM_SIZESMISMATCH, this->size() * tint(2), static_cast<tint>(list.size()));
@@ -18585,8 +18446,6 @@ prints
             p[i++] = TC(*it,*(it+1));
         }
     }
-#endif
-
 
 
 /**
@@ -23269,16 +23128,10 @@ prints
       : BaseCMatrix(nDim, nDim)
     {}
 
-
-
-// TODO dox, test
-#if defined(CVM_USE_INITIALIZER_LISTS)
+    // TODO dox, test
     basic_scmatrix(tint nDim, const std::initializer_list<TR>& list)
       : BaseCMatrix(nDim, nDim, list)
     {}
-#endif
-
-
 
 /**
 @brief Constructor
@@ -36794,7 +36647,7 @@ inline double cvmMachSp64() {
             
 
 //! @cond INTERNAL
-#if !defined(CVM_STD_MUTEX) || defined(CVM_USE_POOL_MANAGER)
+#if defined(CVM_USE_POOL_MANAGER)
 
 class CriticalSection
 {

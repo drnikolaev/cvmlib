@@ -103,7 +103,6 @@ TYPED_TEST(InitializationTest, TestSizes) {
     EXPECT_EQ(0,this->schm.nsize());
 }
 
-#if defined(CVM_USE_INITIALIZER_LISTS)
 TYPED_TEST(InitializationTest, TestInitList) {
     basic_rvector<TP> rv = { TP(1.), TP(-2.), TP(3.456), TP(99.99) };
     basic_rvector<TP> rv0 = {};
@@ -116,7 +115,6 @@ TYPED_TEST(InitializationTest, TestInitList) {
     EXPECT_EQ(TPC(1.2, 3.4),cv(0));
     EXPECT_EQ(TPC(99.99, 0.),cv(2));
 }
-#endif
 
 TYPED_TEST(InitializationTest, TestLiterals) {
 //    _Complex float cc = 3.4f + 5.6fi;
