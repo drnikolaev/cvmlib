@@ -16,7 +16,7 @@ protected:
     virtual ~FunctionalTest() {}
 };
 
-TYPED_TEST_CASE(FunctionalTest, TestTypes);
+TYPED_TEST_SUITE(FunctionalTest, TestTypes);
 
 // 8.0 move
 TYPED_TEST(FunctionalTest, TestMoveFVector) {

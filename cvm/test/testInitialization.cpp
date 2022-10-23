@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnreachableCode"
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
@@ -69,7 +71,7 @@ protected:
     const std::array<T,9> as;
 };
 
-TYPED_TEST_CASE(InitializationTest, TestTypes);
+TYPED_TEST_SUITE(InitializationTest, TestTypes);
 
 TYPED_TEST(InitializationTest, TestSizes) {
     ASSERT_GE(sizeof(TP), 4U);
@@ -1927,7 +1929,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cm1 = cm1 + scbm2;
     cm1 += scbm2;
     EXPECT_NEAR(std::abs(scbm2(1,2) * TP(3.)), std::abs(cm1(1,2)), s<TP>()) << "mix cmatrix  scbm";
-    EXPECT_NEAR(std::abs(scbm2(3,0) * TP(3.)), std::abs(cm1(3,0)), sp<TP>()) << "mix cmatrix  scbm";
+    EXPECT_NEAR(std::abs(scbm2(3,0) * TP(3.)), std::abs(cm1(3,0)), s<TP>()) << "mix cmatrix  scbm";
     EXPECT_NEAR(std::abs(TP(3.) * scbm2(1,2)), std::abs(cm1(0,1)), s<TP>()) << "mix cmatrix  scbm";
     EXPECT_NEAR(std::abs(TP(3.) * scbm2(1,0)), std::abs(cm1(1,0)), s<TP>()) << "mix cmatrix  scbm";
 
@@ -3540,3 +3542,5 @@ TYPED_TEST(InitializationTest, TestCoverage) {
     }
     EXPECT_TRUE(ex) << "schmatrix set_image not allowed";
 }
+
+#pragma clang diagnostic pop

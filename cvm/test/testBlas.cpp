@@ -16,7 +16,7 @@ protected:
     virtual ~BlasTest() {}
 };
 
-TYPED_TEST_CASE(BlasTest, TestTypes);
+TYPED_TEST_SUITE(BlasTest, TestTypes);
 
 TYPED_TEST(BlasTest, TestVectorNorm1) {
     TP a[] = {1., 2., 3., -4., 5., -6.};

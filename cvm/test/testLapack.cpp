@@ -16,7 +16,7 @@ protected:
     virtual ~LapackTest() {}
 };
 
-TYPED_TEST_CASE(LapackTest, TestTypes);
+TYPED_TEST_SUITE(LapackTest, TestTypes);
 
 // Fixed syrk bug reported by Markus Jochmann.
 TYPED_TEST(LapackTest, TestSyrkReal) {
