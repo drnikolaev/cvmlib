@@ -1,19 +1,18 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2022
+//          Copyright Sergei Nikolaev 1992-2023
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "cvm.h"
 
-#include <cstdio>
-#include <cctype>
+#include <algorithm>
 
 extern "C" {
     void __stdcall XERBLA(const char* szSubName,
-    #ifdef CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES
+    #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                         const tint,
     #endif
                         const tint* pnParam)
@@ -22,8 +21,7 @@ extern "C" {
     }
 }
 
-
-#if !defined(CVM_STATIC) && (defined(_MSC_VER) || defined(__WATCOMC__))
+#if defined(_MSC_VER)
 #   ifdef _MANAGED
 #       pragma managed(push, off)
 #   endif
@@ -54,31 +52,16 @@ CVM_NAMESPACE_BEG
 
 //! @cond INTERNAL
 CriticalSection::CriticalSection()
-#if defined(CVM_MT)
     : mbOK(false),
-#endif
 #if defined(WIN32) || defined(_WIN32)
-#if defined(CVM_USE_CRITICAL_SECTION_NOT_MUTEX)
-    mCriticalSection()
-#else
     mMutex(0)
-#endif
 #else                                                       // POSIX Threads library assumed
     mMutex(), mMutexAttr()
 #endif
 {
-#if defined(CVM_MT)
 #if defined(WIN32) || defined(_WIN32)
-#   if defined(CVM_USE_CRITICAL_SECTION_NOT_MUTEX)
-    if (!::InitializeCriticalSectionAndSpinCount(&mCriticalSection, 0x80000400))
-    {
-        ::InitializeCriticalSection(&mCriticalSection);
-    }
-    mbOK = true;
-#   else
-        mMutex = ::CreateMutex(nullptr, FALSE, nullptr);
-        mbOK = mMutex != nullptr;
-#   endif
+    mMutex = ::CreateMutex(nullptr, FALSE, nullptr);
+    mbOK = mMutex != nullptr;
 #else
     if (pthread_mutexattr_init(&mMutexAttr) == 0 &&
         pthread_mutexattr_setpshared(&mMutexAttr, PTHREAD_PROCESS_PRIVATE) == 0 &&
@@ -87,69 +70,50 @@ CriticalSection::CriticalSection()
         mbOK = true;
     }
 #endif
-#endif
 }
 
 CriticalSection::~CriticalSection()
 {
-#if defined(CVM_MT)
 #if defined(WIN32) || defined(_WIN32)
     if (mbOK)
     {
-#   if defined(CVM_USE_CRITICAL_SECTION_NOT_MUTEX)
-        ::DeleteCriticalSection(&mCriticalSection);
-#   else
         ::CloseHandle(mMutex);
-#   endif
     }
 #else
     pthread_mutexattr_destroy(&mMutexAttr);
     pthread_mutex_destroy(&mMutex);
 #endif
-#endif
 }
 
 void CriticalSection::enter()
 {
-#if defined(CVM_MT)
 #if defined(WIN32) || defined(_WIN32)
     if (!mbOK)
     {
         throw cvmexception(CVM_SEMAPHOREERROR);
     }
-#   if defined(CVM_USE_CRITICAL_SECTION_NOT_MUTEX)
-        ::EnterCriticalSection(&mCriticalSection);
-#   else
-        ::WaitForSingleObject(mMutex, INFINITE);
-#   endif
+    ::WaitForSingleObject(mMutex, INFINITE);
 #else
     if (!mbOK || pthread_mutex_lock(&mMutex) != 0)
     {
         throw cvmexception(CVM_SEMAPHOREERROR);
     }
 #endif
-#endif
 }
 
 void CriticalSection::leave()
 {
-#if defined(CVM_MT)
 #if defined(WIN32) || defined(_WIN32)
     if (!mbOK)
     {
         throw cvmexception(CVM_SEMAPHOREERROR);
     }
-#   if defined(CVM_USE_CRITICAL_SECTION_NOT_MUTEX)
-        ::LeaveCriticalSection(&mCriticalSection);
-#   else
-        ::ReleaseMutex(mMutex);
-#   endif
+    ::ReleaseMutex(mMutex);
 #else
     if (!mbOK || pthread_mutex_unlock(&mMutex) != 0)
     {
         throw cvmexception(CVM_SEMAPHOREERROR);
     }
-#endif
 #endif
 }
 //! @endcond
@@ -201,7 +165,7 @@ cvmexception::cvmexception(cvmexception&& e) noexcept  // NOLINT
 MemoryPool gPool;
 CriticalSection gCS;
 
-CVM_API tbyte* _cvmMalloc(size_t nBytes) throw(cvmexception)
+CVM_API tbyte* _cvmMalloc(size_t nBytes)
 {
     Lock l(gCS);
     return gPool.Malloc(nBytes);
@@ -252,7 +216,7 @@ void MemoryPool::Clear()
     mOutBlocks.clear();
 }
 
-tbyte* MemoryPool::Malloc(size_t nBytes) throw(cvmexception)
+tbyte* MemoryPool::Malloc(size_t nBytes)
 {
     if (nBytes == 0) return nullptr;
     tbyte* pB = mMemoryBlocks.GetFreeBlock(nBytes);
@@ -278,7 +242,7 @@ tbyte* MemoryPool::AddRef(const tbyte* pD)
     return mMemoryBlocks.AddRef(pD);
 }
 
-tint MemoryPool::Free(tbyte*& pToFree) throw(cvmexception)
+tint MemoryPool::Free(tbyte*& pToFree)
 {
     tint nRefCounter = mMemoryBlocks.FreeBlock(pToFree);
     if (!nRefCounter)

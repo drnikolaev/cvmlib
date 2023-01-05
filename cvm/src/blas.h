@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2022
+//          Copyright Sergei Nikolaev 1992-2023
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -66,12 +66,12 @@ extern "C" {
 #    define DDOT    ddot_
 
 // complex dot wrappers
-
+//#define CVM_COMPLEX_NUMBER_RETURNED
 #    if defined(CVM_COMPLEX_NUMBER_RETURNED)
-#    define VCDOTU  cdotu_
-#    define VZDOTU  zdotu_
-#    define VCDOTC  cdotc_
-#    define VZDOTC  zdotc_
+#    define CDOTU  cdotu_
+#    define ZDOTU  zdotu_
+#    define CDOTC  cdotc_
+#    define ZDOTC  zdotc_
 #    else
 #    define VCDOTU  vcdotu_
 #    define VZDOTU  vzdotu_
@@ -482,7 +482,33 @@ double CVM_STD_CALL DDOT       (const tint* n,
                                 const double* x, 
                                 const tint* incx, 
                                 const double* y, 
-                                const tint* incy); 
+                                const tint* incy);
+
+
+std::complex<float> CVM_STD_CALL CDOTU (
+                                const tint* n,
+                                const std::complex<float>* x,
+                                const tint* incx,
+                                const std::complex<float>* y,
+                                const tint* incy);
+std::complex<double> CVM_STD_CALL ZDOTU (
+                                const tint* n,
+                                const std::complex<double>* x,
+                                const tint* incx,
+                                const std::complex<double>* y,
+                                const tint* incy);
+std::complex<float> CVM_STD_CALL CDOTC (
+                                const tint* n,
+                                const std::complex<float>* x,
+                                const tint* incx,
+                                const std::complex<float>* y,
+                                const tint* incy);
+std::complex<double> CVM_STD_CALL ZDOTC (
+                                const tint* n,
+                                const std::complex<double>* x,
+                                const tint* incx,
+                                const std::complex<double>* y,
+                                const tint* incy);
 
 // complex dot wrappers
 void  CVM_STD_CALL VCDOTU      (std::complex<float>* dot,

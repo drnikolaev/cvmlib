@@ -1,40 +1,70 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.21)
+set(CMAKE_CXX_STANDARD 17)
 set(OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib")
-FILE(GLOB SOURCE_FILES *.cpp *.h)
+
+if(ICC)
+    SET(CMAKE_CXX_COMPILER /opt/intel/oneapi/compiler/latest/linux/bin/icpx)
+endif()
+
 add_subdirectory(ftn)
-add_library(cvm SHARED ${SOURCE_FILES})
+
+add_library(cvm SHARED
+        arrays.cpp
+        cmatrix.cpp
+        cvector.cpp
+        globals.cpp
+        rmatrix.cpp
+        rvector.cpp
+        scmatrix.cpp
+        srmatrix.cpp
+        utils.cpp
+        )
+
 set_target_properties(
         cvm
         PROPERTIES
+        VERSION ${CVM_VERSION}
+        SOVERSION ${CVM_VERSION}
+        PUBLIC_HEADER cvm.h
         CXX_STANDARD 17
+        CXX_EXTENSIONS OFF
         DEBUG_POSTFIX _debug
         ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_PATH}"
         RUNTIME_OUTPUT_DIRECTORY "${OUTPUT_PATH}"
         LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_PATH}"
 )
+add_dependencies(cvm ftn)
 
 if(ILP64)
-    message("Using ILP64")
-    add_definitions(-DCVM_ILP64=1)
+    target_compile_definitions(cvm PUBLIC CVM_ILP64)
+endif()
+if(ICC)
+    target_compile_options(cvm PUBLIC -fsycl -Rdebug-disables-optimization)
 endif()
 
-add_dependencies(cvm ftn)
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    target_link_libraries(cvm ftn)
-else()
-    target_link_libraries(cvm ftn_debug)
-endif()
+target_include_directories(cvm PRIVATE .)
+target_compile_options(cvm PUBLIC -fPIC
+        $<$<CONFIG:Release>:-O3>
+        $<$<CONFIG:Debug>:-O0 -g>)
+target_link_directories(cvm PUBLIC ${OUTPUT_PATH})
+target_link_libraries(cvm optimized ftn)
+target_link_libraries(cvm debug ftn_debug)
+target_link_libraries(cvm pthread m dl)
 
 if(MKL)
-    message("Using MKL")
-    target_link_directories(cvm PUBLIC ${OUTPUT_PATH}) # /opt/intel/oneapi/mkl/latest/lib)
     if(ILP64)
+        if(ICC)
+            target_compile_options(cvm PUBLIC -qmkl-ilp64=parallel)
+        endif()
         if(IFORT)
             target_link_libraries(cvm mkl_intel_ilp64)
         else()
             target_link_libraries(cvm mkl_gf_ilp64)
         endif()
     else()
+        if(ICC)
+            target_compile_options(cvm PUBLIC -qmkl=parallel)
+        endif()
         if(IFORT)
             target_link_libraries(cvm mkl_intel_lp64)
         else()
@@ -42,18 +72,19 @@ if(MKL)
         endif()
     endif()
     target_link_libraries(cvm mkl_core)
-    if(IFORT)
+    if(ICC)
         target_link_libraries(cvm mkl_intel_thread)
     else()
-        target_link_libraries(cvm mkl_gnu_thread)
+        target_link_libraries(cvm mkl_gnu_thread omp5)
     endif()
-    target_link_libraries(cvm iomp5 pthread m dl)
 else()
-    message("Using LAPACK")
-    target_link_libraries(cvm pthread m dl)
     if(ILP64)
-        target_link_libraries(cvm lapack64 blas64)
+        target_link_libraries(cvm blas64 lapack64)
     else()
-        target_link_libraries(cvm lapack blas)
+        target_link_libraries(cvm blas lapack)
     endif()
+endif()
+
+if(ICC)
+    target_link_libraries(cvm iomp5)
 endif()

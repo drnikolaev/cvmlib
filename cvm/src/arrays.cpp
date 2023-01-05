@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2022
+//          Copyright Sergei Nikolaev 1992-2023
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -263,8 +263,8 @@ __copy2<float, std::complex<float>>  (std::complex<float>* mpd, tint mn_size, ti
                                       const float* pRe, const float* pIm,
                                       tint re_incr, tint im_incr) {
     const tint incr2 = mn_incr * 2;
-    float* pR = __get_real_p<float>(mpd);
-    float* pI = __get_imag_p<float>(mpd);
+    auto* pR = __get_real_p<float>(mpd);
+    auto* pI = __get_imag_p<float>(mpd);
 
     if (pRe) {
         CVM_ASSERT(pRe, (mn_size * re_incr) * sizeof(float))
@@ -293,8 +293,8 @@ __copy2<double, std::complex<double>> (std::complex<double>* mpd, tint mn_size, 
                                         const double* pRe, const double* pIm,
                                         tint re_incr, tint im_incr) {
     const tint incr2 = mn_incr * 2;
-    double* pR = __get_real_p<double>(mpd);
-    double* pI = __get_imag_p<double>(mpd);
+    auto* pR = __get_real_p<double>(mpd);
+    auto* pI = __get_imag_p<double>(mpd);
 
     if (pRe) {
         CVM_ASSERT(pRe, (mn_size * re_incr) * sizeof(double))
@@ -322,7 +322,7 @@ CVM_API void
 __copy_real<float, std::complex<float>> (std::complex<float>* mpd,
                                           tint mn_size, tint mn_incr,
                                           const float* pRe, tint re_incr) {
-    float* pdr = __get_real_p<float>(mpd);
+    auto* pdr = __get_real_p<float>(mpd);
     if (pdr != pRe) {
         const tint incr2 = mn_incr * 2;
         CVM_ASSERT(pRe, (mn_size * re_incr) * sizeof(float))
@@ -336,7 +336,7 @@ CVM_API void
 __copy_real<double, std::complex<double>> (std::complex<double>* mpd,
                                             tint mn_size, tint mn_incr,
                                             const double* pRe, tint re_incr) {
-    double* pdr = __get_real_p<double>(mpd);
+    auto* pdr = __get_real_p<double>(mpd);
     if (pdr != pRe) {
         const tint incr2 = mn_incr * 2;
         CVM_ASSERT(pRe, (mn_size * re_incr) * sizeof(double))
@@ -350,7 +350,7 @@ CVM_API void
 __copy_imag<float, std::complex<float>>  (std::complex<float>* mpd,
                                           tint mn_size, tint mn_incr,
                                           const float* pIm, tint im_incr) {
-    float* pdi = __get_imag_p<float>(mpd);
+    auto* pdi = __get_imag_p<float>(mpd);
     if (pdi != pIm) {
         const tint incr2 = mn_incr * 2;
         CVM_ASSERT(pIm, (mn_size * im_incr) * sizeof(float))
@@ -364,7 +364,7 @@ CVM_API void
 __copy_imag<double, std::complex<double>>  (std::complex<double>* mpd,
                                             tint mn_size, tint mn_incr,
                                             const double* pIm, tint im_incr) {
-    double* pdi = __get_imag_p<double>(mpd);
+    auto* pdi = __get_imag_p<double>(mpd);
     if (pdi != pIm) {
         const tint incr2 = mn_incr * 2;
         CVM_ASSERT(pIm, (mn_size * im_incr) * sizeof(double))
@@ -406,7 +406,7 @@ __randomize_real<std::complex<float>, float> (std::complex<float>* mpd,
                                               float dFrom, float dTo) {
     const tint incr = 2 * mn_incr;
     const tint size = mn_size * incr;
-    float* pdr = __get_real_p<float>(mpd);
+    auto* pdr = __get_real_p<float>(mpd);
 
     for (tint i = 0; i < size; i += incr) {
         pdr[i] = Randomizer<float>::get(dFrom, dTo);
@@ -420,7 +420,7 @@ __randomize_real<std::complex<double>, double> (std::complex<double>* mpd,
                                                 double dFrom, double dTo) {
     const tint incr = 2 * mn_incr;
     const tint size = mn_size * incr;
-    double* pdr = __get_real_p<double>(mpd);
+    auto* pdr = __get_real_p<double>(mpd);
 
     for (tint i = 0; i < size; i += incr) {
         pdr[i] = Randomizer<double>::get(dFrom, dTo);
@@ -434,7 +434,7 @@ __randomize_imag<std::complex<float>, float> (std::complex<float>* mpd,
                                               float dFrom, float dTo) {
     const tint incr = 2 * mn_incr;
     const tint size = mn_size * incr;
-    float* pdi = __get_imag_p<float>(mpd);
+    auto* pdi = __get_imag_p<float>(mpd);
 
     for (tint i = 0; i < size; i += incr) {
         pdi[i] = Randomizer<float>::get(dFrom, dTo);
@@ -448,7 +448,7 @@ __randomize_imag<std::complex<double>, double> (std::complex<double>* mpd,
                                                 double dFrom, double dTo) {
     const tint incr = 2 * mn_incr;
     const tint size = mn_size * incr;
-    double* pdi = __get_imag_p<double>(mpd);
+    auto* pdi = __get_imag_p<double>(mpd);
 
     for (tint i = 0; i < size; i += incr) {
         pdi[i] = Randomizer<double>::get(dFrom, dTo);

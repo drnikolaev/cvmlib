@@ -1,15 +1,15 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2022
+//          Copyright Sergei Nikolaev 1992-2023
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 /**
  * @mainpage CVM Class Library Documentation
- * @version 9.0
- * @author Sergei Nikolaev (c) 1992-2022
- * @date May 17th, 2022
+ * @version 9.1.0
+ * @author Sergei Nikolaev (c) 1992-2023
+ * @date January 4th, 2023
  *
  * This C++ class library encapsulates concepts of vector and different matrices
  * including square, band, symmetric and Hermitian ones in Euclidean space
@@ -25,101 +25,73 @@
  * All these algorithms are implemented for real and complex numbers.
  * Distributed under the Boost Software License, Version 1.0.
  * Functional classes, vectors anf matrices are later addition to the library (since ver. 7.0)
- * Since version 8.0 the library uses new C++11 features for improved performance.
+ * Version 9.1 brings support for modern compilers.
  * @file cvm.h
  */
-
-#ifndef _CVM_H
-#define _CVM_H
 
 #pragma once
 
 #include <cstdint>
-// 5.7 ILP64 support
-#if defined(CVM_ILP64)
-    using tint = int64_t;  //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
-#   define CVM_TINT_FORMAT "%lld"
-#else
-    using tint = int32_t;  //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
-#   define CVM_TINT_FORMAT "%d"
-#endif
-
-#if !defined(CVM_NO_MT)  // as of 5.7 it's by default
-#   define CVM_MT
-#   if !defined(_PTHREADS)
-#       define _PTHREADS  // NOLINT
-#   endif
-#endif
-
-// MSVC++ 6.0 and higher settings
-#if defined(_MSC_VER)
-#   include <windows.h>
-#   include <process.h>
-#   if (!defined(__INTEL_COMPILER) || !defined(_WIN64)) && !(_MSC_VER >= 1500 && defined(_WIN64))
-#       define CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES
-#   endif
-#   if (defined(__INTEL_COMPILER) && (_MSC_VER == 1900))  // Intel's glitch
-#       define CVM_USE_MALLOC
-#   endif
-#   if defined(SRC_EXPORTS) && !defined(CVM_EXPORTS)
-#       define CVM_EXPORTS
-#   endif
-#   define CVM_BLOCKS_MAP std::unordered_map
-#   ifdef CVM_STATIC
-#       define CVM_API
-#   else
-#       ifdef CVM_EXPORTS
-#           define CVM_API __declspec(dllexport)
-#       else
-#           define CVM_API __declspec(dllimport)
-#       endif
-#   endif
-#   define CVM_VSNPRINTF vsnprintf_s
-#   define CVM_VSNPRINTF_S_DEFINED
-#   define CVM_STRCPY_S_DEFINED
-
-// GCC settings
-#elif defined(__GNUC__)
-#   ifdef __stdcall
-#       undef __stdcall
-#   endif
-#   define __stdcall  // NOLINT
-#   include <semaphore.h>  // Unix
-
-#   define CVM_API
-#   define CVM_BLOCKS_MAP std::map
-#   define CVM_VSNPRINTF vsnprintf
-#endif
-
-using CVM_LONGEST_INT = int64_t;
-
-#include <cmath>
-#include <array>
-#include <vector>
-#include <map>
-#include <iostream>
-#include <mutex>
-#include <thread>
-#include <initializer_list>
-#include <memory>
 #include <cstring>
 #include <cstddef>
 #include <cstdio>
 #include <cstdarg>
 #include <cfloat>
 #include <ctime>
+#include <cmath>
+#include <array>
+#include <vector>
+#include <map>
+#include <iostream>
+#include <memory>
+#include <list>
+#include <initializer_list>
+#include <unordered_map>
 #include <random>
 #include <complex>
+
 using namespace std::complex_literals;
 
+// 5.7 ILP64 support
+#if defined(CVM_ILP64)
+using tint = int64_t;  //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
+#   define CVM_TINT_FORMAT "%lld"
+#else
+using tint = int32_t;  //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) signed integer
+#   define CVM_TINT_FORMAT "%d"
+#endif
 
-#if defined(STLPORT)
-#   define CVM_USES_STLPORT
+#if defined(_MSC_VER)
+#   if defined(CVM_USE_POOL_MANAGER)
+#       include <windows.h>
+#       include <process.h>
+#   endif
+#   if (!defined(__INTEL_COMPILER) || !defined(_WIN64)) && !(_MSC_VER >= 1500 && defined(_WIN64))
+#       define CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES
+#   endif
+#   if defined(SRC_EXPORTS) && !defined(CVM_EXPORTS)
+#       define CVM_API __declspec(dllexport)
+#   else
+#       define CVM_API __declspec(dllimport)
+#   endif
+#   define CVM_VSNPRINTF vsnprintf_s
+#   define CVM_VSNPRINTF_S_DEFINED
+#   define CVM_STRCPY_S_DEFINED
+#elif defined(__GNUC__)
+#   define CVM_API
+#   ifdef __stdcall
+#       undef __stdcall
+#   endif
+#   define __stdcall  // NOLINT
+#   if defined(CVM_USE_POOL_MANAGER)
+#       include <semaphore.h>  // Unix
+#   endif
+#   define CVM_VSNPRINTF vsnprintf
 #endif
 
 #if defined(_DEBUG) || defined(DEBUG)
 #   define CVM_DEBUG
-#   include <assert.h>
+#   include <cassert>
 #   define CVM_ASSERT(p,n) _cvm_assert(p,n);
 #else
 #   define CVM_ASSERT(p,n)
@@ -186,11 +158,7 @@ class ArrayDeleter {
 public:
     void operator () (T* p) const {
         if (p != nullptr) {  // NOLINT
-#if defined(CVM_USE_MALLOC)
-            free(p);
-#else
             ::delete[] p;
-#endif
         }
     }
 };
@@ -217,7 +185,6 @@ class ErrMessages
     // message string maps
     using map_Msg = std::map<int,std::string,std::less<>>;
     using itr_Msg = map_Msg::iterator;
-    using citr_Msg = map_Msg::const_iterator;
     using pair_Msg = std::pair<int,std::string>;
 
 private:
@@ -288,7 +255,7 @@ public:
     /**
      * @brief Exception destructor, inherited from std::exception
      */
-    ~cvmexception() override {}
+    ~cvmexception() noexcept override = default;
 
     /**
      * @brief Exception Code
@@ -353,13 +320,13 @@ CVM_API TR _imag(const TC& mT);
 
 template<typename TR>
 // NOLINTNEXTLINE
-CVM_API TR __dot(const TR* pDm, tint mnSize, tint mnIncr, const TR* pd, tint nIncr);
+CVM_API TR __dot(const TR* mpd, tint mn_size, tint mn_incr, const TR* pd, tint incr);
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API TC __dotu(const TC* pDm, tint mnSize, tint mnIncr, const TC* pd, tint nIncr);
+CVM_API TC __dotu(const TC* mpd, tint mn_size, tint mn_incr, const TC* pd, tint incr);
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API TC __dotc(const TC* pDm, tint mnSize, tint mnIncr, const TC* pd, tint nIncr);
+CVM_API TC __dotc(const TC* mpd, tint mn_size, tint mn_incr, const TC* pd, tint incr);
 
 template<typename TR, typename TC>
 // NOLINTNEXTLINE
@@ -374,28 +341,28 @@ CVM_API tint __idamin(const TC* pd, tint nSize, tint nIncr);
 
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API void __add(TC* pDm, tint mnSize, tint mnIncr, const TC* pv, tint nIncr);
+CVM_API void __add(TC* mpd, tint mn_size, tint mn_incr, const TC* pv, tint incr);
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API void __subtract(TC* pDm, tint mnSize, tint mnIncr, const TC* pv, tint nIncr);
+CVM_API void __subtract(TC* mpd, tint mn_size, tint mn_incr, const TC* pv, tint incr);
 //! @internal
 template<typename TR, typename TC>
 // NOLINTNEXTLINE
-CVM_API void __scal(TC* pDm, tint mnSize, tint mnIncr, TR dScal);
+CVM_API void __scal(TC* mpd, tint mn_size, tint mn_incr, TR scal);
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API void __conj(TC* pDm, tint mnSize, tint mnIncr);
+CVM_API void __conj(TC* mpd, tint mn_size, tint mn_incr);
 
 template<typename TR, typename TC>
 // NOLINTNEXTLINE
-CVM_API void __copy_real(TC* pDm, tint mnSize, tint mnIncr, const TR* pRe, tint nReIncr);
+CVM_API void __copy_real(TC* mpd, tint mn_size, tint mn_incr, const TR* pRe, tint re_incr);
 template<typename TR, typename TC>
 // NOLINTNEXTLINE
-CVM_API void __copy_imag(TC* pDm, tint mnSize, tint mnIncr, const TR* pRe, tint nReIncr);
+CVM_API void __copy_imag(TC* mpd, tint mn_size, tint mn_incr, const TR* pIm, tint im_incr);
 template<typename TR, typename TC>
 // NOLINTNEXTLINE
-CVM_API void __copy2(TC* pDm, tint mnSize, tint mnIncr, const TR* pRe, const TR* pIm,
-                     tint nReIncr = 1, tint nImIncr = 1);
+CVM_API void __copy2(TC* mpd, tint mn_size, tint mn_incr, const TR* pRe, const TR* pIm,
+                     tint re_incr = 1, tint im_incr = 1);
 
 template<typename TC, typename TM, typename TV>
 // NOLINTNEXTLINE
@@ -408,7 +375,7 @@ template<typename TR, typename TM, typename TV>
 CVM_API void __symv(const TM& m, TR dAlpha, const TV& v, TR dBeta, TV& vRes);
 template<typename TC, typename TM, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __shmv(const TM& m, TC dAlpha, const TV& v, TC dBeta, TV& vRes);
+CVM_API void __shmv(const TM& m, TC cAlpha, const TV& v, TC cBeta, TV& vRes);
 template<typename TC, typename TM>
 // NOLINTNEXTLINE
 CVM_API void __gemm(const TM& ml, bool bTrans1, const TM& mr, bool bTrans2, TC dAlpha,
@@ -422,7 +389,7 @@ CVM_API void __hemm(bool bLeft, const TSM& ml, const TM& mr, TC dAlpha, TM& mRes
 
 template<typename TC, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __polynom(TC* pDm, tint ldP, tint mnM, const TC* pd, tint ldA, const TV& v);
+CVM_API void __polynom(TC* MPD, tint ldP, tint mnM, const TC* pd, tint ldA, const TV& v);
 template<typename T>
 // NOLINTNEXTLINE
 CVM_API void __inv(T& m, const T& mArg);
@@ -455,13 +422,13 @@ void __low_up(TM& m, tint* nPivots);
 
 template<typename TR>
 // NOLINTNEXTLINE
-CVM_API void __randomize(TR* pDm, tint mnSize, tint mnIncr, TR dFrom, TR dTo);
+CVM_API void __randomize(TR* mpd, tint mn_size, tint mn_incr, TR dFrom, TR dTo);
 template<typename TC, typename TR>
 // NOLINTNEXTLINE
-CVM_API void __randomize_real(TC* pDm, tint mnSize, tint mnIncr, TR dFrom, TR dTo);
+CVM_API void __randomize_real(TC* mpd, tint mn_size, tint mn_incr, TR dFrom, TR dTo);
 template<typename TC, typename TR>
 // NOLINTNEXTLINE
-CVM_API void __randomize_imag(TC* pDm, tint mnSize, tint mnIncr, TR dFrom, TR dTo);
+CVM_API void __randomize_imag(TC* mpd, tint mn_size, tint mn_incr, TR dFrom, TR dTo);
 
 template<typename TR, typename TM, typename TV>
 // NOLINTNEXTLINE
@@ -530,7 +497,7 @@ template<typename TM, typename TV>
 CVM_API void __gels(bool transpose, TM& mA, const TM& mB, TM& mX, TV& vErr);
 template<typename TR, typename TM>
 // NOLINTNEXTLINE
-CVM_API void __gelsy(TM& mA, const TM& mB, TM& mX, TR tol, tint& rank);
+CVM_API void __gelsy(TM& mA, const TM& mB, TM& mX, TR rcond, tint& rank);
 template<typename TR, typename TV, typename TM>
 // NOLINTNEXTLINE
 CVM_API void __gelss(TM& mA, const TM& mB, TM& mX, TR rcond, TV& vSV, tint& rank);
@@ -558,41 +525,25 @@ inline const T& _cvm_max(const T& x, const T& y) {
 template<class TR>
 // NOLINTNEXTLINE
 inline const TR* __get_real_p(const std::complex<TR>* c) {
-#if defined(CVM_USES_STLPORT)
-    return &c->_M_re;
-#else
     return reinterpret_cast<const TR*>(c);
-#endif
 }
 
 template<class TR>
 // NOLINTNEXTLINE
 inline const TR* __get_imag_p(const std::complex<TR>* c) {
-#if defined(CVM_USES_STLPORT)
-    return &c->_M_im;
-#else
     return reinterpret_cast<const TR*>(c) + 1;
-#endif
 }
 
 template<class TR>
 // NOLINTNEXTLINE
 inline TR* __get_real_p(std::complex<TR>* c) {
-#if defined(CVM_USES_STLPORT)
-    return &c->_M_re;
-#else
     return reinterpret_cast<TR*>(c);
-#endif
 }
 
 template<class TR>
 // NOLINTNEXTLINE
 inline TR* __get_imag_p(std::complex<TR>* c) {
-#if defined(CVM_USES_STLPORT)
-    return &c->_M_im;
-#else
     return reinterpret_cast<TR*>(c) + 1;
-#endif
 }
 
 // NOLINTNEXTLINE
@@ -764,7 +715,6 @@ public:
 #ifdef CVM_DEBUG
     void    Assert(const void* pvBlock, size_t nBytes);
 #endif
-    void    AddNew(tbyte* pBlock, size_t nBytes);  //!< for just allocated only, i.e. non-const
     tbyte*  AddRef(const tbyte* pBlock);
     tint    FreeBlock(tbyte* pBlock);
 };
@@ -773,8 +723,6 @@ public:
 //! Internal memory pool class
 class MemoryPool
 {
-    using list_blocks = std::list<tbyte*>;
-
     struct DeletePtr {
         template<class T>
         void operator () (T* p) const {
@@ -853,11 +801,7 @@ template<typename T>
 inline T* cvmMalloc(tint nEls) {
     _check_lt(CVM_WRONGSIZE_LT, nEls, tint());
     if (nEls > tint()) {
-#if defined(CVM_USE_MALLOC)
-        return static_cast<T*>(malloc(nEls * sizeof(T)));
-#else
         return ::new T[nEls];
-#endif
     }
     return nullptr;
 }
@@ -871,11 +815,7 @@ inline T* cvmMalloc(tint nEls) {
 template<typename T>
 inline tint cvmFree(T*& pd) {
     if (pd != nullptr) {
-#if defined(CVM_USE_MALLOC)
-        free(pd);
-#else
         ::delete[] pd;
-#endif
         pd = nullptr;
     }
     return 0;
@@ -912,9 +852,6 @@ CVM_API void _cvm_assert(const void* pvBlock, size_t nBytes);
 //! Sends proxy value to output stream
 template<typename T, typename TR>
 inline std::ostream& operator << (std::ostream& os, const type_proxy<T,TR>& mOut) {
-#if defined(_MSC_VER) && !defined(CVM_USES_STLPORT)
-    os.imbue(std::locale::empty());
-#endif
     os << static_cast<T>(mOut);
     return os;
 }
@@ -922,9 +859,6 @@ inline std::ostream& operator << (std::ostream& os, const type_proxy<T,TR>& mOut
 //! Reads proxy value from input stream
 template<typename T, typename TR>
 inline std::istream& operator >> (std::istream& is, type_proxy<T,TR>& v) {
-#if defined(_MSC_VER) && !defined(CVM_USES_STLPORT)
-    is.imbue(std::locale::empty());
-#endif
     T t;
     is >> t;
     v = t;
@@ -966,9 +900,6 @@ prints
  */
 template<typename TR, typename TC>
 std::istream& operator >> (std::istream& is, basic_array<TR,TC>& aIn) {
-#if !defined(CVM_USES_STLPORT) && defined(_MSC_VER)
-    is.imbue(std::locale::empty());
-#endif
     const tint nSize = aIn.size() * aIn.incr();
     CVM_ASSERT(aIn.get(), ((aIn.size() - 1) * aIn.incr() + 1) * sizeof(TC))
     for (tint i = 0; i < nSize && is.good(); i += aIn.incr()) {
@@ -1002,9 +933,6 @@ prints
  */
 template<typename TR, typename TC>
 std::ostream& operator << (std::ostream& os, const basic_array<TR,TC>& aOut) {
-#if !defined(CVM_USES_STLPORT) && defined(_MSC_VER)
-    os.imbue(std::locale::empty());
-#endif
     const tint nSize = aOut.size() * aOut.incr();
     CVM_ASSERT(aOut.get(), ((aOut.size() - 1) * aOut.incr() + 1) * sizeof(TC))
     for (tint i = 0; i < nSize && os.good(); i += aOut.incr()) {
@@ -1054,9 +982,6 @@ prints
   */
 template<typename TR, typename TC>
 std::istream& operator >> (std::istream& is, Matrix<TR,TC>& mIn) {
-#if defined(_MSC_VER) && !defined(CVM_USES_STLPORT)
-    is.imbue(std::locale::empty());
-#endif
     TC v;
     for (tint i = 0; i < mIn.msize(); ++i) {
         for (tint j = 0; j < mIn.nsize() && is.good(); ++j) {
@@ -1096,9 +1021,6 @@ prints
  */
 template<typename TR, typename TC>
 std::ostream& operator << (std::ostream& os, const Matrix<TR,TC>& mOut) {
-#if defined(_MSC_VER) && !defined(CVM_USES_STLPORT)
-    os.imbue(std::locale::empty());
-#endif
     for (tint i = 0; i < mOut.msize(); ++i) {
         for (tint j = 0; j < mOut.nsize() && os.good(); ++j) {
             os << mOut._ij_val(i, j) << CVM_MATRIX_ELEMENT_SEPARATOR;
@@ -1336,7 +1258,7 @@ public:
      * Returns const reference to a value.
      * @return Reference to value
      */
-    const T& get() const {
+    [[nodiscard]] const T& get() const {
         return mT;
     }
 
@@ -1695,8 +1617,7 @@ class Randomizer
      */
     Randomizer() noexcept
         : mMax(static_cast<T>((std::numeric_limits<int>::max)())),
-          mre(),
-          mDist(0, (std::numeric_limits<int>::max)()) {}
+          mre(), mDist(0, (std::numeric_limits<int>::max)()) {}
 
     /**
      * @brief Internal private routine
@@ -1755,7 +1676,7 @@ protected:
     TC* mpd;  //!< Data pointer
 #else
     // Think of mp as a pointer to chunk (or blob) of memory. Sure, this would be nice to use
-    // std::vector here but I need to align mp usage with foreign pointer fp_.
+    // std::vector here, but I need to align mp usage with foreign pointer fp_.
     std::shared_ptr<TC> mp;  //!< Native data pointer
     TC* mpf;  //!< Foreign data pointer
 #endif
@@ -3006,7 +2927,7 @@ protected:
                 a.msz = 0;
             } else {
                 // *this has foreign array inside, no place to move to
-                // so, this is the case where we don't even touch a, just copy its content
+                // so, this is the case where we don't even touch it, just copy its content
                 this->_assign(a.mp.get(), a.incr());
             }
         } else {
@@ -10400,12 +10321,9 @@ This one provides some member functions which are common for all square matrices
 template<typename TR, typename TC>
 class SqMatrix
 {
-    using BaseMatrix = Matrix<TR,TC>;
-
 protected:
     //! internal constructor
     SqMatrix() = default;
-
     virtual ~SqMatrix() = default;
 
 //! @cond INTERNAL
@@ -10416,7 +10334,7 @@ protected:
 
     // it's the same as get, but let's keep get not virtual for performance sake
     [[nodiscard]] virtual const TC* _pv() const = 0;
-    virtual       TC* _pv() = 0;
+    virtual TC* _pv() = 0;
 
     // it differs from Matrix::_transp_m because in this case we can do it in-place.
     void _sq_transp() {
@@ -10487,7 +10405,6 @@ template<typename TR>
 class basic_rmatrix : public Matrix<TR,TR>
 {
     using TC = std::complex<TR>;  //!< complex number type
-    using BaseArray = basic_array<TR,TR>;  //!< Base basic_array class
     using BaseMatrix = Matrix<TR,TR>;  //!< Base Matrix class
     using RVector = basic_rvector<TR>;  //!< \ref rvector class
 
@@ -10751,7 +10668,7 @@ prints
     }
 
 
-    // TODO dox, test
+// TODO dox, test
     basic_rmatrix(tint nM, tint nN, const std::initializer_list<TR>& list)
       : BaseMatrix(nM, nN, nM, false) {
         _check_ne(CVM_SIZESMISMATCH, this->size(), static_cast<tint>(list.size()));
@@ -10984,7 +10901,7 @@ prints
 @param[in] nRow Index of row.
 @return \ref rvector Row value.
 */
-    const RVector operator [] (tint nRow) const {
+    RVector operator [] (tint nRow) const {
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nRow, tint(), this->msize());
         return this->_row(nRow);
     }
@@ -14205,7 +14122,7 @@ prints
         return *this;
     }
 
-// this = alpha*a*b + beta*this or this = alpha*b*a + beta*this  where a is symmetric
+// this = alpha*a*b + beta*this or this = alpha*b*a + beta*this  where "a" is symmetric
 /**
 @brief Generic symmetric matrix-matrix operation
 
@@ -14376,7 +14293,7 @@ prints
                                   bTrans2, dAlpha, *this, dBeta);
     }
 
-    // this = alpha*a*b + beta*this or this = alpha*b*a + beta*this  where a is symmetric
+    // this = alpha*a*b + beta*this or this = alpha*b*a + beta*this  where "a" is symmetric
     void _symm(bool bLeft, const basic_srsmatrix<TR>& ms,
                const basic_rmatrix& m, TR dAlpha, TR dBeta) {
         basic_rmatrix mTmp;
@@ -14667,8 +14584,6 @@ class basic_srmatrix : public basic_rmatrix<TR>, public SqMatrix<TR,TR>
     using TC = std::complex<TR>;  //!< complex number type
     using RVector = basic_rvector<TR>;  //!< \ref rvector
     using CVector = basic_cvector<TR,TC>;  //!< \ref cvector
-    using BaseArray = basic_array<TR,TR>;  //!< Base basic_array class
-    using BaseMatrix = Matrix<TR,TR>;  //!< Base Matrix class
     using BaseSqMatrix = SqMatrix<TR,TR>;  //!< Base SqMatrix class
     using BaseRMatrix = basic_rmatrix<TR>;  //!< \ref rmatrix class
 
@@ -14732,13 +14647,10 @@ prints
       : BaseRMatrix(nDim, nDim)
     {}
 
-
-
-    // TODO dox, test
+// TODO dox, test
     basic_srmatrix(tint nDim, const std::initializer_list<TR>& list)
       : BaseRMatrix(nDim, nDim, list)
     {}
-
 
 
 /**
@@ -15523,7 +15435,8 @@ prints
 \endcode
 @return Copy of the original calling matrix.
 */
-    basic_srmatrix operator ++ (int) {
+// NOLINTNEXTLINE
+    basic_srmatrix operator ++ (int) & {
         basic_srmatrix mRes(*this);
         this->_plus_plus();
         return mRes;
@@ -15592,7 +15505,8 @@ prints
 \endcode
 @return Copy of the original calling matrix.
 */
-    basic_srmatrix operator -- (int) {
+// NOLINTNEXTLINE
+    basic_srmatrix operator -- (int) & {
         basic_srmatrix mRes(*this);
         this->_minus_minus();
         return mRes;
@@ -18060,7 +17974,6 @@ class basic_cmatrix : public Matrix<TR,TC>
 {
     using RVector = basic_rvector<TR>;  //!< \ref rvector class
     using CVector = basic_cvector<TR,TC>;  //!< \ref cvector class
-    using BaseArray = basic_array<TR,TC>;  //!< Base basic_array class
     using BaseMatrix = Matrix<TR,TC>;  //!< Base Matrix class
 
     friend class basic_cvector<TR,TC>;  // for _multiply
@@ -18432,7 +18345,7 @@ prints
         m._check_submatrix();
     }
 
-    // TODO dox, test
+// TODO dox, test
     basic_cmatrix(tint nM, tint nN, const std::initializer_list<TR>& list)
       : BaseMatrix(nM, nN, nM, false) {
         _check_ne(CVM_SIZESMISMATCH, this->size() * tint(2), static_cast<tint>(list.size()));
@@ -18446,7 +18359,6 @@ prints
             p[i++] = TC(*it,*(it+1));
         }
     }
-
 
 /**
 @brief Reference to element (l-value)
@@ -22539,7 +22451,7 @@ prints
         return *this;
     }
 
-// this = alpha*a*b + beta*this of this = alpha*b*a + beta*this  where a is Hermitian
+// this = alpha*a*b + beta*this of this = alpha*b*a + beta*this  where "a" is Hermitian
 /**
 @brief Generic Hermitian matrix-matrix operation
 
@@ -22743,7 +22655,7 @@ prints
                                   dAlpha, *this, dBeta);
     }
 
-    // this = alpha*a*b + beta*this or this = alpha*b*a + beta*this  where a is Hermitian
+    // this = alpha*a*b + beta*this or this = alpha*b*a + beta*this  where "a" is Hermitian
     void _hemm(bool bLeft, const basic_schmatrix<TR,TC>& ms,
                const basic_cmatrix& m, TC dAlpha, TC dBeta) {
         basic_cmatrix mTmp;
@@ -23064,8 +22976,6 @@ template<typename TR, typename TC>
 class basic_scmatrix : public basic_cmatrix<TR,TC>, public SqMatrix<TR,TC>
 {
     using CVector = basic_cvector<TR,TC>;  //!< \ref cvector
-    using BaseArray = basic_array<TR,TC>;  //!< Base basic_array class
-    using BaseMatrix = Matrix<TR,TC>;  //!< Base Matrix class
     using BaseSqMatrix = SqMatrix<TR,TC>;  //!< Base SqMatrix class
     using BaseCMatrix = basic_cmatrix<TR,TC>;  //!< \ref cmatrix
 
@@ -23128,10 +23038,11 @@ prints
       : BaseCMatrix(nDim, nDim)
     {}
 
-    // TODO dox, test
+// TODO dox, test
     basic_scmatrix(tint nDim, const std::initializer_list<TR>& list)
       : BaseCMatrix(nDim, nDim, list)
     {}
+
 
 /**
 @brief Constructor
@@ -24094,7 +24005,8 @@ prints
 \endcode
 @return Copy of the original calling matrix.
 */
-    basic_scmatrix operator ++ (int) {
+// NOLINTNEXTLINE
+    basic_scmatrix operator ++ (int) & {
         basic_scmatrix mRes(*this);
         this->_plus_plus();
         return mRes;
@@ -24157,7 +24069,8 @@ prints
 \endcode
 @return Copy of the original calling matrix.
 */
-    basic_scmatrix operator -- (int) {
+// NOLINTNEXTLINE
+    basic_scmatrix operator -- (int) & {
         basic_scmatrix mRes(*this);
         this->_minus_minus();
         return mRes;
@@ -27796,7 +27709,6 @@ class basic_srbmatrix : public basic_srmatrix<TR>, public BandMatrix<TR,TR>
     using TC = std::complex<TR>;  //!< complex number type
     using RVector = basic_rvector<TR>;  //!< \ref rvector
     using CVector = basic_cvector<TR,TC>;  //!< \ref cvector
-    using BaseArray = basic_array<TR,TR>;  //!< Base basic_array class
     using BaseMatrix = Matrix<TR,TR>;  //!< Base Matrix class
     using BaseRMatrix = basic_rmatrix<TR>;  //!< Base \ref rmatrix class
     using BaseSRMatrix = basic_srmatrix<TR>;  //!< Base \ref srmatrix class
@@ -28771,7 +28683,8 @@ prints
 \endcode
 @return Copy of the original calling matrix.
 */
-    basic_srbmatrix operator ++ (int) {
+// NOLINTNEXTLINE
+    basic_srbmatrix operator ++ (int) & {
         basic_srbmatrix mRes(*this);
         this->_plus_plus();
         return mRes;
@@ -28847,7 +28760,8 @@ prints
 \endcode
 @return Copy of the original calling matrix.
 */
-    basic_srbmatrix operator -- (int) {
+// NOLINTNEXTLINE
+    basic_srbmatrix operator -- (int) & {
         basic_srbmatrix mRes(*this);
         this->_minus_minus();
         return mRes;
@@ -29547,7 +29461,6 @@ template<typename TR, typename TC>
 class basic_scbmatrix : public basic_scmatrix<TR,TC>, public BandMatrix<TR,TC>
 {
     using CVector = basic_cvector<TR,TC>;  //!< \ref cvector
-    using BaseArray = basic_array<TR,TC>;  //!< Base basic_array class
     using BaseMatrix = Matrix<TR,TC>;  //!< Base Matrix class
     using BaseCMatrix = basic_cmatrix<TR,TC>;  //!< Base \ref cmatrix class
     using BaseSCMatrix = basic_scmatrix<TR,TC>;  //!< Base \ref scmatrix class
@@ -30028,7 +29941,7 @@ destroyed but rather moved to a calling object <tt>a</tt>.
         return *this;
     }
 
-    // assigns a external array (nIncr = 1)
+    // assigns an external array (nIncr = 1)
     basic_scbmatrix& assign(const TC* pd) {
         this->_assign(pd, 1);
         return *this;
@@ -30693,7 +30606,8 @@ prints
 \endcode
 @return Copy of the original calling matrix.
 */
-    basic_scbmatrix operator ++ (int) {
+// NOLINTNEXTLINE
+    basic_scbmatrix operator ++ (int) & {
         basic_scbmatrix mRes(*this);
         this->_plus_plus();
         return mRes;
@@ -30766,7 +30680,8 @@ prints
 \endcode
 @return Copy of the original calling matrix.
 */
-    basic_scbmatrix operator -- (int) {
+// NOLINTNEXTLINE
+    basic_scbmatrix operator -- (int) & {
         basic_scbmatrix mRes(*this);
         this->_minus_minus();
         return mRes;
@@ -31542,9 +31457,7 @@ template<typename TR>
 class basic_srsmatrix : public basic_srmatrix<TR>
 {
     using RVector = basic_rvector<TR>;  //!< \ref rvector
-    using BaseArray = basic_array<TR,TR>;  //!< Base basic_array class
     using BaseMatrix = Matrix<TR,TR>;  //!< Base Martrix class
-    using BaseSqMatrix = SqMatrix<TR,TR>;  //!< Base SqMatrix class
     using BaseRMatrix = basic_rmatrix<TR>;  //!< \ref rmatrix class
     using BaseSRMatrix = basic_srmatrix<TR>;  //!< \ref crmatrix class
 
@@ -32464,7 +32377,8 @@ prints
     }
 
     // plus identity, postfix
-    basic_srsmatrix operator ++ (int) {
+    // NOLINTNEXTLINE
+    basic_srsmatrix operator ++ (int) & {
         basic_srsmatrix mRes(*this);
         this->_plus_plus();
         return mRes;
@@ -32477,7 +32391,8 @@ prints
     }
 
     // minus identity, postfix
-    basic_srsmatrix operator -- (int) {
+    // NOLINTNEXTLINE
+    basic_srsmatrix operator -- (int) & {
         basic_srsmatrix mRes(*this);
         this->_minus_minus();
         return mRes;
@@ -34805,7 +34720,8 @@ prints
     }
 
     // plus identity, postfix
-    basic_schmatrix operator ++ (int) {
+    // NOLINTNEXTLINE
+    basic_schmatrix operator ++ (int) & {
         basic_schmatrix mRes(*this);
         this->_plus_plus();
         return mRes;
@@ -34818,7 +34734,8 @@ prints
     }
 
     // minus identity, postfix
-    basic_schmatrix operator -- (int) {
+    // NOLINTNEXTLINE
+    basic_schmatrix operator -- (int) & {
         basic_schmatrix mRes(*this);
         this->_minus_minus();
         return mRes;
@@ -36309,7 +36226,7 @@ protected:
                 } else {
                     const basic_rvector<TR> vEig = this->eig();
                     for (i = 0; i < this->msize(); ++i) {
-                        dDet *= vEig[i];  // here we use eigenvalues (might be better way)
+                        dDet *= vEig[i];  // here we use eigenvalues (might be a better way)
                     }
                 }
             }
@@ -36440,53 +36357,53 @@ inline basic_scmatrix<TR,TC> operator * (std::complex<TR> c, const basic_schmatr
 
 //! Left-sided scalar multiplication
 template<typename TR>
-inline basic_rvector<TR> operator * (CVM_LONGEST_INT d, const basic_rvector<TR>& v) {
+inline basic_rvector<TR> operator * (int64_t d, const basic_rvector<TR>& v) {
     return v * static_cast<TR>(d);
 }
 //! Left-sided scalar multiplication
 template<typename TR>
-inline basic_rmatrix<TR> operator * (CVM_LONGEST_INT d, const basic_rmatrix<TR>& m) {
+inline basic_rmatrix<TR> operator * (int64_t d, const basic_rmatrix<TR>& m) {
     return m * static_cast<TR>(d);
 }
 //! Left-sided scalar multiplication
 template<typename TR>
-inline basic_srmatrix<TR> operator * (CVM_LONGEST_INT d, const basic_srmatrix<TR>& m) {
+inline basic_srmatrix<TR> operator * (int64_t d, const basic_srmatrix<TR>& m) {
     return m * static_cast<TR>(d);
 }
 //! Left-sided scalar multiplication
 template<typename TR>
-inline basic_srbmatrix<TR> operator * (CVM_LONGEST_INT d, const basic_srbmatrix<TR>& m) {
+inline basic_srbmatrix<TR> operator * (int64_t d, const basic_srbmatrix<TR>& m) {
     return m * static_cast<TR>(d);
 }
 //! Left-sided scalar multiplication
 template<typename TR>
-inline basic_srsmatrix<TR> operator * (CVM_LONGEST_INT d, const basic_srsmatrix<TR>& m) {
+inline basic_srsmatrix<TR> operator * (int64_t d, const basic_srsmatrix<TR>& m) {
     return m * static_cast<TR>(d);
 }
 
 //! Left-sided scalar multiplication
 template<typename TR, typename TC>
-inline basic_cvector<TR,TC> operator * (CVM_LONGEST_INT d, const basic_cvector<TR,TC>& v) {
+inline basic_cvector<TR,TC> operator * (int64_t d, const basic_cvector<TR,TC>& v) {
     return v * static_cast<TR>(d);
 }
 //! Left-sided scalar multiplication
 template<typename TR, typename TC>
-inline basic_cmatrix<TR,TC> operator * (CVM_LONGEST_INT d, const basic_cmatrix<TR,TC>& m) {
+inline basic_cmatrix<TR,TC> operator * (int64_t d, const basic_cmatrix<TR,TC>& m) {
     return m * static_cast<TR>(d);
 }
 //! Left-sided scalar multiplication
 template<typename TR, typename TC>
-inline basic_scmatrix<TR,TC> operator * (CVM_LONGEST_INT d, const basic_scmatrix<TR,TC>& m) {
+inline basic_scmatrix<TR,TC> operator * (int64_t d, const basic_scmatrix<TR,TC>& m) {
     return m * static_cast<TR>(d);
 }
 //! Left-sided scalar multiplication
 template<typename TR, typename TC>
-inline basic_scbmatrix<TR,TC> operator * (CVM_LONGEST_INT d, const basic_scbmatrix<TR,TC>& m) {
+inline basic_scbmatrix<TR,TC> operator * (int64_t d, const basic_scbmatrix<TR,TC>& m) {
     return m * static_cast<TR>(d);
 }
 //! Left-sided scalar multiplication
 template<typename TR, typename TC>
-inline basic_schmatrix<TR,TC> operator * (CVM_LONGEST_INT d, const basic_schmatrix<TR,TC>& m) {
+inline basic_schmatrix<TR,TC> operator * (int64_t d, const basic_schmatrix<TR,TC>& m) {
     return m * static_cast<TR>(d);
 }
 
@@ -36535,14 +36452,14 @@ using schmatrix64 = basic_schmatrix<double,std::complex<double>>;  //!< End-user
 
 //! Real identity matrix
 template<typename TR>
-inline const basic_srmatrix<TR> basic_eye_real(tint nM) {
+inline basic_srmatrix<TR> basic_eye_real(tint nM) {
     basic_srmatrix<TR> mI(nM);
     ++mI;
     return mI;
 }
 //! Complex identity matrix
 template<typename TR, typename TC>
-inline const basic_scmatrix<TR,TC> basic_eye_complex(tint nM) {
+inline basic_scmatrix<TR,TC> basic_eye_complex(tint nM) {
     basic_scmatrix<TR,TC> mI(nM);
     ++mI;
     return mI;
@@ -36651,20 +36568,14 @@ inline double cvmMachSp64() {
 
 class CriticalSection
 {
-#if defined(CVM_MT)
 private:
     bool mbOK;
 
 #if defined(WIN32) || defined(_WIN32)
-#if defined(CVM_USE_CRITICAL_SECTION_NOT_MUTEX)
-    ::CRITICAL_SECTION mCriticalSection;
-#else
     HANDLE mMutex;
-#endif
 #else  // POSIX Threads library assumed
     pthread_mutex_t mMutex;
     pthread_mutexattr_t mMutexAttr;
-#endif
 #endif
 
 public:
@@ -36802,5 +36713,3 @@ extern "C"
 #endif
                           const tint* pnParam);
 }
-
-#endif  // _CVM_H

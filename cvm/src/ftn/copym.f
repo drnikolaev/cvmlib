@@ -1,7 +1,7 @@
 C                  CVM Class Library
 C                  http://cvmlib.com
 C
-C          Copyright Sergei Nikolaev 1992-2022
+C          Copyright Sergei Nikolaev 1992-2023
 C Distributed under the Boost Software License, Version 1.0.
 C    (See accompanying file LICENSE_1_0.txt or copy at
 C          http://www.boost.org/LICENSE_1_0.txt)
@@ -18,10 +18,7 @@ C     B   - destination matrix (real)(output)
 C     LDA - leading dimesion of A (int)(input)
 C     LDB - leading dimesion of B (int)(input)
 
-      SUBROUTINE SCOPYM (M, N, A, LDA, B, LDB) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::SCOPYM
-CDEC$ ENDIF
+      SUBROUTINE SCOPYM (M, N, A, LDA, B, LDB)
       INTEGER M, N, LDA, LDB
       REAL A(LDA*N), B(LDB*N)
       INTEGER I
@@ -36,10 +33,7 @@ CDEC$ ENDIF
       RETURN
       END !SUBROUTINE SCOPYM
 
-      SUBROUTINE DCOPYM (M, N, A, LDA, B, LDB) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::DCOPYM
-CDEC$ ENDIF
+      SUBROUTINE DCOPYM (M, N, A, LDA, B, LDB)
       INTEGER M, N, LDA, LDB
       DOUBLE PRECISION A(LDA*N), B(LDB*N)
       INTEGER I
@@ -54,10 +48,7 @@ CDEC$ ENDIF
       RETURN
       END !SUBROUTINE DCOPYM
 
-      SUBROUTINE CCOPYM (M, N, A, LDA, B, LDB) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::CCOPYM
-CDEC$ ENDIF
+      SUBROUTINE CCOPYM (M, N, A, LDA, B, LDB)
       INTEGER M, N, LDA, LDB
       COMPLEX A(LDA*N), B(LDB*N)
       INTEGER I
@@ -72,10 +63,7 @@ CDEC$ ENDIF
       RETURN
       END !SUBROUTINE CCOPYM
 
-      SUBROUTINE ZCOPYM (M, N, A, LDA, B, LDB) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::ZCOPYM
-CDEC$ ENDIF
+      SUBROUTINE ZCOPYM (M, N, A, LDA, B, LDB)
       INTEGER M, N, LDA, LDB
       DOUBLE COMPLEX A(LDA*N), B(LDB*N)
       INTEGER I

@@ -1,7 +1,7 @@
 C                  CVM Class Library
 C                  http://cvmlib.com
 C
-C          Copyright Sergei Nikolaev 1992-2022
+C          Copyright Sergei Nikolaev 1992-2023
 C Distributed under the Boost Software License, Version 1.0.
 C    (See accompanying file LICENSE_1_0.txt or copy at
 C          http://www.boost.org/LICENSE_1_0.txt)
@@ -17,10 +17,7 @@ C     S   - scale factor (real)(input)
 C     A   - matrix to be scaled (real)(input, output)
 C     LDA - leading dimesion of A (int)(input)
 
-      SUBROUTINE SSCALM (M, N, S, A, LDA) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::SSCALM
-CDEC$ ENDIF
+      SUBROUTINE SSCALM (M, N, S, A, LDA)
       INTEGER M, N, LDA
       REAL S
       REAL A(LDA*N)
@@ -36,10 +33,7 @@ CDEC$ ENDIF
       RETURN
       END !SUBROUTINE SSCALM
 
-      SUBROUTINE DSCALM (M, N, S, A, LDA) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::DSCALM
-CDEC$ ENDIF
+      SUBROUTINE DSCALM (M, N, S, A, LDA)
       INTEGER M, N, LDA
       DOUBLE PRECISION S
       DOUBLE PRECISION A(LDA*N)
@@ -55,10 +49,7 @@ CDEC$ ENDIF
       RETURN
       END !SUBROUTINE DSCALM
 
-      SUBROUTINE CSCALM (M, N, S, A, LDA) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::CSCALM
-CDEC$ ENDIF
+      SUBROUTINE CSCALM (M, N, S, A, LDA)
       INTEGER M, N, LDA
       COMPLEX S
       COMPLEX A(LDA*N)
@@ -74,10 +65,7 @@ CDEC$ ENDIF
       RETURN
       END !SUBROUTINE CSCALM
 
-      SUBROUTINE ZSCALM (M, N, S, A, LDA) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::ZSCALM
-CDEC$ ENDIF
+      SUBROUTINE ZSCALM (M, N, S, A, LDA)
       INTEGER M, N, LDA
       DOUBLE COMPLEX S
       DOUBLE COMPLEX A(LDA*N)

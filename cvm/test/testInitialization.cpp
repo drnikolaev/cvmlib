@@ -6,7 +6,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "StdAfx.h"
 #include "test.h"
 
 template <typename T>
@@ -69,7 +68,7 @@ protected:
     const std::array<T,9> as;
 };
 
-TYPED_TEST_CASE(InitializationTest, TestTypes);
+TYPED_TEST_SUITE(InitializationTest, TestTypes);
 
 TYPED_TEST(InitializationTest, TestSizes) {
     ASSERT_GE(sizeof(TP), 4U);
@@ -1320,8 +1319,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(std::abs(cr1 / cr2), std::abs(scbm1(1,1)), sp<TP>());
 
     srbm << srbm1;
-    EXPECT_EQ(srbm1(1,2), srbm(1,2));
-    EXPECT_EQ(srbm1(0,3), srbm(0,3));
+    EXPECT_FLOAT_EQ(srbm1(1,2), srbm(1,2));
+    EXPECT_FLOAT_EQ(srbm1(0,3), srbm(0,3));
     scbm << scbm1;
     EXPECT_NEAR(std::abs(scbm1(1,2)), std::abs(scbm(1,2)), s<TP>());
     EXPECT_NEAR(std::abs(scbm1(0,3)), std::abs(scbm(0,3)), s<TP>());
@@ -1925,7 +1924,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     cm1 = cm1 + scbm2;
     cm1 += scbm2;
     EXPECT_NEAR(std::abs(scbm2(1,2) * TP(3.)), std::abs(cm1(1,2)), s<TP>()) << "mix cmatrix  scbm";
-    EXPECT_NEAR(std::abs(scbm2(3,0) * TP(3.)), std::abs(cm1(3,0)), sp<TP>()) << "mix cmatrix  scbm";
+    EXPECT_NEAR(std::abs(scbm2(3,0) * TP(3.)), std::abs(cm1(3,0)), s<TP>()) << "mix cmatrix  scbm";
     EXPECT_NEAR(std::abs(TP(3.) * scbm2(1,2)), std::abs(cm1(0,1)), s<TP>()) << "mix cmatrix  scbm";
     EXPECT_NEAR(std::abs(TP(3.) * scbm2(1,0)), std::abs(cm1(1,0)), s<TP>()) << "mix cmatrix  scbm";
 

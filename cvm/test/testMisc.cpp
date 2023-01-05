@@ -6,7 +6,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "StdAfx.h"
 #include "test.h"
 
 template <typename T>
@@ -16,7 +15,7 @@ protected:
     virtual ~MiscTest() {}
 };
 
-TYPED_TEST_CASE(MiscTest, TestTypes);
+TYPED_TEST_SUITE(MiscTest, TestTypes);
 
 TYPED_TEST(MiscTest, TestPrintProxy) {
     basic_rmatrix<TP> m(1,1);

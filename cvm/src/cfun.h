@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2022
+//          Copyright Sergei Nikolaev 1992-2023
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -546,8 +546,9 @@ inline bool __parse_num(const std::string& s, T& result)
     char* stop;
     result = T(::strtod(s.c_str(), &stop));
     if ((result == cfun_zero<T>() && s[0] != '0') ||
-        result == std::numeric_limits<T>::infinity() ||
-        result == - std::numeric_limits<T>::infinity() ||
+// -Wtautological-constant-compare
+//        result == std::numeric_limits<T>::infinity() ||
+//        result == - std::numeric_limits<T>::infinity() ||
         result == std::numeric_limits<T>::lowest() ||
         *stop != '\0') {
         ret = false;
@@ -1212,8 +1213,8 @@ protected:
     BasePointer mf0; //!< Pointer to function's argument. If this instance is sin(A) then mf0 points to A.
 
 //! @cond INTERNAL
-    virtual BasePointer _simpl() const = 0;                     // returns simplified function as a new object
-    virtual int _depth(bool) const = 0;                         // call stack acquire and release
+    BasePointer _simpl() const override = 0;                     // returns simplified function as a new object
+    int _depth(bool) const override = 0;                         // call stack acquire and release
 //! @endcond
 
 public:
@@ -1293,10 +1294,10 @@ public:
     }
 
 //! @cond INTERNAL
-    virtual Kind _kind() const = 0;
-    virtual T _value(const T* pdVars) const = 0;
-    virtual BasePointer _clone() const = 0;
-    virtual BasePointer _deriv(size_t nVarNum) const = 0;
+    Kind _kind() const override = 0;
+    T _value(const T* pdVars) const override = 0;
+    BasePointer _clone() const override = 0;
+    BasePointer _deriv(size_t nVarNum) const override = 0;
     virtual const char* _name() const = 0;
 
     bool _equals(const BasePointer& pfSrc) const override
@@ -1351,8 +1352,8 @@ protected:
         }
     }
 
-    virtual BasePointer _simpl() const = 0;                     // returns simplified function as a new object
-    virtual int _depth(bool) const = 0;                         // call stack acquire and release
+    BasePointer _simpl() const override = 0;                     // returns simplified function as a new object
+    int _depth(bool) const override = 0;                         // call stack acquire and release
 //! @endcond
 
 public:
@@ -1459,11 +1460,11 @@ public:
     }
 
 //! @cond INTERNAL
-    virtual Kind _kind() const = 0;
-    virtual T _value(const T* pdVars) const = 0;
-    virtual BasePointer _clone() const = 0;
-    virtual BasePointer _deriv(size_t nVarNum) const = 0;
-    virtual std::string _format(int nPrecision) const = 0;
+    Kind _kind() const override = 0;
+    T _value(const T* pdVars) const override = 0;
+    BasePointer _clone() const override = 0;
+    BasePointer _deriv(size_t nVarNum) const override = 0;
+    std::string _format(int nPrecision) const override = 0;
 
     bool _equals(const BasePointer& pfSrc) const override
     {
@@ -1666,7 +1667,7 @@ public:
         return basic_cvmMachMax<T>();
     }
 
-    BasePointer _clone() const {
+    BasePointer _clone() const override {
         return std::make_shared<Finfinity<T>>();
     }
 
