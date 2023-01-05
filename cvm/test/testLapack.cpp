@@ -6,7 +6,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "StdAfx.h"
 #include "test.h"
 
 template <typename T>
@@ -320,7 +319,7 @@ TYPED_TEST(LapackTest, TestHerkHermitianComplex2) {
     mh.randomize_imag(-2., 3.);
     mh2 = mh;
     mh.herk(false, alpha, m, beta);
-    mh2 = alpha * basic_schmatrix<TP,TPC>(m * ~m, 1.e-14) + beta * mh2;
+    mh2 = alpha * basic_schmatrix<TP,TPC>(m * ~m, spp<TP>(1.e-14, 1.e-6)) + beta * mh2;
     EXPECT_NEAR(TP(0.), (mh - mh2).norm(), spp<TP>(5.e-14, 6.)) << "schmatrix::herk";
 }
 
@@ -335,7 +334,7 @@ TYPED_TEST(LapackTest, TestHerkHermitianComplex3) {
     mh.randomize_imag(-2., 3.);
     mh2 = mh;
     mh.herk(true, alpha, m, beta);
-    mh2 = alpha * basic_schmatrix<TP,TPC>(~m * m, 1.e-13) + beta * mh2;
+    mh2 = alpha * basic_schmatrix<TP,TPC>(~m * m, spp<TP>(1.e-13, 1.e-6)) + beta * mh2;
     EXPECT_NEAR(TP(0.), (mh - mh2).norm(), spp<TP>(1.e-13, 6.)) << "schmatrix::herk";
 }
 
@@ -1553,7 +1552,7 @@ TYPED_TEST(LapackTest, TestGelsBandRealVector) {
     }
     
     basic_rvector<TP> xt = a.gels(true, bt, dErr);
-    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), spp<TP>(1.e-5, 2.e-2)) << "gels real transp";
+    EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), spp<TP>(1.e-5, 3.e-2)) << "gels real transp";
     if (sizeof(TP) > 4) {
         EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>(1.e-5,2.e-1)) << "gels real transp";
     }

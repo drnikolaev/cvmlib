@@ -1,7 +1,7 @@
 C                  CVM Class Library
 C                  http://cvmlib.com
 C
-C          Copyright Sergei Nikolaev 1992-2022
+C          Copyright Sergei Nikolaev 1992-2023
 C Distributed under the Boost Software License, Version 1.0.
 C    (See accompanying file LICENSE_1_0.txt or copy at
 C          http://www.boost.org/LICENSE_1_0.txt)
@@ -16,10 +16,7 @@ C     N   - columns (int)(input)
 C     A   - matrix (real)(input)
 C     LDA - leading dimesion of A (int)(input)
 
-      REAL FUNCTION SINFNM (M, N, A, LDA) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::SINFNM
-CDEC$ ENDIF
+      REAL FUNCTION SINFNM (M, N, A, LDA)
       INTEGER M, N, LDA
       REAL A(LDA*N)
       INTEGER I
@@ -39,10 +36,7 @@ CDEC$ ENDIF
       END !FUNCTION SINFNM
 
 
-      DOUBLE PRECISION FUNCTION DINFNM (M, N, A, LDA) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::DINFNM
-CDEC$ ENDIF
+      DOUBLE PRECISION FUNCTION DINFNM (M, N, A, LDA)
       INTEGER M, N, LDA
       DOUBLE PRECISION A(LDA*N)
       INTEGER I
@@ -62,10 +56,7 @@ CDEC$ ENDIF
       END !FUNCTION DINFNM
 
 
-      REAL FUNCTION CINFNM (M, N, A, LDA) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::CINFNM
-CDEC$ ENDIF
+      REAL FUNCTION CINFNM (M, N, A, LDA)
       INTEGER M, N, LDA
       COMPLEX A(LDA*N)
       INTEGER I
@@ -85,10 +76,7 @@ CDEC$ ENDIF
       END !FUNCTION CINFNM
 
 
-      DOUBLE PRECISION FUNCTION ZINFNM (M, N, A, LDA) 
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::ZINFNM
-CDEC$ ENDIF
+      DOUBLE PRECISION FUNCTION ZINFNM (M, N, A, LDA)
       INTEGER M, N, LDA
       DOUBLE COMPLEX A(LDA*N)
       INTEGER I

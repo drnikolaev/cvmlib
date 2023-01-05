@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2022
+//          Copyright Sergei Nikolaev 1992-2023
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -734,8 +734,8 @@ __lqf<basic_rmatrix<float>, basic_srmatrix<float>>
 
     // get lower-triangular L from overwritten A
     mL.vanish();
-    for (tint col = 0; col < nK; ++col)
-        for (tint row = col; row < nM; ++row)
+    for (col = 0; col < nK; ++col)
+        for (row = col; row < nM; ++row)
             mL(row,col) = mA(row,col);
 
     // calculate size of workspace for finding Q that is m x m
@@ -793,8 +793,8 @@ __lqf<basic_rmatrix<double>, basic_srmatrix<double>>
 
     // get lower-triangular L from overwritten A
     mL.vanish();
-    for (tint col = 0; col < nK; ++col)
-        for (tint row = col; row < nM; ++row)
+    for (col = 0; col < nK; ++col)
+        for (row = col; row < nM; ++row)
             mL(row,col) = mA(row,col);
 
     // calculate size of workspace for finding Q that is m x m

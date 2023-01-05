@@ -1,5 +1,3 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "UnreachableCode"
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
@@ -8,7 +6,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "StdAfx.h"
 #include "test.h"
 
 template <typename T>
@@ -105,7 +102,6 @@ TYPED_TEST(InitializationTest, TestSizes) {
     EXPECT_EQ(0,this->schm.nsize());
 }
 
-#if defined(CVM_USE_INITIALIZER_LISTS)
 TYPED_TEST(InitializationTest, TestInitList) {
     basic_rvector<TP> rv = { TP(1.), TP(-2.), TP(3.456), TP(99.99) };
     basic_rvector<TP> rv0 = {};
@@ -118,7 +114,6 @@ TYPED_TEST(InitializationTest, TestInitList) {
     EXPECT_EQ(TPC(1.2, 3.4),cv(0));
     EXPECT_EQ(TPC(99.99, 0.),cv(2));
 }
-#endif
 
 TYPED_TEST(InitializationTest, TestLiterals) {
 //    _Complex float cc = 3.4f + 5.6fi;
@@ -1324,8 +1319,8 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(std::abs(cr1 / cr2), std::abs(scbm1(1,1)), sp<TP>());
 
     srbm << srbm1;
-    EXPECT_EQ(srbm1(1,2), srbm(1,2));
-    EXPECT_EQ(srbm1(0,3), srbm(0,3));
+    EXPECT_FLOAT_EQ(srbm1(1,2), srbm(1,2));
+    EXPECT_FLOAT_EQ(srbm1(0,3), srbm(0,3));
     scbm << scbm1;
     EXPECT_NEAR(std::abs(scbm1(1,2)), std::abs(scbm(1,2)), s<TP>());
     EXPECT_NEAR(std::abs(scbm1(0,3)), std::abs(scbm(0,3)), s<TP>());
@@ -3542,5 +3537,3 @@ TYPED_TEST(InitializationTest, TestCoverage) {
     }
     EXPECT_TRUE(ex) << "schmatrix set_image not allowed";
 }
-
-#pragma clang diagnostic pop

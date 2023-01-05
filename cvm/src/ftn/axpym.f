@@ -1,7 +1,7 @@
 C                  CVM Class Library
 C                  http://cvmlib.com
 C
-C          Copyright Sergei Nikolaev 1992-2022
+C          Copyright Sergei Nikolaev 1992-2023
 C Distributed under the Boost Software License, Version 1.0.
 C    (See accompanying file LICENSE_1_0.txt or copy at
 C          http://www.boost.org/LICENSE_1_0.txt)
@@ -24,9 +24,6 @@ C     Y   - destination matrix (real)(output)
 C     LDY - leading dimesion of Y (int)(input)
 
       SUBROUTINE SAXPYM (M, N, A, X, LDX, Y, LDY)
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::SAXPYM
-CDEC$ ENDIF
       INTEGER M, N, LDX, LDY
       REAL A, X(LDX*N), Y(LDY*N)
       INTEGER I
@@ -43,9 +40,6 @@ CDEC$ ENDIF
 
 
       SUBROUTINE DAXPYM (M, N, A, X, LDX, Y, LDY)
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::DAXPYM
-CDEC$ ENDIF
       INTEGER M, N, LDX, LDY
       DOUBLE PRECISION A, X(LDX*N), Y(LDY*N)
       INTEGER I
@@ -62,9 +56,6 @@ CDEC$ ENDIF
 
 
       SUBROUTINE CAXPYM (M, N, A, X, LDX, Y, LDY)
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::CAXPYM
-CDEC$ ENDIF
       INTEGER M, N, LDX, LDY
       COMPLEX A, X(LDX*N), Y(LDY*N)
       INTEGER I
@@ -81,9 +72,6 @@ CDEC$ ENDIF
 
 
       SUBROUTINE ZAXPYM (M, N, A, X, LDX, Y, LDY)
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::ZAXPYM
-CDEC$ ENDIF
       INTEGER M, N, LDX, LDY
       DOUBLE COMPLEX A, X(LDX*N), Y(LDY*N)
       INTEGER I

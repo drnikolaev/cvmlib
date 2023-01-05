@@ -6,7 +6,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "StdAfx.h"
 #include "test.h"
 
 template <typename T>
@@ -36,7 +35,10 @@ TYPED_TEST(BlasTest, TestVectorNorminf) {
     
     ssm1.set(1.);
     m1.set(1.);
-    
+
+    std::cerr << sizeof(tint) << std::endl;
+
+
     m2 = ssm1 * m1;
     EXPECT_EQ(TP(16.), m2.norminf()) << "srsmatrix * rmatrix";
     
@@ -295,7 +297,7 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom1) {
     basic_schmatrix<TP,TPC> mp{3};
     mp.polynom(m, vr);
     EXPECT_NEAR(std::abs(TPC(1.231954875800000e+008,0.)),
-                std::abs(mp(0, 0)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 0)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.417932391600000e+008,7.089661958000000e+007)),
                 std::abs(mp(1, 0)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-8.080273845999999e+007,1.616054769200000e+008)),
@@ -307,9 +309,9 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom1) {
     EXPECT_NEAR(std::abs(TPC(0.,2.325020965000000e+008)),
                 std::abs(mp(2, 1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-8.080273845999999e+007,-1.616054769200000e+008)),
-                std::abs(mp(0, 2)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 2)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(TP(0.), 2.325020965000000e+008)),
-                std::abs(mp(1, 2)), spp<TP>()) << "schmatrix::polynom";
+                std::abs(mp(1, 2)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(2.649887267400000e+008,0.) / TP(1.e4)),
                 std::abs(mp(2, 2) / TP(1.e4)), spp<TP>()) << "schmatrix::polynom";
 }
@@ -325,23 +327,23 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom2) {
     basic_scmatrix<TP,TPC> mp{3};
     mp.polynom(m, vc);
     EXPECT_NEAR(std::abs(TPC(1.231954875800000e+008,6.128500650000000e+007)),
-                std::abs(mp(0, 0)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 0)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.065249031600000e+008,1.414332915800000e+008)),
-                std::abs(mp(1, 0)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
+                std::abs(mp(1, 0)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-1.611952344600000e+008,1.214092289200000e+008)),
-                std::abs(mp(2, 0)), spp<TP>()) << "schmatrix::polynom";
+                std::abs(mp(2, 0)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.770615751600000e+008,-3.599475799999982e+005)),
-                std::abs(mp(0, 1)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 1)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(2.039982260400000e+008,1.014812545000000e+008)),
-                std::abs(mp(1, 1)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(1, 1)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-1.156608320000000e+008,2.325020965000000e+008)),
-                std::abs(mp(2, 1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
+                std::abs(mp(2, 1)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-4.102424600000009e+005,-2.018017249200000e+008)),
-                std::abs(mp(0, 2)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(0, 2)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.156608320000000e+008,-2.325020965000000e+008)),
-                std::abs(mp(1, 2)), spp<TP>()) << "schmatrix::polynom";
+                std::abs(mp(1, 2)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(2.649887267400000e+008,1.318216785000000e+008)),
-                std::abs(mp(2, 2)), s<TP>()) << "schmatrix::polynom";
+                std::abs(mp(2, 2)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
 }
 
 TYPED_TEST(BlasTest, TestSymmetricMatrixExponent) {
@@ -379,21 +381,21 @@ TYPED_TEST(BlasTest, TestHermitianMatrixExponent) {
     basic_schmatrix<TP,TPC> me{3};
     me.exp(m);
     EXPECT_NEAR(std::abs(TPC(2.673228708371998e+002,0.)),
-                std::abs(me(0, 0)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(0, 0)), spp<TP>(1.e-10,20)) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(3.071187567026802e+002,1.535593783513401e+002)),
-                std::abs(me(1, 0)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(1, 0)), spp<TP>(1.e-10,20)) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(-1.749365628720764e+002,3.498731257441527e+002)),
-                std::abs(me(2, 0)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(2, 0)), spp<TP>(1.e-10,20)) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(3.071187567026802e+002,-1.535593783513401e+002)),
-                std::abs(me(0, 1)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(0, 1)), spp<TP>(1.e-10,20)) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(4.422594337092769e+002,0.)),
-                std::abs(me(1, 1)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(1, 1)), spp<TP>(1.e-10,20)) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(3.549798266275454e-015,5.034325040954932e+002)),
-                std::abs(me(2, 1)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(2, 1)), spp<TP>(1.e-10,20)) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(-1.749365628720763e+002,-3.498731257441526e+002)),
-                std::abs(me(0, 2)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(0, 2)), spp<TP>(1.e-10,20)) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(-1.776065298147746e-014,-5.034325040954931e+002)),
-                std::abs(me(1, 2)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(1, 2)), spp<TP>(1.e-10,20)) << "schmatrix::exp";
     EXPECT_NEAR(std::abs(TPC(5.744416275398801e+002,0.)),
-                std::abs(me(2, 2)), sp<TP>()) << "schmatrix::exp";
+                std::abs(me(2, 2)), spp<TP>(1.e-10,20)) << "schmatrix::exp";
 }

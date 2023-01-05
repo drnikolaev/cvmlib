@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2022
+//          Copyright Sergei Nikolaev 1992-2023
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -10,13 +10,11 @@
 #include "blas.h"
 #include "cfun.h"
 
+#include <mutex>
+
 CVM_NAMESPACE_BEG
 
-#if defined(CVM_STD_MUTEX)
 std::mutex cvm_mutex;
-#else
-CriticalSection emCS;
-#endif
 
 //! @cond INTERNAL
 const char Chars::chars_[15] = {'T', 'N', 'U', 'L', 'P', 'Q', 'B', 'E', 'R', 'A', 'S', 'V', 'O', 'I', 'C' };
@@ -24,18 +22,13 @@ const char Chars::chars_[15] = {'T', 'N', 'U', 'L', 'P', 'Q', 'B', 'E', 'R', 'A'
 
 // global error messages holder
 CVM_API ErrMessages& ErrMessages::ErrMessagesInstance() {
-    static ErrMessages _ErrMessages;
-    return _ErrMessages;
+    static ErrMessages errMessages;
+    return errMessages;
 }
 
 CVM_API ErrMessages::ErrMessages()
     : msUnknown("Unknown exception"), mmMsg() {
-#if defined(CVM_STD_MUTEX)
     std::unique_lock<std::mutex> l(cvm_mutex);
-#else
-    Lock l(emCS);
-#endif
-
     mmMsg.insert(pair_Msg(CVM_OK, "All OK"));
     mmMsg.insert(pair_Msg(CVM_OUTOFMEMORY, "Failed to allocate %u bytes of memory"));
     mmMsg.insert(pair_Msg(CVM_WRONGSIZE, "Wrong size: " CVM_TINT_FORMAT));
@@ -56,11 +49,11 @@ CVM_API ErrMessages::ErrMessages()
 #endif
     mmMsg.insert(pair_Msg(CVM_READ_ONLY_ACCESS, "Attempt to change a read-only element"));
     mmMsg.insert(pair_Msg(CVM_SUBMATRIXACCESSERROR, "Attempt to access non-continuous submatrix as a continuous array, see programmer\'s reference for details"));
-    mmMsg.insert(pair_Msg(CVM_SUBMATRIXNOTAVAILABLE, "Submatrix instantiation is not available for class \'%s\', see programmer\'s reference for details"));
+    mmMsg.insert(pair_Msg(CVM_SUBMATRIXNOTAVAILABLE, R"(Submatrix instantiation is not available for class '%s', see programmer's reference for details)"));
     mmMsg.insert(pair_Msg(CVM_MATRIXNOTSYMMETRIC, "The matrix passed doesn't appear to be symmetric"));
     mmMsg.insert(pair_Msg(CVM_MATRIXNOTHERMITIAN, "The matrix passed doesn't appear to be hermitian (%g vs. tolerance %g)"));
     mmMsg.insert(pair_Msg(CVM_BREAKS_HERMITIANITY, "This operation could make the matrix non-hermitian. Use %s instead"));
-    mmMsg.insert(pair_Msg(CVM_METHODNOTAVAILABLE, "Function \'%s\' is not available for class \'%s\'. See programmer\'s reference for details"));
+    mmMsg.insert(pair_Msg(CVM_METHODNOTAVAILABLE, R"(Function '%s' is not available for class '%s'. See programmer's reference for details)"));
     mmMsg.insert(pair_Msg(CVM_NOTIMPLEMENTED, "Function \'%s\' is not implemented"));
     mmMsg.insert(pair_Msg(CVM_CANT_RESIZE_SHARED_MEM, "Can\'t resize shared memory"));
     mmMsg.insert(pair_Msg(CVM_NOT_CONJUGATED, "Complex numbers are not conjugated: (%g,%g) vs. (%g,%g) with tolerance %g"));
@@ -82,19 +75,15 @@ CVM_API ErrMessages::ErrMessages()
     mmMsg.insert(pair_Msg(CFUN_CONVERGENCEERROR, "Convergence error while calculating %s of %g"));
     mmMsg.insert(pair_Msg(CFUN_CONVERGENCEERROR_C, "Convergence error while calculating %s of (%g,%g)"));
     mmMsg.insert(pair_Msg(CFUN_SUBSTPARAMETERERROR, "Error while substituting parameter \'%s\'"));
-    mmMsg.insert(pair_Msg(CFUN_VARSDONTMATCH, "Variables don\'t match: \'%s\' vs. \'%s\'"));
+    mmMsg.insert(pair_Msg(CFUN_VARSDONTMATCH, R"(Variables don't match: '%s' vs. '%s')"));
     mmMsg.insert(pair_Msg(CFUN_NULLPOINTERERROR, "Null pointer passed to \'%s\'"));
-    mmMsg.insert(pair_Msg(CFUN_PARAMETER_RECURSION, "Parameter \'%s\' can\'t be a part of its own meaning \'%s\'"));
+    mmMsg.insert(pair_Msg(CFUN_PARAMETER_RECURSION, R"(Parameter '%s' can't be a part of its own meaning '%s')"));
 }
 
 CVM_API bool ErrMessages::_add(int nNewCause, const char* szNewMessage) {
-#if defined(CVM_STD_MUTEX)
     std::unique_lock<std::mutex> l(cvm_mutex);
-#else
-    Lock l(emCS);
-#endif
     bool bRes = true;
-    itr_Msg i = mmMsg.find(nNewCause);
+    auto i = mmMsg.find(nNewCause);
     if (i != mmMsg.end()) {
         i->second = i->second + " | " + szNewMessage;      // Defenition is overlapped. This is not a good idea
         bRes = false;                                      // to do so, use CVM_THE_LAST_ERROR_CODE + 1 as an error code.

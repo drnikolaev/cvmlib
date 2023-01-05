@@ -1,7 +1,7 @@
 C                  CVM Class Library
 C                  http://cvmlib.com
 C
-C          Copyright Sergei Nikolaev 1992-2022
+C          Copyright Sergei Nikolaev 1992-2023
 C Distributed under the Boost Software License, Version 1.0.
 C    (See accompanying file LICENSE_1_0.txt or copy at
 C          http://www.boost.org/LICENSE_1_0.txt)
@@ -21,9 +21,6 @@ C     LDP   - leading dimension of P (int)(input)
 C     B     - working array of size NPOLY (M, N)
 
       SUBROUTINE ZPOLY (M, A, LDA, N, V, P, LDP, B)
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::ZPOLY
-CDEC$ ENDIF
       INTEGER M, N, LDA, LDP
       DOUBLE COMPLEX A(LDA*M), V(N), P(LDP*M), B(1)
       INTEGER I, K, NS, NR, NQSR, MM, NRM, NWRK

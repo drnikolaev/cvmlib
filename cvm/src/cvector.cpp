@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2022
+//          Copyright Sergei Nikolaev 1992-2023
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -13,22 +13,30 @@ CVM_NAMESPACE_BEG
 
 template<>
 CVM_API std::complex<float>
-__dotu<std::complex<float>>  (const std::complex<float>* mpd, tint mn_size, tint mn_incr,
-                              const std::complex<float>* pd, tint incr)
+__dotu<std::complex<float>>(const std::complex<float>* mpd, tint mn_size, tint mn_incr,
+                            const std::complex<float>* pd, tint incr)
 {
+#if defined(CVM_COMPLEX_NUMBER_RETURNED)
+    return CDOTU(&mn_size, mpd, &mn_incr, pd, &incr);
+#else
     std::complex<float> cRes;
     VCDOTU(&cRes, &mn_size, mpd, &mn_incr, pd, &incr);
     return cRes;
+#endif
 }
 
 template<>
 CVM_API std::complex<double>
-__dotu<std::complex<double>>  (const std::complex<double>* mpd, tint mn_size, tint mn_incr,
-                               const std::complex<double>* pd, tint incr)
+__dotu<std::complex<double>>(const std::complex<double>* mpd, tint mn_size, tint mn_incr,
+                             const std::complex<double>* pd, tint incr)
 {
+#if defined(CVM_COMPLEX_NUMBER_RETURNED)
+    return ZDOTU(&mn_size, mpd, &mn_incr, pd, &incr);
+#else
     std::complex<double> cRes;
     VZDOTU(&cRes, &mn_size, mpd, &mn_incr, pd, &incr);
     return cRes;
+#endif
 }
 
 template<>
@@ -36,9 +44,13 @@ CVM_API std::complex<float>
 __dotc<std::complex<float>>  (const std::complex<float>* mpd, tint mn_size, tint mn_incr,
                               const std::complex<float>* pd, tint incr)
 {
+#if defined(CVM_COMPLEX_NUMBER_RETURNED)
+    return CDOTC(&mn_size, mpd, &mn_incr, pd, &incr);
+#else
     std::complex<float> cRes;
     VCDOTC(&cRes, &mn_size, mpd, &mn_incr, pd, &incr);
     return cRes;
+#endif
 }
 
 template<>
@@ -46,9 +58,13 @@ CVM_API std::complex<double>
 __dotc<std::complex<double>>  (const std::complex<double>* mpd, tint mn_size, tint mn_incr,
                                const std::complex<double>* pd, tint incr)
 {
+#if defined(CVM_COMPLEX_NUMBER_RETURNED)
+    return ZDOTC(&mn_size, mpd, &mn_incr, pd, &incr);
+#else
     std::complex<double> cRes;
     VZDOTC(&cRes, &mn_size, mpd, &mn_incr, pd, &incr);
     return cRes;
+#endif
 }
 
 //! @cond SPECIALIZATIONS

@@ -1,7 +1,7 @@
 C                  CVM Class Library
 C                  http://cvmlib.com
 C
-C          Copyright Sergei Nikolaev 1992-2022
+C          Copyright Sergei Nikolaev 1992-2023
 C Distributed under the Boost Software License, Version 1.0.
 C    (See accompanying file LICENSE_1_0.txt or copy at
 C          http://www.boost.org/LICENSE_1_0.txt)
@@ -30,9 +30,6 @@ C     LWORK  - length of working array WORK (int)(input) - usually 64 * M
       SUBROUTINE DMEXP (M, A, LDA, EA, LDE, R, IR, NR, NI, NQ, J,
      1                  ISSYMM, WORK, LWORK)   ! referenced in 
                                                ! symmetric case only
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::DMEXP
-CDEC$ ENDIF
       INTEGER M, LDA, LDE
       DOUBLE PRECISION A(LDA*M), EA(LDE*M)
       INTEGER NR, NI, NQ, J, LWORK
@@ -153,9 +150,6 @@ C     J   - A measure (int)(output)
 
 
       SUBROUTINE DMEXPC (M, A, LDA, TOL, NR, NI, NQ, J)
-CDEC$ IF DEFINED (FTN_EXPORTS)
-CDEC$     ATTRIBUTES DLLEXPORT::DMEXPC
-CDEC$ ENDIF
       INTEGER M, LDA
       DOUBLE PRECISION A(LDA*M), TOL
       INTEGER NR, NI, NQ, J
