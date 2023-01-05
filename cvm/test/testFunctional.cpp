@@ -308,7 +308,7 @@ TYPED_TEST(FunctionalTest, TestFpower) {
     basic_function<TPC> cfpow2("{x} (x^(3, 1))^(1, 2)");
 
     EXPECT_EQ(std::string("x^(1,7)"), cfpow2.simp().format()) << "basic_function<TPC> power - simp() - format()";
-    TPC expected = ElementaryFunctions<TPC>::pow(TPC(7.36,3.17), TPC(1., 7.)); 
+    TPC expected = ElementaryFunctions<TPC>::pow(TPC(7.36,3.17), TPC(1., 7.));
 
     EXPECT_NEAR(expected.real(), cfpow2(TPC(7.36,3.17)).real(), sp<TP>()) << "basic_function<TPC> power - value";
     EXPECT_NEAR(expected.imag(), cfpow2(TPC(7.36,3.17)).imag(), sp<TP>()) << "basic_function<TPC> power - value";

@@ -42,11 +42,7 @@ CVM_API ErrMessages::ErrMessages()
     mmMsg.insert(pair_Msg(CVM_NOTPOSITIVEDIAG, "The diagonal element " CVM_TINT_FORMAT " of the matrix is nonpositive. Equilibration failed"));
     mmMsg.insert(pair_Msg(CVM_CONVERGENCE_ERROR, "Method failed to converge: %s at %s:%d"));
     mmMsg.insert(pair_Msg(CVM_DIVISIONBYZERO, "Attempt to divide by zero"));
-#if defined(WIN32) || defined(_WIN32)
-    mmMsg.insert(pair_Msg(CVM_SEMAPHOREERROR, "Critical Section access error"));
-#else
     mmMsg.insert(pair_Msg(CVM_SEMAPHOREERROR, "Semaphore access error"));
-#endif
     mmMsg.insert(pair_Msg(CVM_READ_ONLY_ACCESS, "Attempt to change a read-only element"));
     mmMsg.insert(pair_Msg(CVM_SUBMATRIXACCESSERROR, "Attempt to access non-continuous submatrix as a continuous array, see programmer\'s reference for details"));
     mmMsg.insert(pair_Msg(CVM_SUBMATRIXNOTAVAILABLE, R"(Submatrix instantiation is not available for class '%s', see programmer's reference for details)"));
@@ -116,16 +112,16 @@ CVM_API double _imag<std::complex<double>, double>(const std::complex<double>& m
 
 template <>
 CVM_API void __copy<float>(tint nSize, const float* pFrom, tint nFromIncr, float* pTo, tint nToIncr) {
-    CVM_ASSERT(pFrom, ((nFromIncr)*(nSize - 1)+ 1)* sizeof(float))
-    CVM_ASSERT(pTo, ((nToIncr)*(nSize - 1)+ 1)* sizeof(float))
-    SCOPY(& nSize, pFrom, &nFromIncr, pTo, &nToIncr);
+    CVM_ASSERT(pFrom, (nFromIncr * (nSize - 1) + 1) * sizeof(float))
+    CVM_ASSERT(pTo, (nToIncr * (nSize - 1) + 1) * sizeof(float))
+    SCOPY(&nSize, pFrom, &nFromIncr, pTo, &nToIncr);
 }
 
 template <>
 CVM_API void __copy<double>(tint nSize, const double* pFrom, tint nFromIncr, double* pTo, tint nToIncr) {
-    CVM_ASSERT(pFrom, ((nFromIncr)*(nSize - 1)+ 1)* sizeof(double))
-    CVM_ASSERT(pTo, ((nToIncr)*(nSize - 1)+ 1)* sizeof(double))
-    DCOPY(& nSize, pFrom, &nFromIncr, pTo, &nToIncr);
+    CVM_ASSERT(pFrom, (nFromIncr * (nSize - 1) + 1) * sizeof(double))
+    CVM_ASSERT(pTo, (nToIncr * (nSize - 1) + 1) * sizeof(double))
+    DCOPY(&nSize, pFrom, &nFromIncr, pTo, &nToIncr);
 }
 
 template <>
@@ -133,7 +129,7 @@ CVM_API void __copy<std::complex<float> >(tint nSize, const std::complex<float>*
                                           std::complex<float>* pTo, tint nToIncr) {
     CVM_ASSERT(pFrom, ((nFromIncr)*(nSize - 1)+ 1)* sizeof(std::complex<float>))
     CVM_ASSERT(pTo, ((nToIncr)*(nSize - 1)+ 1)* sizeof(std::complex<float>))
-    CCOPY(& nSize, pFrom, &nFromIncr, pTo, &nToIncr);
+    CCOPY(&nSize, pFrom, &nFromIncr, pTo, &nToIncr);
 }
 
 template <>
@@ -141,7 +137,7 @@ CVM_API void __copy<std::complex<double> >(tint nSize, const std::complex<double
                                            std::complex<double>* pTo, tint nToIncr) {
     CVM_ASSERT(pFrom, ((nFromIncr)*(nSize - 1)+ 1)* sizeof(std::complex<double>))
     CVM_ASSERT(pTo, ((nToIncr)*(nSize - 1)+ 1)* sizeof(std::complex<double>))
-    ZCOPY(& nSize, pFrom, &nFromIncr, pTo, &nToIncr);
+    ZCOPY(&nSize, pFrom, &nFromIncr, pTo, &nToIncr);
 }
 
 template <>
@@ -157,14 +153,14 @@ template <>
 CVM_API void __swap<float>(tint nSize, float* p1, tint n1Incr, float* p2, tint n2Incr) {
     CVM_ASSERT(p1, ((n1Incr)*(nSize - 1)+ 1)* sizeof(float))
     CVM_ASSERT(p2, ((n2Incr)*(nSize - 1)+ 1)* sizeof(float))
-    SSWAP(& nSize, p1, &n1Incr, p2, &n2Incr);
+    SSWAP(&nSize, p1, &n1Incr, p2, &n2Incr);
 }
 
 template <>
 CVM_API void __swap<double>(tint nSize, double* p1, tint n1Incr, double* p2, tint n2Incr) {
     CVM_ASSERT(p1, ((n1Incr)*(nSize - 1)+ 1)* sizeof(double))
     CVM_ASSERT(p2, ((n2Incr)*(nSize - 1)+ 1)* sizeof(double))
-    DSWAP(& nSize, p1, &n1Incr, p2, &n2Incr);
+    DSWAP(&nSize, p1, &n1Incr, p2, &n2Incr);
 }
 
 template <>
@@ -172,7 +168,7 @@ CVM_API void __swap<std::complex<float> >(tint nSize, std::complex<float>* p1, t
                                           std::complex<float>* p2, tint n2Incr) {
     CVM_ASSERT(p1, ((n1Incr)*(nSize - 1)+ 1)* sizeof(std::complex<float>))
     CVM_ASSERT(p2, ((n2Incr)*(nSize - 1)+ 1)* sizeof(std::complex<float>))
-    CSWAP(& nSize, p1, &n1Incr, p2, &n2Incr);
+    CSWAP(&nSize, p1, &n1Incr, p2, &n2Incr);
 }
 
 template <>
@@ -180,7 +176,7 @@ CVM_API void __swap<std::complex<double> >(tint nSize, std::complex<double>* p1,
                                            std::complex<double>* p2, tint n2Incr) {
     CVM_ASSERT(p1, ((n1Incr)*(nSize - 1)+ 1)* sizeof(std::complex<double>))
     CVM_ASSERT(p2, ((n2Incr)*(nSize - 1)+ 1)* sizeof(std::complex<double>))
-    ZSWAP(& nSize, p1, &n1Incr, p2, &n2Incr);
+    ZSWAP(&nSize, p1, &n1Incr, p2, &n2Incr);
 }
 
 template <>
