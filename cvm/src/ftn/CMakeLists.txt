@@ -1,5 +1,5 @@
 if(IFORT)
-       SET(CMAKE_Fortran_COMPILER /opt/intel/oneapi/compiler/latest/linux/bin/ifx)
+    SET(CMAKE_Fortran_COMPILER ifx)
 endif()
 project(ftn LANGUAGES Fortran)
 

@@ -1,9 +1,8 @@
-cmake_minimum_required(VERSION 3.21)
 set(CMAKE_CXX_STANDARD 17)
 set(OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib")
 
 if(ICC)
-    SET(CMAKE_CXX_COMPILER /opt/intel/oneapi/compiler/latest/linux/bin/icpx)
+    SET(CMAKE_CXX_COMPILER icpx)
 endif()
 
 add_subdirectory(ftn)

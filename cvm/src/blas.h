@@ -484,7 +484,7 @@ double CVM_STD_CALL DDOT       (const tint* n,
                                 const double* y, 
                                 const tint* incy);
 
-
+#if defined(CVM_COMPLEX_NUMBER_RETURNED)
 std::complex<float> CVM_STD_CALL CDOTU (
                                 const tint* n,
                                 const std::complex<float>* x,
@@ -510,6 +510,7 @@ std::complex<double> CVM_STD_CALL ZDOTC (
                                 const std::complex<double>* y,
                                 const tint* incy);
 
+#else
 // complex dot wrappers
 void  CVM_STD_CALL VCDOTU      (std::complex<float>* dot,
                                 const tint* n,
@@ -535,6 +536,7 @@ void  CVM_STD_CALL VZDOTC      (std::complex<double>* dot,
                                 const tint* incx, 
                                 const std::complex<double>* y, 
                                 const tint* incy);
+#endif
 
 void  CVM_STD_CALL SAXPY       (const tint* n,
                                 const float* a, 
