@@ -2,10 +2,6 @@ FILE(GLOB SOURCE_FILES *.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} test.h)
 set(OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib")
 
-if(ICC)
-    SET(CMAKE_CXX_COMPILER /opt/intel/oneapi/compiler/latest/linux/bin/icpx)
-endif()
-
 add_executable(cvm_test ${SOURCE_FILES})
 add_dependencies(cvm_test cvm)
 
@@ -23,16 +19,24 @@ set_target_properties(
 if(ILP64)
     target_compile_definitions(cvm_test PUBLIC CVM_ILP64)
 endif()
-if(ICC)
-    target_compile_options(cvm_test PUBLIC -fsycl -Rdebug-disables-optimization)
+
+if(LINUX)
+    target_compile_options(cvm_test PUBLIC
+            $<$<CONFIG:Release>:-O2>
+            $<$<CONFIG:Debug>:-O0 -g>)
+else()
+    target_compile_options(cvm_test PUBLIC /MT
+            $<$<CONFIG:Release>:/O1>
+            $<$<CONFIG:Debug>:/Od /debug:all>)
 endif()
-target_compile_options(cvm_test PUBLIC
-        $<$<CONFIG:Release>:-O2>
-        $<$<CONFIG:Debug>:-O0 -g>)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../gtest/googletest/include)
-target_link_directories(cvm_test PUBLIC ${OUTPUT_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../../gtest)
+target_link_directories(cvm_test PUBLIC ${OUTPUT_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../../gtest ${CMAKE_CURRENT_SOURCE_DIR}/../../gtest/lib/Release)
 
 target_link_libraries(cvm_test optimized cvm)
 target_link_libraries(cvm_test debug cvm_debug)
-target_link_libraries(cvm_test gtest pthread)
+if(LINUX)
+    target_link_libraries(cvm_test gtest pthread)
+else()
+    target_link_libraries(cvm_test gtest)
+endif()

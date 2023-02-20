@@ -1,6 +1,3 @@
-if(IFORT)
-    SET(CMAKE_Fortran_COMPILER ifx)
-endif()
 project(ftn LANGUAGES Fortran)
 
 FILE(GLOB SOURCE_FILES *.f)
@@ -14,14 +11,32 @@ set_target_properties(ftn
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../../lib"
         )
 
-target_compile_options(ftn PUBLIC -pthread -fPIC
+if(LINUX)
+    target_compile_options(ftn PUBLIC -pthread -fPIC
         $<$<CONFIG:Release>:-O3>
         $<$<CONFIG:Debug>:-O0 -g>)
+else()
+    target_compile_options(ftn PUBLIC
+            $<$<CONFIG:Release>:/O2>
+            $<$<CONFIG:Debug>:/Od /debug>)
+endif()
 
-if(ILP64)
-    if(IFORT)
-        target_compile_options(ftn PUBLIC $<$<COMPILE_LANGUAGE:Fortran>:-integer-size 64>)
-    else()
-        target_compile_options(ftn PUBLIC $<$<COMPILE_LANGUAGE:Fortran>:-fdefault-integer-8>)
+
+if(LINUX)
+    if(ILP64)
+        if(IFORT)
+            target_compile_options(ftn PUBLIC $<$<COMPILE_LANGUAGE:Fortran>:-integer-size 64>)
+        else()
+            target_compile_options(ftn PUBLIC $<$<COMPILE_LANGUAGE:Fortran>:-fdefault-integer-8>)
+        endif()
+    endif()
+else()
+    if(ILP64)
+        if(IFORT)
+            target_compile_options(ftn PUBLIC $<$<COMPILE_LANGUAGE:Fortran>:/integer-size:64>)
+        else()
+            target_compile_options(ftn PUBLIC $<$<COMPILE_LANGUAGE:Fortran>:/default-integer-8>)
+        endif()
     endif()
 endif()
+

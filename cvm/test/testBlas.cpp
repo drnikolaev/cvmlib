@@ -35,10 +35,6 @@ TYPED_TEST(BlasTest, TestVectorNorminf) {
     
     ssm1.set(1.);
     m1.set(1.);
-
-    std::cerr << sizeof(tint) << std::endl;
-
-
     m2 = ssm1 * m1;
     EXPECT_EQ(TP(16.), m2.norminf()) << "srsmatrix * rmatrix";
     

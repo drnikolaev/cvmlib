@@ -1,10 +1,6 @@
 set(CMAKE_CXX_STANDARD 17)
 set(OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib")
 
-if(ICC)
-    SET(CMAKE_CXX_COMPILER icpx)
-endif()
-
 add_subdirectory(ftn)
 
 add_library(cvm SHARED
@@ -17,7 +13,7 @@ add_library(cvm SHARED
         scmatrix.cpp
         srmatrix.cpp
         utils.cpp
-        )
+        ../../cvmlib/framework.h ../../cvmlib/dllmain.cpp ../../cvmlib/pch.cpp)
 
 set_target_properties(
         cvm
@@ -37,23 +33,34 @@ add_dependencies(cvm ftn)
 if(ILP64)
     target_compile_definitions(cvm PUBLIC CVM_ILP64)
 endif()
-if(ICC)
-    target_compile_options(cvm PUBLIC -fsycl -Rdebug-disables-optimization)
-endif()
+#if(ICC)
+#    target_compile_options(cvm PUBLIC -fsycl -Rdebug-disables-optimization)
+#endif()
 
 target_include_directories(cvm PRIVATE .)
-target_compile_options(cvm PUBLIC -fPIC
+if(LINUX)
+    target_compile_options(cvm PUBLIC -fPIC
         $<$<CONFIG:Release>:-O3>
         $<$<CONFIG:Debug>:-O0 -g>)
+else()
+    target_compile_definitions(cvm PUBLIC SRC_EXPORTS)
+    target_compile_options(cvm PUBLIC
+            $<$<CONFIG:Release>:/O3>
+            $<$<CONFIG:Debug>:/Od /debug:all>)
+endif()
+
 target_link_directories(cvm PUBLIC ${OUTPUT_PATH})
 target_link_libraries(cvm optimized ftn)
 target_link_libraries(cvm debug ftn_debug)
-target_link_libraries(cvm pthread m dl)
+if(LINUX)
+    target_link_libraries(cvm pthread m dl)
+endif()
+
 
 if(MKL)
     if(ILP64)
         if(ICC)
-            target_compile_options(cvm PUBLIC -qmkl-ilp64=parallel)
+            target_compile_options(cvm PUBLIC /Qmkl-ilp64:parallel)
         endif()
         if(IFORT)
             target_link_libraries(cvm mkl_intel_ilp64)
@@ -62,7 +69,7 @@ if(MKL)
         endif()
     else()
         if(ICC)
-            target_compile_options(cvm PUBLIC -qmkl=parallel)
+            target_compile_options(cvm PUBLIC -Qmkl=parallel)
         endif()
         if(IFORT)
             target_link_libraries(cvm mkl_intel_lp64)
@@ -84,6 +91,8 @@ else()
     endif()
 endif()
 
-if(ICC)
-    target_link_libraries(cvm iomp5)
+if(LINUX)
+    if(ICC)
+        target_link_libraries(cvm iomp5)
+    endif()
 endif()

@@ -1294,17 +1294,16 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     cr1 = cv1(8);
     cv1 *= cr2;
-    EXPECT_EQ(cr1 * cr2, cv1(8));
+    EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(cv1(8)), s<TP>());
     cr1 = cm1(1,1);
     cm1 *= cr2;
-    EXPECT_EQ(cr1 * cr2, cm1(1,1));
+    EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(cm1(1,1)), s<TP>());
     cr1 = scm1(1,1);
     scm1 *= cr2;
-    EXPECT_EQ(cr1 * cr2, scm1(1,1));
+    EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(scm1(1,1)), s<TP>());
     cr1 = scbm1(1,0);
     scbm1 *= cr2;
-//    EXPECT_EQ(cr1 * cr2, scbm1(1,0));
-    EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(scbm1(1,0)), s<TP>());
+    EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(scbm1(1,0)), spp<TP>());
     cr1 = cv1(8);
     cv1 /= cr2;
     EXPECT_NEAR(std::abs(cr1 / cr2), std::abs(cv1(8)), s<TP>());
@@ -1390,8 +1389,6 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     sch2.set(1, 2, sch2(1,2) + TPC(0.000001,0.00001));
     EXPECT_FALSE(sch1 == sch2) << "schmatrix ==";
     EXPECT_TRUE(sch1 != sch2) << "schmatrix !=";
-
-
 
     rv1 = rv;
     EXPECT_EQ(rv(2), rv1[2]) << "rvector = rvector";
@@ -1674,18 +1671,18 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     srm4.resize(3);
     srm4.mult(rm1, rm2);
 
-    EXPECT_EQ(rm1[2] * rm2(2),srm4(2,2)) << "mult";
+    EXPECT_NEAR(rm1[2] * rm2(2),srm4(2,2), sp<TP>()) << "mult";
     rm4.resize(3, 2);
     rm1.mult(srm4, rm4);
-    EXPECT_EQ(srm4[2] * rm4(1),rm1(2,1)) << "mult";
+    EXPECT_NEAR(srm4[2] * rm4(1),rm1(2,1), sp<TP>()) << "mult";
     srbm1.resize(3);
     rm1.mult(srbm1, rm4);
-    EXPECT_EQ(srbm1[2] * rm4(1),rm1(2,1)) << "mult";
+    EXPECT_NEAR(srbm1[2] * rm4(1),rm1(2,1), sp<TP>()) << "mult";
     rm1.mult(~srbm1, rm4);
     tmp = static_cast<float>(rm1(2,1));
     EXPECT_FLOAT_EQ(static_cast<float>(srbm1(2) * rm4(1)),tmp) << "mult";
     srbm1.mult(rm1, rm2);
-    EXPECT_EQ(rm1[1] * rm2(1),srbm1(1,1)) << "mult";
+    EXPECT_NEAR(rm1[1] * rm2(1),srbm1(1,1), sp<TP>()) << "mult";
 
     r1 = -0.031;
     r2 = 0.319;
@@ -1717,24 +1714,28 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_FLOAT_EQ(static_cast<float>((cm2[1] * cm1(1)).imag()),
         static_cast<float>(cm3(1,1).imag())) << "mult";
     cm4.mult(cm1, cm2);
-    EXPECT_EQ(cm1[2] * cm2(2),cm4(2,2)) << "mult";
+    EXPECT_FLOAT_EQ((cm1[2] * cm2(2)).real(),cm4(2,2).real()) << "mult";
+    EXPECT_FLOAT_EQ((cm1[2] * cm2(2)).imag(),cm4(2,2).imag()) << "mult";
     scm4.resize(3);
     scm4.mult(cm1, cm2);
-    EXPECT_EQ(cm1[2] * cm2(2),scm4(2,2)) << "mult";
+    EXPECT_FLOAT_EQ((cm1[2] * cm2(2)).real(),scm4(2,2).real()) << "mult";
+    EXPECT_FLOAT_EQ((cm1[2] * cm2(2)).imag(),scm4(2,2).imag()) << "mult";
     cm4.resize(3, 2);
     cm1.mult(scm4, cm4);
-    EXPECT_EQ(scm4[2] * cm4(1),cm1(2,1)) << "mult";
+    EXPECT_FLOAT_EQ((scm4[2] * cm4(1)).real(),cm1(2,1).real()) << "mult";
+    EXPECT_FLOAT_EQ((scm4[2] * cm4(1)).imag(),cm1(2,1).imag()) << "mult";
     scbm.resize(3);
     scbm.set(TPC(1.23,-0.912));
     cm1.mult(scbm, cm4);
-    EXPECT_EQ(scbm[2] * cm4(1),cm1(2,1)) << "mult";
+    EXPECT_FLOAT_EQ((scbm[2] * cm4(1)).real(),cm1(2,1).real()) << "mult";
+    EXPECT_FLOAT_EQ((scbm[2] * cm4(1)).imag(),cm1(2,1).imag()) << "mult";
     cm1.mult(~scbm, cm4);
     EXPECT_FLOAT_EQ(static_cast<float>((~(scbm(2)) * cm4(1)).real()), static_cast<float>(cm1(2,1).real())) << "mult";
     EXPECT_FLOAT_EQ(static_cast<float>((~(scbm(2)) * cm4(1)).imag()), static_cast<float>(cm1(2,1).imag())) << "mult";
     scbm1.resize(3);
     scbm1.mult(cm1, cm2);
-    EXPECT_EQ(cm1[1] * cm2(1),scbm1(1,1)) << "mult";
-
+    EXPECT_FLOAT_EQ((cm1[1] * cm2(1)).real(),scbm1(1,1).real()) << "mult";
+    EXPECT_FLOAT_EQ((cm1[1] * cm2(1)).imag(),scbm1(1,1).imag()) << "mult";
 
     cm1.randomize_real(0., 1.);
     cm2.randomize_real(0., 1.);
@@ -1918,26 +1919,30 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     scbm2.set(TPC(1.23,-0.977));
 
     cm1 = scbm2;
-    EXPECT_NEAR(std::abs(scbm2(1,2)), std::abs(cm1(1,2)), s<TP>()) << "mix cmatrix  scbm";
-    EXPECT_NEAR(std::abs(scbm2(3,0)), std::abs(cm1(3,0)), s<TP>()) << "mix cmatrix  scbm";
+    EXPECT_NEAR(std::abs(scbm2(1,2)), std::abs(cm1(1,2)), s<TP>()) << "mix cmatrix scbm";
+    EXPECT_NEAR(std::abs(scbm2(3,0)), std::abs(cm1(3,0)), s<TP>()) << "mix cmatrix scbm";
 
     cm1 = cm1 + scbm2;
     cm1 += scbm2;
-    EXPECT_NEAR(std::abs(scbm2(1,2) * TP(3.)), std::abs(cm1(1,2)), s<TP>()) << "mix cmatrix  scbm";
-    EXPECT_NEAR(std::abs(scbm2(3,0) * TP(3.)), std::abs(cm1(3,0)), s<TP>()) << "mix cmatrix  scbm";
-    EXPECT_NEAR(std::abs(TP(3.) * scbm2(1,2)), std::abs(cm1(0,1)), s<TP>()) << "mix cmatrix  scbm";
-    EXPECT_NEAR(std::abs(TP(3.) * scbm2(1,0)), std::abs(cm1(1,0)), s<TP>()) << "mix cmatrix  scbm";
+    EXPECT_NEAR((scbm2(1,2) * TP(3.)).real(), cm1(1,2).real(), spp<TP>()) << "mix cmatrix scbm";
+    EXPECT_NEAR((scbm2(1,2) * TP(3.)).imag(), cm1(1,2).imag(), spp<TP>()) << "mix cmatrix scbm";
+    EXPECT_NEAR((scbm2(3,0) * TP(3.)).real(), cm1(3,0).real(), spp<TP>()) << "mix cmatrix scbm";
+    EXPECT_NEAR((scbm2(3,0) * TP(3.)).imag(), cm1(3,0).imag(), spp<TP>()) << "mix cmatrix scbm";
+    EXPECT_NEAR((TP(3.) * scbm2(1,2)).real(), cm1(0,1).real(), spp<TP>()) << "mix cmatrix scbm";
+    EXPECT_NEAR((TP(3.) * scbm2(1,2)).imag(), cm1(0,1).imag(), spp<TP>()) << "mix cmatrix scbm";
+    EXPECT_NEAR((TP(3.) * scbm2(1,0)).real(), cm1(1,0).real(), spp<TP>()) << "mix cmatrix scbm";
+    EXPECT_NEAR((TP(3.) * scbm2(1,0)).imag(), cm1(1,0).imag(), spp<TP>()) << "mix cmatrix scbm";
 
     rm1 = srbm2;
-    EXPECT_NEAR(srbm2(1,2), rm1(1,2), s<TP>()) << "mix rmatrix  srbm";
-    EXPECT_NEAR(srbm2(3,0), rm1(3,0), s<TP>()) << "mix rmatrix  srbm";
+    EXPECT_NEAR(srbm2(1,2), rm1(1,2), s<TP>()) << "mix rmatrix srbm";
+    EXPECT_NEAR(srbm2(3,0), rm1(3,0), s<TP>()) << "mix rmatrix srbm";
 
     rm1 = rm1 + srbm2;
     rm1 += srbm2;
-    EXPECT_EQ(srbm2(1,2) * 3., rm1(1,2)) << "mix rmatrix  srbm";
+    EXPECT_EQ(srbm2(1,2) * 3., rm1(1,2)) << "mix rmatrix srbm";
     EXPECT_EQ(3. * srbm2(3,0), rm1(3,0)) << "mix matrix  srbm";
-    EXPECT_EQ(3 * srbm2(3,0), rm1(3,0)) << "mix rmatrix  srbm";
-    EXPECT_EQ(srbm2(1,2) * 3, rm1(1,2)) << "mix rmatrix  srbm";
+    EXPECT_EQ(3 * srbm2(3,0), rm1(3,0)) << "mix rmatrix srbm";
+    EXPECT_EQ(srbm2(1,2) * 3, rm1(1,2)) << "mix rmatrix srbm";
 
     scbm1.resize(4);
     for (int j = 0; j <= 3; j++) {

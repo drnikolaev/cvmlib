@@ -9,6 +9,10 @@
 #include "cvm.h"
 
 #include <algorithm>
+#if defined(__INTEL_COMPILER) || defined(__INTEL_LLVM_COMPILER)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wexceptions"
+#endif
 
 extern "C" {
     void __stdcall XERBLA(const char* szSubName,
@@ -21,29 +25,12 @@ extern "C" {
     }
 }
 
-#if defined(_MSC_VER)
-#   ifdef _MANAGED
-#       pragma managed(push, off)
-#   endif
+#if defined(__INTEL_COMPILER) || defined(__INTEL_LLVM_COMPILER)
+#pragma GCC diagnostic pop
+#endif
 
-BOOL APIENTRY DllMain(HANDLE /*hModule*/,
-                      DWORD  ul_reason_for_call,
-                      LPVOID /*lpReserved*/)
-{
-    switch(ul_reason_for_call)
-    {
-        case DLL_PROCESS_ATTACH:
-        case DLL_THREAD_ATTACH:
-        case DLL_THREAD_DETACH:
-        case DLL_PROCESS_DETACH:
-            break;
-    }
-    return TRUE;
-}
-
-#   ifdef _MANAGED
-#       pragma managed(pop)
-#   endif
+#if !defined(_MSC_VER)
+#pragma GCC diagnostic pop
 #endif
 
 CVM_NAMESPACE_BEG
