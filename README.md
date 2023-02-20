@@ -16,7 +16,7 @@ sudo apt update
 sudo apt install intel-basekit
 source /opt/intel/oneapi/compiler/latest/env/vars.sh
 mkdir build
-cmake -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_CXX_COMPILER=icx -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release -S . -B build
+cmake -DCMAKE_Fortran_COMPILER=ifx -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release -S . -B build
 cd build
 make -j
 ../lib/cvm_test

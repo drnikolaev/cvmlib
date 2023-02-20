@@ -7,9 +7,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "cvm.h"
-
 #include <algorithm>
-#if defined(__INTEL_COMPILER) || defined(__INTEL_LLVM_COMPILER)
+
+#if !defined(_MSC_VER)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wexceptions"
 #endif
@@ -24,10 +24,6 @@ extern "C" {
         throw cvm::cvmexception(CVM_WRONGMKLARG2, *pnParam, szSubName);
     }
 }
-
-#if defined(__INTEL_COMPILER) || defined(__INTEL_LLVM_COMPILER)
-#pragma GCC diagnostic pop
-#endif
 
 #if !defined(_MSC_VER)
 #pragma GCC diagnostic pop

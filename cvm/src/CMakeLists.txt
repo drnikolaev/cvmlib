@@ -3,7 +3,7 @@ set(OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib")
 
 add_subdirectory(ftn)
 
-add_library(cvm SHARED
+SET(SOURCE_FILES
         arrays.cpp
         cmatrix.cpp
         cvector.cpp
@@ -13,7 +13,16 @@ add_library(cvm SHARED
         scmatrix.cpp
         srmatrix.cpp
         utils.cpp
-        ../../cvmlib/framework.h ../../cvmlib/dllmain.cpp ../../cvmlib/pch.cpp)
+        )
+if (NOT LINUX)
+    SET(SOURCE_FILES  ${SOURCE_FILES}
+            ../../cvmlib/framework.h
+            ../../cvmlib/dllmain.cpp
+            ../../cvmlib/pch.cpp
+            )
+endif()
+
+add_library(cvm SHARED ${SOURCE_FILES})
 
 set_target_properties(
         cvm
@@ -33,9 +42,6 @@ add_dependencies(cvm ftn)
 if(ILP64)
     target_compile_definitions(cvm PUBLIC CVM_ILP64)
 endif()
-#if(ICC)
-#    target_compile_options(cvm PUBLIC -fsycl -Rdebug-disables-optimization)
-#endif()
 
 target_include_directories(cvm PRIVATE .)
 if(LINUX)
@@ -59,8 +65,8 @@ endif()
 
 if(MKL)
     if(ILP64)
-        if(ICC)
-            target_compile_options(cvm PUBLIC /Qmkl-ilp64:parallel)
+        if(ICC AND NOT LINUX)
+            target_compile_options(cvm PUBLIC -Qmkl-ilp64:parallel)
         endif()
         if(IFORT)
             target_link_libraries(cvm mkl_intel_ilp64)
@@ -68,7 +74,7 @@ if(MKL)
             target_link_libraries(cvm mkl_gf_ilp64)
         endif()
     else()
-        if(ICC)
+        if(ICC AND NOT LINUX)
             target_compile_options(cvm PUBLIC -Qmkl=parallel)
         endif()
         if(IFORT)
