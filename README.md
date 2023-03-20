@@ -79,6 +79,13 @@ cvm::rvector poly_regression (int size, const double *px, const double *py, int 
   cvm::rvector av(py, size);
   return (XtX.inv() * Xt) * av;
 }
+
+int main (int argc, char* argv[]) {
+  cvm::rvector x = {3., 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.};
+  cvm::rvector y = {74.6297, 39.317, -105.173, -26.6447, -155.447, -136.955, -151.887, -113.365, -102.947, -50.3158, -40.1129};
+  cvm::rvector p = poly_regression (x.size(), x, y, 2);
+  std::cout << p;
+}
 ```
 prints:
 ```
