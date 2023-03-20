@@ -61,7 +61,7 @@ prints
 
 #### [Polynomial regression](https://en.wikipedia.org/wiki/Polynomial_regression):
 ```
-#include "cfun.h"
+#include "cvm.h"
 
 cvm::rvector poly_regression (int size, const double *px, const double *py, int deg)
 {
