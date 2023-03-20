@@ -59,7 +59,7 @@ target_link_directories(cvm PUBLIC ${OUTPUT_PATH})
 target_link_libraries(cvm optimized ftn)
 target_link_libraries(cvm debug ftn_debug)
 if(LINUX)
-    target_link_libraries(cvm pthread m dl)
+    target_link_libraries(cvm pthread m dl stdc++)
 endif()
 
 
