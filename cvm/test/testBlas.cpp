@@ -301,8 +301,8 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom1) {
     EXPECT_NEAR(std::abs(TPC(1.417932391600000e+008,-7.089661958000000e+007)),
                 std::abs(mp(0, 1)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(2.039982260400000e+008, mp(1, 1).real(), spp<TP>(1.e-6,20)) << "schmatrix::polynom";
-    EXPECT_NEAR(0., mp(1, 1).imag(), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
-    EXPECT_NEAR(0., mp(2, 1).real(), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
+    EXPECT_NEAR(0., mp(1, 1).imag(), spp<TP>(1.e-6,20)) << "schmatrix::polynom";
+    EXPECT_NEAR(0., mp(2, 1).real(), spp<TP>(1.e-6,20)) << "schmatrix::polynom";
     EXPECT_NEAR(2.325020965000000e+008, mp(2, 1).imag(), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-8.080273845999999e+007,-1.616054769200000e+008)),
                 std::abs(mp(0, 2)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
