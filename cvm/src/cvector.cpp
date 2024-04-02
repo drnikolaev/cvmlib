@@ -20,7 +20,13 @@ __dotu<std::complex<float>>(const std::complex<float>* mpd, tint mn_size, tint m
     return CDOTU(&mn_size, mpd, &mn_incr, pd, &incr);
 #else
     std::complex<float> cRes;
+#ifdef CVM_ON_MAC
+    for(tint i = 0; i < mn_size; ++i) {
+        cRes += mpd[i * mn_incr] * pd[i * incr];
+    }
+#else
     VCDOTU(&cRes, &mn_size, mpd, &mn_incr, pd, &incr);
+#endif
     return cRes;
 #endif
 }
@@ -34,7 +40,13 @@ __dotu<std::complex<double>>(const std::complex<double>* mpd, tint mn_size, tint
     return ZDOTU(&mn_size, mpd, &mn_incr, pd, &incr);
 #else
     std::complex<double> cRes;
+#ifdef CVM_ON_MAC
+    for(tint i = 0; i < mn_size; ++i) {
+        cRes += mpd[i * mn_incr] * pd[i * incr];
+    }
+#else
     VZDOTU(&cRes, &mn_size, mpd, &mn_incr, pd, &incr);
+#endif
     return cRes;
 #endif
 }
@@ -48,7 +60,13 @@ __dotc<std::complex<float>>  (const std::complex<float>* mpd, tint mn_size, tint
     return CDOTC(&mn_size, mpd, &mn_incr, pd, &incr);
 #else
     std::complex<float> cRes;
+#ifdef CVM_ON_MAC
+    for(tint i = 0; i < mn_size; ++i) {
+        cRes += std::conj(mpd[i * mn_incr]) * pd[i * incr];
+    }
+#else
     VCDOTC(&cRes, &mn_size, mpd, &mn_incr, pd, &incr);
+#endif
     return cRes;
 #endif
 }
@@ -62,7 +80,13 @@ __dotc<std::complex<double>>  (const std::complex<double>* mpd, tint mn_size, ti
     return ZDOTC(&mn_size, mpd, &mn_incr, pd, &incr);
 #else
     std::complex<double> cRes;
+#ifdef CVM_ON_MAC
+    for(tint i = 0; i < mn_size; ++i) {
+        cRes += std::conj(mpd[i * mn_incr]) * pd[i * incr];
+    }
+#else
     VZDOTC(&cRes, &mn_size, mpd, &mn_incr, pd, &incr);
+#endif
     return cRes;
 #endif
 }

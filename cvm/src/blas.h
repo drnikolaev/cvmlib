@@ -370,6 +370,13 @@ extern "C" {
 
 #endif      // !_MSC_VER
 
+#ifdef CVM_ON_MAC
+// Apple bug workaround
+#    define CVM_BLAS_FLOAT_RET double
+#else
+#    define CVM_BLAS_FLOAT_RET float
+#endif
+
 void  CVM_FTN_CALL SPOLY       (const tint* m,
                                 const float* a,
                                 const tint* lda,
@@ -437,14 +444,14 @@ tint   CVM_STD_CALL IZAMIN      (const tint* n,
                                 const std::complex<double>* x,
                                 const tint* incx);
 
-float  CVM_STD_CALL SNRM2      (const tint* n,
+CVM_BLAS_FLOAT_RET CVM_STD_CALL SNRM2 (const tint* n,
                                 const float* x,
                                 const tint* incx);
 double CVM_STD_CALL DNRM2      (const tint* n,
                                 const double* x,
                                 const tint* incx);
 
-float  CVM_STD_CALL SCNRM2     (const tint* n,
+CVM_BLAS_FLOAT_RET CVM_STD_CALL SCNRM2 (const tint* n,
                                 const std::complex<float>* x,
                                 const tint* incx);
 double CVM_STD_CALL DZNRM2     (const tint* n,
@@ -473,7 +480,7 @@ void  CVM_STD_CALL ZSWAP       (const tint* n,
                                       std::complex<double>* y, 
                                 const tint* incy);
 
-float  CVM_STD_CALL SDOT       (const tint* n,
+CVM_BLAS_FLOAT_RET CVM_STD_CALL SDOT (const tint* n,
                                 const float* x, 
                                 const tint* incx, 
                                 const float* y, 

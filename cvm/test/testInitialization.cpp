@@ -1466,7 +1466,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_EQ((cm1(2) - cm2(2)).norm(),cm(2).norm()) << "cmatrix - cmatrix";
     srm = srm1 + srm2;
     EXPECT_EQ(srm1(0,0) + srm2(0, 0), srm[0][0]) << "srmatrix + srmatrix";
-    EXPECT_EQ((srm1[2] + srm2[2]).norm(),srm[2].norm()) << "srmatrix + srmatrix";
+    EXPECT_NEAR((srm1[2] + srm2[2]).norm(),srm[2].norm(), s<TP>()) << "srmatrix + srmatrix";
     srm = srm1 - srm2;
     EXPECT_EQ(srm1(0,0) - srm2(0, 0), srm[0][0]) << "srmatrix - srmatrix";
     EXPECT_EQ((srm1(2) - srm2(2)).norm(),srm(2).norm()) << "srmatrix - srmatrix";
@@ -1630,7 +1630,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     rv1.resize(3);
     rv1.mult(srm2, rv2);
-    EXPECT_EQ(rv2 * srm2[0], rv1[0]) << "mult";
+    EXPECT_FLOAT_EQ(rv2 * srm2[0], rv1[0]) << "mult";
     rv2.mult(rv1, srm2);
 
     EXPECT_FLOAT_EQ(static_cast<float>(rv1 * srm2(0)), static_cast<float>(rv2[0])) << "mult";
