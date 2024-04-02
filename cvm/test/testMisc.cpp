@@ -24,7 +24,7 @@ TYPED_TEST(MiscTest, TestPrintProxy) {
 #if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
     sprintf_s(buf, sizeof(buf), "%.3f", m(0,0).val());  // use .val to printf type_proxy!
 #else
-    sprintf(buf, "%.3f", m(0,0).val());  // use .val to printf type_proxy!
+    std::snprintf(buf, sizeof(buf), "%.3f", m(0,0).val());  // use .val to printf type_proxy!
 #endif
     EXPECT_STREQ("1.234", buf);
 }

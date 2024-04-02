@@ -77,6 +77,17 @@ using tint = int32_t;  //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) s
 #   define CVM_VSNPRINTF vsnprintf_s
 #   define CVM_VSNPRINTF_S_DEFINED
 #   define CVM_STRCPY_S_DEFINED
+#elif defined(__clang__)
+#   ifdef __stdcall
+#       undef __stdcall
+#   endif
+#   define __stdcall  // NOLINT
+#   define CVM_API
+#   if defined(CVM_USE_POOL_MANAGER)
+#       include <semaphore.h>  // Unix
+#   endif
+//#   define CVM_COMPLEX_NUMBER_RETURNED 1
+#   define CVM_VSNPRINTF vsnprintf
 #elif defined(__GNUC__)
 #   define CVM_API
 #   ifdef __stdcall
@@ -17893,7 +17904,7 @@ protected:
                 RVector vUpDiag = this->_low_up_diag(naPivots);
 
                 dDet = one;
-                for (tint i = 0; i <= this->msize() - 1; ++i) {
+                for (tint i = 0; i < this->msize(); ++i) {
                     dDet *= vUpDiag[i];
                     if (i + 1 != naPivots[i]) {
                         dDet = -dDet;

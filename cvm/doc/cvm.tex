@@ -407,7 +407,7 @@ Use%
 the Makefile provided in the root directory:
 \begin{Verbatim}
 make [release|debug] [IFORT=1] [ICC=1] [MKL=1] [MKL_PATH=/opt/...] 
-     [EM64T=1] [ILP64=1] [CVM_FLOAT=1] [ICCT=1] [STATIC_ONLY=1]
+     [ILP64=1] [CVM_FLOAT=1] [ICCT=1] [STATIC_ONLY=1]
      [IFORT_PATH=/opt/...] [MAC=1] [GF_BLAS=1]
 \end{Verbatim}
 Here
@@ -421,8 +421,7 @@ compiler (\verb'gfortran' is the default)
   native BLAS and LAPACK libraries by default)
 %\item \verb'MKL_PATH=path' specifies the directory where the~MKL is installed to.
 It's set to \verb'/opt/intel/mkl/lib' by default.
-\item \verb'EM64T=1' instructs to build EM64T version of the library.
-\item \verb'ILP64=1' instructs to build INT64-based version of the library (EM64T must be turned on).
+\item \verb'ILP64=1' instructs to build INT64-based version of the library.
 \item \verb'CVM_FLOAT=1' \textbf{(deprecated)} instructs to build \verb'float' version of the library.
 \item \verb'ICCT=1' instructs to use Intel~C++ compiler for building the
 regression test utility (\verb'g++' is the default)

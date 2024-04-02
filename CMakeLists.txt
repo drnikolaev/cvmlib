@@ -15,7 +15,8 @@ if (${CMAKE_Fortran_COMPILER_ID} MATCHES "^Intel.*")
 endif()
 
 option(BUILD_TESTS "Build regression test program (takes a while)" OFF)
+option(MAC "Target platform is Mac OS" OFF)
 option(MKL "Use Intel MKL library" OFF)
-option(ILP64 "Set default integer size to 8 byte" OFF)
+option(ILP64 "Set the default integer size to 8 byte" OFF)
 
 add_subdirectory(cvm)
