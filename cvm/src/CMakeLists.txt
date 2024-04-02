@@ -1,4 +1,4 @@
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib")
 
 add_subdirectory(ftn)
@@ -14,13 +14,6 @@ SET(SOURCE_FILES
         srmatrix.cpp
         utils.cpp
         )
-if (NOT LINUX)
-    SET(SOURCE_FILES  ${SOURCE_FILES}
-            ../../cvmlib/framework.h
-            ../../cvmlib/dllmain.cpp
-            ../../cvmlib/pch.cpp
-            )
-endif()
 
 add_library(cvm SHARED ${SOURCE_FILES})
 
@@ -30,7 +23,7 @@ set_target_properties(
         VERSION ${CVM_VERSION}
         SOVERSION ${CVM_VERSION}
         PUBLIC_HEADER cvm.h
-        CXX_STANDARD 17
+        CXX_STANDARD 14
         CXX_EXTENSIONS OFF
         DEBUG_POSTFIX _debug
         ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_PATH}"
