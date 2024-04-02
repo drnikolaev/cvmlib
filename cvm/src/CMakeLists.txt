@@ -14,7 +14,7 @@ SET(SOURCE_FILES
         srmatrix.cpp
         utils.cpp
         )
-if (NOT LINUX)
+if (NOT LINUX AND NOT MAC)
     SET(SOURCE_FILES  ${SOURCE_FILES}
             ../../cvmlib/framework.h
             ../../cvmlib/dllmain.cpp
@@ -43,8 +43,8 @@ if(ILP64)
     target_compile_definitions(cvm PUBLIC CVM_ILP64)
 endif()
 
-target_include_directories(cvm PRIVATE .)
-if(LINUX)
+target_include_directories(cvm PUBLIC .)
+if(LINUX OR MAC)
     target_compile_options(cvm PUBLIC -fPIC
         $<$<CONFIG:Release>:-O3>
         $<$<CONFIG:Debug>:-O0 -g>)
@@ -52,7 +52,7 @@ else()
     target_compile_definitions(cvm PUBLIC SRC_EXPORTS)
     target_compile_options(cvm PUBLIC
             $<$<CONFIG:Release>:/O3>
-            $<$<CONFIG:Debug>:/Od /debug:all>)
+            $<$<CONFIG:Debug>:/Od>)
 endif()
 
 target_link_directories(cvm PUBLIC ${OUTPUT_PATH})
@@ -91,9 +91,22 @@ if(MKL)
     endif()
 else()
     if(ILP64)
-        target_link_libraries(cvm blas64 lapack64)
+        if(MAC)
+            target_compile_definitions(cvm PUBLIC ACCELERATE_NEW_LAPACK)
+            target_compile_definitions(cvm PUBLIC ACCELERATE_LAPACK_ILP64)
+            target_link_directories(cvm PUBLIC /opt/homebrew/Cellar/gcc/13.2.0/lib/gcc/current/)
+            target_link_libraries(cvm blas lapack gfortran)
+        else()
+            target_link_libraries(cvm blas64 lapack64)
+        endif()
     else()
-        target_link_libraries(cvm blas lapack)
+        if(MAC)
+            target_compile_definitions(cvm PUBLIC ACCELERATE_NEW_LAPACK)
+            target_link_directories(cvm PUBLIC /opt/homebrew/Cellar/gcc/13.2.0/lib/gcc/current/)
+            target_link_libraries(cvm blas lapack gfortran)
+        else()
+            target_link_libraries(cvm blas lapack)
+        endif()
     endif()
 endif()
 
@@ -101,4 +114,8 @@ if(LINUX)
     if(ICC)
         target_link_libraries(cvm iomp5)
     endif()
+endif()
+
+if(MAC)
+    target_compile_definitions(cvm PUBLIC CVM_ON_MAC)
 endif()

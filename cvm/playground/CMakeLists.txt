@@ -21,7 +21,7 @@ if(ILP64)
     target_compile_definitions(playground PUBLIC CVM_ILP64)
 endif()
 
-if(LINUX)
+if(LINUX OR MAC)
     target_compile_options(playground PUBLIC
             $<$<CONFIG:Release>:-O2 -lstdc++ >
             $<$<CONFIG:Debug>:-O0 -g -lstdc++ >)

@@ -20,14 +20,18 @@ if(ILP64)
     target_compile_definitions(cvm_test PUBLIC CVM_ILP64)
 endif()
 
-if(LINUX)
+if(MAC)
+    target_compile_definitions(cvm_test PUBLIC CVM_ON_MAC)
+endif()
+
+if(LINUX OR MAC)
     target_compile_options(cvm_test PUBLIC
             $<$<CONFIG:Release>:-O2>
             $<$<CONFIG:Debug>:-O0 -g>)
 else()
     target_compile_options(cvm_test PUBLIC /MT
             $<$<CONFIG:Release>:/O1>
-            $<$<CONFIG:Debug>:/Od /debug:all>)
+            $<$<CONFIG:Debug>:/Od>)
 endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../gtest/googletest/include)
@@ -35,7 +39,7 @@ target_link_directories(cvm_test PUBLIC ${OUTPUT_PATH} ${CMAKE_CURRENT_SOURCE_DI
 
 target_link_libraries(cvm_test optimized cvm)
 target_link_libraries(cvm_test debug cvm_debug)
-if(LINUX)
+if(LINUX OR MAC)
     target_link_libraries(cvm_test gtest pthread)
 else()
     target_link_libraries(cvm_test gtest)
