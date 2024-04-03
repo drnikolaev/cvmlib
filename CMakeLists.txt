@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.23.0)
 SET (CVM_VERSION 9.1.0)
-project(cvm LANGUAGES Fortran CXX VERSION ${CVM_VERSION} DESCRIPTION "CVM Class Library")
+project(cvm LANGUAGES  CXX VERSION ${CVM_VERSION} DESCRIPTION "CVM Class Library")
+enable_language(Fortran)
 
 #cmake -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_CXX_COMPILER=icx -DCMAKE_C_COMPILER=icx -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON
 
