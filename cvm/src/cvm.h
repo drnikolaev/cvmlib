@@ -1180,11 +1180,21 @@ template<typename T, typename TR>
 class type_proxy
 {
 protected:
-    T& mT;  //!< reference to value
     T mV;  //! value for read-only
+    T& mT;  //!< reference to value
     bool mbReadOnly;  //!< read-only flag
 
 public:
+    /**
+     * @brief Proxy zero constructor
+     *
+     * Creates zero instance of type proxy.
+     */
+    type_proxy()
+      : mV(),
+        mT(mV),
+        mbReadOnly(true) {}
+
     /**
      * @brief Proxy constructor
      *
@@ -1193,8 +1203,8 @@ public:
      * @param[in] read_only True for read-only proxy.
      */
     type_proxy(T& ref, bool read_only)
-      : mT(ref),
-        mV(ref),
+      : mV(ref),
+        mT(ref),
         mbReadOnly(read_only) {}
 
     /**
@@ -1205,8 +1215,8 @@ public:
      * @param[in] read_only True by default.
      */
     type_proxy(const T& ref)
-      : mT(const_cast<T&>(ref)),
-        mV(ref),
+      : mV(ref),
+        mT(const_cast<T&>(ref)),
         mbReadOnly(true) {}
 
     /**
@@ -1216,8 +1226,8 @@ public:
      * @param[in] p Const reference to another proxy.
      */
     type_proxy(const type_proxy& p)
-      : mT(p.mT),
-        mV(p.mV),
+      : mV(p.mV),
+        mT(p.mT),
         mbReadOnly(p.mbReadOnly) {}
 
     /**
@@ -27409,13 +27419,12 @@ protected:
     }
 
     type_proxy<TC,TR> _b_ij_proxy_val(tint i, tint j) {
-        const TC zero = TC(0.);
         TC* pd = _pb();
         const tint nA = j - this->usize();
         CVM_ASSERT(pd, (i + j * (1 + this->lsize() + this->usize()) - nA + 1) * sizeof(TC))
         return(nA < 0 || i >= nA) && i <= this->lsize() + j ?
               type_proxy<TC,TR>(pd[i + j * (1 + this->lsize() + this->usize()) - nA], false) :
-              type_proxy<TC,TR>(zero);
+              type_proxy<TC,TR>();
     }
 
     // zero based

@@ -1,5 +1,3 @@
-project(ftn LANGUAGES Fortran)
-
 FILE(GLOB SOURCE_FILES *.f)
 add_library(ftn STATIC ${SOURCE_FILES})
 

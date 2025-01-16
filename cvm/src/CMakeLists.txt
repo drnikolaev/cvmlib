@@ -20,8 +20,8 @@ add_library(cvm SHARED ${SOURCE_FILES})
 set_target_properties(
         cvm
         PROPERTIES
-        VERSION ${CVM_VERSION}
-        SOVERSION ${CVM_VERSION}
+        VERSION ${PROJECT_VERSION}
+        SOVERSION ${PROJECT_VERSION}
         PUBLIC_HEADER cvm.h
         CXX_STANDARD 14
         CXX_EXTENSIONS OFF
@@ -48,7 +48,7 @@ else()
             $<$<CONFIG:Debug>:/Od>)
 endif()
 
-target_link_directories(cvm PUBLIC ${OUTPUT_PATH})
+target_link_directories(cvm PUBLIC ${OUTPUT_PATH} ${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES} )
 target_link_libraries(cvm optimized ftn)
 target_link_libraries(cvm debug ftn_debug)
 if(LINUX)
@@ -87,16 +87,14 @@ else()
         if(MAC)
             target_compile_definitions(cvm PUBLIC ACCELERATE_NEW_LAPACK)
             target_compile_definitions(cvm PUBLIC ACCELERATE_LAPACK_ILP64)
-            target_link_directories(cvm PUBLIC /opt/homebrew/Cellar/gcc/13.2.0/lib/gcc/current/)
-            target_link_libraries(cvm blas lapack gfortran)
+            target_link_libraries(cvm blas lapack)
         else()
             target_link_libraries(cvm blas64 lapack64)
         endif()
     else()
         if(MAC)
             target_compile_definitions(cvm PUBLIC ACCELERATE_NEW_LAPACK)
-            target_link_directories(cvm PUBLIC /opt/homebrew/Cellar/gcc/13.2.0/lib/gcc/current/)
-            target_link_libraries(cvm blas lapack gfortran)
+            target_link_libraries(cvm blas lapack)
         else()
             target_link_libraries(cvm blas lapack)
         endif()
