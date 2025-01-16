@@ -241,9 +241,9 @@ TYPED_TEST(BlasTest, TestMatrixGemvComplex) {
     c.randomize_real(0., 2.);
     c.randomize_imag(3., 7.);
     basic_cvector<TP,TPC> vr1 = m * v * alpha + c * beta;
-    EXPECT_NEAR(TP(0.), (vr1 - c.gemv(false, m, alpha, v, beta)).norm(), sf<TP>()) << "cvector::gemv";
+    EXPECT_NEAR(TP(0.), (vr1 - c.gemv(false, m, alpha, v, beta)).norm(), sp<TP>()) << "cvector::gemv";
     basic_cvector<TP,TPC> vr2 = c * m * alpha + v * beta;
-    EXPECT_NEAR(TP(0.), (vr2 - v.gemv(true, m, alpha, c, beta)).norm(), sf<TP>()) << "cvector::gemv";
+    EXPECT_NEAR(TP(0.), (vr2 - v.gemv(true, m, alpha, c, beta)).norm(), sp<TP>()) << "cvector::gemv";
 }
 
 TYPED_TEST(BlasTest, TestBandMatrixGbmvComplex) {

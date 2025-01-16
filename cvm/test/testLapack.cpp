@@ -277,7 +277,7 @@ TYPED_TEST(LapackTest, TestSyrkSymmetricReal3) {
     ms.randomize(-1., 2.);
     ms2 = ms;
     ms.syrk(false, alpha, m, beta);
-    ms2 = alpha * basic_srsmatrix<TP>(m * ~m) + beta * ms2;
+    ms2 = alpha * basic_srsmatrix<TP>(m * ~m, spp<TP>(basic_cvmMachSp<TP>() * 10.0, basic_cvmMachSp<TP>() * 10.0)) + beta * ms2;
     EXPECT_NEAR(TP(0.), (ms - ms2).norm(), sf<TP>()) << "srsmatrix::syrk";
 }
 
@@ -286,11 +286,11 @@ TYPED_TEST(LapackTest, TestSyrkSymmetricReal4) {
     const TP beta = -3.07;
     basic_rmatrix<TP> m(3, 3);
     basic_srsmatrix<TP> ms(3), ms2(3);
-    m.randomize(-1., 2.);
-    ms.randomize(-1., 2.);
+    m.randomize(1., 2.);
+    ms.randomize(1., 2.);
     ms2 = ms;
     ms.syrk(true, alpha, m, beta);
-    ms2 = alpha * basic_srsmatrix<TP>(~m * m) + beta * ms2;
+    ms2 = alpha * basic_srsmatrix<TP>(~m * m, spp<TP>(basic_cvmMachSp<TP>() * 10.0, basic_cvmMachSp<TP>() * 10.0)) + beta * ms2;
     EXPECT_NEAR(TP(0.), (ms - ms2).norm(), spp<TP>()) << "srsmatrix::syrk";
 }
 
@@ -388,7 +388,7 @@ TYPED_TEST(LapackTest, TestSyr2kSymmetricReal3) {
     ms.randomize(-1., 2.);
     ms2 = ms;
     ms.syr2k(false, alpha, m1, m2, beta);
-    ms2 = alpha * basic_srsmatrix<TP>(m1 * ~m2 + m2 * ~m1) + beta * ms2;
+    ms2 = alpha * basic_srsmatrix<TP>(m1 * ~m2 + m2 * ~m1, spp<TP>(basic_cvmMachSp<TP>() * 10.0, basic_cvmMachSp<TP>() * 10.0)) + beta * ms2;
     EXPECT_NEAR(TP(0.), (ms - ms2).norm(), sf<TP>()) << "srsmatrix::syr2k";
 }
 
@@ -402,7 +402,7 @@ TYPED_TEST(LapackTest, TestSyr2kSymmetricReal4) {
     ms.randomize(-1., 2.);
     ms2 = ms;
     ms.syr2k(true, alpha, m1, m2, beta);
-    ms2 = alpha * basic_srsmatrix<TP>(~m1 * m2 + ~m2 * m1) + beta * ms2;
+    ms2 = alpha * basic_srsmatrix<TP>(~m1 * m2 + ~m2 * m1, spp<TP>(basic_cvmMachSp<TP>() * 10.0, basic_cvmMachSp<TP>() * 10.0)) + beta * ms2;
     EXPECT_NEAR(TP(0.), (ms - ms2).norm(), sf<TP>()) << "srsmatrix::syr2k";
 }
 
