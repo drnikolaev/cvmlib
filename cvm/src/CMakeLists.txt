@@ -14,13 +14,6 @@ SET(SOURCE_FILES
         srmatrix.cpp
         utils.cpp
         )
-if (NOT LINUX AND NOT MAC)
-    SET(SOURCE_FILES  ${SOURCE_FILES}
-            ../../cvmlib/framework.h
-            ../../cvmlib/dllmain.cpp
-            ../../cvmlib/pch.cpp
-            )
-endif()
 
 add_library(cvm SHARED ${SOURCE_FILES})
 
@@ -30,7 +23,7 @@ set_target_properties(
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION}
         PUBLIC_HEADER cvm.h
-        CXX_STANDARD 17
+        CXX_STANDARD 14
         CXX_EXTENSIONS OFF
         DEBUG_POSTFIX _debug
         ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_PATH}"
