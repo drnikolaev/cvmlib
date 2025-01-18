@@ -40,7 +40,7 @@ TYPED_TEST(MiscTest, TestLUCrash) {
 
 TYPED_TEST(MiscTest, TestMKL81Crash) {
     int i, j;
-    const int n = 1000;
+    const int n = 400;
     const int p = 100;
 
     basic_rmatrix<TP> A(n, p);

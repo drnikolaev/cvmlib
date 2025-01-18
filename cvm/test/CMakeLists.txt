@@ -3,7 +3,7 @@ set(SOURCE_FILES ${SOURCE_FILES} test.h)
 set(OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib")
 
 add_executable(cvm_test ${SOURCE_FILES})
-#add_dependencies(cvm_test cvm)
+add_dependencies(cvm_test cvm)
 
 set_target_properties(
         cvm_test

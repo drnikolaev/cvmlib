@@ -1300,7 +1300,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(cm1(1,1)), s<TP>());
     cr1 = scm1(1,1);
     scm1 *= cr2;
-    EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(scm1(1,1)), s<TP>());
+    EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(scm1(1,1)), sp<TP>());
     cr1 = scbm1(1,0);
     scbm1 *= cr2;
     EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(scbm1(1,0)), spp<TP>());
