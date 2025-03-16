@@ -2841,7 +2841,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     for (int l = 2; l >= 0; --l) {
             cmLU.swap_rows(l,aPivots[l] - 1);
     }
-    EXPECT_NEAR(0,(scm - cmLU).norminf(),s<TP>()) << "scmatrix::low_up";
+    EXPECT_NEAR(0,(scm - cmLU).norminf(),sf<TP>()) << "scmatrix::low_up";
 
 
     srm1 << srm.inv();

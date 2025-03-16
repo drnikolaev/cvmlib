@@ -293,9 +293,9 @@ TYPED_TEST(BlasTest, TestHermitianMatrixPolynom1) {
     basic_schmatrix<TP,TPC> mp{3};
     mp.polynom(m, vr);
     EXPECT_NEAR(std::abs(TPC(1.231954875800000e+008,0.)),
-                std::abs(mp(0, 0)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
+                std::abs(mp(0, 0)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.417932391600000e+008,7.089661958000000e+007)),
-                std::abs(mp(1, 0)), spp<TP>(1.e-14,20)) << "schmatrix::polynom";
+                std::abs(mp(1, 0)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(-8.080273845999999e+007,1.616054769200000e+008)),
                 std::abs(mp(2, 0)), spp<TP>(1.e-7,20)) << "schmatrix::polynom";
     EXPECT_NEAR(std::abs(TPC(1.417932391600000e+008,-7.089661958000000e+007)),

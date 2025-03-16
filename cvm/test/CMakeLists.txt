@@ -20,8 +20,8 @@ if(ILP64)
     target_compile_definitions(cvm_test PUBLIC CVM_ILP64)
 endif()
 
-if(MAC)
-    target_compile_definitions(cvm_test PUBLIC CVM_ON_MAC)
+if(MAC OR ARM)
+    target_compile_definitions(cvm_test PUBLIC CVM_DOTU_WAR)
 endif()
 
 if(LINUX OR MAC)
@@ -35,7 +35,7 @@ else()
 endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../gtest/googletest/include)
-target_link_directories(cvm_test PUBLIC ${OUTPUT_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../../gtest ${CMAKE_CURRENT_SOURCE_DIR}/../../gtest/lib)
+target_link_directories(cvm_test PUBLIC ${OUTPUT_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../../gtest ${CMAKE_CURRENT_SOURCE_DIR}/../../gtest/lib ${ARMPL_DIR} ${ARMFL_DIR})
 
 target_link_libraries(cvm_test optimized cvm)
 target_link_libraries(cvm_test debug cvm_debug)
