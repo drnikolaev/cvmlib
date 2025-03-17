@@ -33,9 +33,14 @@ else ()
 endif()
 
 option(BUILD_TESTS "Build regression test program (takes a while)" OFF)
-option(MAC "Target platform is Mac OS" OFF)
 option(MKL "Use Intel MKL library" OFF)
 option(ARMPL "Use ARM Performance Library" OFF)
 option(ILP64 "Set the default integer size to 8 byte" OFF)
+
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+    option(MAC "Target platform is Mac OS" ON)
+else()
+    option(MAC "Target platform is Mac OS" OFF)
+endif()
 
 add_subdirectory(cvm)

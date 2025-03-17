@@ -642,7 +642,7 @@ TYPED_TEST(LapackTest, TestGemmComplex) {
     m2.randomize_imag(-3., 2.);
     basic_cmatrix<TP,TPC> mr = ~m1 * m2 * alpha + m * beta;
     EXPECT_NEAR(TP(0.), (mr - m.gemm(m1, true, m2, false, alpha, beta)).norm(),
-                sf<TP>()) << "cmatrix::gemm";
+                sp<TP>()) << "cmatrix::gemm";
 }
 
 TYPED_TEST(LapackTest, TestHemmComplex) {

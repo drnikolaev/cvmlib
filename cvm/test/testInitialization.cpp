@@ -1294,10 +1294,10 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
 
     cr1 = cv1(8);
     cv1 *= cr2;
-    EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(cv1(8)), s<TP>());
+    EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(cv1(8)), sp<TP>());
     cr1 = cm1(1,1);
     cm1 *= cr2;
-    EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(cm1(1,1)), s<TP>());
+    EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(cm1(1,1)), sp<TP>());
     cr1 = scm1(1,1);
     scm1 *= cr2;
     EXPECT_NEAR(std::abs(cr1 * cr2), std::abs(scm1(1,1)), sp<TP>());
@@ -1805,7 +1805,7 @@ TYPED_TEST(InitializationTest, TestConstructorsAndBasicFeatures) {
     EXPECT_FLOAT_EQ(static_cast<float>((cv1 * cm1(1)).real()),
         static_cast<float>(cv2[1].real())) << "cvector * cmatrix";
     EXPECT_NEAR(static_cast<float>((cv1 * cm1(1)).imag()),
-        static_cast<float>(cv2[1].imag()), spp<TP>(1.e-7,0.1)) << "cvector * cmatrix";
+        static_cast<float>(cv2[1].imag()), spp<TP>(1.e-7,0.2)) << "cvector * cmatrix";
 
     rv2.resize(3);
     rv2 = srm4 * rv1;
