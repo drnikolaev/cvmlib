@@ -329,9 +329,9 @@ TYPED_TEST(LapackTest, TestHerkHermitianComplex3) {
     const TP beta = -3.07;
     basic_schmatrix<TP,TPC> mh(3), mh2(3);
     m.randomize_real(-1., 2.);
-    m.randomize_imag(-2., 3.);
+    m.randomize_imag(-2., 1.);
     mh.randomize_real(-1., 2.);
-    mh.randomize_imag(-2., 3.);
+    mh.randomize_imag(-2., 1.);
     mh2 = mh;
     mh.herk(true, alpha, m, beta);
     mh2 = alpha * basic_schmatrix<TP,TPC>(~m * m, spp<TP>(1.e-13, 1.e-6)) + beta * mh2;

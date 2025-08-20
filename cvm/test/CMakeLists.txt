@@ -18,33 +18,34 @@ set_target_properties(
 
 if(CVM_USE_POOL_MANAGER)
     message("Tests using Pool Manager!")
-    target_compile_definitions(cvm_test PUBLIC CVM_USE_POOL_MANAGER)
+    target_compile_definitions(cvm_test PRIVATE CVM_USE_POOL_MANAGER)
 endif()
 if(ILP64)
-    target_compile_definitions(cvm_test PUBLIC CVM_ILP64)
+    target_compile_definitions(cvm_test PRIVATE CVM_ILP64)
 endif()
 
 if(MAC OR ARM)
-    target_compile_definitions(cvm_test PUBLIC CVM_DOTU_WAR)
+    target_compile_definitions(cvm_test PRIVATE CVM_DOTU_WAR)
 endif()
 
 if(LINUX OR MAC)
-    target_compile_options(cvm_test PUBLIC
+    target_compile_options(cvm_test PRIVATE
             $<$<CONFIG:Release>:-O2>
             $<$<CONFIG:Debug>:-O0 -g>)
 else()
-    target_compile_options(cvm_test PUBLIC /MT
+    target_compile_options(cvm_test PRIVATE /MT
             $<$<CONFIG:Release>:/O1>
             $<$<CONFIG:Debug>:/Od>)
 endif()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../gtest/googletest/include)
-target_link_directories(cvm_test PUBLIC ${OUTPUT_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../../gtest ${CMAKE_CURRENT_SOURCE_DIR}/../../gtest/lib ${ARMPL_DIR} ${ARMFL_DIR})
+target_link_directories(cvm_test PRIVATE ${OUTPUT_PATH} ${ARMPL_DIR} ${ARMFL_DIR})
+#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../gtest/googletest/include)
+#target_link_directories(cvm_test PRIVATE ${OUTPUT_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../../gtest ${CMAKE_CURRENT_SOURCE_DIR}/../../gtest/lib ${ARMPL_DIR} ${ARMFL_DIR})
 
 target_link_libraries(cvm_test optimized cvm)
 target_link_libraries(cvm_test debug cvm_debug)
 if(LINUX OR MAC)
-    target_link_libraries(cvm_test gtest pthread)
+    target_link_libraries(cvm_test gtest)
 else()
     target_link_libraries(cvm_test gtest)
 endif()

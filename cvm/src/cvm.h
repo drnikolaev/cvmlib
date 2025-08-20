@@ -7,7 +7,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 /**
  * @mainpage CVM Class Library Documentation
- * @version 9.1.0
+ * @version 9.2.0
  * @author Sergei Nikolaev (c) 1992-2023
  * @date January 4th, 2023
  *

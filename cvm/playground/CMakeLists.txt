@@ -18,22 +18,22 @@ set_target_properties(
 )
 
 if(ILP64)
-    target_compile_definitions(playground PUBLIC CVM_ILP64)
+    target_compile_definitions(playground PRIVATE CVM_ILP64)
 endif()
 
 if(LINUX OR MAC)
-    target_compile_options(playground PUBLIC
+    target_compile_options(playground PRIVATE
             $<$<CONFIG:Release>:-O2 -lstdc++ >
             $<$<CONFIG:Debug>:-O0 -g -lstdc++ >)
 else()
-    target_compile_options(playground PUBLIC /MT
+    target_compile_options(playground PRIVATE /MT
             $<$<CONFIG:Release>:/O1>
             $<$<CONFIG:Debug>:/Od /debug:all>)
 endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../cvm/src)
 
-target_link_directories(playground PUBLIC ${OUTPUT_PATH})
+target_link_directories(playground PRIVATE ${OUTPUT_PATH})
 
 target_link_libraries(playground optimized cvm stdc++)
 target_link_libraries(playground debug cvm_debug stdc++)
