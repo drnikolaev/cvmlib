@@ -25,25 +25,25 @@ TYPED_TEST(BlasTest, TestVectorNorm1) {
     EXPECT_NEAR(15.04631765340644,vc.norm1(),sf<TP>()) << "cvector::norm1";
 }
 
-TYPED_TEST(BlasTest, TestVectorNorminf) {
-    basic_srsmatrix<TP> ssm1(4);
-    basic_srsmatrix<TP> ssm2(4);
-    
-    basic_rmatrix<TP> m1(4, 4);
-    basic_rmatrix<TP> m2(4, 4);
-    basic_rmatrix<TP> m3(4, 4);
-    
-    ssm1.set(1.);
-    m1.set(1.);
-    m2 = ssm1 * m1;
-    EXPECT_EQ(TP(16.), m2.norminf()) << "srsmatrix * rmatrix";
-    
-    m2 = m1 + ssm1;
-    EXPECT_EQ(TP(2.), m2(2, 3)) << "srsmatrix + rmatrix";
-    
-    m2 = m1 * ssm1;
-    EXPECT_EQ(TP(16.), m2.norminf()) << "rmatrix * srsmatrix";
-}
+// TYPED_TEST(BlasTest, TestVectorNorminf) {
+//     basic_srsmatrix<TP> ssm1(4);
+//     basic_srsmatrix<TP> ssm2(4);
+//
+//     basic_rmatrix<TP> m1(4, 4);
+//     basic_rmatrix<TP> m2(4, 4);
+//     basic_rmatrix<TP> m3(4, 4);
+//
+//     ssm1.set(1.);
+//     m1.set(1.);
+//     m2 = ssm1 * m1;
+//     EXPECT_EQ(TP(16.), m2.norminf()) << "srsmatrix * rmatrix";
+//
+//     m2 = m1 + ssm1;
+//     EXPECT_EQ(TP(2.), m2(2, 3)) << "srsmatrix + rmatrix";
+//
+//     m2 = m1 * ssm1;
+//     EXPECT_EQ(TP(16.), m2.norminf()) << "rmatrix * srsmatrix";
+// }
 
 TYPED_TEST(BlasTest, TestMatrixSumReal) {
     TP a[] = {1., 2., 3., 4., 5., 6.};

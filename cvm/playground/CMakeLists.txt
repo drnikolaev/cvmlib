@@ -9,7 +9,7 @@ add_executable(playground ${SOURCE_FILES})
 set_target_properties(
         playground
         PROPERTIES
-        CXX_STANDARD 17
+        CXX_STANDARD 20
         CXX_EXTENSIONS OFF
         DEBUG_POSTFIX _debug
         ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_PATH}"

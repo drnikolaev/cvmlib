@@ -14,7 +14,7 @@ CVM_NAMESPACE_BEG
 
 // 8.0: tint-based spec due to Array->basic_array refactoring
 template<>
-CVM_API tint __norm<tint, tint>(const tint* pd, tint size, tint incr) {
+CVM_API tint cvm_norm<tint, tint>(const tint* pd, tint size, tint incr) {
     CVM_ASSERT(pd, (size * incr) * sizeof(tint))
     rvector rv(size);
     for (tint i = 0; i < size; ++i) {
@@ -25,7 +25,7 @@ CVM_API tint __norm<tint, tint>(const tint* pd, tint size, tint incr) {
 
 // 8.0: tint-based spec due to Array->basic_array refactoring
 template<>
-CVM_API void __scal<tint, tint>(tint* pd, tint size, tint incr, tint dScal) {
+CVM_API void cvm_scal<tint, tint>(tint* pd, tint size, tint incr, tint dScal) {
     CVM_ASSERT(pd, (size * incr) * sizeof(tint))
     for (tint i = 0; i < size; ++i) {
         pd[i*incr] *= dScal;
@@ -34,7 +34,7 @@ CVM_API void __scal<tint, tint>(tint* pd, tint size, tint incr, tint dScal) {
 
 // 8.0: tint-based spec due to Array->basic_array refactoring
 template<>
-CVM_API tint __idamax<tint>(const tint* pd, tint size, tint incr) {
+CVM_API tint cvm_idamax<tint>(const tint* pd, tint size, tint incr) {
     CVM_ASSERT(pd, (size * incr) * sizeof(tint))
     tint ret = 0, max = - (std::numeric_limits<tint>::max)(), val;
     for (tint i = 0; i < size; ++i) {
@@ -49,7 +49,7 @@ CVM_API tint __idamax<tint>(const tint* pd, tint size, tint incr) {
 
 // 8.0: tint-based spec due to Array->basic_array refactoring
 template<>
-CVM_API tint __idamin<tint>(const tint* pd, tint size, tint incr) {
+CVM_API tint cvm_idamin<tint>(const tint* pd, tint size, tint incr) {
     CVM_ASSERT(pd, (size * incr) * sizeof(tint))
     tint ret = 0, min = (std::numeric_limits<tint>::max)(), val;
     for (tint i = 0; i < size; ++i) {
@@ -64,85 +64,85 @@ CVM_API tint __idamin<tint>(const tint* pd, tint size, tint incr) {
 
 
 template<>
-CVM_API float __norm<float, float>(const float* mpd, tint size, tint incr) {
+CVM_API float cvm_norm<float, float>(const float* mpd, tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(float))
     return SNRM2(&size, mpd, &incr);
 }
 
 template<>
-CVM_API double __norm<double, double>(const double* mpd, tint size, tint incr) {
+CVM_API double cvm_norm<double, double>(const double* mpd, tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(double))
     return DNRM2(&size, mpd, &incr);
 }
 
 template<>
-CVM_API float __norm<float, std::complex<float>> (const std::complex<float>* mpd,
+CVM_API float cvm_norm<float, std::complex<float>> (const std::complex<float>* mpd,
                                                   tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(std::complex<float>))
     return SCNRM2(&size, mpd, &incr);
 }
 
 template<>
-CVM_API double __norm<double, std::complex<double>> (const std::complex<double>* mpd,
+CVM_API double cvm_norm<double, std::complex<double>> (const std::complex<double>* mpd,
                                                      tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(std::complex<double>))
     return DZNRM2(&size, mpd, &incr);
 }
 
 template<>
-CVM_API tint __idamax<float>(const float* mpd, tint size, tint incr) {
+CVM_API tint cvm_idamax<float>(const float* mpd, tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(float))
     return ISAMAX(&size, mpd, &incr) - 1;
 }
 
 template<>
-CVM_API tint __idamax<double>(const double* mpd, tint size, tint incr) {
+CVM_API tint cvm_idamax<double>(const double* mpd, tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(double))
     return IDAMAX(&size, mpd, &incr) - 1;
 }
 
 template<>
-CVM_API tint __idamin<float>(const float* mpd, tint size, tint incr) {
+CVM_API tint cvm_idamin<float>(const float* mpd, tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(float))
     return ISAMIN(&size, mpd, &incr) - 1;
 }
 
 template<>
-CVM_API tint __idamin<double>(const double* mpd, tint size, tint incr) {
+CVM_API tint cvm_idamin<double>(const double* mpd, tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(double))
     return IDAMIN(&size, mpd, &incr) - 1;
 }
 
 template<>
-CVM_API tint __idamax<std::complex<float>> (const std::complex<float>* mpd,
+CVM_API tint cvm_idamax<std::complex<float>> (const std::complex<float>* mpd,
                                             tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(std::complex<float>))
     return ICAMAX(&size, mpd, &incr) - 1;
 }
 
 template<>
-CVM_API tint __idamax<std::complex<double>> (const std::complex<double>* mpd,
+CVM_API tint cvm_idamax<std::complex<double>> (const std::complex<double>* mpd,
                                              tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(std::complex<double>))
     return IZAMAX(&size, mpd, &incr) - 1;
 }
 
 template<>
-CVM_API tint __idamin<std::complex<float>> (const std::complex<float>* mpd,
+CVM_API tint cvm_idamin<std::complex<float>> (const std::complex<float>* mpd,
                                             tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(std::complex<float>))
     return ICAMIN(&size, mpd, &incr) - 1;
 }
 
 template<>
-CVM_API tint __idamin<std::complex<double>> (const std::complex<double>* mpd,
+CVM_API tint cvm_idamin<std::complex<double>> (const std::complex<double>* mpd,
                                              tint size, tint incr) {
     CVM_ASSERT(mpd, (size * incr) * sizeof(std::complex<double>))
     return IZAMIN(&size, mpd, &incr) - 1;
 }
 
 template<>
-CVM_API void __add<float>(float* mpd, tint mn_size, tint mn_incr,
+CVM_API void cvm_add<float>(float* mpd, tint mn_size, tint mn_incr,
                           const float* pv, tint incr) {
     const float one(1.F);
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(float))
@@ -151,7 +151,7 @@ CVM_API void __add<float>(float* mpd, tint mn_size, tint mn_incr,
 }
 
 template<>
-CVM_API void __add<double>(double* mpd, tint mn_size, tint mn_incr,
+CVM_API void cvm_add<double>(double* mpd, tint mn_size, tint mn_incr,
                            const double* pv, tint incr) {
     const double one(1.);
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(double))
@@ -160,7 +160,7 @@ CVM_API void __add<double>(double* mpd, tint mn_size, tint mn_incr,
 }
 
 template<>
-CVM_API void __subtract<float>(float* mpd, tint mn_size, tint mn_incr,
+CVM_API void cvm_subtract<float>(float* mpd, tint mn_size, tint mn_incr,
                                const float* pv, tint incr) {
     const float mone(-1.F);
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(float))
@@ -169,7 +169,7 @@ CVM_API void __subtract<float>(float* mpd, tint mn_size, tint mn_incr,
 }
 
 template<>
-CVM_API void __subtract<double>(double* mpd, tint mn_size, tint mn_incr,
+CVM_API void cvm_subtract<double>(double* mpd, tint mn_size, tint mn_incr,
                                 const double* pv, tint incr) {
     const double mone(-1.F);
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(double))
@@ -178,7 +178,7 @@ CVM_API void __subtract<double>(double* mpd, tint mn_size, tint mn_incr,
 }
 
 template<>
-CVM_API void __add<std::complex<float>> (std::complex<float>* mpd, tint mn_size, tint mn_incr,
+CVM_API void cvm_add<std::complex<float>> (std::complex<float>* mpd, tint mn_size, tint mn_incr,
                                          const std::complex<float>* pv, tint incr) {
     const std::complex<float> one(1.F, 0.F);
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(std::complex<float>))
@@ -187,7 +187,7 @@ CVM_API void __add<std::complex<float>> (std::complex<float>* mpd, tint mn_size,
 }
 
 template<>
-CVM_API void __add<std::complex<double>> (std::complex<double>* mpd, tint mn_size, tint mn_incr,
+CVM_API void cvm_add<std::complex<double>> (std::complex<double>* mpd, tint mn_size, tint mn_incr,
                                           const std::complex<double>* pv, tint incr) {
     const std::complex<double> one(1., 0.);
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(std::complex<double>))
@@ -196,7 +196,7 @@ CVM_API void __add<std::complex<double>> (std::complex<double>* mpd, tint mn_siz
 }
 
 template<>
-CVM_API void __subtract<std::complex<float>> (std::complex<float>* mpd, tint mn_size, tint mn_incr,
+CVM_API void cvm_subtract<std::complex<float>> (std::complex<float>* mpd, tint mn_size, tint mn_incr,
                                               const std::complex<float>* pv, tint incr) {
     const std::complex<float> mone(-1.F, 0.F);
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(std::complex<float>))
@@ -205,7 +205,7 @@ CVM_API void __subtract<std::complex<float>> (std::complex<float>* mpd, tint mn_
 }
 
 template<>
-CVM_API void __subtract<std::complex<double>> (std::complex<double>* mpd, tint mn_size, tint mn_incr,
+CVM_API void cvm_subtract<std::complex<double>> (std::complex<double>* mpd, tint mn_size, tint mn_incr,
                                                const std::complex<double>* pv, tint incr) {
     const std::complex<double> mone(-1., 0.);
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(std::complex<double>))
@@ -214,26 +214,26 @@ CVM_API void __subtract<std::complex<double>> (std::complex<double>* mpd, tint m
 }
 
 template<>
-CVM_API void __scal<float, float>(float* mpd, tint mn_size, tint mn_incr, float dScal) {
+CVM_API void cvm_scal<float, float>(float* mpd, tint mn_size, tint mn_incr, float dScal) {
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(float))
     SSCAL(&mn_size, &dScal, mpd, &mn_incr);
 }
 
 template<>
-CVM_API void __scal<double, double>(double* mpd, tint mn_size, tint mn_incr, double dScal) {
+CVM_API void cvm_scal<double, double>(double* mpd, tint mn_size, tint mn_incr, double dScal) {
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(double))
     DSCAL(&mn_size, &dScal, mpd, &mn_incr);
 }
 
 template<>
-CVM_API void __scal<float, std::complex<float>> (std::complex<float>* mpd, tint mn_size,
+CVM_API void cvm_scal<float, std::complex<float>> (std::complex<float>* mpd, tint mn_size,
                                                  tint mn_incr, float dScal) {
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(std::complex<float>))
     CSSCAL(&mn_size, &dScal, mpd, &mn_incr);
 }
 
 template<>
-CVM_API void __scal<double, std::complex<double>> (std::complex<double>* mpd, tint mn_size,
+CVM_API void cvm_scal<double, std::complex<double>> (std::complex<double>* mpd, tint mn_size,
                                                    tint mn_incr, double dScal) {
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(std::complex<double>))
     ZDSCAL(&mn_size, &dScal, mpd, &mn_incr);
@@ -242,7 +242,7 @@ CVM_API void __scal<double, std::complex<double>> (std::complex<double>* mpd, ti
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__scal<std::complex<float>, std::complex<float>> (std::complex<float>* mpd, tint mn_size,
+cvm_scal<std::complex<float>, std::complex<float>> (std::complex<float>* mpd, tint mn_size,
                                                   tint mn_incr, std::complex<float> cScal) {
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(std::complex<float>))
     CSCAL(&mn_size, &cScal, mpd, &mn_incr);
@@ -250,7 +250,7 @@ __scal<std::complex<float>, std::complex<float>> (std::complex<float>* mpd, tint
 
 template<>
 CVM_API void
-__scal<std::complex<double>, std::complex<double>> (std::complex<double>* mpd, tint mn_size,
+cvm_scal<std::complex<double>, std::complex<double>> (std::complex<double>* mpd, tint mn_size,
                                                     tint mn_incr, std::complex<double> cScal) {
     CVM_ASSERT(mpd, (mn_size * mn_incr) * sizeof(std::complex<double>))
     ZSCAL(&mn_size, &cScal, mpd, &mn_incr);
@@ -259,7 +259,7 @@ __scal<std::complex<double>, std::complex<double>> (std::complex<double>* mpd, t
 
 template<>
 CVM_API void
-__copy2<float, std::complex<float>>  (std::complex<float>* mpd, tint mn_size, tint mn_incr,
+cvm_copy2<float, std::complex<float>>  (std::complex<float>* mpd, tint mn_size, tint mn_incr,
                                       const float* pRe, const float* pIm,
                                       tint re_incr, tint im_incr) {
     const tint incr2 = mn_incr * 2;
@@ -289,7 +289,7 @@ __copy2<float, std::complex<float>>  (std::complex<float>* mpd, tint mn_size, ti
 
 template<>
 CVM_API void
-__copy2<double, std::complex<double>> (std::complex<double>* mpd, tint mn_size, tint mn_incr,
+cvm_copy2<double, std::complex<double>> (std::complex<double>* mpd, tint mn_size, tint mn_incr,
                                         const double* pRe, const double* pIm,
                                         tint re_incr, tint im_incr) {
     const tint incr2 = mn_incr * 2;
@@ -319,7 +319,7 @@ __copy2<double, std::complex<double>> (std::complex<double>* mpd, tint mn_size, 
 
 template<>
 CVM_API void
-__copy_real<float, std::complex<float>> (std::complex<float>* mpd,
+cvm_copy_real<float, std::complex<float>> (std::complex<float>* mpd,
                                           tint mn_size, tint mn_incr,
                                           const float* pRe, tint re_incr) {
     auto* pdr = __get_real_p<float>(mpd);
@@ -333,7 +333,7 @@ __copy_real<float, std::complex<float>> (std::complex<float>* mpd,
 
 template<>
 CVM_API void
-__copy_real<double, std::complex<double>> (std::complex<double>* mpd,
+cvm_copy_real<double, std::complex<double>> (std::complex<double>* mpd,
                                             tint mn_size, tint mn_incr,
                                             const double* pRe, tint re_incr) {
     auto* pdr = __get_real_p<double>(mpd);
@@ -347,7 +347,7 @@ __copy_real<double, std::complex<double>> (std::complex<double>* mpd,
 
 template<>
 CVM_API void
-__copy_imag<float, std::complex<float>>  (std::complex<float>* mpd,
+cvm_copy_imag<float, std::complex<float>>  (std::complex<float>* mpd,
                                           tint mn_size, tint mn_incr,
                                           const float* pIm, tint im_incr) {
     auto* pdi = __get_imag_p<float>(mpd);
@@ -361,7 +361,7 @@ __copy_imag<float, std::complex<float>>  (std::complex<float>* mpd,
 
 template<>
 CVM_API void
-__copy_imag<double, std::complex<double>>  (std::complex<double>* mpd,
+cvm_copy_imag<double, std::complex<double>>  (std::complex<double>* mpd,
                                             tint mn_size, tint mn_incr,
                                             const double* pIm, tint im_incr) {
     auto* pdi = __get_imag_p<double>(mpd);
@@ -374,17 +374,17 @@ __copy_imag<double, std::complex<double>>  (std::complex<double>* mpd,
 }
 
 template<>
-CVM_API void __conj<std::complex<float>>  (std::complex<float>* mpd, tint mn_size, tint mn_incr) {
+CVM_API void cvm_conj<std::complex<float>>  (std::complex<float>* mpd, tint mn_size, tint mn_incr) {
     CLACGV(&mn_size, mpd, &mn_incr);
 }
 
 template<>
-CVM_API void __conj<std::complex<double>>  (std::complex<double>* mpd, tint mn_size, tint mn_incr) {
+CVM_API void cvm_conj<std::complex<double>>  (std::complex<double>* mpd, tint mn_size, tint mn_incr) {
     ZLACGV(&mn_size, mpd, &mn_incr);
 }
 
 template<>
-CVM_API void __randomize<float> (float* mpd, tint mn_size, tint mn_incr, float dFrom, float dTo) {
+CVM_API void cvm_randomize<float> (float* mpd, tint mn_size, tint mn_incr, float dFrom, float dTo) {
     const tint size = mn_size * mn_incr;
     for (tint i = 0; i < size; i += mn_incr) {
         mpd[i] = Randomizer<float>::get(dFrom, dTo);
@@ -392,7 +392,7 @@ CVM_API void __randomize<float> (float* mpd, tint mn_size, tint mn_incr, float d
 }
 
 template<>
-CVM_API void __randomize<double> (double* mpd, tint mn_size, tint mn_incr, double dFrom, double dTo) {
+CVM_API void cvm_randomize<double> (double* mpd, tint mn_size, tint mn_incr, double dFrom, double dTo) {
     const tint size = mn_size * mn_incr;
     for (tint i = 0; i < size; i += mn_incr) {
         mpd[i] = Randomizer<double>::get(dFrom, dTo);
@@ -401,7 +401,7 @@ CVM_API void __randomize<double> (double* mpd, tint mn_size, tint mn_incr, doubl
 
 template<>
 CVM_API void
-__randomize_real<std::complex<float>, float> (std::complex<float>* mpd,
+cvm_randomize_real<std::complex<float>, float> (std::complex<float>* mpd,
                                               tint mn_size, tint mn_incr,
                                               float dFrom, float dTo) {
     const tint incr = 2 * mn_incr;
@@ -415,7 +415,7 @@ __randomize_real<std::complex<float>, float> (std::complex<float>* mpd,
 
 template<>
 CVM_API void
-__randomize_real<std::complex<double>, double> (std::complex<double>* mpd,
+cvm_randomize_real<std::complex<double>, double> (std::complex<double>* mpd,
                                                 tint mn_size, tint mn_incr,
                                                 double dFrom, double dTo) {
     const tint incr = 2 * mn_incr;
@@ -429,7 +429,7 @@ __randomize_real<std::complex<double>, double> (std::complex<double>* mpd,
 
 template<>
 CVM_API void
-__randomize_imag<std::complex<float>, float> (std::complex<float>* mpd,
+cvm_randomize_imag<std::complex<float>, float> (std::complex<float>* mpd,
                                               tint mn_size, tint mn_incr,
                                               float dFrom, float dTo) {
     const tint incr = 2 * mn_incr;
@@ -443,7 +443,7 @@ __randomize_imag<std::complex<float>, float> (std::complex<float>* mpd,
 
 template<>
 CVM_API void
-__randomize_imag<std::complex<double>, double> (std::complex<double>* mpd,
+cvm_randomize_imag<std::complex<double>, double> (std::complex<double>* mpd,
                                                 tint mn_size, tint mn_incr,
                                                 double dFrom, double dTo) {
     const tint incr = 2 * mn_incr;

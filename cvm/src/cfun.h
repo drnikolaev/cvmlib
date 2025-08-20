@@ -123,57 +123,57 @@ enum class Kind {
 
 template <typename T>
 constexpr T cfun_zero() {
-    return sizeof(T) <= 4 ? 0.F : 0.;
+    return T(0.);
 }
 
 template <typename T>
 constexpr T cfun_one() {
-    return sizeof(T) <= 4 ? 1.F : 1.;
+    return T(1.);
 }
 
 template <typename T>
 constexpr T cfun_mone() {
-    return sizeof(T) <= 4 ? -1.F : -1.;
+    return T(-1.);
 }
 
 template <typename T>
 constexpr T cfun_two() {
-    return sizeof(T) <= 4 ? 2.F : 2.;
+    return T(2.);
 }
 
 template <typename T>
 constexpr T cfun_half() {
-    return sizeof(T) <= 4 ? 0.5F : 0.5;
+    return T(0.5);
 }
 
 template <typename T>
 constexpr T cfun_e() {
-    return sizeof(T) <= 4 ? 2.7182818284590452353602874713527F : 2.7182818284590452353602874713527;
+    return T(2.7182818284590452353602874713527);
 }
 
 template <typename T>
 constexpr T cfun_ln2() {
-    return sizeof(T) <= 4 ? 0.69314718055994530941723212145818F : 0.69314718055994530941723212145818;
+    return T(0.69314718055994530941723212145818);
 }
 
 template <typename T>
 constexpr T cfun_ln10() {
-    return sizeof(T) <= 4 ? 2.3025850929940456840179914546844F : 2.3025850929940456840179914546844;
+    return T(2.3025850929940456840179914546844);
 }
 
 template <typename T>
 constexpr T cfun_pi() {
-    return sizeof(T) <= 4 ? 3.1415926535897932384626433832795F : 3.1415926535897932384626433832795;
+    return T(3.1415926535897932384626433832795);
 }
 
 template <typename T>
 constexpr T cfun_pi_2() {
-    return sizeof(T) <= 4 ? 1.5707963267948966192313216916398F : 1.5707963267948966192313216916398;
+    return T(1.5707963267948966192313216916398);
 }
 
 template <typename T>
 constexpr T cfun_gamma() {
-    return sizeof(T) <= 4 ? 0.57721566490153286060651209008240243F : 0.57721566490153286060651209008240243;
+    return T(0.57721566490153286060651209008240243);
 }
 
 // specializations for some elementary functions

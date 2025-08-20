@@ -13,7 +13,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __exp<basic_scmatrix<float, std::complex<float>> , float>
+    cvm_exp<basic_scmatrix<float, std::complex<float>> , float>
             (basic_scmatrix<float, std::complex<float>>  &m,
              const basic_scmatrix<float, std::complex<float>>  &mArg,
              float tol) {
@@ -43,7 +43,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __exp<basic_scmatrix<double, std::complex<double>> , double>
+    cvm_exp<basic_scmatrix<double, std::complex<double>> , double>
             (basic_scmatrix<double, std::complex<double>>  &m,
              const basic_scmatrix<double, std::complex<double>>  &mArg,
              double tol) {
@@ -73,7 +73,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __exp_symm<basic_schmatrix<float, std::complex<float>> , float>
+    cvm_exp_symm<basic_schmatrix<float, std::complex<float>> , float>
             (basic_schmatrix<float, std::complex<float>>  &m,
              const basic_schmatrix<float, std::complex<float>>  &mArg,
              float tol) {
@@ -103,7 +103,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __exp_symm<basic_schmatrix<double, std::complex<double>> , double>
+    cvm_exp_symm<basic_schmatrix<double, std::complex<double>> , double>
             (basic_schmatrix<double, std::complex<double>>  &m,
              const basic_schmatrix<double, std::complex<double>>  &mArg,
              double tol) {
@@ -133,7 +133,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __cond_num<float, basic_scmatrix<float, std::complex<float>>  >
+    cvm_cond_num<float, basic_scmatrix<float, std::complex<float>>  >
             (const basic_scmatrix<float, std::complex<float>>  &mArg, float &dCond) {
       dCond = 0.F;
       const tint mnM = mArg.msize();
@@ -158,7 +158,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __cond_num<double, basic_scmatrix<double, std::complex<double>>  >
+    cvm_cond_num<double, basic_scmatrix<double, std::complex<double>>  >
             (const basic_scmatrix<double, std::complex<double>>  &mArg, double &dCond) {
       dCond = 0.;
       const tint mnM = mArg.msize();
@@ -183,7 +183,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __inv<basic_scmatrix<float, std::complex<float>>  >
+    cvm_inv<basic_scmatrix<float, std::complex<float>>  >
             (basic_scmatrix<float, std::complex<float>>  &m,
              const basic_scmatrix<float, std::complex<float>>  &mArg) {
       const tint mnM = m.msize();
@@ -214,7 +214,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __inv<basic_scmatrix<double, std::complex<double>>  >
+    cvm_inv<basic_scmatrix<double, std::complex<double>>  >
             (basic_scmatrix<double, std::complex<double>>  &m,
              const basic_scmatrix<double, std::complex<double>>  &mArg) {
       const tint mnM = m.msize();
@@ -244,7 +244,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __inv<basic_schmatrix<float, std::complex<float>>  >
+    cvm_inv<basic_schmatrix<float, std::complex<float>>  >
             (basic_schmatrix<float, std::complex<float>>  &m,
              const basic_schmatrix<float, std::complex<float>>  &mArg) {
       const tint nM = m.msize();
@@ -286,7 +286,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __inv<basic_schmatrix<double, std::complex<double>>  >
+    cvm_inv<basic_schmatrix<double, std::complex<double>>  >
             (basic_schmatrix<double, std::complex<double>>  &m,
              const basic_schmatrix<double, std::complex<double>>  &mArg) {
       const tint nM = m.msize();
@@ -329,7 +329,7 @@ CVM_NAMESPACE_BEG
 //! @cond SPECIALIZATIONS
     template<>
     CVM_API void
-    __polynom<std::complex<float>, basic_cvector<float, std::complex<float>>  >
+    cvm_polynom<std::complex<float>, basic_cvector<float, std::complex<float>>  >
             (std::complex<float> *mpd, tint ldP,
              tint mnM,
              const std::complex<float> *pd, tint ldA,
@@ -340,7 +340,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __polynom<std::complex<double>, basic_cvector<double, std::complex<double>>  >
+    cvm_polynom<std::complex<double>, basic_cvector<double, std::complex<double>>  >
             (std::complex<double> *mpd, tint ldP,
              tint mnM,
              const std::complex<double> *pd, tint ldA,
@@ -354,7 +354,7 @@ CVM_NAMESPACE_BEG
 // in case of vectors passed increment MUST be 1 (since those methods assume matrices)
     template<>
     CVM_API void
-    __solve<float, std::complex<float>, basic_scmatrix<float, std::complex<float>>  >
+    cvm_solve<float, std::complex<float>, basic_scmatrix<float, std::complex<float>>  >
             (const basic_scmatrix<float, std::complex<float>>  &m,
              tint nrhs,
              const std::complex<float> *pB, tint ldB,
@@ -405,7 +405,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __solve<double, std::complex<double>, basic_scmatrix<double, std::complex<double>>  >
+    cvm_solve<double, std::complex<double>, basic_scmatrix<double, std::complex<double>>  >
             (const basic_scmatrix<double, std::complex<double>>  &m,
              tint nrhs,
              const std::complex<double> *pB, tint ldB,
@@ -456,7 +456,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __solve<float, std::complex<float>, basic_scbmatrix<float, std::complex<float>>  >
+    cvm_solve<float, std::complex<float>, basic_scbmatrix<float, std::complex<float>>  >
             (const basic_scbmatrix<float, std::complex<float>>  &m,
              tint nrhs,
              const std::complex<float> *pB, tint ldB,
@@ -509,7 +509,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __solve<double, std::complex<double>, basic_scbmatrix<double, std::complex<double>>  >
+    cvm_solve<double, std::complex<double>, basic_scbmatrix<double, std::complex<double>>  >
             (const basic_scbmatrix<double, std::complex<double>>  &m,
              tint nrhs,
              const std::complex<double> *pB, tint ldB,
@@ -565,7 +565,7 @@ CVM_NAMESPACE_BEG
 // don't forget to make pX equal to pB before call
     template<>
     CVM_API void
-    __solve<float, std::complex<float>, basic_schmatrix<float, std::complex<float>>  >
+    cvm_solve<float, std::complex<float>, basic_schmatrix<float, std::complex<float>>  >
             (const basic_schmatrix<float, std::complex<float>>  &m,
              tint nrhs,
              const std::complex<float> *pB, tint ldB,
@@ -642,7 +642,7 @@ CVM_NAMESPACE_BEG
 
     template<>
     CVM_API void
-    __solve<double, std::complex<double>, basic_schmatrix<double, std::complex<double>>  >
+    cvm_solve<double, std::complex<double>, basic_schmatrix<double, std::complex<double>>  >
             (const basic_schmatrix<double, std::complex<double>>  &m,
              tint nrhs,
              const std::complex<double> *pB, tint ldB,

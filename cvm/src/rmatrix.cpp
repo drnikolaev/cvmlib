@@ -13,7 +13,7 @@ CVM_NAMESPACE_BEG
 
 template<>
 CVM_API void
-__gemm<float, basic_rmatrix<float>>
+cvm_gemm<float, basic_rmatrix<float>>
     (const basic_rmatrix<float>& ml, bool bTrans1,
      const basic_rmatrix<float>& mr, bool bTrans2,
      float dAlpha,
@@ -37,7 +37,7 @@ __gemm<float, basic_rmatrix<float>>
 
 template<>
 CVM_API void
-__gemm<double, basic_rmatrix<double>>
+cvm_gemm<double, basic_rmatrix<double>>
     (const basic_rmatrix<double>& ml, bool bTrans1,
      const basic_rmatrix<double>& mr, bool bTrans2,
      double dAlpha,
@@ -61,7 +61,7 @@ __gemm<double, basic_rmatrix<double>>
 
 template<>
 CVM_API void
-__symm<float, basic_srsmatrix<float>, basic_rmatrix<float>>
+cvm_symm<float, basic_srsmatrix<float>, basic_rmatrix<float>>
     (bool bLeft,
      const basic_srsmatrix<float>& ml,
      const basic_rmatrix<float>& mr, 
@@ -87,7 +87,7 @@ __symm<float, basic_srsmatrix<float>, basic_rmatrix<float>>
 
 template<>
 CVM_API void
-__symm<double, basic_srsmatrix<double>, basic_rmatrix<double>  >
+cvm_symm<double, basic_srsmatrix<double>, basic_rmatrix<double>  >
     (bool bLeft,
      const basic_srsmatrix<double>& ml,
      const basic_rmatrix<double>& mr, 
@@ -113,7 +113,7 @@ __symm<double, basic_srsmatrix<double>, basic_rmatrix<double>  >
 
 template <>
 CVM_API void
-__syrk<float, basic_srsmatrix<float>>
+cvm_syrk<float, basic_srsmatrix<float>>
     (bool bTransp, 
     float alpha, tint k,
     const float* pA, tint ldA,
@@ -132,7 +132,7 @@ __syrk<float, basic_srsmatrix<float>>
 
 template <>
 CVM_API void
-__syrk<double, basic_srsmatrix<double>>
+cvm_syrk<double, basic_srsmatrix<double>>
     (bool bTransp, 
     double alpha, tint k,
     const double* pA, tint ldA,
@@ -151,7 +151,7 @@ __syrk<double, basic_srsmatrix<double>>
 
 template <>
 CVM_API void
-__syr2k<float, basic_srsmatrix<float>>
+cvm_syr2k<float, basic_srsmatrix<float>>
     (bool bTransp, 
     float alpha, tint k,
     const float* pA, tint ldA,
@@ -171,7 +171,7 @@ __syr2k<float, basic_srsmatrix<float>>
 
 template <>
 CVM_API void
-__syr2k<double, basic_srsmatrix<double>>
+cvm_syr2k<double, basic_srsmatrix<double>>
     (bool bTransp, 
     double alpha, tint k,
     const double* pA, tint ldA,
@@ -192,7 +192,7 @@ __syr2k<double, basic_srsmatrix<double>>
 // QR Case 1: "economy" mode, A is (m x n) and Q is (m x n) and R is (n x n)
 template <>
 CVM_API void 
-__qre<basic_rmatrix<float>, basic_srmatrix<float>>
+cvm_qre<basic_rmatrix<float>, basic_srmatrix<float>>
     (const basic_rmatrix<float>& mArg, 
     basic_rmatrix<float>& mQ, 
     basic_srmatrix<float>& mR)
@@ -238,7 +238,7 @@ __qre<basic_rmatrix<float>, basic_srmatrix<float>>
 // QR Case 1: "economy" mode, A is (m x n) and Q is (m x n) and R is (n x n)
 template <>
 CVM_API void 
-__qre<basic_rmatrix<double>, basic_srmatrix<double>>
+cvm_qre<basic_rmatrix<double>, basic_srmatrix<double>>
     (const basic_rmatrix<double>& mArg, 
     basic_rmatrix<double>& mQ, 
     basic_srmatrix<double>& mR)
@@ -284,7 +284,7 @@ __qre<basic_rmatrix<double>, basic_srmatrix<double>>
 // QR Case 2: full mode, A is (m x n) and Q is (m x m) and R is (m x n)
 template <>
 CVM_API void 
-__qrf<basic_rmatrix<float>, basic_srmatrix<float>>
+cvm_qrf<basic_rmatrix<float>, basic_srmatrix<float>>
     (const basic_rmatrix<float>& mArg, 
     basic_srmatrix<float>& mQ, 
     basic_rmatrix<float>& mR)
@@ -343,7 +343,7 @@ __qrf<basic_rmatrix<float>, basic_srmatrix<float>>
 // QR Case 2: full mode, A is (m x n) and Q is (m x m) and R is (m x n)
 template <>
 CVM_API void 
-__qrf<basic_rmatrix<double>, basic_srmatrix<double>>
+cvm_qrf<basic_rmatrix<double>, basic_srmatrix<double>>
     (const basic_rmatrix<double>& mArg, 
     basic_srmatrix<double>& mQ, 
     basic_rmatrix<double>& mR)
@@ -404,7 +404,7 @@ __qrf<basic_rmatrix<double>, basic_srmatrix<double>>
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqe<basic_rmatrix<float>, basic_srmatrix<float>>
+cvm_rqe<basic_rmatrix<float>, basic_srmatrix<float>>
     (const basic_rmatrix<float>& mArg, 
     basic_srmatrix<float>& mR,
     basic_rmatrix<float>& mQ)
@@ -452,7 +452,7 @@ __rqe<basic_rmatrix<float>, basic_srmatrix<float>>
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqe<basic_rmatrix<double>, basic_srmatrix<double>>
+cvm_rqe<basic_rmatrix<double>, basic_srmatrix<double>>
     (const basic_rmatrix<double>& mArg, 
     basic_srmatrix<double>& mR,
     basic_rmatrix<double>& mQ)
@@ -500,7 +500,7 @@ __rqe<basic_rmatrix<double>, basic_srmatrix<double>>
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqf<basic_rmatrix<float>, basic_srmatrix<float>>
+cvm_rqf<basic_rmatrix<float>, basic_srmatrix<float>>
     (const basic_rmatrix<float>& mArg, 
     basic_rmatrix<float>& mR,
     basic_srmatrix<float>& mQ)
@@ -555,7 +555,7 @@ __rqf<basic_rmatrix<float>, basic_srmatrix<float>>
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqf<basic_rmatrix<double>, basic_srmatrix<double>>
+cvm_rqf<basic_rmatrix<double>, basic_srmatrix<double>>
     (const basic_rmatrix<double>& mArg, 
     basic_rmatrix<double>& mR,
     basic_srmatrix<double>& mQ)
@@ -610,7 +610,7 @@ __rqf<basic_rmatrix<double>, basic_srmatrix<double>>
 // LQ Case 1: "economy" mode, A is (m x n) and L is (m x m) and Q is (m x n)
 template <>
 CVM_API void 
-__lqe<basic_rmatrix<float>, basic_srmatrix<float>>
+cvm_lqe<basic_rmatrix<float>, basic_srmatrix<float>>
     (const basic_rmatrix<float>& mArg, 
     basic_srmatrix<float>& mL, 
     basic_rmatrix<float>& mQ)
@@ -655,7 +655,7 @@ __lqe<basic_rmatrix<float>, basic_srmatrix<float>>
 
 template <>
 CVM_API void 
-__lqe<basic_rmatrix<double>, basic_srmatrix<double>>
+cvm_lqe<basic_rmatrix<double>, basic_srmatrix<double>>
     (const basic_rmatrix<double>& mArg, 
     basic_srmatrix<double>& mL, 
     basic_rmatrix<double>& mQ)
@@ -701,7 +701,7 @@ __lqe<basic_rmatrix<double>, basic_srmatrix<double>>
 // LQ Case 2: full mode, A is (m x n) and L is (m x n) and Q is (n x n)
 template <>
 CVM_API void 
-__lqf<basic_rmatrix<float>, basic_srmatrix<float>>
+cvm_lqf<basic_rmatrix<float>, basic_srmatrix<float>>
     (const basic_rmatrix<float>& mArg, 
     basic_rmatrix<float>& mL, 
     basic_srmatrix<float>& mQ)
@@ -760,7 +760,7 @@ __lqf<basic_rmatrix<float>, basic_srmatrix<float>>
 // LQ Case 2: full mode, A is (m x n) and L is (m x n) and Q is (n x n)
 template <>
 CVM_API void 
-__lqf<basic_rmatrix<double>, basic_srmatrix<double>>
+cvm_lqf<basic_rmatrix<double>, basic_srmatrix<double>>
     (const basic_rmatrix<double>& mArg, 
     basic_rmatrix<double>& mL, 
     basic_srmatrix<double>& mQ)
@@ -820,7 +820,7 @@ __lqf<basic_rmatrix<double>, basic_srmatrix<double>>
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M >= N
 template <>
 CVM_API void 
-__qle<basic_rmatrix<float>, basic_srmatrix<float>>
+cvm_qle<basic_rmatrix<float>, basic_srmatrix<float>>
     (const basic_rmatrix<float>& mArg, 
     basic_rmatrix<float>& mQ,
     basic_srmatrix<float>& mL)
@@ -867,7 +867,7 @@ __qle<basic_rmatrix<float>, basic_srmatrix<float>>
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M >= N
 template <>
 CVM_API void 
-__qle<basic_rmatrix<double>, basic_srmatrix<double>>
+cvm_qle<basic_rmatrix<double>, basic_srmatrix<double>>
     (const basic_rmatrix<double>& mArg, 
     basic_rmatrix<double>& mQ,
     basic_srmatrix<double>& mL)
@@ -914,7 +914,7 @@ __qle<basic_rmatrix<double>, basic_srmatrix<double>>
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M >= N
 template <>
 CVM_API void 
-__qlf<basic_rmatrix<float>, basic_srmatrix<float>>
+cvm_qlf<basic_rmatrix<float>, basic_srmatrix<float>>
     (const basic_rmatrix<float>& mArg, 
     basic_srmatrix<float>& mQ,
     basic_rmatrix<float>& mL)
@@ -969,7 +969,7 @@ __qlf<basic_rmatrix<float>, basic_srmatrix<float>>
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M >= N
 template <>
 CVM_API void 
-__qlf<basic_rmatrix<double>, basic_srmatrix<double>>
+cvm_qlf<basic_rmatrix<double>, basic_srmatrix<double>>
     (const basic_rmatrix<double>& mArg, 
     basic_srmatrix<double>& mQ,
     basic_rmatrix<double>& mL)
@@ -1023,7 +1023,7 @@ __qlf<basic_rmatrix<double>, basic_srmatrix<double>>
 // LLS routines
 template <>
 CVM_API void
-__gels<basic_rmatrix<float>, basic_rvector<float>>
+cvm_gels<basic_rmatrix<float>, basic_rvector<float>>
     (bool transpose,
     basic_rmatrix<float>& mA,
     const basic_rmatrix<float>& mB,
@@ -1079,7 +1079,7 @@ __gels<basic_rmatrix<float>, basic_rvector<float>>
 
 template <>
 CVM_API void
-__gels<basic_rmatrix<double>, basic_rvector<double>>
+cvm_gels<basic_rmatrix<double>, basic_rvector<double>>
     (bool transpose,
     basic_rmatrix<double>& mA,
     const basic_rmatrix<double>& mB,
@@ -1135,7 +1135,7 @@ __gels<basic_rmatrix<double>, basic_rvector<double>>
 
 template <>
 CVM_API void
-__gelsy<float, basic_rmatrix<float>>
+cvm_gelsy<float, basic_rmatrix<float>>
     (basic_rmatrix<float>& mA,
     const basic_rmatrix<float>& mB,
     basic_rmatrix<float>& mX,  // output: will be resized anyway, so better pass it empty
@@ -1170,7 +1170,7 @@ __gelsy<float, basic_rmatrix<float>>
 
 template <>
 CVM_API void
-__gelsy<double, basic_rmatrix<double>>
+cvm_gelsy<double, basic_rmatrix<double>>
     (basic_rmatrix<double>& mA,
     const basic_rmatrix<double>& mB,
     basic_rmatrix<double>& mX,  // output: will be resized anyway, so better pass it empty
@@ -1205,7 +1205,7 @@ __gelsy<double, basic_rmatrix<double>>
 
 template <>
 CVM_API void
-__gelss<float, basic_rvector<float>, basic_rmatrix<float>>
+cvm_gelss<float, basic_rvector<float>, basic_rmatrix<float>>
     (basic_rmatrix<float>& mA,
     const basic_rmatrix<float>& mB,
     basic_rmatrix<float>& mX,  // output: will be resized anyway, so better pass it empty
@@ -1240,7 +1240,7 @@ __gelss<float, basic_rvector<float>, basic_rmatrix<float>>
 
 template <>
 CVM_API void
-__gelss<double, basic_rvector<double>, basic_rmatrix<double>>
+cvm_gelss<double, basic_rvector<double>, basic_rmatrix<double>>
     (basic_rmatrix<double>& mA,
     const basic_rmatrix<double>& mB,
     basic_rmatrix<double>& mX,  // output: will be resized anyway, so better pass it empty
@@ -1275,7 +1275,7 @@ __gelss<double, basic_rvector<double>, basic_rmatrix<double>>
 
 template <>
 CVM_API void
-__gelsd<float, basic_rvector<float>, basic_rmatrix<float>>
+cvm_gelsd<float, basic_rvector<float>, basic_rmatrix<float>>
     (basic_rmatrix<float>& mA,
     const basic_rmatrix<float>& mB,
     basic_rmatrix<float>& mX,  // output: will be resized anyway, so better pass it empty
@@ -1312,7 +1312,7 @@ __gelsd<float, basic_rvector<float>, basic_rmatrix<float>>
 
 template <>
 CVM_API void
-__gelsd<double, basic_rvector<double>, basic_rmatrix<double>>
+cvm_gelsd<double, basic_rvector<double>, basic_rmatrix<double>>
     (basic_rmatrix<double>& mA,
     const basic_rmatrix<double>& mB,
     basic_rmatrix<double>& mX,  // output: will be resized anyway, so better pass it empty

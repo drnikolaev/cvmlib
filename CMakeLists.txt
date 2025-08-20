@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26.0)
+cmake_minimum_required(VERSION 4.0)
 project(cvm LANGUAGES Fortran CXX VERSION 9.1.0 DESCRIPTION "CVM Class Library")
 
 #cmake -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_CXX_COMPILER=icx -DCMAKE_C_COMPILER=icx -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON
@@ -36,6 +36,7 @@ option(BUILD_TESTS "Build regression test program (takes a while)" OFF)
 option(MKL "Use Intel MKL library" OFF)
 option(ARMPL "Use ARM Performance Library" OFF)
 option(ILP64 "Set the default integer size to 8 byte" OFF)
+option(CVM_USE_POOL_MANAGER "Use internal pool manager, for debugging only!" OFF)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
     option(MAC "Target platform is Mac OS" ON)

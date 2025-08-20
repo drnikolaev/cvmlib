@@ -14,7 +14,7 @@ CVM_NAMESPACE_BEG
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__gemm<std::complex<float>, basic_cmatrix<float, std::complex<float>>  >
+cvm_gemm<std::complex<float>, basic_cmatrix<float, std::complex<float>>  >
     (const basic_cmatrix<float, std::complex<float>> & ml, bool bTrans1,
      const basic_cmatrix<float, std::complex<float>> & mr, bool bTrans2,
      std::complex<float> dAlpha, 
@@ -38,7 +38,7 @@ __gemm<std::complex<float>, basic_cmatrix<float, std::complex<float>>  >
 
 template<>
 CVM_API void
-__gemm<std::complex<double>, basic_cmatrix<double, std::complex<double>>  >
+cvm_gemm<std::complex<double>, basic_cmatrix<double, std::complex<double>>  >
     (const basic_cmatrix<double, std::complex<double>> & ml, bool bTrans1,
      const basic_cmatrix<double, std::complex<double>> & mr, bool bTrans2,
      std::complex<double> dAlpha,
@@ -62,7 +62,7 @@ __gemm<std::complex<double>, basic_cmatrix<double, std::complex<double>>  >
 
 template<>
 CVM_API void
-__hemm<std::complex<float>, basic_schmatrix<float, std::complex<float>> , basic_cmatrix<float, std::complex<float>>  >
+cvm_hemm<std::complex<float>, basic_schmatrix<float, std::complex<float>> , basic_cmatrix<float, std::complex<float>>  >
     (bool bLeft,
      const basic_schmatrix<float, std::complex<float>> & ml,
      const basic_cmatrix<float, std::complex<float>> & mr,
@@ -88,7 +88,7 @@ __hemm<std::complex<float>, basic_schmatrix<float, std::complex<float>> , basic_
 
 template<>
 CVM_API void
-__hemm<std::complex<double>, basic_schmatrix<double, std::complex<double>> , basic_cmatrix<double, std::complex<double>>  >
+cvm_hemm<std::complex<double>, basic_schmatrix<double, std::complex<double>> , basic_cmatrix<double, std::complex<double>>  >
     (bool bLeft,
      const basic_schmatrix<double, std::complex<double>> & ml,
      const basic_cmatrix<double, std::complex<double>> & mr,
@@ -114,7 +114,7 @@ __hemm<std::complex<double>, basic_schmatrix<double, std::complex<double>> , bas
 
 template <>
 CVM_API void
-__herk<float, std::complex<float>, basic_schmatrix<float, std::complex<float>>  >
+cvm_herk<float, std::complex<float>, basic_schmatrix<float, std::complex<float>>  >
     (bool bTransp, 
     float alpha, tint k,
     const std::complex<float>* pA, tint ldA,
@@ -133,7 +133,7 @@ __herk<float, std::complex<float>, basic_schmatrix<float, std::complex<float>>  
 
 template <>
 CVM_API void
-__herk<double, std::complex<double>, basic_schmatrix<double, std::complex<double>>  >
+cvm_herk<double, std::complex<double>, basic_schmatrix<double, std::complex<double>>  >
     (bool bTransp, 
     double alpha, tint k,
     const std::complex<double>* pA, tint ldA,
@@ -152,7 +152,7 @@ __herk<double, std::complex<double>, basic_schmatrix<double, std::complex<double
 
 template <>
 CVM_API void
-__her2k<float, std::complex<float>, basic_schmatrix<float, std::complex<float>>  >
+cvm_her2k<float, std::complex<float>, basic_schmatrix<float, std::complex<float>>  >
     (bool bTransp, 
     std::complex<float> alpha, tint k,
     const std::complex<float>* pA, tint ldA,
@@ -172,7 +172,7 @@ __her2k<float, std::complex<float>, basic_schmatrix<float, std::complex<float>> 
 
 template <>
 CVM_API void
-__her2k<double, std::complex<double>, basic_schmatrix<double, std::complex<double>>  >
+cvm_her2k<double, std::complex<double>, basic_schmatrix<double, std::complex<double>>  >
     (bool bTransp, 
     std::complex<double> alpha, tint k,
     const std::complex<double>* pA, tint ldA,
@@ -193,7 +193,7 @@ __her2k<double, std::complex<double>, basic_schmatrix<double, std::complex<doubl
 // QR Case 1: economy mode, A is (m x n) and Q is (m x n) and R is (n x n)
 template <>
 CVM_API void 
-__qre<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_qre<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (const basic_cmatrix<float, std::complex<float>> & mArg,
     basic_cmatrix<float, std::complex<float>> & mQ,
     basic_scmatrix<float, std::complex<float>> & mR)
@@ -239,7 +239,7 @@ __qre<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::com
 // QR Case 1: economy mode, A is (m x n) and Q is (m x n) and R is (n x n)
 template <>
 CVM_API void 
-__qre<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_qre<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (const basic_cmatrix<double, std::complex<double>> & mArg,
     basic_cmatrix<double, std::complex<double>> & mQ,
     basic_scmatrix<double, std::complex<double>> & mR)
@@ -285,7 +285,7 @@ __qre<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::
 // QR Case 2: full mode, A is (m x n) and Q is (m x m) and R is (m x n)
 template <>
 CVM_API void 
-__qrf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_qrf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (const basic_cmatrix<float, std::complex<float>> & mArg,
     basic_scmatrix<float, std::complex<float>> & mQ,
     basic_cmatrix<float, std::complex<float>> & mR)
@@ -344,7 +344,7 @@ __qrf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::com
 // QR Case 2: full mode, A is (m x n) and Q is (m x m) and R is (m x n)
 template <>
 CVM_API void 
-__qrf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_qrf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (const basic_cmatrix<double, std::complex<double>> & mArg,
     basic_scmatrix<double, std::complex<double>> & mQ,
     basic_cmatrix<double, std::complex<double>> & mR)
@@ -404,7 +404,7 @@ __qrf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqe<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_rqe<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (const basic_cmatrix<float, std::complex<float>> & mArg,
     basic_scmatrix<float, std::complex<float>> & mR,
     basic_cmatrix<float, std::complex<float>> & mQ)
@@ -452,7 +452,7 @@ __rqe<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::com
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqe<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_rqe<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (const basic_cmatrix<double, std::complex<double>> & mArg,
     basic_scmatrix<double, std::complex<double>> & mR,
     basic_cmatrix<double, std::complex<double>> & mQ)
@@ -500,7 +500,7 @@ __rqe<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_rqf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (const basic_cmatrix<float, std::complex<float>> & mArg,
     basic_cmatrix<float, std::complex<float>> & mR,
     basic_scmatrix<float, std::complex<float>> & mQ)
@@ -555,7 +555,7 @@ __rqf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::com
 // Following this definition: http://www.netlib.org/scalapack/slug/node57.html we assume that M <= N
 template <>
 CVM_API void 
-__rqf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_rqf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (const basic_cmatrix<double, std::complex<double>> & mArg,
     basic_cmatrix<double, std::complex<double>> & mR,
     basic_scmatrix<double, std::complex<double>> & mQ)
@@ -609,7 +609,7 @@ __rqf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::
 // LQ Case 1: "economy" mode, A is (m x n) and L is (m x m) and Q is (m x n)
 template <>
 CVM_API void 
-__lqe<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_lqe<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (const basic_cmatrix<float, std::complex<float>> & mArg,
     basic_scmatrix<float, std::complex<float>> & mL,
     basic_cmatrix<float, std::complex<float>> & mQ)
@@ -655,7 +655,7 @@ __lqe<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::com
 // LQ Case 1: "economy" mode, A is (m x n) and L is (m x m) and Q is (m x n)
 template <>
 CVM_API void 
-__lqe<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_lqe<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (const basic_cmatrix<double, std::complex<double>> & mArg,
     basic_scmatrix<double, std::complex<double>> & mL,
     basic_cmatrix<double, std::complex<double>> & mQ)
@@ -701,7 +701,7 @@ __lqe<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::
 // LQ Case 2: full mode, A is (m x n) and L is (m x n) and Q is (n x n)
 template <>
 CVM_API void 
-__lqf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_lqf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (const basic_cmatrix<float, std::complex<float>> & mArg,
     basic_cmatrix<float, std::complex<float>> & mL,
     basic_scmatrix<float, std::complex<float>> & mQ)
@@ -760,7 +760,7 @@ __lqf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::com
 // LQ Case 2: full mode, A is (m x n) and L is (m x n) and Q is (n x n)
 template <>
 CVM_API void 
-__lqf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_lqf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (const basic_cmatrix<double, std::complex<double>> & mArg,
     basic_cmatrix<double, std::complex<double>> & mL,
     basic_scmatrix<double, std::complex<double>> & mQ)
@@ -820,7 +820,7 @@ __lqf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::
 // QL Case 1: "economy" mode, A is (m x n) and Q is (m x n) and L is (n x n)
 template <>
 CVM_API void 
-__qle<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_qle<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (const basic_cmatrix<float, std::complex<float>> & mArg,
     basic_cmatrix<float, std::complex<float>> & mQ,
     basic_scmatrix<float, std::complex<float>> & mL)
@@ -867,7 +867,7 @@ __qle<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::com
 // QL Case 1: "economy" mode, A is (m x n) and Q is (m x n) and L is (n x n)
 template <>
 CVM_API void 
-__qle<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_qle<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (const basic_cmatrix<double, std::complex<double>> & mArg,
     basic_cmatrix<double, std::complex<double>> & mQ,
     basic_scmatrix<double, std::complex<double>> & mL)
@@ -914,7 +914,7 @@ __qle<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::
 // QL Case 2: full mode, A is (m x n) and Q is (m x m) and L is (m x n)
 template <>
 CVM_API void 
-__qlf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_qlf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (const basic_cmatrix<float, std::complex<float>> & mArg,
     basic_scmatrix<float, std::complex<float>> & mQ,
     basic_cmatrix<float, std::complex<float>> & mL)
@@ -969,7 +969,7 @@ __qlf<basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::com
 // QL Case 2: full mode, A is (m x n) and Q is (m x m) and L is (m x n)
 template <>
 CVM_API void 
-__qlf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_qlf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (const basic_cmatrix<double, std::complex<double>> & mArg,
     basic_scmatrix<double, std::complex<double>> & mQ,
     basic_cmatrix<double, std::complex<double>> & mL)
@@ -1023,7 +1023,7 @@ __qlf<basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::
 // LLS routines
 template <>
 CVM_API void
-__gels<basic_cmatrix<float, std::complex<float>> , basic_cvector<float, std::complex<float>>  >
+cvm_gels<basic_cmatrix<float, std::complex<float>> , basic_cvector<float, std::complex<float>>  >
     (bool transpose,
     basic_cmatrix<float, std::complex<float>> & mA,
     const basic_cmatrix<float, std::complex<float>> & mB,
@@ -1076,7 +1076,7 @@ __gels<basic_cmatrix<float, std::complex<float>> , basic_cvector<float, std::com
 
 template <>
 CVM_API void
-__gels<basic_cmatrix<double, std::complex<double>> , basic_cvector<double, std::complex<double>>  >
+cvm_gels<basic_cmatrix<double, std::complex<double>> , basic_cvector<double, std::complex<double>>  >
     (bool transpose,
     basic_cmatrix<double, std::complex<double>> & mA,
     const basic_cmatrix<double, std::complex<double>> & mB,
@@ -1130,7 +1130,7 @@ __gels<basic_cmatrix<double, std::complex<double>> , basic_cvector<double, std::
 
 template <>
 CVM_API void
-__gelsy<float, basic_cmatrix<float, std::complex<float>>  >
+cvm_gelsy<float, basic_cmatrix<float, std::complex<float>>  >
     (basic_cmatrix<float, std::complex<float>> & mA,
     const basic_cmatrix<float, std::complex<float>> & mB,
     basic_cmatrix<float, std::complex<float>> & mX,  // output: will be resized anyway, so better pass it empty
@@ -1166,7 +1166,7 @@ __gelsy<float, basic_cmatrix<float, std::complex<float>>  >
 
 template <>
 CVM_API void
-__gelsy<double, basic_cmatrix<double, std::complex<double>>  >
+cvm_gelsy<double, basic_cmatrix<double, std::complex<double>>  >
     (basic_cmatrix<double, std::complex<double>> & mA,
     const basic_cmatrix<double, std::complex<double>> & mB,
     basic_cmatrix<double, std::complex<double>> & mX,  // output: will be resized anyway, so better pass it empty
@@ -1203,7 +1203,7 @@ __gelsy<double, basic_cmatrix<double, std::complex<double>>  >
 //! @cond SPECIALIZATIONS
 template <>
 CVM_API void
-__gelss<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float>>  >
+cvm_gelss<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float>>  >
     (basic_cmatrix<float, std::complex<float>> & mA,
     const basic_cmatrix<float, std::complex<float>> & mB,
     basic_cmatrix<float, std::complex<float>> & mX,  // output: will be resized anyway, so better pass it empty
@@ -1239,7 +1239,7 @@ __gelss<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float>>  
 
 template <>
 CVM_API void
-__gelss<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double>>  >
+cvm_gelss<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double>>  >
     (basic_cmatrix<double, std::complex<double>> & mA,
     const basic_cmatrix<double, std::complex<double>> & mB,
     basic_cmatrix<double, std::complex<double>> & mX,  // output: will be resized anyway, so better pass it empty
@@ -1275,7 +1275,7 @@ __gelss<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double
 
 template <>
 CVM_API void
-__gelsd<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float>>  >
+cvm_gelsd<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float>>  >
     (basic_cmatrix<float, std::complex<float>> & mA,
     const basic_cmatrix<float, std::complex<float>> & mB,
     basic_cmatrix<float, std::complex<float>> & mX,  // output: will be resized anyway, so better pass it empty
@@ -1314,7 +1314,7 @@ __gelsd<float, basic_rvector<float>, basic_cmatrix<float, std::complex<float>>  
 
 template <>
 CVM_API void
-__gelsd<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double>>  >
+cvm_gelsd<double, basic_rvector<double>, basic_cmatrix<double, std::complex<double>>  >
     (basic_cmatrix<double, std::complex<double>> & mA,
     const basic_cmatrix<double, std::complex<double>> & mB,
     basic_cmatrix<double, std::complex<double>> & mX,  // output: will be resized anyway, so better pass it empty

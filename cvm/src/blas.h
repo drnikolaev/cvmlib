@@ -10,6 +10,8 @@
 #ifndef _BLAS_H
 #define _BLAS_H
 
+#include "cvm.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
