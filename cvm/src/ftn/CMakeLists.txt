@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24.0)
+cmake_minimum_required(VERSION 3.23.0)
 project(ftn LANGUAGES Fortran)
 file(GLOB F_SOURCES CONFIGURE_DEPENDS "*.f")
 add_library(ftn STATIC ${F_SOURCES})

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.23.0)
 project(cvm LANGUAGES Fortran CXX VERSION 9.2.0 DESCRIPTION "CVM Class Library")
 
 #cmake -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_CXX_COMPILER=icx -DCMAKE_C_COMPILER=icx -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON
