@@ -15,7 +15,7 @@
 #endif
 
 extern "C" {
-    void __stdcall XERBLA(const char* szSubName,
+    void CVM_STD_CALL XERBLA(const char* szSubName,
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                         const tint,
     #endif

@@ -18,10 +18,8 @@ extern "C" {
 
 #if defined(_MSC_VER)
 #    define CVM_FTN_CALL __stdcall
-#    define CVM_STD_CALL __stdcall
 #else
 #    define CVM_FTN_CALL
-#    define CVM_STD_CALL
 
 // my fortran stuff
 
