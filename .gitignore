@@ -1,4 +1,5 @@
 .idea
+.vs
 
 ### CUDA template
 *.i
