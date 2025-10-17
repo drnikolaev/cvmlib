@@ -59,9 +59,6 @@ if(MAC AND NOT ARMPL)
 endif ()
 
 target_link_directories(cvm PRIVATE ${OUTPUT_PATH} ${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES} ${ARMPL_DIR} ${ARMFL_DIR})
-#target_link_libraries(cvm optimized ftn)
-#target_link_libraries(cvm debug ftn_debug)
-# Let CMake resolve the correct config-specific library (DEBUG_POSTFIX covers file name)
 target_link_libraries(cvm PRIVATE ftn)
 
 if(LINUX)

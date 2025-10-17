@@ -37,6 +37,7 @@
 #include <cstring>
 #include <cmath>
 #include <map>
+#include <memory>
 #include <list>
 #include <initializer_list>
 #include <random>

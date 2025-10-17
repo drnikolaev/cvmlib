@@ -11,8 +11,6 @@ project(cvm LANGUAGES Fortran CXX VERSION 9.2.0 DESCRIPTION "CVM Class Library")
 #PATH=/opt/arm/gcc-14.2.0_Ubuntu-22.04/bin:$PATH cmake -DCMAKE_Fortran_COMPILER=aarch64-linux-gnu-gfortran -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++  -DILP64=ON -DARMPL=ON -DBUILD_TESTS=ON  -B build/ -S .
 #cmake -DCMAKE_Fortran_COMPILER=aarch64-apple-darwin24-gfortran-mp-14 -DCMAKE_CXX_COMPILER=aarch64-apple-darwin24-c++-mp-14  -DARMPL=ON -DBUILD_TESTS=ON  -B build/ -S .
 
-find_package(IntelSYCL REQUIRED)
-
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
     SET(ARM ON)
     message("Building CVM Class Library for ARM64")
@@ -24,6 +22,8 @@ if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
         message("ARMPL found: ${ARMPL_DIR}" )
         message("ARMFL found: ${ARMFL_DIR}" )
     endif ()
+else()
+#    find_package(IntelSYCL)
 endif()
 
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "^Intel.*")
