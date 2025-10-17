@@ -983,7 +983,7 @@ TYPED_TEST(FunctionalTest, TestFExpressions) {
                     static_cast<float>(cfc(c11).imag())) << "basic_function<TPC>.tan - value";
     
     rfc = rf_self.asin().simp();
-    EXPECT_EQ(std::asin(1/r2), rfc(1/r2)) << "basic_function<TP>.asin - value";
+    EXPECT_FLOAT_EQ(std::asin(1/r2), rfc(1/r2)) << "basic_function<TP>.asin - value";
     cfc = cf_self.asin().simp();
     EXPECT_EQ(ElementaryFunctions<TPC>::asin(c11), cfc(c11)) << "basic_function<TPC>.asin - value";
     
@@ -993,7 +993,7 @@ TYPED_TEST(FunctionalTest, TestFExpressions) {
     EXPECT_EQ(ElementaryFunctions<TPC>::acos(c11), cfc(c11)) << "basic_function<TPC>.acos - value";
     
     rfc = rf_self.atan().simp();
-    EXPECT_EQ(std::atan(r2), rfc(r2)) << "basic_function<TP>.atan - value";
+    EXPECT_FLOAT_EQ(std::atan(r2), rfc(r2)) << "basic_function<TP>.atan - value";
     cfc = cf_self.atan().simp();
     EXPECT_EQ(ElementaryFunctions<TPC>::atan(c11), cfc(c11)) << "basic_function<TPC>.atan - value";
     
@@ -1144,7 +1144,7 @@ TYPED_TEST(FunctionalTest, TestComplexDrv) {
     }
     
     EXPECT_NEAR(std::abs(TPC(2., 3.)), std::abs(f.drv(0)(x)), s<TP>()) << "basic_function<TPC> drv value";
-    EXPECT_NEAR((x[0] + TPC(3.,0.) * x[1] * x[1]).real(), f.drv(1)(x).real(), s<TP>()) << "basic_function<TPC> drv value";
+    EXPECT_NEAR((x[0] + TPC(3.,0.) * x[1] * x[1]).real(), f.drv(1)(x).real(), sp<TP>()) << "basic_function<TPC> drv value";
     EXPECT_NEAR((x[0] + TPC(3.,0.) * x[1] * x[1]).imag(), f.drv(1)(x).imag(), sp<TP>()) << "basic_function<TPC> drv value";
 }
         

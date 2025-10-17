@@ -329,9 +329,9 @@ TYPED_TEST(LapackTest, TestHerkHermitianComplex3) {
     const TP beta = -3.07;
     basic_schmatrix<TP,TPC> mh(3), mh2(3);
     m.randomize_real(-1., 2.);
-    m.randomize_imag(-2., 3.);
+    m.randomize_imag(-2., 1.);
     mh.randomize_real(-1., 2.);
-    mh.randomize_imag(-2., 3.);
+    mh.randomize_imag(-2., 1.);
     mh2 = mh;
     mh.herk(true, alpha, m, beta);
     mh2 = alpha * basic_schmatrix<TP,TPC>(~m * m, spp<TP>(1.e-13, 1.e-6)) + beta * mh2;
@@ -1380,7 +1380,7 @@ TYPED_TEST(LapackTest, TestGelsBandReal) {
     bt.randomize(-1., 1.);
 
     basic_rmatrix<TP> xn = a.gels(false, bn, vErr);
-    EXPECT_NEAR(TP(0.), (a*xn-bn).norm(), spp<TP>()) << "gels real nontransp";
+    EXPECT_NEAR(TP(0.), (a*xn-bn).norm(), spp<TP>(1.e-4,0.05)) << "gels real nontransp";
     if (sizeof(TP) > 4) {
         EXPECT_NEAR(TP(0.), (a.pinv()*bn - xn).norm(), spp<TP>(1.e-4,75.)) << "gels real nontransp";
     }

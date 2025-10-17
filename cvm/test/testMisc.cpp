@@ -165,3 +165,18 @@ TYPED_TEST(MiscTest, TestMatrixIndexing) {
 //    mh(1,2) = TPC(0.12, 0.34); // COMPILATION MUST FAIL HERE
 //    EXPECT_EQ(TPC(0.12, 0.34), mh(1,2));
 }
+
+TYPED_TEST(MiscTest, TestException) {
+    TP r[16] = {0., 1., 0., 0.};
+    try {
+        basic_srsmatrix<TP> m(r, 2);
+    } catch (const std::exception& e) {
+        EXPECT_STREQ("The matrix passed doesn't appear to be symmetric", e.what());
+    }
+    try {
+        basic_srmatrix<TP> m(r, 2);
+        m(10,1) = TP(1.23);
+    } catch (const std::exception& e) {
+        EXPECT_STREQ("First index value 10 is out of [0,2) range", e.what());
+    }
+}

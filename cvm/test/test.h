@@ -13,6 +13,7 @@
 
 #include <gtest/gtest.h>
 #include <algorithm>
+#include <array>
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)

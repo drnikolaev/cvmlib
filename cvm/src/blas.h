@@ -10,16 +10,16 @@
 #ifndef _BLAS_H
 #define _BLAS_H
 
+#include "cvm.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #if defined(_MSC_VER)
 #    define CVM_FTN_CALL __stdcall
-#    define CVM_STD_CALL __stdcall
 #else
 #    define CVM_FTN_CALL
-#    define CVM_STD_CALL
 
 // my fortran stuff
 

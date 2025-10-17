@@ -1,13 +1,13 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2023
+//          Copyright Sergei Nikolaev 1992-2025
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 /**
  * @mainpage CVM Class Library Documentation
- * @version 9.1.0
+ * @version 9.2.0
  * @author Sergei Nikolaev (c) 1992-2023
  * @date January 4th, 2023
  *
@@ -31,22 +31,15 @@
 
 #pragma once
 
-#include <cstdint>
+#include <string>
+#include <format>
+#include <string_view>
 #include <cstring>
-#include <cstddef>
-#include <cstdio>
-#include <cstdarg>
-#include <cfloat>
-#include <ctime>
 #include <cmath>
-#include <array>
-#include <vector>
 #include <map>
-#include <iostream>
 #include <memory>
 #include <list>
 #include <initializer_list>
-#include <unordered_map>
 #include <random>
 #include <complex>
 
@@ -74,14 +67,12 @@ using tint = int32_t;  //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) s
 #   else
 #       define CVM_API __declspec(dllimport)
 #   endif
+#   define CVM_STD_CALL __stdcall
 #   define CVM_VSNPRINTF vsnprintf_s
 #   define CVM_VSNPRINTF_S_DEFINED
 #   define CVM_STRCPY_S_DEFINED
 #elif defined(__clang__)
-#   ifdef __stdcall
-#       undef __stdcall
-#   endif
-#   define __stdcall  // NOLINT
+#   define CVM_STD_CALL
 #   define CVM_API
 #   if defined(CVM_USE_POOL_MANAGER)
 #       include <semaphore.h>  // Unix
@@ -90,10 +81,7 @@ using tint = int32_t;  //!< Either 32 of 64 bit (when \c CVM_ILP64 is defined) s
 #   define CVM_VSNPRINTF vsnprintf
 #elif defined(__GNUC__)
 #   define CVM_API
-#   ifdef __stdcall
-#       undef __stdcall
-#   endif
-#   define __stdcall  // NOLINT
+#   define CVM_STD_CALL
 #   if defined(CVM_USE_POOL_MANAGER)
 #       include <semaphore.h>  // Unix
 #   endif
@@ -204,12 +192,10 @@ private:
     CVM_API ErrMessages();
 
 public:
-    const std::string& _get(int nException) {
+    const std::string& get(int nException) {
         auto i = mmMsg.find(nException);
         return i == mmMsg.end() ? msUnknown : i->second;
     }
-
-    CVM_API bool _add(int nNewCause, const char* szNewMessage);
 
     static CVM_API ErrMessages& ErrMessagesInstance();
     ~ErrMessages() = default;
@@ -221,305 +207,272 @@ public:
  *
  * Exception class used in the library. Inherited from std::exception.
  */
-class cvmexception : public std::exception
-{
-protected:
-    int mnCause;  //!< Exception code
-    mutable char mszMsg[256];  //!< Formatted message
-
-//! @cond INTERNAL
-    virtual const char* _get_message(int nCause) const {
-        return ErrMessages::ErrMessagesInstance()._get(nCause).c_str();
-    }
-//! @endcond
-
+class cvmexception : public std::exception {
 public:
-    /**
-     * @brief Default constructor
-     *
-     * Default constructor (not an error by default).
-     */
-    cvmexception()  // NOLINT
-      : mnCause(CVM_OK) {
-        mszMsg[0] = '\0';
-    }
+    cvmexception() noexcept
+        : m_cause(0)
+        , m_msg(get_message(m_cause)) {}
 
-    /**
-     * @brief Exception constructor
-     *
-     * Exception constructor with error code and optional error string (might be formatted for printf).
-     * @param[in] nCause Error code (might be user-defined).
-     * @see add()
-     */
-    CVM_API explicit cvmexception(int nCause, ...);
+    explicit cvmexception(int cause) noexcept
+        : m_cause(cause)
+        , m_msg(get_message(m_cause)) {}
 
-    /**
-     * @brief Exception copy constructor
-     */
-    CVM_API cvmexception(const cvmexception& e) noexcept;
+    cvmexception(int cause, std::string msg) noexcept
+        : m_cause(cause)
+        , m_msg(std::move(msg)) {}
 
-    /**
-     * @brief Exception move constructor
-     */
-    CVM_API cvmexception(cvmexception&& e) noexcept;
+    // C++20 type-safe formatting
+    template <class... Args>
+    cvmexception(int cause, std::string_view fmt, Args&&... args)
+           : m_cause(cause)
+        , m_msg(_format_sv(fmt, std::forward<Args>(args)...))
+    {}
 
-    /**
-     * @brief Exception destructor, inherited from std::exception
-     */
+    template <class... Args>
+    cvmexception(int cause, Args&&... args)  // NOLINT
+    : m_cause(cause)
+        , m_msg(_format_sv(get_message(cause), std::forward<Args>(args)...))
+    {}
+
+    cvmexception(const cvmexception&) noexcept = default;
+    cvmexception(cvmexception&&) noexcept = default;
     ~cvmexception() noexcept override = default;
+    cvmexception& operator=(const cvmexception&) noexcept = default;
+    cvmexception& operator=(cvmexception&&) noexcept = default;
 
-    /**
-     * @brief Exception Code
-     *
-     * Returns numerical code for exception thrown.
-     * @see CVM_OUTOFMEMORY
-     * @see what()
-     * @return Exception Code
-     */
-    int cause() const {
-        return mnCause;
+    [[nodiscard]] int cause() const noexcept { return m_cause; }
+
+    [[nodiscard]] const char* what() const noexcept override {
+        return m_msg.c_str();
     }
 
-    /**
-     * @brief Exception message
-     *
-     * Returns formatted exception message.
-     * @see cause()
-     * @return Exception message
-     */
-    const char* what() const noexcept override {  // NOLINT
-        return mszMsg;
+protected:
+    //! @cond INTERNAL
+    [[nodiscard]] static std::string_view get_message(int nCause) {
+        return ErrMessages::ErrMessagesInstance().get(nCause);
+    }
+    //! @endcond
+
+private:
+    // Workaround for libc++ C++20 make_format_args requiring lvalues:
+    // store copies in a tuple (lvalues) and then build format args from them.
+    template <class... Args>
+    static std::string _format_sv(std::string_view fmt, Args&&... args) {
+        auto values = std::tuple<std::decay_t<Args>...>(std::forward<Args>(args)...);
+        return std::apply([&](auto&... a) {
+            return std::vformat(fmt, std::make_format_args(a...));
+        }, values);
     }
 
-    /**
-     * @brief Next available error code
-     *
-     * Next available error code to create user-defined ones.
-     * @see add()
-     * @return Error code
-     */
-    static int getNextCause() {  // NOLINT
-        return CVM_THE_LAST_ERROR_CODE;
-    }
-
-    /**
-     * @brief Add new user-defined exception
-     *
-     * Creates user-defined exception for library extensions, see programmer's reference for detailes.
-     * @see getNextCause()
-     * @param[in] nNewCause New code.
-     * @param[in] szNewMessage New message.
-     * @return bool - true if succeeded, false otherwise
-     */
-    static bool add(int nNewCause, const char* szNewMessage) {
-        return ErrMessages::ErrMessagesInstance()._add(nNewCause, szNewMessage);
-    }
+    int m_cause{0};
+    std::string m_msg;
 };
 
+
 //! @cond INTERNAL
 template<typename T>
 // NOLINTNEXTLINE
-CVM_API void __copy(tint nSize, const T* pFrom, tint nFromIncr, T* pTo, tint nToIncr);
+CVM_API void cvm_copy(tint nSize, const T* pFrom, tint nFromIncr, T* pTo, tint nToIncr);
 template<typename T>
 // NOLINTNEXTLINE
-CVM_API void __swap(tint nSize, T* p1, tint n1Incr, T* p2, tint n2Incr);
+CVM_API void cvm_swap(tint nSize, T* p1, tint n1Incr, T* p2, tint n2Incr);
 
 template<typename TC, typename TR>
-CVM_API TR _real(const TC& mT);
+CVM_API TR cvm_real(const TC& mT);  // NOLINT
 template<typename TC, typename TR>
-CVM_API TR _imag(const TC& mT);
+CVM_API TR cvm_imag(const TC& mT);  // NOLINT
 
 template<typename TR>
 // NOLINTNEXTLINE
-CVM_API TR __dot(const TR* mpd, tint mn_size, tint mn_incr, const TR* pd, tint incr);
+CVM_API TR cvm_dot(const TR* mpd, tint mn_size, tint mn_incr, const TR* pd, tint incr);
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API TC __dotu(const TC* mpd, tint mn_size, tint mn_incr, const TC* pd, tint incr);
+CVM_API TC cvm_dotu(const TC* mpd, tint mn_size, tint mn_incr, const TC* pd, tint incr);
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API TC __dotc(const TC* mpd, tint mn_size, tint mn_incr, const TC* pd, tint incr);
+CVM_API TC cvm_dotc(const TC* mpd, tint mn_size, tint mn_incr, const TC* pd, tint incr);
 
 template<typename TR, typename TC>
 // NOLINTNEXTLINE
-CVM_API TR __norm(const TC* pd, tint nSize, tint nIncr);
+CVM_API TR cvm_norm(const TC* pd, tint nSize, tint nIncr);
 
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API tint __idamax(const TC* pd, tint nSize, tint nIncr);
+CVM_API tint cvm_idamax(const TC* pd, tint nSize, tint nIncr);
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API tint __idamin(const TC* pd, tint nSize, tint nIncr);
+CVM_API tint cvm_idamin(const TC* pd, tint nSize, tint nIncr);
 
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API void __add(TC* mpd, tint mn_size, tint mn_incr, const TC* pv, tint incr);
+CVM_API void cvm_add(TC* mpd, tint mn_size, tint mn_incr, const TC* pv, tint incr);
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API void __subtract(TC* mpd, tint mn_size, tint mn_incr, const TC* pv, tint incr);
+CVM_API void cvm_subtract(TC* mpd, tint mn_size, tint mn_incr, const TC* pv, tint incr);
 //! @internal
 template<typename TR, typename TC>
 // NOLINTNEXTLINE
-CVM_API void __scal(TC* mpd, tint mn_size, tint mn_incr, TR scal);
+CVM_API void cvm_scal(TC* mpd, tint mn_size, tint mn_incr, TR scal);
 template<typename TC>
 // NOLINTNEXTLINE
-CVM_API void __conj(TC* mpd, tint mn_size, tint mn_incr);
+CVM_API void cvm_conj(TC* mpd, tint mn_size, tint mn_incr);
 
 template<typename TR, typename TC>
 // NOLINTNEXTLINE
-CVM_API void __copy_real(TC* mpd, tint mn_size, tint mn_incr, const TR* pRe, tint re_incr);
+CVM_API void cvm_copy_real(TC* mpd, tint mn_size, tint mn_incr, const TR* pRe, tint re_incr);
 template<typename TR, typename TC>
 // NOLINTNEXTLINE
-CVM_API void __copy_imag(TC* mpd, tint mn_size, tint mn_incr, const TR* pIm, tint im_incr);
+CVM_API void cvm_copy_imag(TC* mpd, tint mn_size, tint mn_incr, const TR* pIm, tint im_incr);
 template<typename TR, typename TC>
 // NOLINTNEXTLINE
-CVM_API void __copy2(TC* mpd, tint mn_size, tint mn_incr, const TR* pRe, const TR* pIm,
+CVM_API void cvm_copy2(TC* mpd, tint mn_size, tint mn_incr, const TR* pRe, const TR* pIm,
                      tint re_incr = 1, tint im_incr = 1);
 
 template<typename TC, typename TM, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __gemv(bool bLeft, const TM& m, TC dAlpha, const TV& v, TC dBeta, TV& vRes);
+CVM_API void cvm_gemv(bool bLeft, const TM& m, TC dAlpha, const TV& v, TC dBeta, TV& vRes);
 template<typename TC, typename TM, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __gbmv(bool bLeft, const TM& m, TC dAlpha, const TV& v, TC dBeta, TV& vRes);
+CVM_API void cvm_gbmv(bool bLeft, const TM& m, TC dAlpha, const TV& v, TC dBeta, TV& vRes);
 template<typename TR, typename TM, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __symv(const TM& m, TR dAlpha, const TV& v, TR dBeta, TV& vRes);
+CVM_API void cvm_symv(const TM& m, TR dAlpha, const TV& v, TR dBeta, TV& vRes);
 template<typename TC, typename TM, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __shmv(const TM& m, TC cAlpha, const TV& v, TC cBeta, TV& vRes);
+CVM_API void cvm_shmv(const TM& m, TC cAlpha, const TV& v, TC cBeta, TV& vRes);
 template<typename TC, typename TM>
 // NOLINTNEXTLINE
-CVM_API void __gemm(const TM& ml, bool bTrans1, const TM& mr, bool bTrans2, TC dAlpha,
+CVM_API void cvm_gemm(const TM& ml, bool bTrans1, const TM& mr, bool bTrans2, TC dAlpha,
                     TM& mRes, TC dBeta);
 template<typename TR, typename TSM, typename TM>
 // NOLINTNEXTLINE
-CVM_API void __symm(bool bLeft, const TSM& ml, const TM& mr, TR dAlpha, TM& mRes, TR dBeta);
+CVM_API void cvm_symm(bool bLeft, const TSM& ml, const TM& mr, TR dAlpha, TM& mRes, TR dBeta);
 template<typename TC, typename TSM, typename TM>
 // NOLINTNEXTLINE
-CVM_API void __hemm(bool bLeft, const TSM& ml, const TM& mr, TC dAlpha, TM& mRes, TC dBeta);
+CVM_API void cvm_hemm(bool bLeft, const TSM& ml, const TM& mr, TC dAlpha, TM& mRes, TC dBeta);
 
 template<typename TC, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __polynom(TC* MPD, tint ldP, tint mnM, const TC* pd, tint ldA, const TV& v);
+CVM_API void cvm_polynom(TC* MPD, tint ldP, tint mnM, const TC* pd, tint ldA, const TV& v);
 template<typename T>
 // NOLINTNEXTLINE
-CVM_API void __inv(T& m, const T& mArg);
+CVM_API void cvm_inv(T& m, const T& mArg);
 template<typename T, typename TR>
 // NOLINTNEXTLINE
-CVM_API void __exp(T& m, const T& mArg, TR tol);
+CVM_API void cvm_exp(T& m, const T& mArg, TR tol);
 template<typename T, typename TR>
 // NOLINTNEXTLINE
-CVM_API void __exp_symm(T& m, const T& mArg, TR tol);
+CVM_API void cvm_exp_symm(T& m, const T& mArg, TR tol);
 template<typename TR, typename TC, typename TRM>
 // NOLINTNEXTLINE
-CVM_API void __solve(const TRM& m, tint nrhs, const TC* pB, tint ldB, TC* pX, tint ldX, TR& dErr,
+CVM_API void cvm_solve(const TRM& m, tint nrhs, const TC* pB, tint ldB, TC* pX, tint ldX, TR& dErr,
                      const TC* pLU, const tint* pPivots, int transp_mode);
 template<typename TC, typename TM, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __svd(TC* pd, tint nSize, tint nIncr, const TM& mArg,
+CVM_API void cvm_svd(TC* pd, tint nSize, tint nIncr, const TM& mArg,
                    TSM* mU, TSM* mVH);
 template<typename TR, typename TM, typename TX>
 // NOLINTNEXTLINE
-CVM_API void __pinv(TX& mX, const TM& mArg, TR threshold);
+CVM_API void cvm_pinv(TX& mX, const TM& mArg, TR threshold);
 template<typename TV, typename TSM, typename TSCM>
 // NOLINTNEXTLINE
-CVM_API void __eig(TV& vRes, const TSM& mArg, TSCM* mEigVect, bool bRightVect);
+CVM_API void cvm_eig(TV& vRes, const TSM& mArg, TSCM* mEigVect, bool bRightVect);
 template<typename TR, typename TM>
 // NOLINTNEXTLINE
-CVM_API void __cond_num(const TM& mArg, TR& dCondNum);
+CVM_API void cvm_cond_num(const TM& mArg, TR& dCondNum);
 template<typename TM>
 // NOLINTNEXTLINE
-void __low_up(TM& m, tint* nPivots);
+void cvm_low_up(TM& m, tint* nPivots);
 
 template<typename TR>
 // NOLINTNEXTLINE
-CVM_API void __randomize(TR* mpd, tint mn_size, tint mn_incr, TR dFrom, TR dTo);
+CVM_API void cvm_randomize(TR* mpd, tint mn_size, tint mn_incr, TR dFrom, TR dTo);
 template<typename TC, typename TR>
 // NOLINTNEXTLINE
-CVM_API void __randomize_real(TC* mpd, tint mn_size, tint mn_incr, TR dFrom, TR dTo);
+CVM_API void cvm_randomize_real(TC* mpd, tint mn_size, tint mn_incr, TR dFrom, TR dTo);
 template<typename TC, typename TR>
 // NOLINTNEXTLINE
-CVM_API void __randomize_imag(TC* mpd, tint mn_size, tint mn_incr, TR dFrom, TR dTo);
+CVM_API void cvm_randomize_imag(TC* mpd, tint mn_size, tint mn_incr, TR dFrom, TR dTo);
 
 template<typename TR, typename TM, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __ger(TM& m, const TV& vCol, const TV& vRow, TR dAlpha);
+CVM_API void cvm_ger(TM& m, const TV& vCol, const TV& vRow, TR dAlpha);
 template<typename TC, typename TM, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __geru(TM& m, const TV& vCol, const TV& vRow, TC cAlpha);
+CVM_API void cvm_geru(TM& m, const TV& vCol, const TV& vRow, TC cAlpha);
 template<typename TC, typename TM, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __gerc(TM& m, const TV& vCol, const TV& vRow, TC cAlpha);
+CVM_API void cvm_gerc(TM& m, const TV& vCol, const TV& vRow, TC cAlpha);
 
 template<typename TC, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __syrk(bool bTransp, TC alpha, tint k, const TC* pA, tint ldA, TC beta, TSM& m);
+CVM_API void cvm_syrk(bool bTransp, TC alpha, tint k, const TC* pA, tint ldA, TC beta, TSM& m);
 template<typename TC, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __syr2k(bool bTransp, TC alpha, tint k, const TC* pA, tint ldA,
+CVM_API void cvm_syr2k(bool bTransp, TC alpha, tint k, const TC* pA, tint ldA,
                      const TC* pB, tint ldB, TC beta, TSM& m);
 template<typename TR, typename TC, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __herk(bool bTransp, TR alpha, tint k, const TC* pA, tint ldA, TR beta, TSM& m);
+CVM_API void cvm_herk(bool bTransp, TR alpha, tint k, const TC* pA, tint ldA, TR beta, TSM& m);
 template<typename TR, typename TC, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __her2k(bool bTransp, TC alpha, tint k, const TC* pA, tint ldA,
+CVM_API void cvm_her2k(bool bTransp, TC alpha, tint k, const TC* pA, tint ldA,
                      const TC* pB, tint ldB, TR beta, TSM& m);
 
 template<typename TM>
 // NOLINTNEXTLINE
-CVM_API tint __cholesky(TM& m);
+CVM_API tint cvm_cholesky(TM& m);
 template<typename TM>
 // NOLINTNEXTLINE
-CVM_API void __bunch_kaufman(TM& m, tint* nPivots);
+CVM_API void cvm_bunch_kaufman(TM& m, tint* nPivots);
 template<typename TR, typename TM, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __poequ(const TM& m, TV& vScalings, TR& dCond, TR& dMax);
+CVM_API void cvm_poequ(const TM& m, TV& vScalings, TR& dCond, TR& dMax);
 
 template<typename TM, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __qre(const TM& mA, TM& mQ, TSM& mR);
+CVM_API void cvm_qre(const TM& mA, TM& mQ, TSM& mR);
 template<typename TM, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __qrf(const TM& mA, TSM& mQ, TM& mR);
+CVM_API void cvm_qrf(const TM& mA, TSM& mQ, TM& mR);
 template<typename TM, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __rqe(const TM& mA, TSM& mR, TM& mQ);
+CVM_API void cvm_rqe(const TM& mA, TSM& mR, TM& mQ);
 template<typename TM, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __rqf(const TM& mA, TM& mR, TSM& mQ);
+CVM_API void cvm_rqf(const TM& mA, TM& mR, TSM& mQ);
 
 template<typename TM, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __lqe(const TM& mA, TSM& mL, TM& mQ);
+CVM_API void cvm_lqe(const TM& mA, TSM& mL, TM& mQ);
 template<typename TM, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __lqf(const TM& mA, TM& mL, TSM& mQ);
+CVM_API void cvm_lqf(const TM& mA, TM& mL, TSM& mQ);
 template<typename TM, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __qle(const TM& mA, TM& mQ, TSM& mL);
+CVM_API void cvm_qle(const TM& mA, TM& mQ, TSM& mL);
 template<typename TM, typename TSM>
 // NOLINTNEXTLINE
-CVM_API void __qlf(const TM& mA, TSM& mQ, TM& mL);
+CVM_API void cvm_qlf(const TM& mA, TSM& mQ, TM& mL);
 
 // Linear Least Squares problems
 template<typename TM, typename TV>
 // NOLINTNEXTLINE
-CVM_API void __gels(bool transpose, TM& mA, const TM& mB, TM& mX, TV& vErr);
+CVM_API void cvm_gels(bool transpose, TM& mA, const TM& mB, TM& mX, TV& vErr);
 template<typename TR, typename TM>
 // NOLINTNEXTLINE
-CVM_API void __gelsy(TM& mA, const TM& mB, TM& mX, TR rcond, tint& rank);
+CVM_API void cvm_gelsy(TM& mA, const TM& mB, TM& mX, TR rcond, tint& rank);
 template<typename TR, typename TV, typename TM>
 // NOLINTNEXTLINE
-CVM_API void __gelss(TM& mA, const TM& mB, TM& mX, TR rcond, TV& vSV, tint& rank);
+CVM_API void cvm_gelss(TM& mA, const TM& mB, TM& mX, TR rcond, TV& vSV, tint& rank);
 template<typename TR, typename TV, typename TM>
 // NOLINTNEXTLINE
-CVM_API void __gelsd(TM& mA, const TM& mB, TM& mX, TR rcond, TV& vSV, tint& rank);
+CVM_API void cvm_gelsd(TM& mA, const TM& mB, TM& mX, TR rcond, TV& vSV, tint& rank);
 
 // 8.1 Generalized Eigenvalue Problem
 template<typename TSRM, typename TSCM, typename TRV, typename TCV>
 // NOLINTNEXTLINE
-CVM_API void __ggev(TSRM& mA, TSRM& mB, TCV& vAlpha, TRV& vBeta,
+CVM_API void cvm_ggev(TSRM& mA, TSRM& mB, TCV& vAlpha, TRV& vBeta,
                     TSCM* mEigVectLeft, TSCM* mEigVectRight);
 
 
@@ -734,6 +687,8 @@ public:
 //! Internal memory pool class
 class MemoryPool
 {
+    using list_blocks = std::list<tbyte*>;
+
     struct DeletePtr {
         template<class T>
         void operator () (T* p) const {
@@ -912,7 +867,9 @@ prints
 template<typename TR, typename TC>
 std::istream& operator >> (std::istream& is, basic_array<TR,TC>& aIn) {
     const tint nSize = aIn.size() * aIn.incr();
+#if defined(CVM_DEBUG)
     CVM_ASSERT(aIn.get(), ((aIn.size() - 1) * aIn.incr() + 1) * sizeof(TC))
+#endif
     for (tint i = 0; i < nSize && is.good(); i += aIn.incr()) {
         is >> aIn.get()[i];
     }
@@ -945,7 +902,9 @@ prints
 template<typename TR, typename TC>
 std::ostream& operator << (std::ostream& os, const basic_array<TR,TC>& aOut) {
     const tint nSize = aOut.size() * aOut.incr();
+#if defined(CVM_DEBUG)
     CVM_ASSERT(aOut.get(), ((aOut.size() - 1) * aOut.incr() + 1) * sizeof(TC))
+#endif
     for (tint i = 0; i < nSize && os.good(); i += aOut.incr()) {
         os << aOut.get()[i] << CVM_MATRIX_ELEMENT_SEPARATOR;
     }
@@ -1070,7 +1029,7 @@ inline void _copy_b_matrix(RM& m, RBM& mb, bool bLeftToRight) {
         pL = m.get() + i * nM + nShiftL;
         pR = mb._pb() + i * nCol + nShiftR;
 
-        __copy<TC>(nS,
+        cvm_copy<TC>(nS,
                    bLeftToRight ? pL : pR,
                    1,
                    bLeftToRight ? pR : pL,
@@ -1085,16 +1044,16 @@ inline void _sum(TC* pd, tint nSize, tint nIncr,
     if (pd == p1) {
         if (pd == p2) {
             const TR two(2.);
-            __scal<TR,TC>(pd, nSize, nIncr, two);
+            cvm_scal<TR,TC>(pd, nSize, nIncr, two);
         } else {
-            __add<TC>(pd, nSize, nIncr, p2, nIncr2);
+            cvm_add<TC>(pd, nSize, nIncr, p2, nIncr2);
         }
     } else {
         if (pd == p2) {
-            __add<TC>(pd, nSize, nIncr, p1, nIncr1);
+            cvm_add<TC>(pd, nSize, nIncr, p1, nIncr1);
         } else {
-            __copy<TC>(nSize, p1, nIncr1, pd, nIncr);
-            __add<TC>(pd, nSize, nIncr, p2, nIncr2);
+            cvm_copy<TC>(nSize, p1, nIncr1, pd, nIncr);
+            cvm_add<TC>(pd, nSize, nIncr, p2, nIncr2);
         }
     }
 }
@@ -1106,18 +1065,18 @@ inline void _diff(TC* pd, tint nSize, tint nIncr,
     if (pd == p1) {
         if (pd == p2) {
             const TR zero(0.);
-            __scal<TR,TC>(pd, nSize, nIncr, zero);
+            cvm_scal<TR,TC>(pd, nSize, nIncr, zero);
         } else {
-            __subtract<TC>(pd, nSize, nIncr, p2, nIncr2);
+            cvm_subtract<TC>(pd, nSize, nIncr, p2, nIncr2);
         }
     } else {
         if (pd == p2) {
             const TR mone(-1.);
-            __subtract<TC>(pd, nSize, nIncr, p1, nIncr1);
-            __scal<TR,TC>(pd, nSize, nIncr, mone);
+            cvm_subtract<TC>(pd, nSize, nIncr, p1, nIncr1);
+            cvm_scal<TR,TC>(pd, nSize, nIncr, mone);
         } else {
-            __copy<TC>(nSize, p1, nIncr1, pd, nIncr);
-            __subtract<TC>(pd, nSize, nIncr, p2, nIncr2);
+            cvm_copy<TC>(nSize, p1, nIncr1, pd, nIncr);
+            cvm_subtract<TC>(pd, nSize, nIncr, p2, nIncr2);
         }
     }
 }
@@ -1127,9 +1086,9 @@ template<typename TR, typename TC>
 inline void _incr(TC* pDm, tint mnSize, tint mnIncr, const TC* pd, tint nIncr) {
     if (pDm == pd) {
         const TR two(2.);
-        __scal<TR,TC>(pDm, mnSize, mnIncr, two);
+        cvm_scal<TR,TC>(pDm, mnSize, mnIncr, two);
     } else {
-        __add<TC>(pDm, mnSize, mnIncr, pd, nIncr);
+        cvm_add<TC>(pDm, mnSize, mnIncr, pd, nIncr);
     }
 }
 
@@ -1138,9 +1097,9 @@ template<typename TR, typename TC>
 inline void _decr(TC* pDm, tint mnSize, tint mnIncr, const TC* pd, tint nIncr) {
     if (pDm == pd) {
         const TR zero(0.);
-        __scal<TR,TC>(pDm, mnSize, mnIncr, zero);
+        cvm_scal<TR,TC>(pDm, mnSize, mnIncr, zero);
     } else {
-        __subtract<TC>(pDm, mnSize, mnIncr, pd, nIncr);
+        cvm_subtract<TC>(pDm, mnSize, mnIncr, pd, nIncr);
     }
 }
 
@@ -1151,7 +1110,9 @@ void _set_real(TC* pDm, tint mnSize, tint mnIncr, TR d) {
     const tint nSize = mnSize * nIncr2;
     TR* pd = __get_real_p<TR>(pDm);
     for (tint i = 0; i < nSize; i += nIncr2) {
+#if defined(CVM_DEBUG)
         CVM_ASSERT(pd, (i + 1) * sizeof(TR))
+#endif
         pd[i] = d;
     }
 }
@@ -1163,7 +1124,9 @@ void _set_imag(TC* pDm, tint mnSize, tint mnIncr, TR d) {
     const tint nSize = mnSize * nIncr2;
     TR* pd = __get_imag_p<TR>(pDm);
     for (tint i = 0; i < nSize; i += nIncr2) {
+#if defined(CVM_DEBUG)
         CVM_ASSERT(pd, (i + 1) * sizeof(TR))
+#endif
         pd[i] = d;
     }
 }
@@ -1212,9 +1175,8 @@ public:
      *
      * Creates instance of type proxy by const reference to a value.
      * @param[in] ref Reference to a value.
-     * @param[in] read_only True by default.
      */
-    type_proxy(const T& ref)
+    type_proxy(const T& ref)  // NOLINT
       : mV(ref),
         mT(const_cast<T&>(ref)),
         mbReadOnly(true) {}
@@ -1236,7 +1198,7 @@ public:
      * Returns value.
      * @return Value
      */
-    operator T() const {
+    operator T() const {  // NOLINT
         return mV;
     }
 
@@ -1290,7 +1252,7 @@ public:
      * Assigns type_proxy. Returns a reference to \c *this.
      * @param[in] p Const reference to another proxy.
      */
-    type_proxy& operator = (const type_proxy& p) {
+    type_proxy& operator = (const type_proxy& p) {  // NOLINT
         mT = p.mT;
         mV = p.mV;
         mbReadOnly = p.mbReadOnly;
@@ -1548,7 +1510,7 @@ public:
      * Specialized for \c std::complex<treal> only. Link error would be received otherwise.
      */
     [[nodiscard]] TR real() const {
-        return _real<T,TR>(mV);
+        return cvm_real<T,TR>(mV);
     }
 
     /**
@@ -1559,7 +1521,7 @@ public:
      * Specialized for \c std::complex<treal> only. Link error would be received otherwise.
      */
     [[nodiscard]] TR imag() const {
-        return _imag<T,TR>(mV);
+        return cvm_imag<T,TR>(mV);
     }
 };
 
@@ -1644,7 +1606,7 @@ class Randomizer
      * @brief Internal private routine
      * @see get()
      */
-    T _get(T dFrom, T dTo) noexcept {
+    T random_get(T dFrom, T dTo) noexcept {
         const T dMin = _cvm_min<T>(dFrom, dTo);
         const T dMax = _cvm_max<T>(dFrom, dTo);
         return dMin + static_cast<T>(mDist(mre)) * (dMax - dMin) / mMax;
@@ -1667,7 +1629,7 @@ public:
      */
     static T get(T dFrom, T dTo) noexcept {
         static Randomizer r;
-        return r._get(dFrom, dTo);
+        return r.random_get(dFrom, dTo);
     }
 };
 
@@ -1697,7 +1659,7 @@ protected:
     TC* mpd;  //!< Data pointer
 #else
     // Think of mp as a pointer to chunk (or blob) of memory. Sure, this would be nice to use
-    // std::vector here, but I need to align mp usage with foreign pointer fp_.
+    // std::vector here, but I need to align mp usage with foreign pointer mpf.
     std::shared_ptr<TC> mp;  //!< Native data pointer
     TC* mpf;  //!< Foreign data pointer
 #endif
@@ -1815,8 +1777,10 @@ prints
         mpf(pd)
 #endif
     {
+#if defined(CVM_DEBUG)
         _check_le(CVM_WRONGSIZE_LE, msz, tint());
         CVM_ASSERT(this->get(), msz * sizeof(TC))
+#endif
     }
 
 /**
@@ -1852,9 +1816,11 @@ prints
         mpf(nullptr)
 #endif
     {
+#if defined(CVM_DEBUG)
         _check_le(CVM_WRONGSIZE_LE, msz, tint());
         CVM_ASSERT(this->get(), msz * sizeof(TC))
-        __copy<TC>(msz, pd, nIncr, this->get(), this->incr());
+#endif
+        cvm_copy<TC>(msz, pd, nIncr, this->get(), this->incr());
     }
 
 /**
@@ -1889,14 +1855,16 @@ prints
         mpf(nullptr)
 #endif
     {
+#if defined(CVM_DEBUG)
         CVM_ASSERT(this->get(), msz * sizeof(TC))
-        __copy<TC>(msz, begin, 1, this->get(), this->incr());
+#endif
+        cvm_copy<TC>(msz, begin, 1, this->get(), this->incr());
     }
 
 /**
 @brief Copy constructor
 
-Creates deep copy of other array
+Creates deep copy of another array
 \par Example:
 \code
 using namespace cvm;
@@ -1921,8 +1889,10 @@ prints
         mpf(nullptr)
 #endif
     {
-        this->_assign(a.get(), a.incr());
+        this->_assign(a.get(), a.incr());  // NOLINT
+#if defined(CVM_DEBUG)
         CVM_ASSERT(this->get(), msz * sizeof(TC))
+#endif
     }
 
 /**
@@ -1952,7 +1922,9 @@ destroyed but rather moved to newly created object <tt>a</tt>.
 #endif
     {
         _move(std::move(a));
+#if defined(CVM_DEBUG)
         CVM_ASSERT(this->get(), msz * sizeof(TC))
+#endif
     }
 
 /**
@@ -1978,7 +1950,9 @@ prints
 */
     basic_array& operator = (const basic_array& a) {  // NOLINT
         if (this->_pd() != a._pd()) {
+#if defined(CVM_DEBUG)
             _check_ne(CVM_SIZESMISMATCH, a.size(), this->size());
+#endif
             this->_assign(a.get(), a.incr());
         }
         return *this;
@@ -2000,7 +1974,9 @@ destroyed but rather moved to a calling object <tt>a</tt>.
     basic_array& operator = (basic_array&& a) noexcept {
         _check_ne(CVM_SIZESMISMATCH, a.size(), this->size());
         _move(std::move(a));
+#if defined(CVM_DEBUG)
         CVM_ASSERT(this->get(), msz * sizeof(TC))
+#endif
         return *this;
     }
 
@@ -2047,7 +2023,7 @@ using namespace cvm;
 std::cout.setf(std::ios::scientific | std::ios::left);
 std::cout.precision(2);
 
-void cprint(const std::complex<double>* p, int size) { 
+void cprint(const std::complex<double>* p, int size) {
     for (int i = 0; i < size; ++i)
         std::cout << p[i] << " ";
     std::cout << std::endl;
@@ -2087,7 +2063,7 @@ using namespace cvm;
 std::cout.setf(std::ios::scientific | std::ios::left);
 std::cout.precision(2);
 
-void cprint(const std::complex<double>* p, int size) { 
+void cprint(const std::complex<double>* p, int size) {
     for (int i = 0; i < size; ++i)
         std::cout << p[i] << " ";
     std::cout << std::endl;
@@ -2128,7 +2104,7 @@ using namespace cvm;
 std::cout.setf(std::ios::scientific | std::ios::left);
 std::cout.precision(2);
 
-void cprint(const std::complex<double>* p, int size) { 
+void cprint(const std::complex<double>* p, int size) {
     for (int i = 0; i < size; ++i)
         std::cout << p[i] << " ";
     std::cout << std::endl;
@@ -2149,7 +2125,7 @@ prints
 @see get()
 @return TC* Pointer to internal data array.
 */
-    operator TC* () {
+    operator TC* () {  // NOLINT
         return this->get();
     }
 
@@ -2164,7 +2140,7 @@ using namespace cvm;
 std::cout.setf(std::ios::scientific | std::ios::left);
 std::cout.precision(2);
 
-void cprint(const std::complex<double>* p, int size) { 
+void cprint(const std::complex<double>* p, int size) {
     for (int i = 0; i < size; ++i)
         std::cout << p[i] << " ";
     std::cout << std::endl;
@@ -2185,7 +2161,7 @@ prints
 @see get() const
 @return const TC*
 */
-    operator const TC* () const {
+    operator const TC* () const {  // NOLINT
         return this->get();
     }
 
@@ -2219,7 +2195,7 @@ prints
 @param[in] n Index of element to return reference to.
 @return TC&
 */
-    TC& operator () (tint n) {
+    TC& operator () (tint n) {  // NOLINT
         return this->at(static_cast<size_type>(n));
     }
 
@@ -2253,7 +2229,7 @@ prints
 @param[in] n Index of element to return value for.
 @return TC
 */
-    TC operator () (tint n) const {
+    TC operator () (tint n) const {  // NOLINT
         return this->at(static_cast<size_type>(n));
     }
 
@@ -2287,7 +2263,7 @@ prints
 @param[in] n Index of element to return reference to.
 @return TC&
 */
-    TC& operator [] (tint n) {
+    TC& operator [] (tint n) {  // NOLINT
         return this->at(static_cast<size_type>(n));
     }
 
@@ -2321,7 +2297,7 @@ prints
 @param[in] n Index of element to return value for.
 @return TC&
 */
-    TC operator [] (tint n) const {
+    TC operator [] (tint n) const {  // NOLINT
         return this->at(static_cast<size_type>(n));
     }
 
@@ -2347,7 +2323,7 @@ prints
 @see operator=()
 @return Reference to changed calling array.
 */
-    basic_array& assign(const TC* p) {
+    basic_array& assign(const TC* p) {  // NOLINT
         this->_assign(p, 1);
         return *this;
     }
@@ -2371,7 +2347,7 @@ prints
 @param[in] x Value to set to.
 @return Reference to changed calling array.
 */
-    basic_array& set(TC x) {
+    basic_array& set(TC x) {  // NOLINT
         this->_set(x);
         return *this;
     }
@@ -2406,7 +2382,7 @@ prints
 @param[in] nNewSize New size.
 @return Reference to changed calling array.
 */
-    basic_array& resize(tint nNewSize) {
+    basic_array& resize(tint nNewSize) {  // NOLINT
         this->_resize(nNewSize);
         return *this;
     }
@@ -2535,7 +2511,7 @@ prints
 @return \ref treal Norm value
 */
     [[nodiscard]] virtual TR norm() const {
-        return __norm<TR,TC>(this->get(), this->size(), this->incr());
+        return cvm_norm<TR,TC>(this->get(), this->size(), this->incr());
     }
 
 /**
@@ -2572,7 +2548,9 @@ prints
 @return \ref treal Norm value
 */
     [[nodiscard]] virtual TR norminf() const {
+#if defined(CVM_DEBUG)
         CVM_ASSERT(this->get(), this->_indofmax() * this->incr() * sizeof(TC))
+#endif
         return std::abs(this->get()[this->_indofmax() * this->incr()]);
     }
 
@@ -2673,7 +2651,7 @@ prints
     }
 
     // this = this / d for real only
-    void _div(TR d) {
+    void _div(TR d) {  // NOLINT
         const TR one(1.);
         if (std::abs(d) <= basic_cvmMachMin<TR>()) {
             throw cvmexception(CVM_DIVISIONBYZERO);
@@ -2726,20 +2704,33 @@ prints
     //! (STL) const reference to last element
     [[nodiscard]] const_reference back()  const { return *(end() - 1);}
 
+    //! (STL) pointer to data
+    [[nodiscard]] TC* data() noexcept {
+        return this->get();
+    }
+    //! (STL) pointer to const data
+    [[nodiscard]] const TC* data() const noexcept {
+        return this->get();
+    }
+
     //! (STL) assigns given value to n-th element (0-based)
     void assign(size_type n, const TC& val) {
+#if defined(CVM_DEBUG)
         _check_gt(CVM_INDEX_GT, n, static_cast<size_type>(this->size()));
         CVM_ASSERT(this->get(), this->size() * sizeof(TC))
+#endif
         for (tint i = 0; i < (tint)n; ++i) {
             this->get()[i] = val;
         }
     }
 
     //! (STL) assigns begin-end iteartor range to array
-    void assign(const_iterator begin, const_iterator end) {
+    void assign(const_iterator begin, const_iterator end) {  // NOLINT
         const tint n = end - begin;
+#if defined(CVM_DEBUG)
         _check_gt(CVM_INDEX_GT, n, this->size());
         CVM_ASSERT(this->get(), this->size() * sizeof(TC))
+#endif
         for (tint i = 0; i < n; ++i) {
             this->get()[i] = *(begin + i);
         }
@@ -2751,22 +2742,28 @@ prints
     }
 
     //! (STL) swaps array values, throws \ref cvmexception if sizes are different
-    void swap(basic_array& v) {
+    void swap(basic_array& v) noexcept {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
-        __swap<TC>(this->size(), this->get(), this->incr(), v.get(), v.incr());
+#endif
+        cvm_swap<TC>(this->size(), this->get(), this->incr(), v.get(), v.incr());
     }
 
     //! (STL) returns a reference to n-th element of an array (0-based), throws \ref cvmexception if n is out of boundaries
     reference at(size_type n) {
+#if defined(CVM_DEBUG)
         _check_ge(CVM_INDEX_GE, n, static_cast<size_type>(this->size()));
         CVM_ASSERT(this->get(), (n + 1) * sizeof(TC))
+#endif
         return this->get()[n * this->incr()];
     }
 
     //! (STL) returns const reference to n-th element of an array (0-based), throws \ref cvmexception if n is out of boundaries
     [[nodiscard]] const_reference at(size_type n) const {
+#if defined(CVM_DEBUG)
         _check_ge(CVM_INDEX_GE, n, static_cast<size_type>(this->size()));
         CVM_ASSERT(this->get(), (n + 1) * sizeof(TC))
+#endif
         return this->get()[n * this->incr()];
     }
 
@@ -2868,8 +2865,10 @@ prints
 */
     iterator insert(iterator position, const TC& x) {
         const tint n = tint(position - this->begin());
+#if defined(CVM_DEBUG)
         _check_lt_gt(CVM_OUTOFRANGE_LTGT, n, tint(), this->size());
         CVM_ASSERT(this->get(), this->size() * sizeof(TC))
+#endif
         this->_resize(this->size() + 1);
         for (tint i = this->size() - 1; i > n; --i) {
             this->get()[i] = this->get()[i - 1];
@@ -2913,9 +2912,10 @@ prints
 */
     iterator erase(iterator position) {
         const tint n = tint(position - this->begin());
+#if defined(CVM_DEBUG)
         _check_lt_gt(CVM_OUTOFRANGE_LTGT, n, tint(), this->size());
-
         CVM_ASSERT(this->get(), this->size() * sizeof(TC))
+#endif
         for (tint i = n; i < this->size() - 1; ++i) {
             this->get()[i] = this->get()[i + 1];
         }
@@ -2996,7 +2996,9 @@ protected:
 #endif
         this->msz = a.size();
         this->mincr = 1;
+#if defined(CVM_DEBUG)
         CVM_ASSERT(this->get(), ((this->size() - 1) * this->incr() + 1) * sizeof(TC))
+#endif
     }
 
     void _resize(tint nNewSize) {
@@ -3007,7 +3009,7 @@ protected:
             if (nNewSize > this->size()) cvmZeroMemory<TC>(pd, nNewSize);
             const tint nMinSize = _cvm_min<tint>(nNewSize, this->size());
             if (nMinSize > 0 && !is_empty) {
-                __copy<TC>(nMinSize, this->get(), this->incr(), pd, 1);
+                cvm_copy<TC>(nMinSize, this->get(), this->incr(), pd, 1);
             }
 #ifdef CVM_USE_POOL_MANAGER
             cvmFree<TC>(this->mpd);
@@ -3018,35 +3020,39 @@ protected:
 #endif
             this->msz = nNewSize;
             this->mincr = 1;
+#if defined(CVM_DEBUG)
             CVM_ASSERT(this->get(), ((this->size() - 1) * this->incr() + 1) * sizeof(TC))
+#endif
         }
     }
 
     [[nodiscard]] bool _is_empty() const {
 #ifdef CVM_USE_POOL_MANAGER
-            return this->mpd == nullptr;
+        return this->mpd == nullptr;
 #else
-            return this->mpf == nullptr && this->mp.get() == nullptr;
+        return this->mpf == nullptr && this->mp.get() == nullptr;
 #endif
     }
 
     virtual void _scalr(TR d) {
-        __scal<TR,TC>(this->get(), this->size(), this->incr(), d);
+        cvm_scal<TR,TC>(this->get(), this->size(), this->incr(), d);
     }
 
     // index of max module, undefined for matrices
     [[nodiscard]] virtual tint _indofmax() const {
-        return __idamax<TC>(this->get(), this->size(), this->incr());
+        return cvm_idamax<TC>(this->get(), this->size(), this->incr());
     }
 
     // index of min module, undefined for matrices
     [[nodiscard]] virtual tint _indofmin() const {
-        return __idamin<TC>(this->get(), this->size(), this->incr());
+        return cvm_idamin<TC>(this->get(), this->size(), this->incr());
     }
 
     // fills the content
     virtual void _set(TC d) {
+#if defined(CVM_DEBUG)
         CVM_ASSERT(this->get(), ((this->size() - 1) * this->incr() + 1) * sizeof(TC))
+#endif
         const tint nSize = this->size() * this->incr();
         for (tint i = 0; i < nSize; i += this->incr()) {
             this->get()[i] = d;
@@ -3055,13 +3061,13 @@ protected:
 
     virtual void _assign(const TC* pd, tint nIncr) {
         if (this->get() != pd) {
-            __copy<TC>(this->size(), pd, nIncr, this->get(), this->incr());
+            cvm_copy<TC>(this->size(), pd, nIncr, this->get(), this->incr());
         }
     }
 
     virtual void _assign_shifted(TC* pDshifted, const TC* pd, tint nSize, tint nIncr, tint) {
         if (pDshifted != pd) {
-            __copy<TC>(nSize, pd, nIncr, pDshifted, this->incr());
+            cvm_copy<TC>(nSize, pd, nIncr, pDshifted, this->incr());
         }
     }
 //! @endcond
@@ -3141,7 +3147,7 @@ class basic_rvector : public basic_array<TR,TR>
     using BaseArray = basic_array<TR,TR>;  //!< base class
 
 public:
-    
+
 /**
 @brief Default constructor
 
@@ -3396,7 +3402,7 @@ prints
 */
     basic_rvector(const basic_rvector& v)
       : BaseArray(v.size(), false) {
-        __copy<TR>(this->size(), v, v.incr(), this->get(), this->incr());
+        cvm_copy<TR>(this->size(), v, v.incr(), this->get(), this->incr());
     }
 
 /**
@@ -3439,14 +3445,16 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& operator = (const basic_rvector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
+#endif
         this->_assign(v, v.incr());
         return *this;
     }
 
-/**
-\copydoc basic_array::operator = (basic_array&& a)
-*/
+
+// NOLINTNEXTLINE
+//! \copydoc basic_array::operator = (basic_array&& a)
     basic_rvector& operator = (basic_rvector&& a)  noexcept {
         // size check is in BasicArray
         BaseArray::operator = (std::move(a));
@@ -3521,7 +3529,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& assign(tint n, const TR* pd, tint nIncr = 1) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, n, tint(), this->size());
+#endif
         this->_assign_shifted(this->get() + this->incr() * n, pd, this->size() - n, nIncr, 0);
         return *this;
     }
@@ -3560,7 +3570,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& assign(tint n, const TR* pd, tint nSize, tint nIncr) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, n, tint(), this->size());
+#endif
         this->_assign_shifted(this->get() + this->incr() * n, pd, _cvm_min<tint>(nSize, this->size() - n), nIncr, 0);
         return *this;
     }
@@ -3596,7 +3608,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& assign(tint n, const basic_rvector& v) {
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, v.size() + n, this->size());
+#endif
         return assign(n, v, v.size(), v.incr());
     }
 
@@ -3623,7 +3637,7 @@ prints
 @param[in] d Value to set to.
 @return Reference to changed calling vector.
 */
-    basic_rvector& set(TR d) {
+    basic_rvector& set(TR d) {  // NOLINT
         this->_set(d);
         return *this;
     }
@@ -3665,7 +3679,7 @@ prints
 @param[in] nNewSize New size.
 @return Reference to changed calling vector.
 */
-    basic_rvector& resize(tint nNewSize) {
+    basic_rvector& resize(tint nNewSize) {  // NOLINT
         this->_resize(nNewSize);
         return *this;
     }
@@ -3775,7 +3789,7 @@ prints
 */
     basic_rvector& operator << (const basic_rvector& v) {
         this->_replace(v);
-        __copy<TR>(this->size(), v.get(), v.incr(), this->get(), this->incr());
+        cvm_copy<TR>(this->size(), v.get(), v.incr(), this->get(), this->incr());
         return *this;
     }
 
@@ -3817,9 +3831,11 @@ prints
 @return Sum of vectors.
 */
     basic_rvector operator + (const basic_rvector& v) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
+#endif
         basic_rvector vSum(*this);
-        __add<TR>(vSum.get(), vSum.size(), vSum.incr(), v._pd(), v.incr());
+        cvm_add<TR>(vSum.get(), vSum.size(), vSum.incr(), v._pd(), v.incr());
         return vSum;
     }
 
@@ -3860,9 +3876,11 @@ prints
 @return Difference of vectors.
 */
     basic_rvector operator - (const basic_rvector& v) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
+#endif
         basic_rvector vDiff(*this);
-        __subtract<TR>(vDiff.get(), vDiff.size(), vDiff.incr(), v._pd(), v.incr());
+        cvm_subtract<TR>(vDiff.get(), vDiff.size(), vDiff.incr(), v._pd(), v.incr());
         return vDiff;
     }
 
@@ -3904,8 +3922,10 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& sum(const basic_rvector& v1, const basic_rvector& v2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v1.size(), this->size());
         _check_ne(CVM_SIZESMISMATCH, v2.size(), this->size());
+#endif
         _sum<TR,TR>(this->get(), this->size(), this->incr(), v1, v1.incr(), v2, v2.incr());
         return *this;
     }
@@ -3948,8 +3968,10 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& diff(const basic_rvector& v1, const basic_rvector& v2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v1.size(), this->size());
         _check_ne(CVM_SIZESMISMATCH, v2.size(), this->size());
+#endif
         _diff<TR,TR>(this->get(), this->size(), this->incr(), v1, v1.incr(), v2, v2.incr());
         return *this;
     }
@@ -3994,7 +4016,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& operator += (const basic_rvector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
+#endif
         _incr<TR,TR>(this->get(), this->size(), this->incr(), v, v.incr());
         return *this;
     }
@@ -4039,7 +4063,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& operator -= (const basic_rvector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
+#endif
         _decr<TR,TR>(this->get(), this->size(), this->incr(), v, v.incr());
         return *this;
     }
@@ -4273,8 +4299,10 @@ prints
 @return TR Scalar product as \ref treal.
 */
     TR operator * (const basic_rvector& v) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
-        return __dot<TR>(this->get(), this->size(), this->incr(), v.get(), v.incr());
+#endif
+        return cvm_dot<TR>(this->get(), this->size(), this->incr(), v.get(), v.incr());
     }
 
 /**
@@ -4311,7 +4339,9 @@ prints
 @return Result object.
 */
     basic_rvector operator * (const basic_rmatrix<TR>& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, m.msize(), this->size());
+#endif
         basic_rvector vRes(m.nsize());
         m._multiply(vRes, *this, true);
         return vRes;
@@ -4349,8 +4379,10 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& mult(const basic_rvector& v, const basic_rmatrix<TR>& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, m.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, m.msize(), v.size());
+#endif
         m._multiply(*this, v, true);
         return *this;
     }
@@ -4387,8 +4419,10 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& mult(const basic_rmatrix<TR>& m, const basic_rvector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, m.msize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, m.nsize(), v.size());
+#endif
         m._multiply(*this, v, false);
         return *this;
     }
@@ -4439,7 +4473,7 @@ prints
     [[nodiscard]] basic_rmatrix<TR> rank1update(const basic_rvector& v) const {
         basic_rmatrix<TR> mRes(this->size(), v.size());
         const TR one(1.);
-        __ger<TR,basic_rmatrix<TR>, basic_rvector>(mRes, *this, v, one);
+        cvm_ger<TR,basic_rmatrix<TR>, basic_rvector>(mRes, *this, v, one);
         return mRes;
     }
 
@@ -4786,9 +4820,11 @@ prints
     basic_rvector& solve_lu(const basic_srmatrix<TR>& mA,
                             const basic_srmatrix<TR>& mLU, const tint* pPivots,
                             const basic_rvector& vB, TR& dErr) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), vB.size());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mLU.msize());
+#endif
         mA._solve(vB, *this, dErr, mLU, pPivots, 0);
         return *this;
     }
@@ -4912,13 +4948,15 @@ prints
     basic_rvector& gels(bool transpose,
                         const basic_rmatrix<TR>& mA, const basic_rvector& vB,
                         TR& dErr) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, vB.size(), transpose ? mA.nsize() : mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), transpose ? mA.msize() : mA.nsize());
+#endif
         basic_rmatrix<TR> mA2(mA);  // this algorithm overrides A
         basic_rmatrix<TR> mB(vB, vB.size(), 1);
         basic_rmatrix<TR> mX;
         basic_rvector vErr(1);
-        __gels(transpose, mA2, mB, mX, vErr);
+        cvm_gels(transpose, mA2, mB, mX, vErr);
         dErr = vErr(0);
         *this = mX(0);
         return *this;
@@ -4973,12 +5011,14 @@ prints
     basic_rvector& gelsy(const basic_rmatrix<TR>& mA,
                          const basic_rvector& vB, tint& rank,
                          TR tol = basic_cvmMachSp<TR>()) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, vB.size(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.nsize());
+#endif
         basic_rmatrix<TR> mA2(mA);  // this algorithm overrides A
         basic_rmatrix<TR> mB(vB, vB.size(), 1);
         basic_rmatrix<TR> mX;
-        __gelsy(mA2, mB, mX, tol, rank);
+        cvm_gelsy(mA2, mB, mX, tol, rank);
         *this = mX(0);
         return *this;
     }
@@ -5495,8 +5535,10 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& eig(const basic_srsmatrix<TR>& mA) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.nsize());
-        __eig<basic_rvector, basic_srsmatrix<TR>, basic_srmatrix<TR>> (*this, mA, nullptr, true);
+#endif
+        cvm_eig<basic_rvector, basic_srsmatrix<TR>, basic_srmatrix<TR>> (*this, mA, nullptr, true);
         return *this;
     }
 
@@ -5575,9 +5617,11 @@ prints
 */
     basic_rvector& eig(const basic_srsmatrix<TR>& mA,
                        basic_srmatrix<TR>& mEigVect) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), mEigVect.nsize());
-        __eig<basic_rvector, basic_srsmatrix<TR>, basic_srmatrix<TR>> (*this, mA, &mEigVect, true);
+#endif
+        cvm_eig<basic_rvector, basic_srsmatrix<TR>, basic_srmatrix<TR>> (*this, mA, &mEigVect, true);
         return *this;
     }
 
@@ -5654,9 +5698,10 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& eig(const basic_schmatrix<TR,TC>& mA) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.nsize());
-        __eig<basic_rvector, basic_schmatrix<TR,TC>,
-            basic_scmatrix<TR,TC>> (*this, mA, nullptr, true);
+#endif
+        cvm_eig<basic_rvector, basic_schmatrix<TR,TC>, basic_scmatrix<TR,TC>> (*this, mA, nullptr, true);
         return *this;
     }
 
@@ -5735,10 +5780,11 @@ prints
 */
     basic_rvector& eig(const basic_schmatrix<TR,TC>& mA,
                        basic_scmatrix<TR,TC>& mEigVect) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), mEigVect.nsize());
-        __eig<basic_rvector, basic_schmatrix<TR,TC>,
-            basic_scmatrix<TR,TC>> (*this, mA, &mEigVect, true);
+#endif
+        cvm_eig<basic_rvector, basic_schmatrix<TR,TC>, basic_scmatrix<TR,TC>> (*this, mA, &mEigVect, true);
         return *this;
     }
 
@@ -5798,8 +5844,10 @@ prints
 */
     basic_rvector& gemv(bool bLeft, const basic_rmatrix<TR>& m, TR dAlpha,
                         const basic_rvector& v, TR dBeta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), bLeft ? m.nsize() : m.msize());
         _check_ne(CVM_SIZESMISMATCH, v.size(), bLeft ? m.msize() : m.nsize());
+#endif
         m._gemv(bLeft, dAlpha, v, dBeta, *this);
         return *this;
     }
@@ -5858,8 +5906,10 @@ prints
 */
     basic_rvector& gbmv(bool bLeft, const basic_srbmatrix<TR>& m, TR dAlpha,
                         const basic_rvector& v, TR dBeta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), bLeft ? m.nsize() : m.msize());
         _check_ne(CVM_SIZESMISMATCH, v.size(), bLeft ? m.msize() : m.nsize());
+#endif
         m._gbmv(bLeft, dAlpha, v, dBeta, *this);
         return *this;
     }
@@ -5888,7 +5938,7 @@ prints
 @return Reference to changed calling vector.
 */
     basic_rvector& randomize(TR dFrom, TR dTo) {
-        __randomize<TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
+        cvm_randomize<TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
         return *this;
     }
 
@@ -5896,15 +5946,19 @@ private:
 //! @cond INTERNAL
     basic_rvector& _solve_helper(const basic_srmatrix<TR>& mA, const basic_rvector& vB,
                                  TR& dErr, int transp_mode) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, vB.size(), mA.msize());
+#endif
         mA._solve(vB, *this, dErr, nullptr, nullptr, transp_mode);
         return *this;
     }
 
     [[nodiscard]] basic_rvector _operator_solve_helper(const basic_srmatrix<TR>& mA,
                                                        int transp_mode) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.msize());
+#endif
         TR dErr(0.);
         basic_rvector vX(this->size());
         mA._solve(*this, vX, dErr, nullptr, nullptr, transp_mode);
@@ -5914,17 +5968,19 @@ private:
     // helper for svd and divide&conquer methods
     void _gels_sd(bool svd, const basic_rmatrix<TR>& mA, const basic_rvector& vB,
                   basic_rvector<TR>& sv, tint& rank, TR tol) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, vB.size(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, sv.size(), _cvm_min<tint>(mA.msize(), mA.nsize()));
+#endif
         basic_rmatrix<TR> mA2(mA);  // this algorithm overrides A
         basic_rmatrix<TR> mB(vB, vB.size(), 1);
         basic_rmatrix<TR> mX;
         basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
-            __gelss(mA2, mB, mX, tol, sv1, rank);
+            cvm_gelss(mA2, mB, mX, tol, sv1, rank);
         } else {
-            __gelsd(mA2, mB, mX, tol, sv1, rank);
+            cvm_gelsd(mA2, mB, mX, tol, sv1, rank);
         }
         sv = sv1;
         *this = mX(0);
@@ -6203,7 +6259,7 @@ prints
 */
     basic_cvector(const basic_cvector& v)
       : BaseArray(v.size(), false) {
-        __copy<TC>(this->size(), v, v.incr(), this->get(), this->incr());
+        cvm_copy<TC>(this->size(), v, v.incr(), this->get(), this->incr());
     }
 
 /**
@@ -6268,7 +6324,7 @@ prints
 */
     basic_cvector(const TR* pRe, const TR* pIm, tint nSize, tint nIncrRe = 1, tint nIncrIm = 1)
       : BaseArray(nSize, pRe == nullptr || pIm == nullptr) {
-        __copy2<TR,TC>(this->get(), this->size(), this->incr(), pRe, pIm, nIncrRe, nIncrIm);
+        cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), pRe, pIm, nIncrRe, nIncrIm);
     }
 
 /**
@@ -6306,8 +6362,10 @@ prints
 */
     basic_cvector(const basic_rvector<TR>& vRe, const basic_rvector<TR>& vIm)
       : BaseArray(vRe.size(), false) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, vRe.size(), vIm.size());
-        __copy2<TR,TC>(this->get(), this->size(), this->incr(), vRe, vIm, vRe.incr(), vIm.incr());
+#endif
+        cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), vRe, vIm, vRe.incr(), vIm.incr());
     }
 
 /**
@@ -6344,8 +6402,12 @@ prints
 */
     basic_cvector(const TR* pA, tint nSize, bool bRealPart = true, tint nIncr = 1)
       : BaseArray(nSize) {
-        if (bRealPart) __copy2<TR,TC>(this->get(), this->size(), this->incr(), pA, nullptr, nIncr, 0);
-        else __copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, pA, 0, nIncr);
+        if (bRealPart) {
+            cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), pA, nullptr, nIncr, 0);
+        }
+        else {
+            cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, pA, 0, nIncr);
+        }
     }
 
 /**
@@ -6381,10 +6443,10 @@ prints
     explicit basic_cvector(const basic_rvector<TR>& v, bool bRealPart = true)
       : BaseArray(v.size()) {
         if (bRealPart) {
-            __copy2<TR,TC>(this->get(), this->size(), this->incr(), v, nullptr, v.incr(), 0);
+            cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), v, nullptr, v.incr(), 0);
         }
         else {
-            __copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, v, 0, v.incr());
+            cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, v, 0, v.incr());
         }
     }
 
@@ -6479,7 +6541,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& operator = (const basic_cvector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), v.size());
+#endif
         this->_assign(v, v.incr());
         return *this;
     }
@@ -6568,7 +6632,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& assign(tint n, const TC* pd, tint nIncr = 1) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, n, tint(), this->size());
+#endif
         this->_assign_shifted(this->get() + this->incr() * n, pd, this->size() - n, nIncr, 0);
         return *this;
     }
@@ -6601,7 +6667,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& assign(tint n, const TC* pd, tint nSize, tint nIncr) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, n, tint(), this->size());
+#endif
         this->_assign_shifted(this->get() + this->incr() * n, pd,
                               _cvm_min<tint>(nSize, this->size() - n), nIncr, 0);
         return *this;
@@ -6635,7 +6703,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& assign(tint n, const basic_cvector& v) {
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, v.size() + n, this->size());
+#endif
         return assign(n, v, v.size(), v.incr());
     }
 
@@ -6662,7 +6732,7 @@ prints
 @param[in] c Value to set to.
 @return Reference to changed calling vector.
 */
-    basic_cvector& set(TC c) {
+    basic_cvector& set(TC c) {  // NOLINT
         this->_set(c);
         return *this;
     }
@@ -6694,8 +6764,10 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& assign_real(const basic_rvector<TR>& vRe) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, vRe.size(), this->size());
-        __copy_real<TR,TC>(this->get(), this->size(), this->incr(), vRe, vRe.incr());
+#endif
+        cvm_copy_real<TR,TC>(this->get(), this->size(), this->incr(), vRe, vRe.incr());
         return *this;
     }
 
@@ -6726,8 +6798,10 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& assign_imag(const basic_rvector<TR>& vIm) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, vIm.size(), this->size());
-        __copy_imag<TR,TC>(this->get(), this->size(), this->incr(), vIm, vIm.incr());
+#endif
+        cvm_copy_imag<TR,TC>(this->get(), this->size(), this->incr(), vIm, vIm.incr());
         return *this;
     }
 
@@ -6820,7 +6894,7 @@ prints
 @param[in] nNewSize New size.
 @return Reference to changed calling vector.
 */
-    basic_cvector& resize(tint nNewSize) {
+    basic_cvector& resize(tint nNewSize) {  // NOLINT
         this->_resize(nNewSize);
         return *this;
     }
@@ -6927,7 +7001,7 @@ prints
 */
     basic_cvector& operator << (const basic_cvector& v) {
         this->_replace(v);
-        __copy<TC>(this->size(), v.get(), v.incr(), this->get(), this->incr());
+        cvm_copy<TC>(this->size(), v.get(), v.incr(), this->get(), this->incr());
         return *this;
     }
 
@@ -6968,9 +7042,11 @@ prints
 @return Sum of vectors.
 */
     basic_cvector operator + (const basic_cvector& v) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
+#endif
         basic_cvector vSum(*this);
-        __add<TC>(vSum.get(), vSum.size(), vSum.incr(), v._pd(), v.incr());
+        cvm_add<TC>(vSum.get(), vSum.size(), vSum.incr(), v._pd(), v.incr());
         return vSum;
     }
 
@@ -7010,9 +7086,11 @@ prints
 @return Difference of vectors.
 */
     basic_cvector operator - (const basic_cvector& v) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
+#endif
         basic_cvector vDiff(*this);
-        __subtract<TC>(vDiff.get(), vDiff.size(), vDiff.incr(), v._pd(), v.incr());
+        cvm_subtract<TC>(vDiff.get(), vDiff.size(), vDiff.incr(), v._pd(), v.incr());
         return vDiff;
     }
 
@@ -7054,8 +7132,10 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& sum(const basic_cvector& v1, const basic_cvector& v2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v1.size(), this->size());
         _check_ne(CVM_SIZESMISMATCH, v2.size(), this->size());
+#endif
         _sum<TR,TC>(this->get(), this->size(), this->incr(), v1, v1.incr(), v2, v2.incr());
         return *this;
     }
@@ -7098,8 +7178,10 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& diff(const basic_cvector& v1, const basic_cvector& v2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v1.size(), this->size());
         _check_ne(CVM_SIZESMISMATCH, v2.size(), this->size());
+#endif
         _diff<TR,TC>(this->get(), this->size(), this->incr(), v1, v1.incr(), v2, v2.incr());
         return *this;
     }
@@ -7144,7 +7226,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& operator += (const basic_cvector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
+#endif
         _incr<TR,TC>(this->get(), this->size(), this->incr(), v, v.incr());
         return *this;
     }
@@ -7189,7 +7273,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& operator -= (const basic_cvector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
+#endif
         _decr<TR,TC>(this->get(), this->size(), this->incr(), v, v.incr());
         return *this;
     }
@@ -7539,7 +7625,7 @@ prints
 */
     basic_cvector operator ~ () const {
         basic_cvector vRes(*this);
-        __conj<TC>(vRes.get(), vRes.size(), vRes.incr());
+        cvm_conj<TC>(vRes.get(), vRes.size(), vRes.incr());
         return vRes;
     }
 
@@ -7572,9 +7658,11 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& conj(const basic_cvector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
+#endif
         this->_assign(v, v.incr());
-        __conj<TC>(this->get(), this->size(), this->incr());
+        cvm_conj<TC>(this->get(), this->size(), this->incr());
         return *this;
     }
 
@@ -7606,7 +7694,7 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& conj() {
-        __conj<TC>(this->get(), this->size(), this->incr());
+        cvm_conj<TC>(this->get(), this->size(), this->incr());
         return *this;
     }
 
@@ -7636,8 +7724,10 @@ prints
 @return TC Scalar product as \ref tcomplex.
 */
     TC operator * (const basic_cvector& v) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
-        return __dotu<TC>(this->get(), this->size(), this->incr(), v.get(), v.incr());
+#endif
+        return cvm_dotu<TC>(this->get(), this->size(), this->incr(), v.get(), v.incr());
     }
 
 /**
@@ -7668,8 +7758,10 @@ prints
 @return TC Scalar product as \ref tcomplex.
 */
     TC operator % (const basic_cvector& v) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), this->size());
-        return __dotc<TC>(this->get(), this->size(), this->incr(), v.get(), v.incr());
+#endif
+        return cvm_dotc<TC>(this->get(), this->size(), this->incr(), v.get(), v.incr());
     }
 
 /**
@@ -7707,7 +7799,9 @@ prints
 @return Result object.
 */
     basic_cvector operator * (const basic_cmatrix<TR,TC>& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, m.msize(), this->size());
+#endif
         basic_cvector vRes(m.nsize());
         m._multiply(vRes, *this, true);
         return vRes;
@@ -7756,8 +7850,10 @@ prints
 */
     basic_cvector& mult(const basic_cvector& v,
                         const basic_cmatrix<TR,TC>& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, m.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, m.msize(), v.size());
+#endif
         m._multiply(*this, v, true);
         return *this;
     }
@@ -7804,8 +7900,10 @@ prints
 */
     basic_cvector& mult(const basic_cmatrix<TR,TC>& m,
                         const basic_cvector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, m.msize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, v.size(), m.nsize());
+#endif
         m._multiply(*this, v, false);
         return *this;
     }
@@ -7856,7 +7954,7 @@ prints
     [[nodiscard]] basic_cmatrix<TR,TC> rank1update_u(const basic_cvector& v) const {
         basic_cmatrix<TR,TC> mRes(this->size(), v.size());
         const TC one(1., 0.);
-        __geru<TC, basic_cmatrix<TR,TC>, basic_cvector>(mRes, *this, v, one);
+        cvm_geru<TC, basic_cmatrix<TR,TC>, basic_cvector>(mRes, *this, v, one);
         return mRes;
     }
 
@@ -7912,7 +8010,7 @@ prints
     [[nodiscard]] basic_cmatrix<TR,TC> rank1update_c(const basic_cvector& v) const {
         basic_cmatrix<TR,TC> mRes(this->size(), v.size());
         const TC one(1., 0.);
-        __gerc<TC, basic_cmatrix<TR,TC>, basic_cvector>(mRes, *this, v, one);
+        cvm_gerc<TC, basic_cmatrix<TR,TC>, basic_cvector>(mRes, *this, v, one);
         return mRes;
     }
 
@@ -8357,9 +8455,11 @@ prints
     basic_cvector& solve_lu(const basic_scmatrix<TR,TC>& mA,
                             const basic_scmatrix<TR,TC>& mLU, const tint* pPivots,
                             const basic_cvector& vB, TR& dErr) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, vB.size(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, mLU.msize(), mA.msize());
+#endif
         mA._solve(vB, *this, dErr, mLU, pPivots, 0);
         return *this;
     }
@@ -8492,13 +8592,15 @@ prints
 */
     basic_cvector& gels(bool conjugate, const basic_cmatrix<TR,TC>& mA, const basic_cvector& vB,
                         TC& cErr) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, vB.size(), conjugate ? mA.nsize() : mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), conjugate ? mA.msize() : mA.nsize());
+#endif
         basic_cmatrix<TR,TC> mA2(mA);  // this algorithm overrides A
         basic_cmatrix<TR,TC> mB(vB, vB.size(), 1);
         basic_cmatrix<TR,TC> mX;
         basic_cvector vErr(1);
-        __gels(conjugate, mA2, mB, mX, vErr);
+        cvm_gels(conjugate, mA2, mB, mX, vErr);
         cErr = vErr(0);
         *this = mX(0);
         return *this;
@@ -8555,12 +8657,14 @@ prints
     basic_cvector& gelsy(const basic_cmatrix<TR,TC>& mA,
                          const basic_cvector& vB, tint& rank,
                          TR tol = basic_cvmMachSp<TR>()) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, vB.size(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), mA.nsize());
+#endif
         basic_cmatrix<TR,TC> mA2(mA);  // this algorithm overrides A
         basic_cmatrix<TR,TC> mB(vB, vB.size(), 1);
         basic_cmatrix<TR,TC> mX;
-        __gelsy(mA2, mB, mX, tol, rank);
+        cvm_gelsy(mA2, mB, mX, tol, rank);
         *this = mX(0);
         return *this;
     }
@@ -8734,7 +8838,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& eig(const basic_srmatrix<TR>& mA) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
+#endif
         mA._eig(*this, nullptr, true);
         return *this;
     }
@@ -8815,8 +8921,10 @@ prints
     basic_cvector& eig(const basic_srmatrix<TR>& mA,
                        basic_scmatrix<TR,TC>& mEigVect,
                        bool bRightVect = true) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mEigVect.nsize(), this->size());
+#endif
         mA._eig(*this, &mEigVect, bRightVect);
         return *this;
     }
@@ -8860,7 +8968,9 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& eig(const basic_scmatrix<TR,TC>& mA) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
+#endif
         mA._eig(*this, nullptr, true);
         return *this;
     }
@@ -8933,7 +9043,9 @@ prints
     basic_cvector& eig(const basic_scmatrix<TR,TC>& mA,
                        basic_scmatrix<TR,TC>& mEigVect,
                        bool bRightVect = true) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
+#endif
         mA._eig(*this, &mEigVect, bRightVect);
         return *this;
     }
@@ -8943,8 +9055,8 @@ prints
 
 Solves generalized eigenvalue problem and sets calling complex vector to be equal to generalized eigenvalues
 of real square matrices \c mA and  \c mB.
-A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$, 
-such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$, 
+A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$,
+such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$,
 as there is a reasonable interpretation for \f$\beta =0\f$ and even for both being zero.
 Function returns a reference to the vector changed and throws \ref cvmexception
 in case of inappropriate calling object sizes or in case of convergence error.
@@ -8986,12 +9098,14 @@ prints
     basic_cvector& geneig(const basic_srmatrix<TR>& mA,
                           const basic_srmatrix<TR>& mB,
                           basic_rvector<TR>& vBeta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, vBeta.size(), this->size());
+#endif
         basic_srmatrix<TR> ma(mA);  // overriden below. also, we need to care about band ones
         basic_srmatrix<TR> mb(mB);
-        __ggev<basic_srmatrix<TR>, basic_scmatrix<TR,TC>,
+        cvm_ggev<basic_srmatrix<TR>, basic_scmatrix<TR,TC>,
             basic_rvector<TR>, basic_cvector>(ma, mb, *this, vBeta, nullptr, nullptr);
         return *this;
     }
@@ -9001,8 +9115,8 @@ prints
 
 Solves generalized eigenvalue problem and sets calling complex vector to be equal to generalized eigenvalues
 of real square matrices \c mA and  \c mB.
-A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$, 
-such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$, 
+A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$,
+such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$,
 as there is a reasonable interpretation for \f$\beta =0\f$ and even for both being zero.
 The right generalized eigenvector \f$v_j\f$ corresponding to the generalized eigenvalue \f$\lambda_j\f$ of \f$(A,B)\f$ satisfies
 \f[
@@ -9073,14 +9187,16 @@ prints
                           const basic_srmatrix<TR>& mB, basic_rvector<TR>& vBeta,
                           basic_scmatrix<TR,TC>& mEigVectLeft,
                           basic_scmatrix<TR,TC>& mEigVectRight) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, vBeta.size(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mEigVectLeft.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mEigVectRight.nsize(), this->size());
+#endif
         basic_srmatrix<TR> ma(mA);  // overriden below. also, we need to care about band ones
         basic_srmatrix<TR> mb(mB);
-        __ggev(ma, mb, *this, vBeta, &mEigVectLeft, &mEigVectRight);
+        cvm_ggev(ma, mb, *this, vBeta, &mEigVectLeft, &mEigVectRight);
         return *this;
     }
 
@@ -9089,8 +9205,8 @@ prints
 
 Solves generalized eigenvalue problem and sets calling complex vector to be equal to generalized eigenvalues
 of real square matrices \c mA and  \c mB.
-A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$, 
-such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$, 
+A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$,
+such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$,
 as there is a reasonable interpretation for \f$\beta =0\f$ and even for both being zero.
 The right generalized eigenvector \f$v_j\f$ corresponding to the generalized eigenvalue \f$\lambda_j\f$ of \f$(A,B)\f$ satisfies
 \f[
@@ -9164,13 +9280,15 @@ prints
                           basic_rvector<TR>& vBeta,
                           basic_scmatrix<TR,TC>& mEigVect,
                           bool bRightVect = true) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, vBeta.size(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mEigVect.nsize(), this->size());
+#endif
         basic_srmatrix<TR> ma(mA);  // overriden below. also, we need to care about band ones
         basic_srmatrix<TR> mb(mB);
-        __ggev(ma, mb, *this, vBeta, bRightVect ? nullptr : &mEigVect,
+        cvm_ggev(ma, mb, *this, vBeta, bRightVect ? nullptr : &mEigVect,
                bRightVect ? &mEigVect : nullptr);
         return *this;
     }
@@ -9180,8 +9298,8 @@ prints
 
 Solves generalized eigenvalue problem and sets calling complex vector to be equal to generalized eigenvalues
 of complex square matrices \c mA and  \c mB.
-A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$, 
-such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$, 
+A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$,
+such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$,
 as there is a reasonable interpretation for \f$\beta =0\f$ and even for both being zero.
 Function returns a reference to the vector changed and throws \ref cvmexception
 in case of inappropriate calling object sizes or in case of convergence error.
@@ -9225,12 +9343,14 @@ prints
 */
     basic_cvector& geneig(const basic_scmatrix<TR,TC>& mA, const basic_scmatrix<TR,TC>& mB,
                           basic_cvector& vBeta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, vBeta.size(), this->size());
+#endif
         basic_scmatrix<TR,TC> ma(mA);  // overriden below. also, we need to care about band ones
         basic_scmatrix<TR,TC> mb(mB);
-        __ggev<basic_scmatrix<TR,TC>, basic_scmatrix<TR,TC>, basic_cvector,
+        cvm_ggev<basic_scmatrix<TR,TC>, basic_scmatrix<TR,TC>, basic_cvector,
             basic_cvector>(ma, mb, *this, vBeta, nullptr, nullptr);
         return *this;
     }
@@ -9240,8 +9360,8 @@ prints
 
 Solves generalized eigenvalue problem and sets calling complex vector to be equal to generalized eigenvalues
 of complex square matrices \c mA and  \c mB.
-A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$, 
-such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$, 
+A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$,
+such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$,
 as there is a reasonable interpretation for \f$\beta =0\f$ and even for both being zero.
 The right generalized eigenvector \f$v_j\f$ corresponding to the generalized eigenvalue \f$\lambda_j\f$ of \f$(A,B)\f$ satisfies
 \f[
@@ -9315,14 +9435,16 @@ prints
                           const basic_scmatrix<TR,TC>& mB, basic_cvector& vBeta,
                           basic_scmatrix<TR,TC>& mEigVectLeft,
                           basic_scmatrix<TR,TC>& mEigVectRight) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, vBeta.size(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mEigVectLeft.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mEigVectRight.nsize(), this->size());
+#endif
         basic_scmatrix<TR,TC> ma(mA);  // overriden below. also, we need to care about band ones
         basic_scmatrix<TR,TC> mb(mB);
-        __ggev(ma, mb, *this, vBeta, &mEigVectLeft, &mEigVectRight);
+        cvm_ggev(ma, mb, *this, vBeta, &mEigVectLeft, &mEigVectRight);
         return *this;
     }
 
@@ -9331,8 +9453,8 @@ prints
 
 Solves generalized eigenvalue problem and sets calling complex vector to be equal to generalized eigenvalues
 of complex square matrices \c mA and  \c mB.
-A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$, 
-such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$, 
+A generalized eigenvalue for a pair of matrices \f$(A,B)\f$ is a scalar \f$\lambda\f$ or a ratio \f$\alpha / \beta = \lambda\f$,
+such that \f$A - \lambda B\f$ is singular. It is usually represented as the pair \f$(\alpha, \beta)\f$,
 as there is a reasonable interpretation for \f$\beta =0\f$ and even for both being zero.
 The right generalized eigenvector \f$v_j\f$ corresponding to the generalized eigenvalue \f$\lambda_j\f$ of \f$(A,B)\f$ satisfies
 \f[
@@ -9409,13 +9531,15 @@ prints
                           const basic_scmatrix<TR,TC>& mB, basic_cvector& vBeta,
                           basic_scmatrix<TR,TC>& mEigVect,
                           bool bRightVect = true) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, vBeta.size(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mEigVect.nsize(), this->size());
+#endif
         basic_scmatrix<TR,TC> ma(mA);  // overriden below. also, we need to care about band ones
         basic_scmatrix<TR,TC> mb(mB);
-        __ggev(ma, mb, *this, vBeta, bRightVect ? nullptr : &mEigVect,
+        cvm_ggev(ma, mb, *this, vBeta, bRightVect ? nullptr : &mEigVect,
                bRightVect ? &mEigVect : nullptr);
         return *this;
     }
@@ -9474,8 +9598,10 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& gemv(bool bLeft, const basic_cmatrix<TR,TC>& m, TC dAlpha, const basic_cvector& v, TC dBeta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), bLeft ? m.msize() : m.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), bLeft ? m.nsize() : m.msize());
+#endif
         m._gemv(bLeft, dAlpha, v, dBeta, *this);
         return *this;
     }
@@ -9535,8 +9661,10 @@ prints
 */
     basic_cvector& gbmv(bool bLeft, const basic_scbmatrix<TR,TC>& m, TC dAlpha,
                         const basic_cvector& v, TC dBeta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, v.size(), bLeft ? m.msize() : m.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->size(), bLeft ? m.nsize() : m.msize());
+#endif
         m._gbmv(bLeft, dAlpha, v, dBeta, *this);
         return *this;
     }
@@ -9565,7 +9693,7 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& randomize_real(TR dFrom, TR dTo) {
-        __randomize_real<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
+        cvm_randomize_real<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
         return *this;
     }
 
@@ -9593,13 +9721,13 @@ prints
 @return Reference to changed calling vector.
 */
     basic_cvector& randomize_imag(TR dFrom, TR dTo) {
-        __randomize_imag<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
+        cvm_randomize_imag<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
         return *this;
     }
 
 protected:
 //! @cond INTERNAL
-    void _div(TC d) {
+    void _div(TC d) {  // NOLINT
         if (std::abs(d) <= basic_cvmMachMin<TR>()) {
             throw cvmexception(CVM_DIVISIONBYZERO);
         }
@@ -9608,7 +9736,7 @@ protected:
     }
 
     void _scalc(TC d) {
-        __scal<TC,TC>(this->get(), this->size(), this->incr(), d);
+        cvm_scal<TC,TC>(this->get(), this->size(), this->incr(), d);
     }
 
     void _set_real_number(TR d) {
@@ -9622,15 +9750,19 @@ protected:
 private:
     basic_cvector& _solve_helper(const basic_scmatrix<TR,TC>& mA, const basic_cvector& vB,
                                  TR& dErr, int transp_mode) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), vB.size());
+#endif
         mA._solve(vB, *this, dErr, nullptr, nullptr, transp_mode);
         return *this;
     }
 
     [[nodiscard]] basic_cvector _operator_solve_helper(const basic_scmatrix<TR,TC>& mA,
                                                        int transp_mode) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), this->size());
+#endif
         TR dErr(0.);
         basic_cvector vX(this->size());
         mA._solve(*this, vX, dErr, nullptr, nullptr, transp_mode);
@@ -9641,17 +9773,19 @@ private:
     void _gels_sd(bool svd, const basic_cmatrix<TR,TC>& mA, const basic_cvector& vB,
                   basic_rvector<TR>& sv, tint& rank,
                   TR tol = basic_cvmMachSp<TR>()) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mA.nsize(), this->size());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), vB.size());
         _check_ne(CVM_SIZESMISMATCH, sv.size(), _cvm_min<tint>(mA.msize(), mA.nsize()));
+#endif
         basic_cmatrix<TR,TC> mA2(mA);  // this algorithm overrides A
         basic_cmatrix<TR,TC> mB(vB, vB.size(), 1);
         basic_cmatrix<TR,TC> mX;
         basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
-            __gelss(mA2, mB, mX, tol, sv1, rank);
+            cvm_gelss(mA2, mB, mX, tol, sv1, rank);
         } else {
-            __gelsd(mA2, mB, mX, tol, sv1, rank);
+            cvm_gelsd(mA2, mB, mX, tol, sv1, rank);
         }
         sv = sv1;
         *this = mX(0);
@@ -9755,7 +9889,7 @@ Here \c N is size of an array  \c v passed as the first parameter. Copies all el
         mm(bBeColumn ? v.size() : 1),
         mn(bBeColumn ? 1 : v.size()),
         mld(mm) {
-        __copy<TC>(this->size(), v, v.incr(), this->get(), this->incr());
+        cvm_copy<TC>(this->size(), v, v.incr(), this->get(), this->incr());
     }
 
 /**
@@ -9795,8 +9929,10 @@ destroyed but rather moved to a calling object <tt>a</tt>.
 @param[in] m rvalue reference to other matrix.
 */
     Matrix& operator = (Matrix&& m) noexcept {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, m.msize(), this->msize());
         _check_ne(CVM_SIZESMISMATCH, m.nsize(), this->nsize());
+#endif
         _mmove(std::move(m));
         return *this;
     }
@@ -9988,7 +10124,9 @@ prints
 
             k = j * this->ld();
             for (i = 0; i < this->msize(); ++i) {
+#if defined(CVM_DEBUG)
                 CVM_ASSERT(this->get(), (k + i + 1) * sizeof(TC))
+#endif
                 rSum += std::abs(this->get()[k + i]);
             }
 
@@ -10007,7 +10145,9 @@ prints
             rSum = TR(0.);
 
             for (j = 0; j < this->nsize(); ++j) {
+#if defined(CVM_DEBUG)
                 CVM_ASSERT(this->get(), (j * this->ld() + i + 1) * sizeof(TC))
+#endif
                 rSum += std::abs(this->get()[j * this->ld() + i]);
             }
 
@@ -10036,12 +10176,14 @@ prints
     }
 
     TC* _sub_pointer(tint row, tint col, tint height, tint width) {
+#if defined(CVM_DEBUG)
         _check_lt(CVM_SIZESMISMATCH_LT, row, tint());
         _check_lt(CVM_SIZESMISMATCH_LT, col, tint());
         _check_lt(CVM_SIZESMISMATCH_LT, height, tint());
         _check_lt(CVM_SIZESMISMATCH_LT, width, tint());
         _check_gt(CVM_SIZESMISMATCH_GT, row + height, this->msize());
         _check_gt(CVM_SIZESMISMATCH_GT, col + width, this->nsize());
+#endif
         return _sub_pointer_nocheck(row, col);
     }
 
@@ -10065,9 +10207,9 @@ prints
 
     void _scalr(TR d) override {
         if (this->_continuous()) {
-            __scal<TR,TC>(this->get(), this->size(), this->incr(), d);
+            cvm_scal<TR,TC>(this->get(), this->size(), this->incr(), d);
         } else for (tint i = 0; i < this->nsize(); ++i) {
-            __scal<TR,TC>(this->get() + this->ld() * i, this->msize(), this->incr(), d);
+            cvm_scal<TR,TC>(this->get() + this->ld() * i, this->msize(), this->incr(), d);
         }
     }
 
@@ -10091,8 +10233,8 @@ protected:
                 this->mp = std::move(m.mp);
                 m.msz = m.mm = m.mn = m.mld = 0;
             } else {
-                // *this has foreign array inside or not continuous; no place to move to
-                // i.e. this is the case where we don't even touch m, just copy its content
+                // *this has a foreign array inside or not continuous; no place to move to
+                // i.e., this is the case where we don't even touch m, just copy its content
                 this->_massign(m);
             }
         } else {
@@ -10105,14 +10247,18 @@ protected:
 
     void _diag_helper(tint nDiag, tint& nShift, tint& nSize) const {
         if (nDiag >= 0) {
+#if defined(CVM_DEBUG)
             _check_ge(CVM_INDEX_GE, nDiag, this->nsize());
+#endif
             nShift = nDiag * this->ld();
             nSize = this->nsize() > this->msize() ?
                 (nDiag > this->nsize() - this->msize() ? this->nsize() - nDiag : this->msize()) :
                 this->nsize() - nDiag;
         } else {
             nShift = -nDiag;
+#if defined(CVM_DEBUG)
             _check_ge(CVM_INDEX_GE, nShift, this->msize());
+#endif
             nSize = this->msize() > this->nsize() ?
                 (nShift > this->msize() - this->nsize() ? this->msize() - nShift : this->nsize()) :
                 this->msize() - nShift;
@@ -10121,20 +10267,20 @@ protected:
 
     [[nodiscard]] tint _indofmin() const override {
       this->_check_ld();
-      return __idamin<TC>(this->get(), this->size(), this->incr());
+      return cvm_idamin<TC>(this->get(), this->size(), this->incr());
     }
 
     [[nodiscard]] tint _indofmax() const override {
         this->_check_ld();
-        return __idamax<TC>(this->get(), this->size(), this->incr());
+        return cvm_idamax<TC>(this->get(), this->size(), this->incr());
     }
 
     void _assign(const TC* pd, tint nIncr) override {
         if (this->get() != pd) {
             if (this->_continuous()) {
-                __copy<TC>(this->size(), pd, nIncr, this->get(), this->incr());
+                cvm_copy<TC>(this->size(), pd, nIncr, this->get(), this->incr());
             } else for (tint i = 0; i < this->nsize(); ++i) {
-                __copy<TC>(this->msize(), pd + this->msize() * i * nIncr, nIncr, this->get() + this->ld() * i, this->incr());
+                cvm_copy<TC>(this->msize(), pd + this->msize() * i * nIncr, nIncr, this->get() + this->ld() * i, this->incr());
             }
         }
     }
@@ -10144,13 +10290,15 @@ protected:
                          tint nRows, tint nCols, tint nLD) override {
         if (pDshifted != pd) {
             for (tint i = 0; i < nCols; ++i) {
-                __copy<TC>(nRows, pd + nLD * i, 1, pDshifted + this->ld() * i, this->incr());
+                cvm_copy<TC>(nRows, pd + nLD * i, 1, pDshifted + this->ld() * i, this->incr());
             }
         }
     }
 
     void _set(TC d) override {
+#if defined(CVM_DEBUG)
         CVM_ASSERT(this->get(), this->size() * sizeof(TC))
+#endif
         tint i, j, k;
         for (j = 0; j < this->nsize(); ++j) {
             k = j * this->ld();
@@ -10163,20 +10311,22 @@ protected:
     virtual void _massign(const Matrix& m) {
         if (this->get() != m.get()) {
             if (this->_continuous() && m._continuous()) {
-                __copy<TC>(this->size(), m._pd(), m.incr(), this->get(), this->incr());
+                cvm_copy<TC>(this->size(), m._pd(), m.incr(), this->get(), this->incr());
             } else {
                 const TC* p = m._pd();
                 const tint nLD = m._ldm();
                 for (tint i = 0; i < this->nsize(); ++i) {
-                    __copy<TC>(this->msize(), p + nLD * i, m.incr(), this->get() + this->ld() * i, this->incr());
+                    cvm_copy<TC>(this->msize(), p + nLD * i, m.incr(), this->get() + this->ld() * i, this->incr());
                 }
             }
         }
     }
 
     virtual void _resize2(tint nNewM, tint nNewN) {
+#if defined(CVM_DEBUG)
         _check_lt(CVM_WRONGSIZE_LT, nNewM, tint());
         _check_lt(CVM_WRONGSIZE_LT, nNewN, tint());
+#endif
         const bool is_empty = this->_is_empty();
         if (nNewM != this->msize() || nNewN != this->nsize() || is_empty) {
             if (!is_empty) {
@@ -10189,7 +10339,7 @@ protected:
             const tint nMinN = _cvm_min<tint>(nNewN, this->nsize());
             if (nNewSize > 0 && !is_empty) {
                 for (tint i = 0; i < nMinN; ++i) {
-                    __copy<TC>(nMinM, this->get() + i * this->msize(), this->incr(), pd + i * nNewM, 1);
+                    cvm_copy<TC>(nMinM, this->get() + i * this->msize(), this->incr(), pd + i * nNewM, 1);
                 }
             }
 #ifdef CVM_USE_POOL_MANAGER
@@ -10238,37 +10388,45 @@ protected:
     void _transp_m(const Matrix& m) {
         tint i;
         if (this->msize() > this->nsize()) for (i = 0; i < this->nsize(); ++i) {
-            __copy<TC>(m.nsize(), m.get() + i, m.ld(), this->get() + i * this->ld(), 1);
+            cvm_copy<TC>(m.nsize(), m.get() + i, m.ld(), this->get() + i * this->ld(), 1);
         }
         else for (i = 0; i < this->msize(); ++i) {
-            __copy<TC>(m.msize(), m.get() + i * m.ld(), 1, this->get() + i, this->ld());
+            cvm_copy<TC>(m.msize(), m.get() + i * m.ld(), 1, this->get() + i, this->ld());
         }
     }
 
     virtual type_proxy<TC,TR> _ij_proxy_val(tint i, tint j) {
+#if defined(CVM_DEBUG)
         CVM_ASSERT(this->get(), (this->ld() * j + i + 1) * sizeof(TC))
+#endif
         return type_proxy<TC,TR>(this->get()[this->ld() * j + i], false);
     }
 
     [[nodiscard]] virtual TC _ij_val(tint i, tint j) const {
+#if defined(CVM_DEBUG)
         CVM_ASSERT(this->get(), (this->ld() * j + 1) * sizeof(TC))
+#endif
         return this->get()[this->ld() * j + i];
     }
 
     virtual void _swap_rows(tint n1, tint n2) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, n1, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, n2, tint(), this->msize());
+#endif
         if (n1 != n2) {
-            __swap<TC>(this->nsize(), this->get() + n1,
+            cvm_swap<TC>(this->nsize(), this->get() + n1,
                        this->ld(), this->get() + n2, this->ld());
         }
     }
 
     virtual void _swap_cols(tint n1, tint n2) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, n1, tint(), this->nsize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, n2, tint(), this->nsize());
+#endif
         if (n1 != n2) {
-            __swap<TC>(this->msize(), this->get() + n1 * this->ld(),
+            cvm_swap<TC>(this->msize(), this->get() + n1 * this->ld(),
                        1, this->get() + n2 * this->ld(), 1);
         }
     }
@@ -10279,7 +10437,9 @@ protected:
 
     // matrix cleaning (we ALWAYS have mincr = 1 for matrices)
     virtual void _vanish() {
+#if defined(CVM_DEBUG)
         CVM_ASSERT(this->get(), this->size() * sizeof(TC))
+#endif
         if (this->_continuous()) {
             memset(this->get(), 0, this->size() * sizeof(TC));
         } else for (tint i = 0; i < this->nsize(); ++i) {
@@ -10367,7 +10527,7 @@ protected:
             tint i = 1, j = 1, m;
             for (;;) {
                 m = mm - i;
-                __swap<TC>(m, pd + j, 1, pd + j + nM1m, mld);
+                cvm_swap<TC>(m, pd + j, 1, pd + j + nM1m, mld);
                 if (i >= nM2m) {
                     break;
                 }
@@ -10383,7 +10543,9 @@ protected:
         const TC one(1.);
         const tint nSize = this->_size();
         const tint nNext = this->_msize() + 1;
+#if defined(CVM_DEBUG)
         CVM_ASSERT(pd, nSize * sizeof(TC))
+#endif
         for (tint i = 0; i < nSize; i += nNext) {
             pd[i] += one;
         }
@@ -10395,7 +10557,9 @@ protected:
         const TC one(1.);
         const tint nSize = this->_size();
         const tint nNext = this->_msize() + 1;
+#if defined(CVM_DEBUG)
         CVM_ASSERT(pd, nSize * sizeof(TC))
+#endif
         for (tint i = 0; i < nSize; i += nNext) {
             pd[i] -= one;
         }
@@ -10409,7 +10573,7 @@ public:
         tint n = 1;
         const TR zero(0.);
         for (tint i = 1; i < mm; ++i) {
-            __scal<TR,TC>(pd + n, mm - i, 1, zero);  // column by column
+            cvm_scal<TR,TC>(pd + n, mm - i, 1, zero);  // column by column
             n += mld + 1;
         }
     }
@@ -10744,8 +10908,10 @@ prints
 @return \ref type_proxy Proxy to element (l-value).
 */
     type_proxy<TR,TR> operator () (tint nRow, tint nCol) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
+#endif
         return this->_ij_proxy_val(nRow, nCol);
     }
 
@@ -10778,9 +10944,11 @@ prints
 @param[in] nCol Column index.
 @return TR \ref treal value.
 */
-    TR operator () (tint nRow, tint nCol) const {
+    virtual TR operator () (tint nRow, tint nCol) const {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
+#endif
         return this->_ij_val(nRow, nCol);
     }
 
@@ -10819,8 +10987,10 @@ prints
 @param[in] nCol Index of column.
 @return \ref rvector Column as l-value.
 */
-    RVector operator () (tint nCol) {
+    RVector operator () (tint nCol) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nCol, tint(), this->nsize());
+#endif
         return this->_col(nCol);
     }
 
@@ -10860,8 +11030,10 @@ prints
 @param[in] nRow Index of row.
 @return \ref rvector Row as l-value.
 */
-    RVector operator [] (tint nRow) {
+    RVector operator [] (tint nRow) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nRow, tint(), this->msize());
+#endif
         return this->_row(nRow);
     }
 
@@ -10891,8 +11063,10 @@ prints
 @param[in] nCol Index of column.
 @return \ref rvector Column value.
 */
-    RVector operator () (tint nCol) const {
+    virtual RVector operator () (tint nCol) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nCol, tint(), this->nsize());
+#endif
         return this->_col(nCol);
     }
 
@@ -10922,8 +11096,10 @@ prints
 @param[in] nRow Index of row.
 @return \ref rvector Row value.
 */
-    RVector operator [] (tint nRow) const {
+    virtual RVector operator [] (tint nRow) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nRow, tint(), this->msize());
+#endif
         return this->_row(nRow);
     }
 
@@ -10996,7 +11172,7 @@ prints
 @param[in] nDiag Index of diagonal (0 for main diagonal, negative for lower, positive for upper one).
 @return \ref rvector Diagonal value.
 */
-    [[nodiscard]] RVector diag(tint nDiag) const {
+    [[nodiscard]] virtual RVector diag(tint nDiag) const {
         return this->_diag(nDiag);
     }
 
@@ -11034,8 +11210,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_rmatrix& operator = (const basic_rmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
+#endif
         this->_massign(m);
         return *this;
     }
@@ -11089,8 +11267,10 @@ prints
 @param[in] v \ref rvector to assign.
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& assign(const RVector& v) {
+    basic_rmatrix& assign(const RVector& v) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, this->size(), v.size());
+#endif
         this->_assign(v, v.incr());
         return *this;
     }
@@ -11122,7 +11302,7 @@ prints
 @param[in] pd Const pointer to external array.
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& assign(const TR* pd) {
+    basic_rmatrix& assign(const TR* pd) {  // NOLINT
         this->_assign(pd, 1);
         return *this;
     }
@@ -11156,11 +11336,13 @@ prints
 @param[in] m Reference to a matrix to assign.
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& assign(tint nRow, tint nCol, const basic_rmatrix& m) {
+    basic_rmatrix& assign(tint nRow, tint nCol, const basic_rmatrix& m) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
         _check_gt(CVM_SIZESMISMATCH_GT, m.msize() + nRow, this->msize());
         _check_gt(CVM_SIZESMISMATCH_GT, m.nsize() + nCol, this->nsize());
+#endif
         this->_assign_shifted(this->_sub_pointer_nocheck(nRow, nCol),
                               m._pd(), m.msize(), m.nsize(), m.ld());
         return *this;
@@ -11188,7 +11370,7 @@ prints
 @param[in] d Value to set to.
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& set(TR d) {
+    basic_rmatrix& set(TR d) {  // NOLINT
         this->_set(d);
         return *this;
     }
@@ -11384,8 +11566,10 @@ prints
 @return Result object as a sum of matrices.
 */
     basic_rmatrix operator + (const basic_rmatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
+#endif
         basic_rmatrix mSum(*this);
         mSum._mincr(m);
         return mSum;
@@ -11427,8 +11611,10 @@ prints
 @return Result object as a difference of matrices.
 */
     basic_rmatrix operator - (const basic_rmatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
+#endif
         basic_rmatrix mDiff(*this);
         mDiff._mdecr(m);
         return mDiff;
@@ -11471,10 +11657,12 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_rmatrix& sum(const basic_rmatrix& m1, const basic_rmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m1.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m2.nsize());
+#endif
         this->_msum(m1, m2);
         return *this;
     }
@@ -11517,10 +11705,12 @@ prints
 */
     basic_rmatrix& diff(const basic_rmatrix& m1,
                         const basic_rmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m1.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m2.nsize());
+#endif
         this->_mdiff(m1, m2);
         return *this;
     }
@@ -11565,8 +11755,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_rmatrix& operator += (const basic_rmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
+#endif
         this->_mincr(m);
         return *this;
     }
@@ -11611,8 +11803,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_rmatrix& operator -= (const basic_rmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
+#endif
         this->_mdecr(m);
         return *this;
     }
@@ -11637,7 +11831,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_rmatrix operator - () const {
+    basic_rmatrix operator - () const {  // NOLINT
         const TR mone(-1.);
         basic_rmatrix mRes(*this);
         mRes._scalr(mone);
@@ -11666,7 +11860,7 @@ prints
 @param[in] dMult Number to multiply by.
 @return Result object.
 */
-    basic_rmatrix operator * (TR dMult) const {
+    basic_rmatrix operator * (TR dMult) const {  // NOLINT
         basic_rmatrix mRes(*this);
         mRes._scalr(dMult);
         return mRes;
@@ -11704,7 +11898,7 @@ prints
 @param[in] dDiv Number to divide by.
 @return Result object.
 */
-    basic_rmatrix operator / (TR dDiv) const {
+    basic_rmatrix operator / (TR dDiv) const {  // NOLINT
         basic_rmatrix mRes(*this);
         mRes._div(dDiv);
         return mRes;
@@ -11732,7 +11926,7 @@ prints
 @param[in] dMult Number to multiply by.
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& operator *= (TR dMult) {
+    basic_rmatrix& operator *= (TR dMult) {  // NOLINT
         this->_scalr(dMult);
         return *this;
     }
@@ -11769,7 +11963,7 @@ prints
 @param[in] dDiv Number to divide by.
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& operator /= (TR dDiv) {
+    basic_rmatrix& operator /= (TR dDiv) {  // NOLINT
         this->_div(dDiv);
         return *this;
     }
@@ -11799,7 +11993,7 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& normalize() {
+    basic_rmatrix& normalize() {  // NOLINT
         this->_normalize();
         return *this;
     }
@@ -11831,7 +12025,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_rmatrix operator ~ () const {
+    basic_rmatrix operator ~ () const {  // NOLINT
         basic_rmatrix mRes(this->nsize(), this->msize());
         mRes._transp_m(*this);
         return mRes;
@@ -11870,8 +12064,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_rmatrix& transpose(const basic_rmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.msize());
+#endif
         if (this->get() == m.get()) {
             basic_rmatrix mTmp(m);
             this->_transp_m(mTmp);
@@ -11910,7 +12106,7 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& transpose() {
+    basic_rmatrix& transpose() {  // NOLINT
         basic_rmatrix mTmp(*this);
         this->_resize2(this->nsize(), this->msize());
         this->_transp_m(mTmp);
@@ -11946,8 +12142,10 @@ prints
 @param[in] v \ref rvector to compute product with.
 @return Result object.
 */
-    RVector operator * (const RVector& v) const {
+    RVector operator * (const RVector& v) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), v.size());
+#endif
         RVector vRes(this->msize());
         this->_multiply(vRes, v, false);
         return vRes;
@@ -11982,8 +12180,10 @@ prints
 @param[in] m \ref rmatrix to compute product with.
 @return Result object.
 */
-    basic_rmatrix operator * (const basic_rmatrix& m) const {
+    basic_rmatrix operator * (const basic_rmatrix& m) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.msize());
+#endif
         basic_rmatrix mRes(this->msize(), m.nsize());
         mRes.mult(*this, m);
         return mRes;
@@ -12023,7 +12223,7 @@ prints
 @param[in] m2 \ref rmatrix multiplier.
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& mult(const basic_rmatrix& m1,
+    basic_rmatrix& mult(const basic_rmatrix& m1,  // NOLINT
                         const basic_rmatrix& m2) {
         this->_mult(m1, m2);
         return *this;
@@ -12085,10 +12285,12 @@ prints
                                const RVector& vRow) {
         const TR one(1.);
         this->_check_rank1update();
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vCol.size());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), vRow.size());
+#endif
         this->_vanish();
-        __ger<TR,basic_rmatrix, RVector>(*this, vCol, vRow, one);
+        cvm_ger<TR,basic_rmatrix, RVector>(*this, vCol, vRow, one);
         return *this;
     }
 
@@ -12125,7 +12327,7 @@ prints
 @param[in] n2 Row index to swap.
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& swap_rows(tint n1, tint n2) {
+    basic_rmatrix& swap_rows(tint n1, tint n2) {  // NOLINT
         this->_swap_rows(n1, n2);
         return *this;
     }
@@ -12161,7 +12363,7 @@ prints
 @param[in] n2 Column index to swap.
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& swap_cols(tint n1, tint n2) {
+    basic_rmatrix& swap_cols(tint n1, tint n2) {  // NOLINT
         this->_swap_cols(n1, n2);
         return *this;
     }
@@ -12429,10 +12631,12 @@ prints
     basic_rmatrix& solve_lu(const basic_srmatrix<TR>& mA,
                             const basic_srmatrix<TR>& mLU, const tint* pPivots,
                             const basic_rmatrix& mB, TR& dErr) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mLU.msize());
+#endif
         mA._solve(mB, *this, dErr, mLU, pPivots, 0);
         return *this;
     }
@@ -12757,8 +12961,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_rmatrix& pinv(const basic_rmatrix& mA, TR threshold = basic_cvmMachSp<TR>()) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.nsize());
+#endif
         mA._pinv(*this, threshold);
         return *this;
     }
@@ -12830,11 +13036,13 @@ prints
 */
     basic_rmatrix gels(bool transpose, const basic_rmatrix& mB,
                        basic_rvector<TR>& vErr) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), vErr.size());
         _check_ne(CVM_SIZESMISMATCH, mB.msize(), transpose ? this->nsize() : this->msize());
+#endif
         basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mX;
-        __gels(transpose, mA, mB, mX, vErr);
+        cvm_gels(transpose, mA, mB, mX, vErr);
         return mX;
     }
 
@@ -12906,12 +13114,14 @@ prints
 */
     basic_rmatrix& gels(bool transpose, const basic_rmatrix& mA, const basic_rmatrix& mB,
                         basic_rvector<TR>& vErr) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), vErr.size());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), transpose ? mA.msize() : mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, mB.msize(), transpose ? mA.nsize() : mA.msize());
+#endif
         basic_rmatrix mA2(mA);  // this algorithm overrides A
-        __gels(transpose, mA2, mB, *this, vErr);
+        cvm_gels(transpose, mA2, mB, *this, vErr);
         return *this;
     }
 
@@ -12978,12 +13188,14 @@ prints
 */
     basic_rvector<TR> gels(bool transpose, const basic_rvector<TR>& vB,
                            TR& dErr) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, vB.size(), transpose ? this->nsize() : this->msize());
+#endif
         basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mB(vB, vB.size(), 1);
         basic_rmatrix mX;
         basic_rvector<TR> vErr(1);
-        __gels(transpose, mA, mB, mX, vErr);
+        cvm_gels(transpose, mA, mB, mX, vErr);
         dErr = vErr(0);
         const TR* pResult = mX;
         return basic_rvector<TR>(pResult, mX.msize());
@@ -13043,10 +13255,12 @@ prints
 */
     basic_rmatrix gelsy(const basic_rmatrix& mB, tint& rank,
                         TR tol = basic_cvmMachSp<TR>()) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
+#endif
         basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mX;
-        __gelsy(mA, mB, mX, tol, rank);
+        cvm_gelsy(mA, mB, mX, tol, rank);
         return mX;
     }
 
@@ -13106,11 +13320,13 @@ prints
 */
     basic_rmatrix& gelsy(const basic_rmatrix& mA, const basic_rmatrix& mB,
                          tint& rank, TR tol = basic_cvmMachSp<TR>()) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
+#endif
         basic_rmatrix mA2(mA);  // this algorithm overrides A
-        __gelsy(mA2, mB, *this, tol, rank);
+        cvm_gelsy(mA2, mB, *this, tol, rank);
         return *this;
     }
 
@@ -13168,11 +13384,13 @@ prints
 */
     basic_rvector<TR> gelsy(const basic_rvector<TR>& vB, tint& rank,
                             TR tol = basic_cvmMachSp<TR>()) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
+#endif
         basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mB(vB, vB.size(), 1);
         basic_rmatrix mX;
-        __gelsy(mA, mB, mX, tol, rank);
+        cvm_gelsy(mA, mB, mX, tol, rank);
         const TR* pResult = mX;
         return basic_rvector<TR>(pResult, mX.msize());
     }
@@ -14070,9 +14288,11 @@ prints
     basic_rmatrix& ger(TR alpha, const RVector& vCol,
                        const RVector& vRow) {
         this->_check_ger();
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vCol.size());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), vRow.size());
-        __ger<TR,basic_rmatrix, RVector>(*this, vCol, vRow, alpha);
+#endif
+        cvm_ger<TR,basic_rmatrix, RVector>(*this, vCol, vRow, alpha);
         return *this;
     }
 
@@ -14136,9 +14356,11 @@ prints
     basic_rmatrix& gemm(const basic_rmatrix& m1, bool bTrans1, const basic_rmatrix& m2,
                         bool bTrans2, TR dAlpha, TR dBeta) {
         this->_check_gemm();
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), bTrans1 ? m1.nsize() : m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), bTrans2 ? m2.msize() : m2.nsize());
         _check_ne(CVM_SIZESMISMATCH, bTrans1 ? m1.msize() : m1.nsize(), bTrans2 ? m2.nsize() : m2.msize());
+#endif
         this->_gemm(bTrans1, m1, bTrans2, m2, dAlpha, dBeta);
         return *this;
     }
@@ -14219,9 +14441,11 @@ prints
                         const basic_rmatrix& m,
                         TR dAlpha, TR dBeta) {
         this->_check_symm();
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
         _check_ne(CVM_SIZESMISMATCH, bLeft ? this->msize() : this->nsize(), ms.msize());
+#endif
         this->_symm(bLeft, ms, m, dAlpha, dBeta);
         return *this;
     }
@@ -14254,7 +14478,7 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& vanish() {
+    basic_rmatrix& vanish() {  // NOLINT
         this->_vanish();
         return *this;
     }
@@ -14284,7 +14508,7 @@ prints
 @param[in] dTo Second limit.
 @return Reference to changed calling matrix.
 */
-    basic_rmatrix& randomize(TR dFrom, TR dTo) {
+    basic_rmatrix& randomize(TR dFrom, TR dTo) {  // NOLINT
         this->_randomize(dFrom, dTo);
         return *this;
     }
@@ -14309,9 +14533,9 @@ prints
         const TR* pD2 = m2.get();
         if (this->get() == pD1) mTmp1 << m1;
         if (this->get() == pD2) mTmp2 << m2;
-        __gemm<TR,basic_rmatrix>(this->get() == pD1 ? mTmp1 : m1, bTrans1,
-                                 this->get() == pD2 ? mTmp2 : m2,
-                                  bTrans2, dAlpha, *this, dBeta);
+        cvm_gemm<TR,basic_rmatrix>(this->get() == pD1 ? mTmp1 : m1, bTrans1,
+                                   this->get() == pD2 ? mTmp2 : m2,
+                                   bTrans2, dAlpha, *this, dBeta);
     }
 
     // this = alpha*a*b + beta*this or this = alpha*b*a + beta*this  where "a" is symmetric
@@ -14323,7 +14547,7 @@ prints
         const TR* pD2 = m._pd();
         if (this->get() == pD1) msTmp << ms;
         if (this->get() == pD2) mTmp << m;
-        __symm<TR,basic_srsmatrix<TR>,
+        cvm_symm<TR,basic_srsmatrix<TR>,
             basic_rmatrix>(bLeft, this->get() == pD1 ? msTmp : ms,
                            this->get() == pD2 ? mTmp : m, dAlpha, *this, dBeta);
     }
@@ -14331,16 +14555,18 @@ prints
     // singular values in decreasing order
     virtual void _svd(RVector& vRes, basic_srmatrix<TR>* pmU,
                       basic_srmatrix<TR>* pmVH) const {
+#if defined(CVM_DEBUG)
         if (pmU != nullptr && pmVH != nullptr) {
             _check_ne(CVM_SIZESMISMATCH, this->msize(), pmU->msize());
             _check_ne(CVM_SIZESMISMATCH, this->nsize(), pmVH->msize());
         }
-        __svd<TR,basic_rmatrix, basic_srmatrix<TR>> (vRes, vRes.size(),
+#endif
+        cvm_svd<TR,basic_rmatrix, basic_srmatrix<TR>> (vRes, vRes.size(),
                                                      vRes.incr(), *this, pmU, pmVH);
     }
 
     virtual void _pinv(basic_rmatrix& mX, TR threshold) const {
-        __pinv<TR,basic_rmatrix, basic_rmatrix>(mX, *this, threshold);
+        cvm_pinv<TR,basic_rmatrix, basic_rmatrix>(mX, *this, threshold);
     }
 
     virtual void _check_submatrix() const {
@@ -14391,7 +14617,7 @@ protected:
 
     // ?gemv routines perform a matrix-vector operation defined as
     // vRes = alpha*m*v + beta * vRes or vRes = alpha*v'*m + beta * vRes
-    // not virtual since __gemv calls all virtual methods inside
+    // not virtual since cvm_gemv calls all virtual methods inside
     void _gemv(bool bLeft, TR dAlpha, const RVector& v,
                TR dBeta, RVector& vRes) const {
         RVector vTmp;
@@ -14399,7 +14625,7 @@ protected:
         const TR* pDv = v;
         if (vRes.get() == pDv) vTmp << v;
         if (vRes.get() == this->get()) mTmp << *this;
-        __gemv<TR,basic_rmatrix,
+        cvm_gemv<TR,basic_rmatrix,
             RVector>(bLeft,
                      vRes.get() == this->get() ? mTmp : *this, dAlpha,
                      vRes.get() == pDv ? vTmp : v, dBeta, vRes);
@@ -14429,9 +14655,11 @@ protected:
 
     virtual void _mult(const basic_rmatrix& m1,
                        const basic_rmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m2.nsize());
         _check_ne(CVM_SIZESMISMATCH, m1.nsize(), m2.msize());
+#endif
         const TR zero = TR(0.);
         const TR one = TR(1.);
         this->_gemm(false, m1, false, m2, one, zero);
@@ -14445,82 +14673,98 @@ protected:
 
     virtual void _randomize(TR dFrom, TR dTo) {
         if (this->_continuous()) {
-            __randomize<TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
+            cvm_randomize<TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
         } else for (tint i = 0; i < this->nsize(); ++i) {
-            __randomize<TR>(this->get() + this->ld() * i, this->msize(), this->incr(), dFrom, dTo);
+            cvm_randomize<TR>(this->get() + this->ld() * i, this->msize(), this->incr(), dFrom, dTo);
         }
     }
 
     // QR factorization
     // Case 1: "economy" mode, A is (m x n) and Q is (m x n) and R is (n x n)
     void _qr_rs(basic_rmatrix<TR>& mQ, basic_srmatrix<TR>& mR) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mR.msize());
-        __qre<basic_rmatrix, basic_srmatrix<TR>> (*this, mQ, mR);
+#endif
+        cvm_qre<basic_rmatrix, basic_srmatrix<TR>> (*this, mQ, mR);
     }
 
     // Case 2: full mode, A is (m x n) and Q is (m x m) and R is (m x n)
     void _qr_sr(basic_srmatrix<TR>& mQ, basic_rmatrix<TR>& mR) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mR.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mR.nsize());
-        __qrf<basic_rmatrix, basic_srmatrix<TR>> (*this, mQ, mR);
+#endif
+        cvm_qrf<basic_rmatrix, basic_srmatrix<TR>> (*this, mQ, mR);
     }
 
     // RQ factorization
     // Case 1: "economy" mode, A is (m x n) and R is (m x m) and Q is (m x n)
     void _rq_sr(basic_srmatrix<TR>& mR, basic_rmatrix<TR>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, this->msize(), this->nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mR.msize());
-        __rqe<basic_rmatrix, basic_srmatrix<TR>> (*this, mR, mQ);
+#endif
+        cvm_rqe<basic_rmatrix, basic_srmatrix<TR>> (*this, mR, mQ);
     }
 
     // Case 2: full mode, A is (m x n) and R is (m x n) and Q is (n x n)
     void _rq_rs(basic_rmatrix<TR>& mR, basic_srmatrix<TR>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, this->msize(), this->nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mR.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mR.nsize());
-        __rqf<basic_rmatrix, basic_srmatrix<TR>> (*this, mR, mQ);
+#endif
+        cvm_rqf<basic_rmatrix, basic_srmatrix<TR>> (*this, mR, mQ);
     }
 
     // LQ factorization
     // Case 1: "economy" mode, A is (m x n) and L is (m x m) and Q is (m x n)
     void _lq_sr(basic_srmatrix<TR>& mL, basic_rmatrix<TR>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mL.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.nsize());
-        __lqe<basic_rmatrix, basic_srmatrix<TR>> (*this, mL, mQ);
+#endif
+        cvm_lqe<basic_rmatrix, basic_srmatrix<TR>> (*this, mL, mQ);
     }
 
     // Case 2: full mode, A is (m x n) and L is (m x n) and Q is (n x n)
     void _lq_rs(basic_rmatrix<TR>& mL, basic_srmatrix<TR>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mL.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mL.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.nsize());
-        __lqf<basic_rmatrix, basic_srmatrix<TR>> (*this, mL, mQ);
+#endif
+        cvm_lqf<basic_rmatrix, basic_srmatrix<TR>> (*this, mL, mQ);
     }
 
     // QL factorization
     // Case 1: "economy" mode, A is (m x n) and Q is (m x n) and L is (n x n)
     void _ql_rs(basic_rmatrix<TR>& mQ, basic_srmatrix<TR>& mL) const {
+#if defined(CVM_DEBUG)
         _check_lt(CVM_SIZESMISMATCH_LT, this->msize(), this->nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mL.msize());
-        __qle<basic_rmatrix, basic_srmatrix<TR>> (*this, mQ, mL);
+#endif
+        cvm_qle<basic_rmatrix, basic_srmatrix<TR>> (*this, mQ, mL);
     }
 
     // Case 2: full mode, A is (m x n) and Q is (m x m) and L is (m x n)
     void _ql_sr(basic_srmatrix<TR>& mQ, basic_rmatrix<TR>& mL) const {
+#if defined(CVM_DEBUG)
         _check_lt(CVM_SIZESMISMATCH_LT, this->msize(), this->nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mL.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mL.nsize());
-        __qlf<basic_rmatrix, basic_srmatrix<TR>> (*this, mQ, mL);
+#endif
+        cvm_qlf<basic_rmatrix, basic_srmatrix<TR>> (*this, mQ, mL);
     }
 
     virtual void _check_ger() {}
@@ -14531,9 +14775,11 @@ protected:
 private:
     basic_rmatrix& _solve_helper(const basic_srmatrix<TR>& mA, const basic_rmatrix& mB,
                                  TR& dErr, int transp_mode) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
+#endif
         mA._solve(mB, *this, dErr, nullptr, nullptr, transp_mode);
         return *this;
     }
@@ -14541,15 +14787,17 @@ private:
     // helper for svd and divide&conquer methods
     basic_rmatrix _gels_sd(bool svd, const basic_rmatrix& mB, basic_rvector<TR>& sv,
                            tint& rank, TR tol) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, sv.size(), _cvm_min<tint>(this->msize(), this->nsize()));
+#endif
         basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mX;
         basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
-            __gelss(mA, mB, mX, tol, sv1, rank);
+            cvm_gelss(mA, mB, mX, tol, sv1, rank);
         } else {
-            __gelsd(mA, mB, mX, tol, sv1, rank);
+            cvm_gelsd(mA, mB, mX, tol, sv1, rank);
         }
         sv = sv1;
         return mX;
@@ -14558,32 +14806,36 @@ private:
     void _gels_sd(bool svd, const basic_rmatrix& mA, const basic_rmatrix& mB,
                   basic_rvector<TR>& sv,
                   tint& rank, TR tol) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, sv.size(), _cvm_min<tint>(mA.msize(), mA.nsize()));
+#endif
         basic_rmatrix mA2(mA);  // this algorithm overrides A
         basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
-            __gelss(mA2, mB, *this, tol, sv1, rank);
+            cvm_gelss(mA2, mB, *this, tol, sv1, rank);
         } else {
-            __gelsd(mA2, mB, *this, tol, sv1, rank);
+            cvm_gelsd(mA2, mB, *this, tol, sv1, rank);
         }
         sv = sv1;
     }
 
     basic_rvector<TR> _gels_sd(bool svd, const basic_rvector<TR>& vB, basic_rvector<TR>& sv,
                                tint& rank, TR tol) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
         _check_ne(CVM_SIZESMISMATCH, _cvm_min<tint>(this->msize(), this->nsize()), sv.size());
+#endif
         basic_rmatrix mA(*this);  // this algorithm overrides A
         basic_rmatrix mB(vB, vB.size(), 1);
         basic_rmatrix mX;
         basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
-            __gelss(mA, mB, mX, tol, sv1, rank);
+            cvm_gelss(mA, mB, mX, tol, sv1, rank);
         } else {
-            __gelsd(mA, mB, mX, tol, sv1, rank);
+            cvm_gelsd(mA, mB, mX, tol, sv1, rank);
         }
         sv = sv1;
         const TR* pResult = mX;
@@ -14828,9 +15080,11 @@ prints
 \endcode
 @param[in] m \ref rmatrix to copy from.
 */
-    basic_srmatrix(const BaseRMatrix& m)
+    basic_srmatrix(const BaseRMatrix& m)  // NOLINT
       : BaseRMatrix(m.msize(), m.nsize(), m.msize(), false) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), this->nsize());
+#endif
         this->_massign(m);
     }
 
@@ -14861,7 +15115,7 @@ prints
 */
     explicit basic_srmatrix(const RVector& v)
       : BaseRMatrix(v.size(), v.size(), v.size(), true) {
-        __copy<TR>(this->msize(), v, v.incr(), this->get(), this->msize() + 1);
+        cvm_copy<TR>(this->msize(), v, v.incr(), this->get(), this->msize() + 1);
     }
 
 /**
@@ -14930,7 +15184,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srmatrix& operator = (const basic_srmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_massign(m);
         return *this;
     }
@@ -14955,14 +15211,16 @@ destroyed but rather moved to a calling object <tt>a</tt>.
     }
 
     // assigns vector
-    basic_srmatrix& assign(const RVector& v) {
+    basic_srmatrix& assign(const RVector& v) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), v.size());
+#endif
         this->_assign(v, v.incr());
         return *this;
     }
 
     // assigns external array (nIncr = 1)
-    basic_srmatrix& assign(const TR* pd) {
+    basic_srmatrix& assign(const TR* pd) {  // NOLINT
         this->_assign(pd, 1);
         return *this;
     }
@@ -14997,18 +15255,20 @@ prints
 @param[in] m Reference to \ref rmatrix to assign.
 @return Reference to changed calling matrix.
 */
-    basic_srmatrix& assign(tint nRow, tint nCol, const BaseRMatrix& m) {
+    basic_srmatrix& assign(tint nRow, tint nCol, const BaseRMatrix& m) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
         _check_gt(CVM_SIZESMISMATCH_GT, m.msize() + nRow, this->msize());
         _check_gt(CVM_SIZESMISMATCH_GT, m.nsize() + nCol, this->nsize());
+#endif
         this->_assign_shifted(this->_sub_pointer_nocheck(nRow, nCol),
                               m._pd(), m.msize(), m.nsize(), m.ld());
         return *this;
     }
 
     // fills content
-    basic_srmatrix& set(TR d) {
+    basic_srmatrix& set(TR d) {  // NOLINT
         this->_set(d);
         return *this;
     }
@@ -15048,7 +15308,7 @@ in case of negative dimension passed or memory allocation failure.
 @param[in] nNewDim New dimension.
 @return Reference to changed calling matrix.
 */
-    basic_srmatrix& resize(tint nNewDim) {
+    basic_srmatrix& resize(tint nNewDim) {  // NOLINT
         this->_resize2(nNewDim, nNewDim);
         return *this;
     }
@@ -15136,7 +15396,9 @@ prints
 @return Sum of matrices.
 */
     basic_srmatrix operator + (const basic_srmatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         basic_srmatrix mSum(*this);
         mSum._mincr(m);
         return mSum;
@@ -15178,7 +15440,9 @@ prints
 @return Difference of matrices.
 */
     basic_srmatrix operator - (const basic_srmatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         basic_srmatrix mDiff(*this);
         mDiff._mdecr(m);
         return mDiff;
@@ -15223,8 +15487,10 @@ prints
 */
     basic_srmatrix& sum(const basic_srmatrix& m1,
                         const basic_srmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
+#endif
         this->_msum(m1, m2);
         return *this;
     }
@@ -15268,8 +15534,10 @@ prints
 */
     basic_srmatrix& diff(const basic_srmatrix& m1,
                          const basic_srmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
+#endif
         this->_mdiff(m1, m2);
         return *this;
     }
@@ -15314,7 +15582,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srmatrix& operator += (const basic_srmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_mincr(m);
         return *this;
     }
@@ -15361,7 +15631,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srmatrix& operator -= (const basic_srmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_mdecr(m);
         return *this;
     }
@@ -15387,7 +15659,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_srmatrix operator - () const {
+    basic_srmatrix operator - () const {  // NOLINT
         const TR mone(-1.);
         basic_srmatrix mRes(*this);
         mRes._scalr(mone);
@@ -15400,29 +15672,29 @@ prints
 Adds identity matrix to a calling square matrix and returns a reference to the matrix changed.
 \par Example:
 \code
-using namespace cvm; 
+using namespace cvm;
 srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.});
-std::cout << m << std::endl; 
-std::cout << ++m << std::endl; 
+std::cout << m << std::endl;
+std::cout << ++m << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-1 4 7 
-2 5 8 
-3 6 9 
+1 4 7
+2 5 8
+3 6 9
 
-2 4 7 
-2 6 8 
-3 6 10 
+2 4 7
+2 6 8
+3 6 10
 
-2 4 7 
-2 6 8 
-3 6 10 
+2 4 7
+2 6 8
+3 6 10
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_srmatrix& operator ++ () {
+    basic_srmatrix& operator ++ () {  // NOLINT
         this->_plus_plus();
         return *this;
     }
@@ -15430,29 +15702,29 @@ prints
 /**
 @brief Plus identity, postfix
 
-Adds identity matrix to a calling square matrix and returns a 
-copy of the original calling matrix. 
+Adds identity matrix to a calling square matrix and returns a
+copy of the original calling matrix.
 \par Example:
 \code
 using namespace cvm;
 srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.});
-std::cout << m << std::endl; 
-std::cout << m++ << std::endl; 
-std::cout << m << std::endl; 
+std::cout << m << std::endl;
+std::cout << m++ << std::endl;
+std::cout << m << std::endl;
 \endcode
 prints
 \code
-1 4 7 
-2 5 8 
-3 6 9 
+1 4 7
+2 5 8
+3 6 9
 
-1 4 7 
-2 5 8 
-3 6 9 
+1 4 7
+2 5 8
+3 6 9
 
-2 4 7 
-2 6 8 
-3 6 10 
+2 4 7
+2 6 8
+3 6 10
 \endcode
 @return Copy of the original calling matrix.
 */
@@ -15466,33 +15738,33 @@ prints
 /**
 @brief Minus identity, prefix
 
-Subtracts identity matrix from calling square matrix and 
+Subtracts identity matrix from calling square matrix and
 returns a reference to the matrix changed.
 \par Example:
 \code
 using namespace cvm;
-srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.}); 
+srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.});
 std::cout << m << std::endl;
 std::cout << --m << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-1 4 7 
-2 5 8 
-3 6 9 
+1 4 7
+2 5 8
+3 6 9
 
-0 4 7 
-2 4 8 
-3 6 8 
+0 4 7
+2 4 8
+3 6 8
 
-0 4 7 
-2 4 8 
-3 6 8 
+0 4 7
+2 4 8
+3 6 8
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_srmatrix& operator -- () {
+    basic_srmatrix& operator -- () {  // NOLINT
         this->_minus_minus();
         return *this;
     }
@@ -15501,28 +15773,28 @@ prints
 @brief Minus identity, postfix
 
 Subtracts identity matrix from calling square matrix and returns
-a copy of the original calling matrix. 
+a copy of the original calling matrix.
 \par Example:
 \code
 using namespace cvm;
-srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.}); 
+srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.});
 std::cout << m << std::endl;
 std::cout << m-- << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-1 4 7 
-2 5 8 
-3 6 9 
+1 4 7
+2 5 8
+3 6 9
 
-1 4 7 
-2 5 8 
-3 6 9 
+1 4 7
+2 5 8
+3 6 9
 
-0 4 7 
-2 4 8 
-3 6 8 
+0 4 7
+2 4 8
+3 6 8
 \endcode
 @return Copy of the original calling matrix.
 */
@@ -15542,7 +15814,7 @@ It throws \ref cvmexception in case of memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
-srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.}); 
+srmatrix m(3, {1., 2., 3., 4., 5., 6., 7., 8., 9.});
 std::cout << m * 5.;
 \endcode
 prints
@@ -15555,7 +15827,7 @@ prints
 @param[in] dMult Number to multiply by.
 @return Result object.
 */
-    basic_srmatrix operator * (TR dMult) const {
+    basic_srmatrix operator * (TR dMult) const {  // NOLINT
         basic_srmatrix mRes(*this);
         mRes._scalr(dMult);
         return mRes;
@@ -15591,24 +15863,24 @@ prints
 @param[in] dDiv Number to divide by.
 @return Result object.
 */
-    basic_srmatrix operator / (TR dDiv) const {
+    basic_srmatrix operator / (TR dDiv) const {  // NOLINT
         basic_srmatrix mRes(*this);
         mRes._div(dDiv);
         return mRes;
     }
 
     // TODO dox
-    basic_srmatrix& operator *= (TR dMult) {
+    basic_srmatrix& operator *= (TR dMult) {  // NOLINT
         this->_scalr(dMult);
         return *this;
     }
 
-    basic_srmatrix& operator /= (TR dDiv) {
+    basic_srmatrix& operator /= (TR dDiv) {  // NOLINT
         this->_div(dDiv);
         return *this;
     }
 
-    basic_srmatrix& normalize() {
+    basic_srmatrix& normalize() {  // NOLINT
         this->_normalize();
         return *this;
     }
@@ -15650,7 +15922,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_srmatrix operator ~ () const {
+    basic_srmatrix operator ~ () const {  // NOLINT
         basic_srmatrix mRes(*this);
         return mRes.transpose();
     }
@@ -15700,12 +15972,12 @@ prints
     }
 
     // TODO dox
-    basic_srmatrix& transpose() {
+    basic_srmatrix& transpose() {  // NOLINT
         this->_transp();
         return *this;
     }
 
-    RVector operator * (const RVector& v) const {
+    RVector operator * (const RVector& v) const {  // NOLINT
         return this->BaseRMatrix::operator * (v);
     }
 
@@ -15740,7 +16012,7 @@ prints
 @param[in] m \ref rmatrix to compute product with.
 @return Result object.
 */
-    BaseRMatrix operator * (const BaseRMatrix& m) const {
+    BaseRMatrix operator * (const BaseRMatrix& m) const {  // NOLINT
         return this->BaseRMatrix::operator * (m);
     }
 
@@ -15774,8 +16046,10 @@ prints
 @param[in] m \ref srmatrix to compute product with.
 @return Result object.
 */
-    basic_srmatrix operator * (const basic_srmatrix& m) const {
+    basic_srmatrix operator * (const basic_srmatrix& m) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         basic_srmatrix mRes(this->msize());
         mRes.mult(*this, m);
         return mRes;
@@ -15817,20 +16091,22 @@ prints
 @param[in] m \ref srmatrix to compute product with.
 @return Reference to changed calling matrix.
 */
-    basic_srmatrix& operator *= (const basic_srmatrix& m) {
+    basic_srmatrix& operator *= (const basic_srmatrix& m) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         const basic_srmatrix mTmp(*this);
         this->mult(mTmp, m);
         return *this;
     }
 
     // TODO dox
-    basic_srmatrix& swap_rows(tint n1, tint n2) {
+    basic_srmatrix& swap_rows(tint n1, tint n2) {  // NOLINT
         this->_swap_rows(n1, n2);
         return *this;
     }
 
-    basic_srmatrix& swap_cols(tint n1, tint n2) {
+    basic_srmatrix& swap_cols(tint n1, tint n2) {  // NOLINT
         this->_swap_cols(n1, n2);
         return *this;
     }
@@ -16412,7 +16688,7 @@ prints
 @param[in] vB \ref rvector \f$b\f$.
 @return Result object.
 */
-    RVector operator / (const RVector& vB) const {
+    RVector operator / (const RVector& vB) const {  // NOLINT
         return vB % (*this);
     }
 
@@ -16502,8 +16778,10 @@ prints
 */
     RVector solve_lu(const basic_srmatrix& mLU, const tint* pPivots,
                      const RVector& vB, TR& dErr) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mLU.msize());
+#endif
         RVector vX(this->msize());
         this->_solve(vB, vX, dErr, mLU, pPivots, 0);
         return vX;
@@ -16683,8 +16961,10 @@ prints
     BaseRMatrix solve_lu(const basic_srmatrix& mLU,
                          const tint* pPivots, const BaseRMatrix& mB,
                          TR& dErr) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mLU.msize());
+#endif
         BaseRMatrix mX(mB.msize(), mB.nsize());
         this->_solve(mB, mX, dErr, mLU, pPivots, 0);
         return mX;
@@ -16964,7 +17244,7 @@ prints
 @param[out] nPivots %Array of pivot indices.
 @return Result object.
 */
-    basic_srmatrix low_up(tint* nPivots) const {
+    basic_srmatrix low_up(tint* nPivots) const {  // NOLINT
         basic_srmatrix mRes(*this);
         mRes._low_up(nPivots);
         return mRes;
@@ -17013,7 +17293,7 @@ prints
 */
     [[nodiscard]] TR cond() const {
         TR dCondNum(0.);
-        __cond_num<TR,basic_srmatrix>(*this, dCondNum);  // universal method, no need to virtualize
+        cvm_cond_num<TR,basic_srmatrix>(*this, dCondNum);  // universal method, no need to virtualize
         return dCondNum;
     }
 
@@ -17059,7 +17339,7 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srmatrix& inv(const basic_srmatrix& m) {
-        __inv<basic_srmatrix>(*this, m);  // overridden in srsmatrix, no need to virtualize
+        cvm_inv<basic_srmatrix>(*this, m);  // overridden in srsmatrix, no need to virtualize
         return *this;
     }
 
@@ -17103,9 +17383,9 @@ prints
 \endcode
 @return Result object.
 */
-    [[nodiscard]] basic_srmatrix inv() const {
+    [[nodiscard]] basic_srmatrix inv() const {  // NOLINT
         basic_srmatrix mRes(this->msize());
-        __inv<basic_srmatrix>(mRes, *this);  // overridden in srsmatrix, no need to virtualize
+        cvm_inv<basic_srmatrix>(mRes, *this);  // overridden in srsmatrix, no need to virtualize
         return mRes;
     }
 
@@ -17173,7 +17453,7 @@ Matlab output:
     basic_srmatrix& exp(const basic_srmatrix& m,
                         TR tol = basic_cvmMachSp<TR>()) {
         // uses universal code inside - no need to virtualize
-        __exp<basic_srmatrix, TR>(*this, m, tol);
+        cvm_exp<basic_srmatrix, TR>(*this, m, tol);
         return *this;
     }
 
@@ -17235,9 +17515,9 @@ Matlab output:
 @param[in] tol Computation tolerance.
 @return Result object.
 */
-    [[nodiscard]] basic_srmatrix exp(TR tol = basic_cvmMachSp<TR>()) const {
+    [[nodiscard]] basic_srmatrix exp(TR tol = basic_cvmMachSp<TR>()) const {  // NOLINT
         basic_srmatrix mRes(this->msize());
-        __exp<basic_srmatrix, TR>(mRes, *this, tol);
+        cvm_exp<basic_srmatrix, TR>(mRes, *this, tol);
         return mRes;
     }
 
@@ -17307,10 +17587,12 @@ Matlab output:
 */
     basic_srmatrix& polynom(const basic_srmatrix& m,
                             const RVector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         RVector v1;
         if (v.incr() > 1) v1 << v;  // to make sure incr = 1
-        __polynom<TR,RVector>(this->get(), this->ld(), this->msize(),
+        cvm_polynom<TR,RVector>(this->get(), this->ld(), this->msize(),
                               m._pd(), m._ldm(), v.incr() > 1 ? v1 : v);
         return *this;
     }
@@ -17378,11 +17660,11 @@ Matlab output:
 @param[in] v Vector of coefficients.
 @return Result object.
 */
-    [[nodiscard]] basic_srmatrix polynom(const RVector& v) const {
+    [[nodiscard]] basic_srmatrix polynom(const RVector& v) const {  // NOLINT
         basic_srmatrix mRes(this->msize());
         RVector v1;
         if (v.incr() > 1) v1 << v;  // to make sure incr = 1
-        __polynom<TR,RVector>(mRes.get(), mRes.ld(), this->msize(),
+        cvm_polynom<TR,RVector>(mRes.get(), mRes.ld(), this->msize(),
                               this->get(), this->ld(), v.incr() > 1 ? v1 : v);
         return mRes;
     }
@@ -17499,7 +17781,7 @@ prints
 @see cvector::eig()
 @return Result object.
 */
-    [[nodiscard]] CVector eig() const {
+    [[nodiscard]] CVector eig() const {  // NOLINT
         CVector vEig(this->msize());
         this->_eig(vEig, nullptr, true);
         return vEig;
@@ -17550,7 +17832,7 @@ prints
     basic_srmatrix& cholesky(const basic_srsmatrix<TR>& m) {
         this->_check_cholesky();  // doesn't work for band matrices
         *this = m;
-        tint nOutInfo = __cholesky<basic_srmatrix>(*this);
+        tint nOutInfo = cvm_cholesky<basic_srmatrix>(*this);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         _check_positive(CVM_NOTPOSITIVEDEFINITE, nOutInfo);
         this->_clean_low_triangle();
@@ -17590,7 +17872,7 @@ when argument is symmetric but not positive-definite.
                                   tint* nPivots) {
         this->_check_bunch_kaufman();  // doesn't work for band matrices
         *this = m;
-        __bunch_kaufman<basic_srmatrix>(*this, nPivots);
+        cvm_bunch_kaufman<basic_srmatrix>(*this, nPivots);
         return *this;
     }
 
@@ -17744,7 +18026,7 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_srmatrix& identity() {
+    basic_srmatrix& identity() {  // NOLINT
         this->_vanish();
         this->_plus_plus();
         return *this;
@@ -17778,12 +18060,12 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_srmatrix& vanish() {
+    basic_srmatrix& vanish() {  // NOLINT
         this->_vanish();
         return *this;
     }
 
-    basic_srmatrix& randomize(TR dFrom, TR dTo) {
+    basic_srmatrix& randomize(TR dFrom, TR dTo) {  // NOLINT
         this->_randomize(dFrom, dTo);
         return *this;
     }
@@ -17791,7 +18073,7 @@ prints
 //! @cond INTERNAL
     virtual void _eig(CVector& vEig, basic_scmatrix<TR,TC>* mEigVect,
                       bool bRightVect) const {
-        __eig<CVector, basic_srmatrix,
+        cvm_eig<CVector, basic_srmatrix,
             basic_scmatrix<TR,TC>> (vEig, *this, mEigVect, bRightVect);
     }
 
@@ -17803,7 +18085,7 @@ prints
         RVector vX1;
         if (vB.incr() > 1) vB1 << vB;  // to make sure incr = 1
         if (vX.incr() > 1) vX1 << vX;
-        __solve<TR,TR, basic_srmatrix>(*this, 1, vB.incr() > 1 ? vB1 : vB, vB.size(),
+        cvm_solve<TR,TR, basic_srmatrix>(*this, 1, vB.incr() > 1 ? vB1 : vB, vB.size(),
                                        vX.incr() > 1 ? vX1 : vX, vX.size(),
                                        dErr, pLU, pPivots, transp_mode);
         if (vX.incr() > 1) vX = vX1;
@@ -17813,7 +18095,7 @@ prints
                         TR& dErr, const TR* pLU, const tint* pPivots,
                         int transp_mode) const {
         mX = mB;
-        __solve<TR,TR, basic_srmatrix>(*this, mB.nsize(), mB, mB.ld(),
+        cvm_solve<TR,TR, basic_srmatrix>(*this, mB.nsize(), mB, mB.ld(),
                                        mX, mX.ld(), dErr, pLU, pPivots, transp_mode);
     }
 
@@ -17862,7 +18144,9 @@ protected:
     // 0 - main, negative - low, positive - up
     RVector _diag(tint nDiag) override {
         const tint nD = std::abs(nDiag);
+#if defined(CVM_DEBUG)
         _check_ge(CVM_INDEX_GE, nD, this->msize());
+#endif
         return RVector(this->get() + (nDiag > 0 ? nDiag * this->ld() : nD),
                        this->msize() - nD, this->ld() + 1);
     }
@@ -17922,7 +18206,7 @@ protected:
                 }
             }
             catch (const cvmexception& e) {
-                if (e.cause() != CVM_SINGULARMATRIX) throw e;
+                if (e.cause() != CVM_SINGULARMATRIX) throw;
             }
             break;
         }
@@ -17930,35 +18214,43 @@ protected:
     }
 
     virtual void _low_up(tint* nPivots) {
-        __low_up<basic_srmatrix>(*this, nPivots);
+        cvm_low_up<basic_srmatrix>(*this, nPivots);
     }
 
     // QR - "economy" mode here
     void _qr_ss(basic_srmatrix<TR>& mQ, basic_srmatrix<TR>& mR) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mR.msize());
-        __qre<basic_rmatrix<TR>, basic_srmatrix<TR>> (*this, mQ, mR);
+#endif
+        cvm_qre<basic_rmatrix<TR>, basic_srmatrix<TR>> (*this, mQ, mR);
     }
 
     // RQ - "economy" mode here
     void _rq_ss(basic_srmatrix<TR>& mR, basic_srmatrix<TR>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mR.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
-        __rqe<basic_rmatrix<TR>, basic_srmatrix<TR>> (*this, mR, mQ);
+#endif
+        cvm_rqe<basic_rmatrix<TR>, basic_srmatrix<TR>> (*this, mR, mQ);
     }
 
     // LQ - "economy" mode here
     void _lq_ss(basic_srmatrix<TR>& mL, basic_srmatrix<TR>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mL.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
-        __lqe<basic_rmatrix<TR>, basic_srmatrix<TR>> (*this, mL, mQ);
+#endif
+        cvm_lqe<basic_rmatrix<TR>, basic_srmatrix<TR>> (*this, mL, mQ);
     }
 
     // QL - "economy" mode here
     void _ql_ss(basic_srmatrix<TR>& mQ, basic_srmatrix<TR>& mL) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mL.msize());
-        __qle<basic_rmatrix<TR>, basic_srmatrix<TR>> (*this, mQ, mL);
+#endif
+        cvm_qle<basic_rmatrix<TR>, basic_srmatrix<TR>> (*this, mQ, mL);
     }
 
     virtual void _check_cholesky() { }
@@ -17967,7 +18259,9 @@ protected:
 private:
     RVector _solve_helper(const RVector& vB, TR& dErr,
                           int transp_mode) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
+#endif
         RVector vX(this->msize());
         this->_solve(vB, vX, dErr, nullptr, nullptr, transp_mode);
         return vX;
@@ -17975,7 +18269,9 @@ private:
 
     BaseRMatrix _solve_helper(const BaseRMatrix& mB, TR& dErr,
                               int transp_mode) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
+#endif
         BaseRMatrix mX(mB.msize(), mB.nsize());
         this->_solve(mB, mX, dErr, nullptr, nullptr, transp_mode);
         return mX;
@@ -18243,10 +18539,10 @@ prints
     explicit basic_cmatrix(const basic_rmatrix<TR>& m, bool bRealPart = true)
       : BaseMatrix(m.msize(), m.nsize(), m.msize(), true) {
         if (bRealPart) {
-            __copy2<TR,TC>(this->get(), this->size(), this->incr(), m._pd(), nullptr);
+            cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), m._pd(), nullptr);
         }
         else {
-            __copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, m._pd());
+            cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, m._pd());
         }
     }
 
@@ -18291,7 +18587,7 @@ prints
 */
     basic_cmatrix(const TR* pRe, const TR* pIm, tint nM, tint nN)
       : BaseMatrix(nM, nN, nM, true) {
-        __copy2<TR,TC>(this->get(), this->size(), this->incr(), pRe, pIm, 1, 1);
+        cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), pRe, pIm, 1, 1);
     }
 
 /**
@@ -18326,10 +18622,12 @@ prints
 */
     basic_cmatrix(const basic_rmatrix<TR>& mRe, const basic_rmatrix<TR>& mIm)
       : BaseMatrix(mRe.msize(), mRe.nsize(), mRe.msize(), false) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mRe.msize(), mIm.msize());
         _check_ne(CVM_SIZESMISMATCH, mRe.nsize(), mIm.nsize());
         _check_ne(CVM_SIZESMISMATCH, mRe.ld(), mIm.ld());
-        __copy2<TR,TC>(this->get(), this->size(), this->incr(), mRe, mIm, mRe.incr(), mIm.incr());
+#endif
+        cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), mRe, mIm, mRe.incr(), mIm.incr());
     }
 
 /**
@@ -18369,7 +18667,9 @@ prints
 // TODO dox, test
     basic_cmatrix(tint nM, tint nN, const std::initializer_list<TR>& list)
       : BaseMatrix(nM, nN, nM, false) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size() * tint(2), static_cast<tint>(list.size()));
+#endif
         tint i = 0;
 #ifdef CVM_USE_POOL_MANAGER
         TC* p = this->mpd;
@@ -18417,8 +18717,10 @@ prints
 @return \ref type_proxy Proxy to element (l-value).
 */
     type_proxy<TC,TR> operator () (tint nRow, tint nCol) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
+#endif
         return this->_ij_proxy_val(nRow, nCol);
     }
 
@@ -18449,9 +18751,11 @@ prints
 @param[in] nCol Column index.
 @return TC \ref tcomplex value.
 */
-    TC operator () (tint nRow, tint nCol) const {
+    TC operator () (tint nRow, tint nCol) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
+#endif
         return this->_ij_val(nRow, nCol);
     }
 
@@ -18489,8 +18793,10 @@ prints
 @param[in] nCol Index of column.
 @return \ref cvector Column as l-value.
 */
-    CVector operator () (tint nCol) {
+    CVector operator () (tint nCol) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nCol, tint(), this->nsize());
+#endif
         return this->_col(nCol);
     }
 
@@ -18528,8 +18834,10 @@ prints
 @param[in] nRow Index of row.
 @return \ref cvector Row as l-value.
 */
-    CVector operator [] (tint nRow) {
+    CVector operator [] (tint nRow) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nRow, tint(), this->msize());
+#endif
         return this->_row(nRow);
     }
 
@@ -18558,8 +18866,10 @@ prints
 @param[in] nCol Index of column.
 @return \ref cvector Column value.
 */
-    CVector operator () (tint nCol) const {
+    CVector operator () (tint nCol) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nCol, tint(), this->nsize());
+#endif
         return this->_col(nCol);
     }
 
@@ -18589,8 +18899,10 @@ prints
 @param[in] nRow Index of row.
 @return \ref cvector Row value.
 */
-    CVector operator [] (tint nRow) const {
+    CVector operator [] (tint nRow) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nRow, tint(), this->msize());
+#endif
         return this->_row(nRow);
     }
 
@@ -18675,7 +18987,7 @@ prints
 @param[in] nDiag Index of diagonal (0 for main diagonal, negative for lower, positive for upper one).
 @return \ref cvector Diagonal value.
 */
-    [[nodiscard]] CVector diag(tint nDiag) const {
+    [[nodiscard]] CVector diag(tint nDiag) const {  // NOLINT
         return this->_diag(nDiag);
     }
 
@@ -18683,9 +18995,9 @@ prints
 @brief Real part (\em not l-value)
 
 Creates an object of type \c const \ref rmatrix as real part of a calling matrix.
-Please note that, unlike \ref cvector::real(), this function 
-creates a new object not sharing memory with real part of a 
-calling matrix, i.e. the matrix returned is not l-value. 
+Please note that, unlike \ref cvector::real(), this function
+creates a new object not sharing memory with real part of a
+calling matrix, i.e. the matrix returned is not l-value.
 \par Example:
 \code
 using namespace cvm;
@@ -18704,9 +19016,9 @@ prints
 \endcode
 @return Result object.
 */
-    [[nodiscard]] basic_rmatrix<TR> real() const {
+    [[nodiscard]] basic_rmatrix<TR> real() const {  // NOLINT
         basic_rmatrix<TR> mRet(this->msize(), this->nsize());
-        __copy<TR>(this->size(), __get_real_p<TR>(this->get()),
+        cvm_copy<TR>(this->size(), __get_real_p<TR>(this->get()),
                    this->incr() * 2, mRet, mRet.incr());
         return mRet;
     }
@@ -18735,9 +19047,9 @@ prints
 \endcode
 @return Result object.
 */
-    [[nodiscard]] basic_rmatrix<TR> imag() const {
+    [[nodiscard]] basic_rmatrix<TR> imag() const {  // NOLINT
         basic_rmatrix<TR> mRet(this->msize(), this->nsize());
-        __copy<TR>(this->size(), __get_imag_p<TR>(this->get()),
+        cvm_copy<TR>(this->size(), __get_imag_p<TR>(this->get()),
                    this->incr() * 2, mRet, mRet.incr());
         return mRet;
     }
@@ -18773,8 +19085,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_cmatrix& operator = (const basic_cmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
+#endif
         this->_massign(m);
         return *this;
     }
@@ -18822,8 +19136,10 @@ prints
 @param[in] v \ref cvector to assign.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& assign(const CVector& v) {
+    basic_cmatrix& assign(const CVector& v) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->size(), v.size());
+#endif
         this->_assign(v, v.incr());
         return *this;
     }
@@ -18853,7 +19169,7 @@ prints
 @param[in] pd Const pointer to external array.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& assign(const TC* pd) {
+    basic_cmatrix& assign(const TC* pd) {  // NOLINT
         this->_assign(pd, 1);
         return *this;
     }
@@ -18887,11 +19203,13 @@ prints
 @param[in] m Reference to a matrix to assign.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& assign(tint nRow, tint nCol, const basic_cmatrix& m) {
+    basic_cmatrix& assign(tint nRow, tint nCol, const basic_cmatrix& m) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
         _check_gt(CVM_SIZESMISMATCH_GT, m.msize() + nRow, this->msize());
         _check_gt(CVM_SIZESMISMATCH_GT, m.nsize() + nCol, this->nsize());
+#endif
         this->_assign_shifted(this->_sub_pointer_nocheck(nRow, nCol), m._pd(),
                               m.msize(), m.nsize(), m.ld());
         return *this;
@@ -18918,7 +19236,7 @@ prints
 @param[in] c Value to set to.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& set(TC c) {
+    basic_cmatrix& set(TC c) {  // NOLINT
         this->_set(c);
         return *this;
     }
@@ -18947,9 +19265,11 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_cmatrix& assign_real(const basic_rmatrix<TR>& mRe) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mRe.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mRe.nsize());
-        __copy_real<TR,TC>(this->get(), this->size(), this->incr(), mRe._pd(), mRe.incr());
+#endif
+        cvm_copy_real<TR,TC>(this->get(), this->size(), this->incr(), mRe._pd(), mRe.incr());
         return *this;
     }
 
@@ -18977,9 +19297,11 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_cmatrix& assign_imag(const basic_rmatrix<TR>& mIm) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mIm.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mIm.nsize());
-        __copy_imag<TR,TC>(this->get(), this->size(), this->incr(), mIm._pd(), mIm.incr());
+#endif
+        cvm_copy_imag<TR,TC>(this->get(), this->size(), this->incr(), mIm._pd(), mIm.incr());
         return *this;
     }
 
@@ -19003,7 +19325,7 @@ prints
 @param[in] d Value to set to.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& set_real(TR d) {
+    basic_cmatrix& set_real(TR d) {  // NOLINT
         this->_set_real_number(d);
         return *this;
     }
@@ -19028,7 +19350,7 @@ prints
 @param[in] d Value to set to.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& set_imag(TR d) {
+    basic_cmatrix& set_imag(TR d) {  // NOLINT
         this->_set_imag_number(d);
         return *this;
     }
@@ -19216,8 +19538,10 @@ prints
 @return Result object as a sum of matrices.
 */
     basic_cmatrix operator + (const basic_cmatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
+#endif
         basic_cmatrix mSum(*this);
         mSum._mincr(m);
         return mSum;
@@ -19259,8 +19583,10 @@ prints
 @return Result object as a difference of matrices.
 */
     basic_cmatrix operator - (const basic_cmatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
+#endif
         basic_cmatrix mDiff(*this);
         mDiff._mdecr(m);
         return mDiff;
@@ -19305,10 +19631,12 @@ prints
 */
     basic_cmatrix& sum(const basic_cmatrix& m1,
                        const basic_cmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m1.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m2.nsize());
+#endif
         this->_msum(m1, m2);
         return *this;
     }
@@ -19352,10 +19680,12 @@ prints
 */
     basic_cmatrix& diff(const basic_cmatrix& m1,
                         const basic_cmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m1.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m2.nsize());
+#endif
         this->_mdiff(m1, m2);
         return *this;
     }
@@ -19398,8 +19728,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_cmatrix& operator += (const basic_cmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
+#endif
         this->_mincr(m);
         return *this;
     }
@@ -19442,8 +19774,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_cmatrix& operator -= (const basic_cmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
+#endif
         this->_mdecr(m);
         return *this;
     }
@@ -19469,7 +19803,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_cmatrix operator - () const {
+    basic_cmatrix operator - () const {  // NOLINT
         const TR mone(-1.);
         basic_cmatrix mRes(*this);
         mRes._scalr(mone);
@@ -19499,7 +19833,7 @@ prints
 @param[in] dMult Number to multiply by.
 @return Result object.
 */
-    basic_cmatrix operator * (TR dMult) const {
+    basic_cmatrix operator * (TR dMult) const {  // NOLINT
         basic_cmatrix mRes(*this);
         mRes._scalr(dMult);
         return mRes;
@@ -19535,7 +19869,7 @@ prints
 @param[in] dDiv Number to divide by.
 @return Result object.
 */
-    basic_cmatrix operator / (TR dDiv) const {
+    basic_cmatrix operator / (TR dDiv) const {  // NOLINT
         basic_cmatrix mRes(*this);
         mRes._div(dDiv);
         return mRes;
@@ -19564,7 +19898,7 @@ prints
 @param[in] cMult Number to multiply by.
 @return Result object.
 */
-    basic_cmatrix operator * (TC cMult) const {
+    basic_cmatrix operator * (TC cMult) const {  // NOLINT
         basic_cmatrix mRes(*this);
         mRes._scalc(cMult);
         return mRes;
@@ -19600,7 +19934,7 @@ prints
 @param[in] cDiv Number to divide by.
 @return Result object.
 */
-    basic_cmatrix operator / (TC cDiv) const {
+    basic_cmatrix operator / (TC cDiv) const {  // NOLINT
         basic_cmatrix mRes(*this);
         mRes._div(cDiv);
         return mRes;
@@ -19629,7 +19963,7 @@ prints
 @param[in] dMult Number to multiply by.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& operator *= (TR dMult) {
+    basic_cmatrix& operator *= (TR dMult) {  // NOLINT
         this->_scalr(dMult);
         return *this;
     }
@@ -19664,7 +19998,7 @@ prints
 @param[in] dDiv Number to divide by.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& operator /= (TR dDiv) {
+    basic_cmatrix& operator /= (TR dDiv) {  // NOLINT
         this->_div(dDiv);
         return *this;
     }
@@ -19692,7 +20026,7 @@ prints
 @param[in] cMult Number to multiply by.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& operator *= (TC cMult) {
+    basic_cmatrix& operator *= (TC cMult) {  // NOLINT
         this->_scalc(cMult);
         return *this;
     }
@@ -19727,7 +20061,7 @@ prints
 @param[in] cDiv Number to divide by.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& operator /= (TC cDiv) {
+    basic_cmatrix& operator /= (TC cDiv) {  // NOLINT
         this->_div(cDiv);
         return *this;
     }
@@ -19756,7 +20090,7 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& normalize() {
+    basic_cmatrix& normalize() {  // NOLINT
         this->_normalize();
         return *this;
     }
@@ -19796,7 +20130,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_cmatrix operator ! () const {
+    basic_cmatrix operator ! () const {  // NOLINT
         basic_cmatrix mRes(this->nsize(), this->msize());
         mRes._transp_m(*this);
         return mRes;
@@ -19837,10 +20171,10 @@ prints
 \endcode
 @return Result object.
 */
-    basic_cmatrix operator ~ () const {
+    basic_cmatrix operator ~ () const {  // NOLINT
         basic_cmatrix mRes(this->nsize(), this->msize());
         mRes._transp_m(*this);
-        __conj<TC>(mRes.get(), mRes.size(), mRes.incr());
+        cvm_conj<TC>(mRes.get(), mRes.size(), mRes.incr());
         return mRes;
     }
 
@@ -19882,8 +20216,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_cmatrix& transpose(const basic_cmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.msize());
+#endif
         if (this->get() == m.get()) {
             basic_cmatrix mTmp(m);
             this->_transp_m(mTmp);
@@ -19932,7 +20268,7 @@ prints
 */
     basic_cmatrix& conj(const basic_cmatrix& m) {
         this->transpose(m);
-        __conj<TC>(this->get(), this->size(), this->incr());
+        cvm_conj<TC>(this->get(), this->size(), this->incr());
         return *this;
     }
 
@@ -19972,7 +20308,7 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& transpose() {
+    basic_cmatrix& transpose() {  // NOLINT
         basic_cmatrix mTmp(*this);
         this->_resize2(this->nsize(), this->msize());
         this->_transp_m(mTmp);
@@ -20015,9 +20351,9 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& conj() {
+    basic_cmatrix& conj() {  // NOLINT
         this->transpose();
-        __conj<TC>(this->get(), this->size(), this->incr());
+        cvm_conj<TC>(this->get(), this->size(), this->incr());
         return *this;
     }
 
@@ -20046,8 +20382,10 @@ prints
 @param[in] v \ref cvector to compute product with.
 @return Result object.
 */
-    CVector operator * (const CVector& v) const {
+    CVector operator * (const CVector& v) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), v.size());
+#endif
         CVector vRes(this->msize());
         this->_multiply(vRes, v, false);
         return vRes;
@@ -20077,8 +20415,10 @@ prints
 @param[in] m \ref cmatrix to compute product with.
 @return Result object.
 */
-    basic_cmatrix operator * (const basic_cmatrix& m) const {
+    basic_cmatrix operator * (const basic_cmatrix& m) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.msize());
+#endif
         basic_cmatrix mRes(this->msize(), m.nsize());
         mRes.mult(*this, m);
         return mRes;
@@ -20110,7 +20450,7 @@ prints
 @param[in] m2 \ref cmatrix multiplier.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& mult(const basic_cmatrix& m1, const basic_cmatrix& m2) {
+    basic_cmatrix& mult(const basic_cmatrix& m1, const basic_cmatrix& m2) {  // NOLINT
         this->_mult(m1, m2);
         return *this;
     }
@@ -20161,10 +20501,12 @@ prints
     basic_cmatrix& rank1update_u(const CVector& vCol, const CVector& vRow) {
         const TC one(1., 0.);
         this->_check_rank1update_u();
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vCol.size());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), vRow.size());
+#endif
         this->_vanish();
-        __geru<TC, basic_cmatrix, CVector>(*this, vCol, vRow, one);
+        cvm_geru<TC, basic_cmatrix, CVector>(*this, vCol, vRow, one);
         return *this;
     }
 
@@ -20215,10 +20557,12 @@ prints
     basic_cmatrix& rank1update_c(const CVector& vCol, const CVector& vRow) {
         const TC one(1., 0.);
         this->_check_rank1update_c();
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vCol.size());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), vRow.size());
+#endif
         this->_vanish();
-        __gerc<TC, basic_cmatrix, CVector>(*this, vCol, vRow, one);
+        cvm_gerc<TC, basic_cmatrix, CVector>(*this, vCol, vRow, one);
         return *this;
     }
 
@@ -20251,7 +20595,7 @@ prints
 @param[in] n2 Row index to swap.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& swap_rows(tint n1, tint n2) {
+    basic_cmatrix& swap_rows(tint n1, tint n2) {  // NOLINT
         this->_swap_rows(n1, n2);
         return *this;
     }
@@ -20283,7 +20627,7 @@ prints
 @param[in] n2 Column index to swap.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& swap_cols(tint n1, tint n2) {
+    basic_cmatrix& swap_cols(tint n1, tint n2) {  // NOLINT
         this->_swap_cols(n1, n2);
         return *this;
     }
@@ -20641,10 +20985,12 @@ prints
     basic_cmatrix& solve_lu(const basic_scmatrix<TR,TC>& mA,
                             const basic_scmatrix<TR,TC>& mLU, const tint* pPivots,
                             const basic_cmatrix& mB, TR& dErr) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mLU.msize());
+#endif
         mA._solve(mB, *this, dErr, mLU, pPivots, 0);
         return *this;
     }
@@ -20993,8 +21339,10 @@ prints
 */
     basic_cmatrix& pinv(const basic_cmatrix& mA,
                         TR threshold = basic_cvmMachSp<TR>()) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mA.msize());
+#endif
         mA._pinv(*this, threshold);
         return *this;
     }
@@ -21069,11 +21417,13 @@ prints
 */
     basic_cmatrix gels(bool conjugate, const basic_cmatrix& mB,
                        basic_cvector<TR,TC>& vErr) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, vErr.size(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, conjugate ? this->nsize() : this->msize(), mB.msize());
+#endif
         basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mX;
-        __gels(conjugate, mA, mB, mX, vErr);
+        cvm_gels(conjugate, mA, mB, mX, vErr);
         return mX;
     }
 
@@ -21148,12 +21498,14 @@ prints
 */
     basic_cmatrix& gels(bool conjugate, const basic_cmatrix& mA, const basic_cmatrix& mB,
                         basic_cvector<TR,TC>& vErr) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mB.nsize(), vErr.size());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), conjugate ? mA.msize() : mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, mB.msize(), conjugate ? mA.nsize() : mA.msize());
+#endif
         basic_cmatrix mA2(mA);  // this algorithm overrides A
-        __gels(conjugate, mA2, mB, *this, vErr);
+        cvm_gels(conjugate, mA2, mB, *this, vErr);
         return *this;
     }
 
@@ -21225,12 +21577,14 @@ prints
     basic_cvector<TR,TC> gels(bool conjugate,
                               const basic_cvector<TR,TC>& vB,
                               TC& dErr) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, conjugate ? this->nsize() : this->msize(), vB.size());
+#endif
         basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mB(vB, vB.size(), 1);
         basic_cmatrix mX;
         basic_cvector<TR,TC> vErr(1);
-        __gels(conjugate, mA, mB, mX, vErr);
+        cvm_gels(conjugate, mA, mB, mX, vErr);
         dErr = vErr(0);
         const TC* pResult = mX;
         return basic_cvector<TR,TC>(pResult, mX.msize());
@@ -21293,10 +21647,12 @@ prints
 */
     basic_cmatrix gelsy(const basic_cmatrix& mB, tint& rank,
                         TR tol = basic_cvmMachSp<TR>()) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
+#endif
         basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mX;
-        __gelsy(mA, mB, mX, tol, rank);
+        cvm_gelsy(mA, mB, mX, tol, rank);
         return mX;
     }
 
@@ -21359,11 +21715,13 @@ prints
 */
     basic_cmatrix& gelsy(const basic_cmatrix& mA, const basic_cmatrix& mB,
                          tint& rank, TR tol = basic_cvmMachSp<TR>()) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
+#endif
         basic_cmatrix mA2(mA);  // this algorithm overrides A
-        __gelsy(mA2, mB, *this, tol, rank);
+        cvm_gelsy(mA2, mB, *this, tol, rank);
         return *this;
     }
 
@@ -21424,11 +21782,13 @@ prints
 */
     basic_cvector<TR,TC> gelsy(const basic_cvector<TR,TC>& vB, tint& rank,
                                TR tol = basic_cvmMachSp<TR>()) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
+#endif
         basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mB(vB, vB.size(), 1);
         basic_cmatrix mX;
-        __gelsy(mA, mB, mX, tol, rank);
+        cvm_gelsy(mA, mB, mX, tol, rank);
         const TC* pResult = mX;
         return basic_cvector<TR,TC>(pResult, mX.msize());
     }
@@ -22328,9 +22688,11 @@ prints
     basic_cmatrix& geru(TC alpha, const CVector& vCol,
                         const CVector& vRow) {
         this->_check_geru();
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vCol.size());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), vRow.size());
-        __geru<TC, basic_cmatrix, CVector>(*this, vCol, vRow, alpha);
+#endif
+        cvm_geru<TC, basic_cmatrix, CVector>(*this, vCol, vRow, alpha);
         return *this;
     }
 
@@ -22394,9 +22756,11 @@ prints
     basic_cmatrix& gerc(TC alpha, const CVector& vCol,
                         const CVector& vRow) {
         this->_check_gerc();
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vCol.size());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), vRow.size());
-        __gerc<TC, basic_cmatrix, CVector>(*this, vCol, vRow, alpha);
+#endif
+        cvm_gerc<TC, basic_cmatrix, CVector>(*this, vCol, vRow, alpha);
         return *this;
     }
 
@@ -22463,11 +22827,13 @@ prints
     basic_cmatrix& gemm(const basic_cmatrix& m1, bool bConj1, const basic_cmatrix& m2,
                         bool bConj2, TC cAlpha, TC cBeta) {
         this->_check_gemm();
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), bConj1 ? m1.nsize() : m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), bConj2 ? m2.msize() : m2.nsize());
         _check_ne(CVM_SIZESMISMATCH,
                   bConj1 ? m1.msize() : m1.nsize(),
                   bConj2 ? m2.nsize() : m2.msize());
+#endif
         this->_gemm(bConj1, m1, bConj2, m2, cAlpha, cBeta);
         return *this;
     }
@@ -22547,10 +22913,12 @@ prints
                         const basic_cmatrix& m,
                         TC cAlpha, TC cBeta) {
         this->_check_hemm();
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.nsize());
         _check_ne(CVM_SIZESMISMATCH,
                   bLeft ? this->msize() : this->nsize(), ms.msize());
+#endif
         this->_hemm(bLeft, ms, m, cAlpha, cBeta);
         return *this;
     }
@@ -22584,7 +22952,7 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& vanish() {
+    basic_cmatrix& vanish() {  // NOLINT
         this->_vanish();
         return *this;
     }
@@ -22612,7 +22980,7 @@ prints
 @param[in] dTo Second limit.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& randomize_real(TR dFrom, TR dTo) {
+    basic_cmatrix& randomize_real(TR dFrom, TR dTo) {  // NOLINT
         this->_randomize_real(dFrom, dTo);
         return *this;
     }
@@ -22640,7 +23008,7 @@ prints
 @param[in] dTo Second limit.
 @return Reference to changed calling matrix.
 */
-    basic_cmatrix& randomize_imag(TR dFrom, TR dTo) {
+    basic_cmatrix& randomize_imag(TR dFrom, TR dTo) {  // NOLINT
         this->_randomize_imag(dFrom, dTo);
         return *this;
     }
@@ -22653,7 +23021,7 @@ prints
     }
 
 //! @cond INTERNAL
-    void _div(TC d) {
+    void _div(TC d) {  // NOLINT
         if (std::abs(d) <= basic_cvmMachMin<TR>()) {
             throw cvmexception(CVM_DIVISIONBYZERO);
         }
@@ -22671,7 +23039,7 @@ prints
         const TC* pD2 = m2.get();
         if (this->get() == pD1) mTmp1 << m1;
         if (this->get() == pD2) mTmp2 << m2;
-        __gemm<TC, basic_cmatrix>(this->get() == pD1 ? mTmp1 : m1, bTrans1,
+        cvm_gemm<TC, basic_cmatrix>(this->get() == pD1 ? mTmp1 : m1, bTrans1,
                                   this->get() == pD2 ? mTmp2 : m2, bTrans2,
                                   dAlpha, *this, dBeta);
     }
@@ -22685,7 +23053,7 @@ prints
         const TC* pD2 = m._pd();
         if (this->get() == pD1) msTmp << ms;
         if (this->get() == pD2) mTmp << m;
-        __hemm<TC, basic_schmatrix<TR,TC>,
+        cvm_hemm<TC, basic_schmatrix<TR,TC>,
             basic_cmatrix>(bLeft, this->get() == pD1 ? msTmp : ms,
                                   this->get() == pD2 ? mTmp : m,
                            dAlpha, *this, dBeta);
@@ -22695,16 +23063,18 @@ prints
     virtual void _svd(RVector& vRes,
                       basic_scmatrix<TR,TC>* pmU,
                       basic_scmatrix<TR,TC>* pmVH) const {
+#if defined(CVM_DEBUG)
         if (pmU != nullptr && pmVH != nullptr) {
             _check_ne(CVM_SIZESMISMATCH, this->msize(), pmU->msize());
             _check_ne(CVM_SIZESMISMATCH, this->nsize(), pmVH->msize());
         }
-        __svd<TR,basic_cmatrix,
+#endif
+        cvm_svd<TR,basic_cmatrix,
             basic_scmatrix<TR,TC>> (vRes, vRes.size(), vRes.incr(), *this, pmU, pmVH);
     }
 
     virtual void _pinv(basic_cmatrix& mX, TR threshold) const {
-        __pinv<TR,basic_cmatrix, basic_cmatrix>(mX, *this, threshold);
+        cvm_pinv<TR,basic_cmatrix, basic_cmatrix>(mX, *this, threshold);
     }
 
     virtual void _check_submatrix() const {
@@ -22712,9 +23082,9 @@ prints
 
     virtual void _scalc(TC d) {
         if (this->_continuous()) {
-            __scal<TC,TC>(this->get(), this->size(), this->incr(), d);
+            cvm_scal<TC,TC>(this->get(), this->size(), this->incr(), d);
         } else for (tint i = 0; i < this->nsize(); ++i) {
-            __scal<TC,TC>(this->get() + this->ld() * i, this->msize(), this->incr(), d);
+            cvm_scal<TC,TC>(this->get() + this->ld() * i, this->msize(), this->incr(), d);
         }
     }
 
@@ -22759,14 +23129,14 @@ protected:
 
     // ?gemv routines perform a matrix-vector operation defined as
     // vRes = alpha*m*v + beta * vRes or vRes = alpha*v'*m + beta * vRes
-    // not virtual since __gemv calls all virtual methods inside
+    // not virtual since cvm_gemv calls all virtual methods inside
     void _gemv(bool bLeft, TC dAlpha, const CVector& v, TC dBeta, CVector& vRes) const {
         CVector vTmp;
         basic_cmatrix mTmp;
         const TC* pDv = v;
         if (vRes.get() == pDv) vTmp << v;
         if (vRes.get() == this->get()) mTmp << *this;
-        __gemv<TC, basic_cmatrix,
+        cvm_gemv<TC, basic_cmatrix,
             CVector>(bLeft,
                      vRes.get() == this->get() ? mTmp : *this, dAlpha,
                      vRes.get() == pDv ? vTmp : v, dBeta, vRes);
@@ -22794,9 +23164,11 @@ protected:
 
     virtual void _mult(const basic_cmatrix& m1,
                        const basic_cmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m2.nsize());
         _check_ne(CVM_SIZESMISMATCH, m1.nsize(), m2.msize());
+#endif
         const TR zero = TR(0.);
         const TR one = TR(1.);
         this->_gemm(false, m1, false, m2, one, zero);
@@ -22827,90 +23199,106 @@ protected:
 
     virtual void _randomize_real(TR dFrom, TR dTo) {
         if (this->_continuous()) {
-            __randomize_real<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
+            cvm_randomize_real<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
         } else for (tint i = 0; i < this->nsize(); ++i) {
-            __randomize_real<TC,TR>(this->get() + this->ld() * i, this->msize(), this->incr(), dFrom, dTo);
+            cvm_randomize_real<TC,TR>(this->get() + this->ld() * i, this->msize(), this->incr(), dFrom, dTo);
         }
     }
 
     virtual void _randomize_imag(TR dFrom, TR dTo) {
         if (this->_continuous()) {
-            __randomize_imag<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
+            cvm_randomize_imag<TC,TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
         } else for (tint i = 0; i < this->nsize(); ++i) {
-            __randomize_imag<TC,TR>(this->get() + this->ld() * i, this->msize(), this->incr(), dFrom, dTo);
+            cvm_randomize_imag<TC,TR>(this->get() + this->ld() * i, this->msize(), this->incr(), dFrom, dTo);
         }
     }
 
     // QR factorization
     // Case 1: "economy" mode, A is (m x n) and Q is (m x n) and R is (n x n)
     void _qr_rs(basic_cmatrix<TR,TC>& mQ, basic_scmatrix<TR,TC>& mR) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mR.msize());
-        __qre<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mQ, mR);
+#endif
+        cvm_qre<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mQ, mR);
     }
 
     // Case 2: full mode, A is (m x n) and Q is (m x m) and R is (m x n)
     void _qr_sr(basic_scmatrix<TR,TC>& mQ, basic_cmatrix<TR,TC>& mR) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mR.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mR.nsize());
-        __qrf<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mQ, mR);
+#endif
+        cvm_qrf<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mQ, mR);
     }
 
     // RQ factorization
     // Case 1: "economy" mode, A is (m x n) and R is (m x m) and Q is (m x n)
     void _rq_sr(basic_scmatrix<TR,TC>& mR, basic_cmatrix<TR,TC>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, this->msize(), this->nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mR.msize());
-        __rqe<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mR, mQ);
+#endif
+        cvm_rqe<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mR, mQ);
     }
 
     // Case 2: full mode, A is (m x n) and R is (m x n) and Q is (n x n)
     void _rq_rs(basic_cmatrix<TR,TC>& mR, basic_scmatrix<TR,TC>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, this->msize(), this->nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mR.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mR.nsize());
-        __rqf<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mR, mQ);
+#endif
+        cvm_rqf<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mR, mQ);
     }
 
     // LQ factorization
     // Case 1: "economy" mode, A is (m x n) and L is (m x m) and Q is (m x n)
     void _lq_sr(basic_scmatrix<TR,TC>& mL, basic_cmatrix<TR,TC>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mL.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.nsize());
-        __lqe<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mL, mQ);
+#endif
+        cvm_lqe<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mL, mQ);
     }
 
     // Case 2: full mode, A is (m x n) and L is (m x n) and Q is (n x n)
     void _lq_rs(basic_cmatrix<TR,TC>& mL, basic_scmatrix<TR,TC>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mL.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mL.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.nsize());
-        __lqf<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mL, mQ);
+#endif
+        cvm_lqf<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mL, mQ);
     }
 
     // QL factorization
     // Case 1: "economy" mode, A is (m x n) and Q is (m x n) and L is (n x n)
     void _ql_rs(basic_cmatrix<TR,TC>& mQ, basic_scmatrix<TR,TC>& mL) const {
+#if defined(CVM_DEBUG)
         _check_lt(CVM_SIZESMISMATCH_LT, this->msize(), this->nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mQ.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mL.msize());
-        __qle<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mQ, mL);
+#endif
+        cvm_qle<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mQ, mL);
     }
 
     // Case 2: full mode, A is (m x n) and Q is (m x m) and L is (m x n)
     void _ql_sr(basic_scmatrix<TR,TC>& mQ, basic_cmatrix<TR,TC>& mL) const {
+#if defined(CVM_DEBUG)
         _check_lt(CVM_SIZESMISMATCH_LT, this->msize(), this->nsize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mL.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mL.nsize());
-        __qlf<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mQ, mL);
+#endif
+        cvm_qlf<basic_cmatrix, basic_scmatrix<TR,TC>> (*this, mQ, mL);
     }
 
     virtual void _check_geru() { }
@@ -22924,9 +23312,11 @@ private:
     basic_cmatrix& _solve_helper(const basic_scmatrix<TR,TC>& mA,
                                  const basic_cmatrix& mB,
                                  TR& dErr, int transp_mode) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
+#endif
         mA._solve(mB, *this, dErr, nullptr, nullptr, transp_mode);
         return *this;
     }
@@ -22934,15 +23324,17 @@ private:
     // helper for svd and divide&conquer methods
     basic_cmatrix _gels_sd(bool svd, const basic_cmatrix& mB, basic_rvector<TR>& sv,
                            tint& rank, TR tol) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, _cvm_min<tint>(this->msize(), this->nsize()), sv.size());
+#endif
         basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mX;
         basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
-            __gelss(mA, mB, mX, tol, sv1, rank);
+            cvm_gelss(mA, mB, mX, tol, sv1, rank);
         } else {
-            __gelsd(mA, mB, mX, tol, sv1, rank);
+            cvm_gelsd(mA, mB, mX, tol, sv1, rank);
         }
         sv = sv1;
         return mX;
@@ -22951,16 +23343,18 @@ private:
     void _gels_sd(bool svd, const basic_cmatrix& mA, const basic_cmatrix& mB,
                   basic_rvector<TR>& sv,
                   tint& rank, TR tol) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mA.nsize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mB.nsize());
         _check_ne(CVM_SIZESMISMATCH, mA.msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, _cvm_min<tint>(mA.msize(), mA.nsize()), sv.size());
+#endif
         basic_cmatrix mA2(mA);  // this algorithm overrides A
         basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
-            __gelss(mA2, mB, *this, tol, sv1, rank);
+            cvm_gelss(mA2, mB, *this, tol, sv1, rank);
         } else {
-            __gelsd(mA2, mB, *this, tol, sv1, rank);
+            cvm_gelsd(mA2, mB, *this, tol, sv1, rank);
         }
         sv = sv1;
     }
@@ -22968,16 +23362,18 @@ private:
     basic_cvector<TR,TC> _gels_sd(bool svd,
                                   const basic_cvector<TR,TC>& vB, basic_rvector<TR>& sv,
                                   tint& rank, TR tol) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
         _check_ne(CVM_SIZESMISMATCH, _cvm_min<tint>(this->msize(), this->nsize()), sv.size());
+#endif
         basic_cmatrix mA(*this);  // this algorithm overrides A
         basic_cmatrix mB(vB, vB.size(), 1);
         basic_cmatrix mX;
         basic_rvector<TR> sv1(sv.size());  // to ensure that incr=1
         if (svd) {
-            __gelss(mA, mB, mX, tol, sv1, rank);
+            cvm_gelss(mA, mB, mX, tol, sv1, rank);
         } else {
-            __gelsd(mA, mB, mX, tol, sv1, rank);
+            cvm_gelsd(mA, mB, mX, tol, sv1, rank);
         }
         sv = sv1;
         const TC* pResult = mX;
@@ -23216,9 +23612,11 @@ prints
 \endcode
 @param[in] m \ref cmatrix to copy from.
 */
-    basic_scmatrix(const BaseCMatrix& m)
+    basic_scmatrix(const BaseCMatrix& m)  // NOLINT
       : BaseCMatrix(m.msize(), m.nsize(), m.msize(), false) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), this->nsize());
+#endif
         this->_massign(m);
     }
 
@@ -23247,7 +23645,7 @@ prints
 */
     explicit basic_scmatrix(const CVector& v)
       : BaseCMatrix(v.size(), v.size(), v.size(), true) {
-        __copy<TC>(this->msize(), v, v.incr(), this->get(), this->msize() + 1);
+        cvm_copy<TC>(this->msize(), v, v.incr(), this->get(), this->msize() + 1);
     }
 
 /**
@@ -23280,10 +23678,10 @@ prints
     explicit basic_scmatrix(const basic_srmatrix<TR>& m, bool bRealPart = true)
       : BaseCMatrix(m.msize(), m.msize(), m.msize(), true) {
         if (bRealPart) {
-            __copy2<TR,TC>(this->get(), this->size(), this->incr(), m._pd(), nullptr);
+            cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), m._pd(), nullptr);
         }
         else {
-            __copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, m._pd());
+            cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, m._pd());
         }
     }
 
@@ -23354,9 +23752,11 @@ prints
 */
     basic_scmatrix(const basic_srmatrix<TR>& mRe, const basic_srmatrix<TR>& mIm)
       : BaseCMatrix(mRe.msize(), mRe.nsize(), mRe.msize(), false) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mRe.msize(), mIm.msize());
         _check_ne(CVM_SIZESMISMATCH, mRe.nsize(), mIm.nsize());
-        __copy2<TR,TC>(this->get(), this->size(), this->incr(), mRe, mIm, mRe.incr(), mIm.incr());
+#endif
+        cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), mRe, mIm, mRe.incr(), mIm.incr());
     }
 
 /**
@@ -23393,16 +23793,16 @@ prints
 
     // TODO dox
     // real part
-    [[nodiscard]] basic_srmatrix<TR> real() const {
+    [[nodiscard]] basic_srmatrix<TR> real() const {  // NOLINT
         basic_srmatrix<TR> mRet(this->msize());
-        __copy<TR>(this->size(), __get_real_p<TR>(this->get()), this->incr() * 2, mRet, mRet.incr());
+        cvm_copy<TR>(this->size(), __get_real_p<TR>(this->get()), this->incr() * 2, mRet, mRet.incr());
         return mRet;
     }
 
     // imaginary part
-    [[nodiscard]] basic_srmatrix<TR> imag() const {
+    [[nodiscard]] basic_srmatrix<TR> imag() const {  // NOLINT
         basic_srmatrix<TR> mRet(this->msize());
-        __copy<TR>(this->size(), __get_imag_p<TR>(this->get()), this->incr() * 2, mRet, mRet.incr());
+        cvm_copy<TR>(this->size(), __get_imag_p<TR>(this->get()), this->incr() * 2, mRet, mRet.incr());
         return mRet;
     }
 
@@ -23436,7 +23836,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scmatrix& operator = (const basic_scmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_massign(m);
         return *this;
     }
@@ -23461,14 +23863,16 @@ destroyed but rather moved to a calling object <tt>a</tt>.
     }
 
     // assigns vector
-    basic_scmatrix& assign(const CVector& v) {
+    basic_scmatrix& assign(const CVector& v) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, this->size(), v.size());
+#endif
         this->_assign(v, v.incr());
         return *this;
     }
 
     // assigns external array (nIncr = 1)
-    basic_scmatrix& assign(const TC* pd) {
+    basic_scmatrix& assign(const TC* pd) {  // NOLINT
         this->_assign(pd, 1);
         return *this;
     }
@@ -23503,18 +23907,20 @@ prints
 @param[in] m Reference to \ref cmatrix to assign.
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& assign(tint nRow, tint nCol, const BaseCMatrix& m) {
+    basic_scmatrix& assign(tint nRow, tint nCol, const BaseCMatrix& m) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
         _check_gt(CVM_SIZESMISMATCH_GT, m.msize() + nRow, this->msize());
         _check_gt(CVM_SIZESMISMATCH_GT, m.nsize() + nCol, this->nsize());
+#endif
         this->_assign_shifted(this->_sub_pointer_nocheck(nRow, nCol), m._pd(),
                               m.msize(), m.nsize(), m.ld());
         return *this;
     }
 
     // fills the content
-    basic_scmatrix& set(TC c) {
+    basic_scmatrix& set(TC c) {  // NOLINT
         this->_set(c);
         return *this;
     }
@@ -23544,9 +23950,11 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scmatrix& assign_real(const basic_srmatrix<TR>& mRe) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mRe.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mRe.nsize());
-        __copy_real<TR,TC>(this->get(), this->size(), this->incr(), mRe._pd(), mRe.incr());
+#endif
+        cvm_copy_real<TR,TC>(this->get(), this->size(), this->incr(), mRe._pd(), mRe.incr());
         return *this;
     }
 
@@ -23575,20 +23983,22 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scmatrix& assign_imag(const basic_srmatrix<TR>& mIm) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mIm.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mIm.nsize());
-        __copy_imag<TR,TC>(this->get(), this->size(), this->incr(), mIm._pd(), mIm.incr());
+#endif
+        cvm_copy_imag<TR,TC>(this->get(), this->size(), this->incr(), mIm._pd(), mIm.incr());
         return *this;
     }
 
     // fills real part
-    basic_scmatrix& set_real(TR d) {
+    basic_scmatrix& set_real(TR d) {  // NOLINT
         this->_set_real_number(d);
         return *this;
     }
 
     // fills imaginary part
-    basic_scmatrix& set_imag(TR d) {
+    basic_scmatrix& set_imag(TR d) {  // NOLINT
         this->_set_imag_number(d);
         return *this;
     }
@@ -23628,7 +24038,7 @@ prints
 @param[in] nNewDim New dimension.
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& resize(tint nNewDim) {
+    basic_scmatrix& resize(tint nNewDim) {  // NOLINT
         this->_resize2(nNewDim, nNewDim);
         return *this;
     }
@@ -23752,7 +24162,9 @@ prints
 @return Difference of matrices.
 */
     basic_scmatrix operator - (const basic_scmatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         basic_scmatrix mDiff(*this);
         mDiff._mdecr(m);
         return mDiff;
@@ -23797,8 +24209,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scmatrix& sum(const basic_scmatrix& m1, const basic_scmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
+#endif
         this->_msum(m1, m2);
         return *this;
     }
@@ -23842,8 +24256,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scmatrix& diff(const basic_scmatrix& m1, const basic_scmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
+#endif
         this->_mdiff(m1, m2);
         return *this;
     }
@@ -23890,7 +24306,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scmatrix& operator += (const basic_scmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_mincr(m);
         return *this;
     }
@@ -23937,7 +24355,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scmatrix& operator -= (const basic_scmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_mdecr(m);
         return *this;
     }
@@ -23962,7 +24382,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_scmatrix operator - () const {
+    basic_scmatrix operator - () const {  // NOLINT
         const TR mone(-1.);
         basic_scmatrix mRes(*this);
         mRes._scalr(mone);
@@ -23972,30 +24392,30 @@ prints
 /**
 @brief Plus identity, prefix
 
-Adds identity matrix to a calling square complex matrix and returns 
+Adds identity matrix to a calling square complex matrix and returns
 a reference to the matrix changed.
 \par Example:
 \code
-using namespace cvm; 
+using namespace cvm;
 scmatrix m(2, {1., 2., 3., 4., 5., 6., 7., 8.});
-std::cout << m << std::endl; 
-std::cout << ++m << std::endl; 
+std::cout << m << std::endl;
+std::cout << ++m << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-(1,2) (5,6) 
-(3,4) (7,8) 
+(1,2) (5,6)
+(3,4) (7,8)
 
-(2,2) (5,6) 
-(3,4) (8,8) 
+(2,2) (5,6)
+(3,4) (8,8)
 
-(2,2) (5,6) 
-(3,4) (8,8) 
+(2,2) (5,6)
+(3,4) (8,8)
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& operator ++ () {
+    basic_scmatrix& operator ++ () {  // NOLINT
         this->_plus_plus();
         return *this;
     }
@@ -24007,22 +24427,22 @@ Adds identity matrix to a calling square complex matrix and
 returns a copy of the original calling matrix.
 \par Example:
 \code
-using namespace cvm; 
+using namespace cvm;
 scmatrix m(2, {1., 2., 3., 4., 5., 6., 7., 8.});
-std::cout << m << std::endl; 
-std::cout << m++ << std::endl; 
+std::cout << m << std::endl;
+std::cout << m++ << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-(1,2) (5,6) 
-(3,4) (7,8) 
+(1,2) (5,6)
+(3,4) (7,8)
 
-(1,2) (5,6) 
-(3,4) (7,8) 
+(1,2) (5,6)
+(3,4) (7,8)
 
-(2,2) (5,6) 
-(3,4) (8,8) 
+(2,2) (5,6)
+(3,4) (8,8)
 \endcode
 @return Copy of the original calling matrix.
 */
@@ -24036,30 +24456,30 @@ prints
 /**
 @brief Minus identity, prefix
 
-Subtracts identity matrix from calling square complex matrix and 
+Subtracts identity matrix from calling square complex matrix and
 returns a reference to the matrix changed.
 \par Example:
 \code
-using namespace cvm; 
+using namespace cvm;
 scmatrix m(2, {1., 2., 3., 4., 5., 6., 7., 8.});
-std::cout << m << std::endl; 
-std::cout << --m << std::endl; 
+std::cout << m << std::endl;
+std::cout << --m << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-(1,2) (5,6) 
-(3,4) (7,8) 
+(1,2) (5,6)
+(3,4) (7,8)
 
-(0,2) (5,6) 
-(3,4) (6,8) 
+(0,2) (5,6)
+(3,4) (6,8)
 
-(0,2) (5,6) 
-(3,4) (6,8) 
+(0,2) (5,6)
+(3,4) (6,8)
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& operator -- () {
+    basic_scmatrix& operator -- () {  // NOLINT
         this->_minus_minus();
         return *this;
     }
@@ -24067,26 +24487,26 @@ prints
 /**
 @brief Minus identity, postfix
 
-Subtracts identity matrix from calling square complex matrix and 
+Subtracts identity matrix from calling square complex matrix and
 returns a copy of the original calling matrix.
 \par Example:
 \code
-using namespace cvm; 
+using namespace cvm;
 scmatrix m(2, {1., 2., 3., 4., 5., 6., 7., 8.});
-std::cout << m << std::endl; 
-std::cout << m-- << std::endl; 
+std::cout << m << std::endl;
+std::cout << m-- << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-(1,2) (5,6) 
-(3,4) (7,8) 
+(1,2) (5,6)
+(3,4) (7,8)
 
-(1,2) (5,6) 
-(3,4) (7,8) 
+(1,2) (5,6)
+(3,4) (7,8)
 
-(0,2) (5,6) 
-(3,4) (6,8) 
+(0,2) (5,6)
+(3,4) (6,8)
 \endcode
 @return Copy of the original calling matrix.
 */
@@ -24121,7 +24541,7 @@ prints
 @param[in] dMult Number to multiply by.
 @return Result object.
 */
-    basic_scmatrix operator * (TR dMult) const {
+    basic_scmatrix operator * (TR dMult) const {  // NOLINT
         basic_scmatrix mRes(*this);
         mRes._scalr(dMult);
         return mRes;
@@ -24153,7 +24573,7 @@ prints
 @param[in] dDiv Number to divide by.
 @return Result object.
 */
-    basic_scmatrix operator / (TR dDiv) const {
+    basic_scmatrix operator / (TR dDiv) const {  // NOLINT
         basic_scmatrix mRes(*this);
         mRes._div(dDiv);
         return mRes;
@@ -24183,7 +24603,7 @@ prints
 @param[in] cMult Number to multiply by.
 @return Result object.
 */
-    basic_scmatrix operator * (TC cMult) const {
+    basic_scmatrix operator * (TC cMult) const {  // NOLINT
         basic_scmatrix mRes(*this);
         mRes._scalc(cMult);
         return mRes;
@@ -24215,7 +24635,7 @@ prints
 @param[in] cDiv Number to divide by.
 @return Result object.
 */
-    basic_scmatrix operator / (TC cDiv) const {
+    basic_scmatrix operator / (TC cDiv) const {  // NOLINT
         basic_scmatrix mRes(*this);
         mRes._div(cDiv);
         return mRes;
@@ -24245,7 +24665,7 @@ prints
 @param[in] dMult Number to multiply by.
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& operator *= (TR dMult) {
+    basic_scmatrix& operator *= (TR dMult) {  // NOLINT
         this->_scalr(dMult);
         return *this;
     }
@@ -24276,7 +24696,7 @@ prints
 @param[in] dDiv Number to divide by.
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& operator /= (TR dDiv) {
+    basic_scmatrix& operator /= (TR dDiv) {  // NOLINT
         this->_div(dDiv);
         return *this;
     }
@@ -24305,7 +24725,7 @@ prints
 @param[in] cMult Number to multiply by.
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& operator *= (TC cMult) {
+    basic_scmatrix& operator *= (TC cMult) {  // NOLINT
         this->_scalc(cMult);
         return *this;
     }
@@ -24336,13 +24756,13 @@ prints
 @param[in] cDiv Number to divide by.
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& operator /= (TC cDiv) {
+    basic_scmatrix& operator /= (TC cDiv) {  // NOLINT
         this->_div(cDiv);
         return *this;
     }
 
     // TODO dox
-    basic_scmatrix& normalize() {
+    basic_scmatrix& normalize() {  // NOLINT
         this->_normalize();
         return *this;
     }
@@ -24383,7 +24803,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_scmatrix operator ! () const {
+    basic_scmatrix operator ! () const {  // NOLINT
         basic_scmatrix mRes(*this);
         return mRes.transpose();
     }
@@ -24425,7 +24845,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_scmatrix operator ~ () const {
+    basic_scmatrix operator ~ () const {  // NOLINT
         basic_scmatrix mRes(*this);
         return mRes.conj();
     }
@@ -24554,7 +24974,7 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& transpose() {
+    basic_scmatrix& transpose() {  // NOLINT
         this->_transp();
         return *this;
     }
@@ -24597,13 +25017,13 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& conj() {
+    basic_scmatrix& conj() {  // NOLINT
         this->_conj();
         return *this;
     }
 
     // TODO dox
-    CVector operator * (const CVector& v) const {
+    CVector operator * (const CVector& v) const {  // NOLINT
         return this->BaseCMatrix::operator * (v);
     }
 
@@ -24638,7 +25058,7 @@ prints
 @param[in] m \ref cmatrix to compute product with.
 @return Result object.
 */
-    BaseCMatrix operator * (const BaseCMatrix& m) const {
+    BaseCMatrix operator * (const BaseCMatrix& m) const {  // NOLINT
         return this->BaseCMatrix::operator * (m);
     }
 
@@ -24671,8 +25091,10 @@ prints
 @param[in] m \ref scmatrix to compute product with.
 @return Result object.
 */
-    basic_scmatrix operator * (const basic_scmatrix& m) const {
+    basic_scmatrix operator * (const basic_scmatrix& m) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         basic_scmatrix mRes(this->msize());
         mRes.mult(*this, m);
         return mRes;
@@ -24712,7 +25134,7 @@ prints
 @param[in] m \ref scmatrix to compute product with.
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& operator *= (const basic_scmatrix& m) {
+    basic_scmatrix& operator *= (const basic_scmatrix& m) {  // NOLINT
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         const basic_scmatrix mTmp(*this);
         this->mult(mTmp, m);
@@ -24720,12 +25142,12 @@ prints
     }
 
     // TODO dox
-    basic_scmatrix& swap_rows(tint n1, tint n2) {
+    basic_scmatrix& swap_rows(tint n1, tint n2) {  // NOLINT
         this->_swap_rows(n1, n2);
         return *this;
     }
 
-    basic_scmatrix& swap_cols(tint n1, tint n2) {
+    basic_scmatrix& swap_cols(tint n1, tint n2) {  // NOLINT
         this->_swap_cols(n1, n2);
         return *this;
     }
@@ -25592,7 +26014,7 @@ prints
 @param[in] vB \ref cvector \f$b\f$.
 @return Result object.
 */
-    CVector operator / (const CVector& vB) const {
+    CVector operator / (const CVector& vB) const {  // NOLINT
         return vB % (*this);
     }
 
@@ -25682,8 +26104,10 @@ prints
 */
     CVector solve_lu(const basic_scmatrix& mLU, const tint* pPivots,
                      const CVector& vB, TR& dErr) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mLU.msize());
+#endif
         CVector vX(this->msize());
         this->_solve(vB, vX, dErr, mLU, pPivots, 0);
         return vX;
@@ -25862,8 +26286,10 @@ prints
 */
     BaseCMatrix solve_lu(const basic_scmatrix& mLU, const tint* pPivots,
                          const BaseCMatrix& mB, TR& dErr) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mLU.msize());
+#endif
         BaseCMatrix mX(mB.msize(), mB.nsize());
         this->_solve(mB, mX, dErr, mLU, pPivots, 0);
         return mX;
@@ -26148,7 +26574,7 @@ prints
 @param[out] nPivots %Array of pivot indices.
 @return Result object.
 */
-    basic_scmatrix low_up(tint* nPivots) const {
+    basic_scmatrix low_up(tint* nPivots) const {  // NOLINT
         basic_scmatrix mRes(*this);
         mRes._low_up(nPivots);
         return mRes;
@@ -26198,7 +26624,7 @@ prints
 */
     [[nodiscard]] TR cond() const {
         TR dCondNum(0.);
-        __cond_num<TR,basic_scmatrix>(*this, dCondNum);  // universal method, no need to virtualize
+        cvm_cond_num<TR,basic_scmatrix>(*this, dCondNum);  // universal method, no need to virtualize
         return dCondNum;
     }
 
@@ -26245,7 +26671,7 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scmatrix& inv(const basic_scmatrix& m) {
-        __inv<basic_scmatrix>(*this, m);
+        cvm_inv<basic_scmatrix>(*this, m);
         return *this;
     }
 
@@ -26290,9 +26716,9 @@ prints
 \endcode
 @return Result object.
 */
-    [[nodiscard]] basic_scmatrix inv() const {
+    [[nodiscard]] basic_scmatrix inv() const {  // NOLINT
         basic_scmatrix mRes(this->msize());
-        __inv<basic_scmatrix>(mRes, *this);
+        cvm_inv<basic_scmatrix>(mRes, *this);
         return mRes;
     }
 
@@ -26368,7 +26794,7 @@ Matlab output:
 @return Reference to changed calling matrix.
 */
     basic_scmatrix& exp(const basic_scmatrix& m, TR tol = basic_cvmMachSp<TR>()) {
-        __exp<basic_scmatrix, TR>(*this, m, tol);
+        cvm_exp<basic_scmatrix, TR>(*this, m, tol);
         return *this;
     }
 
@@ -26441,9 +26867,9 @@ Matlab output:
 @param[in] tol Computation tolerance.
 @return Result object.
 */
-    [[nodiscard]] basic_scmatrix exp(TR tol = basic_cvmMachSp<TR>()) const {
+    [[nodiscard]] basic_scmatrix exp(TR tol = basic_cvmMachSp<TR>()) const {  // NOLINT
         basic_scmatrix mRes(this->msize());
-        __exp<basic_scmatrix, TR>(mRes, *this, tol);
+        cvm_exp<basic_scmatrix, TR>(mRes, *this, tol);
         return mRes;
     }
 
@@ -26527,10 +26953,12 @@ Matlab output:
 @return Reference to changed calling matrix.
 */
     basic_scmatrix& polynom(const basic_scmatrix& m, const CVector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         CVector v1;
         if (v.incr() > 1) v1 << v;  // to make sure incr = 1
-        __polynom<TC, CVector>(this->get(), this->ld(), this->msize(), m._pd(), m._ldm(), v.incr() > 1 ? v1 : v);
+        cvm_polynom<TC, CVector>(this->get(), this->ld(), this->msize(), m._pd(), m._ldm(), v.incr() > 1 ? v1 : v);
         return *this;
     }
 
@@ -26616,7 +27044,7 @@ Matlab output:
         basic_scmatrix mRes(this->msize());
         CVector v1;
         if (v.incr() > 1) v1 << v;  // to make sure incr = 1
-        __polynom<TC, CVector>(mRes.get(), mRes.ld(), this->msize(), this->get(), this->ld(), v.incr() > 1 ? v1 : v);
+        cvm_polynom<TC, CVector>(mRes.get(), mRes.ld(), this->msize(), this->get(), this->ld(), v.incr() > 1 ? v1 : v);
         return mRes;
     }
 
@@ -26721,7 +27149,7 @@ prints
 @see cvector::eig()
 @return Result object.
 */
-    [[nodiscard]] CVector eig() const {
+    [[nodiscard]] CVector eig() const {  // NOLINT
         CVector vEig(this->msize());
         this->_eig(vEig, nullptr, false);
         return vEig;
@@ -26775,7 +27203,7 @@ prints
     basic_scmatrix& cholesky(const basic_schmatrix<TR,TC>& m) {
         this->_check_cholesky();  // doesn't work for band matrices
         *this = m;
-        tint nOutInfo = __cholesky<basic_scmatrix>(*this);
+        tint nOutInfo = cvm_cholesky<basic_scmatrix>(*this);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         _check_positive(CVM_NOTPOSITIVEDEFINITE, nOutInfo);
         this->_clean_low_triangle();
@@ -26814,7 +27242,7 @@ when argument is symmetric but not positive-definite.
     basic_scmatrix& bunch_kaufman(const basic_schmatrix<TR,TC>& m, tint* nPivots) {
         this->_check_bunch_kaufman();  // doesn't work for band matrices
         *this = m;
-        __bunch_kaufman<basic_scmatrix>(*this, nPivots);
+        cvm_bunch_kaufman<basic_scmatrix>(*this, nPivots);
         return *this;
     }
 
@@ -26971,7 +27399,7 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& identity() {
+    basic_scmatrix& identity() {  // NOLINT
         this->_vanish();
         this->_plus_plus();
         return *this;
@@ -27004,17 +27432,17 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_scmatrix& vanish() {
+    basic_scmatrix& vanish() {  // NOLINT
         this->_vanish();
         return *this;
     }
 
-    basic_scmatrix& randomize_real(TR dFrom, TR dTo) {
+    basic_scmatrix& randomize_real(TR dFrom, TR dTo) {  // NOLINT
         this->_randomize_real(dFrom, dTo);
         return *this;
     }
 
-    basic_scmatrix& randomize_imag(TR dFrom, TR dTo) {
+    basic_scmatrix& randomize_imag(TR dFrom, TR dTo) {  // NOLINT
         this->_randomize_imag(dFrom, dTo);
         return *this;
     }
@@ -27022,7 +27450,7 @@ prints
 //! @cond INTERNAL
     virtual void _eig(CVector& vEig, basic_scmatrix<TR,TC>* mEigVect,
                       bool bRightVect) const {
-        __eig<CVector, basic_scmatrix, basic_scmatrix>(vEig, *this, mEigVect, bRightVect);
+        cvm_eig<CVector, basic_scmatrix, basic_scmatrix>(vEig, *this, mEigVect, bRightVect);
     }
 
     virtual void _solve(const CVector& vB, CVector& vX,
@@ -27033,7 +27461,7 @@ prints
         CVector vX1;
         if (vB.incr() > 1) vB1 << vB;  // to make sure incr = 1
         if (vX.incr() > 1) vX1 << vX;
-        __solve<TR,TC, basic_scmatrix>(*this, 1, vB.incr() > 1 ? vB1 : vB, vB.size(), vX.incr() > 1 ? vX1 : vX, vX.size(),
+        cvm_solve<TR,TC, basic_scmatrix>(*this, 1, vB.incr() > 1 ? vB1 : vB, vB.size(), vX.incr() > 1 ? vX1 : vX, vX.size(),
                                         dErr, pLU, pPivots, transp_mode);
         if (vX.incr() > 1) vX = vX1;
     }
@@ -27042,7 +27470,7 @@ prints
                         TR& dErr, const TC* pLU,
                         const tint* pPivots, int transp_mode) const {
         mX = mB;
-        __solve<TR,TC, basic_scmatrix>(*this, mB.nsize(), mB, mB.ld(), mX, mX.ld(), dErr, pLU, pPivots, transp_mode);
+        cvm_solve<TR,TC, basic_scmatrix>(*this, mB.nsize(), mB, mB.ld(), mX, mX.ld(), dErr, pLU, pPivots, transp_mode);
     }
 
     [[nodiscard]] const TC* _pv() const override {
@@ -27093,7 +27521,9 @@ protected:
     // 0 - main, negative - low, positive - up
     CVector _diag(tint nDiag) override {
         const tint nD = std::abs(nDiag);
+#if defined(CVM_DEBUG)
         _check_ge(CVM_INDEX_GE, nD, this->msize());
+#endif
         return CVector(this->get() + (nDiag > 0 ? nDiag * this->ld() : nD), this->msize() - nD, this->ld() + 1);
     }
 
@@ -27101,7 +27531,9 @@ protected:
     // 0 - main, negative - low, positive - up
     [[nodiscard]] CVector _diag(tint nDiag) const override {
         const tint nD = std::abs(nDiag);
+#if defined(CVM_DEBUG)
         _check_ge(CVM_INDEX_GE, nD, this->msize());
+#endif
         return CVector(this->get() + (nDiag > 0 ? nDiag * this->ld() : nD), this->msize() - nD, this->ld() + 1);
     }
 
@@ -27119,7 +27551,7 @@ protected:
     // 6.1: it's reused in scb, overridden in sch
     virtual void _conj() {
         this->_transp();
-        __conj<TC>(this->get(), this->size(), this->incr());
+        cvm_conj<TC>(this->get(), this->size(), this->incr());
     }
 
     virtual void _plus_plus() {
@@ -27157,7 +27589,7 @@ protected:
                 }
             }
             catch (const cvmexception& e) {
-                if (e.cause() != CVM_SINGULARMATRIX) throw e;
+                if (e.cause() != CVM_SINGULARMATRIX) throw;
             }
             break;
         }
@@ -27165,35 +27597,43 @@ protected:
     }
 
     virtual void _low_up(tint* nPivots) {
-        __low_up<basic_scmatrix>(*this, nPivots);
+        cvm_low_up<basic_scmatrix>(*this, nPivots);
     }
 
     // QR - "economy" mode
     void _qr_ss(basic_scmatrix<TR,TC>& mQ, basic_scmatrix<TR,TC>& mR) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mR.msize());
-        __qre<basic_cmatrix<TR,TC>, basic_scmatrix<TR,TC>> (*this, mQ, mR);
+#endif
+        cvm_qre<basic_cmatrix<TR,TC>, basic_scmatrix<TR,TC>> (*this, mQ, mR);
     }
 
     // RQ - "economy" mode
     void _rq_ss(basic_scmatrix<TR,TC>& mR, basic_scmatrix<TR,TC>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mR.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
-        __rqe<basic_cmatrix<TR,TC>, basic_scmatrix<TR,TC>> (*this, mR, mQ);
+#endif
+        cvm_rqe<basic_cmatrix<TR,TC>, basic_scmatrix<TR,TC>> (*this, mR, mQ);
     }
 
     // LQ - "economy" mode
     void _lq_ss(basic_scmatrix<TR,TC>& mL, basic_scmatrix<TR,TC>& mQ) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mL.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
-        __lqe<basic_cmatrix<TR,TC>, basic_scmatrix<TR,TC>> (*this, mL, mQ);
+#endif
+        cvm_lqe<basic_cmatrix<TR,TC>, basic_scmatrix<TR,TC>> (*this, mL, mQ);
     }
 
     // QL - "economy" mode
     void _ql_ss(basic_scmatrix<TR,TC>& mQ, basic_scmatrix<TR,TC>& mL) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mQ.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mL.msize());
-        __qle<basic_cmatrix<TR,TC>, basic_scmatrix<TR,TC>> (*this, mQ, mL);
+#endif
+        cvm_qle<basic_cmatrix<TR,TC>, basic_scmatrix<TR,TC>> (*this, mQ, mL);
     }
 
     virtual void _check_cholesky() { }
@@ -27201,7 +27641,9 @@ protected:
 
 private:
     CVector _solve_helper(const CVector& vB, TR& dErr, int transp_mode) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
+#endif
         CVector vX(this->msize());
         this->_solve(vB, vX, dErr, nullptr, nullptr, transp_mode);
         return vX;
@@ -27209,7 +27651,9 @@ private:
 
     BaseCMatrix _solve_helper(const BaseCMatrix& mB,
                               TR& dErr, int transp_mode) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
+#endif
         BaseCMatrix mX(mB.msize(), mB.nsize());
         this->_solve(mB, mX, dErr, nullptr, nullptr, transp_mode);
         return mX;
@@ -27289,7 +27733,7 @@ protected:
             if (nNewSize > nSize) cvmZeroMemory<TC>(pd, nNewSize);
             const tint nMinSize = _cvm_min<tint>(nSize, nNewSize);
             if (nMinSize > 0 && !is_empty) {
-                __copy<TC>(nMinSize, this->_pb(), 1, pd, 1);
+                cvm_copy<TC>(nMinSize, this->_pb(), 1, pd, 1);
             }
             CVM_ASSERT(pd, nNewSize * sizeof(TC))
 #ifdef CVM_USE_POOL_MANAGER
@@ -27304,14 +27748,18 @@ protected:
     }
 
     void _check_dimensions() const {
+#if defined(CVM_DEBUG)
         _check_lt(CVM_WRONGSIZE_LT, this->lsize(), tint());
         _check_lt(CVM_WRONGSIZE_LT, this->usize(), tint());
+#endif
     }
 
     void _check_dimensions(const BandMatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->_msize(), m._msize());
         _check_ne(CVM_SIZESMISMATCH, this->lsize(), m.lsize());
         _check_ne(CVM_SIZESMISMATCH, this->usize(), m.usize());
+#endif
     }
 
     [[nodiscard]] bool _bcontinuous() const {
@@ -27322,7 +27770,7 @@ protected:
     void _mbassign(const Matrix<TR,TC>& m) {
         TC* pd = _pb();
         if (pd != m.get()) {
-            __copy<TC>(this->_size(), m, m.incr(), pd, 1);
+            cvm_copy<TC>(this->_size(), m, m.incr(), pd, 1);
         }
     }
 
@@ -27421,7 +27869,9 @@ protected:
     type_proxy<TC,TR> _b_ij_proxy_val(tint i, tint j) {
         TC* pd = _pb();
         const tint nA = j - this->usize();
+#if defined(CVM_DEBUG)
         CVM_ASSERT(pd, (i + j * (1 + this->lsize() + this->usize()) - nA + 1) * sizeof(TC))
+#endif
         return(nA < 0 || i >= nA) && i <= this->lsize() + j ?
               type_proxy<TC,TR>(pd[i + j * (1 + this->lsize() + this->usize()) - nA], false) :
               type_proxy<TC,TR>();
@@ -27458,7 +27908,7 @@ protected:
             nS -= this->lsize() + 1 - (mn - i);
         }
 
-        __copy<TC>(nS,
+        cvm_copy<TC>(nS,
                    pd + i * nCol + nShiftSrc,
                    1,
                    pCol + nShiftDest,
@@ -27487,7 +27937,7 @@ protected:
             nS -= (mm - i) - this->usize() - 1;
         }
 
-        __copy<TC>(nS,
+        cvm_copy<TC>(nS,
                    pd + nShiftSrc,
                    nCol,
                    pCol + nShiftDest,
@@ -27531,7 +27981,7 @@ protected:
                 pL = mpd + i * nCol + nShiftSrc;
                 pR = pd + (i > this->usize() ? (i - this->usize() + 1) * nCol - 1 : this->lsize() + i);
 
-                __copy<TC>(nS, pL, 1, pR, nLU);
+                cvm_copy<TC>(nS, pL, 1, pR, nLU);
             }
             std::swap(mkl, mku);
 #ifdef CVM_USE_POOL_MANAGER
@@ -27562,7 +28012,9 @@ protected:
         const tint mn = this->_nsize();
         const tint nNext = 1 + this->lsize() + this->usize();
         const tint nSize = nNext * mn;
+#if defined(CVM_DEBUG)
         CVM_ASSERT(pd, nSize * sizeof(TC))
+#endif
         for (tint i = this->usize(); i < nSize; i += nNext) {
             pd[i] -= one;
         }
@@ -27599,8 +28051,10 @@ protected:
 #endif
     {
         if (nNewKL != this->lsize() || nNewKU != this->usize()) {
+#if defined(CVM_DEBUG)
             if (this->lsize() < 0) throw cvmexception(CVM_WRONGSIZE, this->lsize());
             if (this->usize() < 0) throw cvmexception(CVM_WRONGSIZE, this->usize());
+#endif
             TC* pB = _pb();
             const tint mm = this->_msize();
             const tint mn = this->_nsize();
@@ -27613,7 +28067,7 @@ protected:
             CVM_ASSERT(pd, nNewSize * sizeof(TC))
             cvmZeroMemory<TC>(pd, nNewSize);
             for (tint i = -nMinKU; i <= nMinKL; ++i) {
-                __copy<TC>(mn, pB + (this->usize() + i), nOldLD, pd + (nNewKU + i), nNewLD);
+                cvm_copy<TC>(mn, pB + (this->usize() + i), nOldLD, pd + (nNewKU + i), nNewLD);
             }
             mkl = nNewKL;
             mku = nNewKU;
@@ -27685,11 +28139,11 @@ prints
 
 //! @cond INTERNAL
     [[nodiscard]] const tint* _pl() const {
-        return&mkl;
+        return &mkl;
     }
 
     [[nodiscard]] const tint* _pu() const {
-        return&mku;
+        return &mku;
     }
 //! @endcond
 };
@@ -28020,7 +28474,9 @@ prints
 */
     basic_srbmatrix(const BaseRMatrix& m, tint nKL, tint nKU)
       : BaseSRMatrix(m.msize(), 1 + nKL + nKU, false), BaseBandMatrix(nKL, nKU), mSM() {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), this->nsize());
+#endif
         this->_check_dimensions();
         _copy_b_matrix<TR,TR, BaseRMatrix,
             basic_srbmatrix>(const_cast<BaseRMatrix&>(m), *this, true);
@@ -28053,7 +28509,7 @@ prints
     explicit basic_srbmatrix(const RVector& v)
       : BaseSRMatrix(v.size(), 1, false),
         BaseBandMatrix(0, 0) {
-        __copy<TR>(this->msize(), v, v.incr(), this->get(), 1);
+        cvm_copy<TR>(this->msize(), v, v.incr(), this->get(), 1);
     }
 
 /**
@@ -28114,25 +28570,27 @@ destroyed but rather moved to a calling object <tt>a</tt>.
     }
 
     // assigns vector
-    basic_srbmatrix& assign(const RVector& v) {
+    basic_srbmatrix& assign(const RVector& v) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, this->size(), v.size());
+#endif
         this->_assign(v, v.incr());
         return *this;
     }
 
     // assigns external array (nIncr = 1)
-    basic_srbmatrix& assign(const TR* pd) {
+    basic_srbmatrix& assign(const TR* pd) {  // NOLINT
         this->_assign(pd, 1);
         return *this;
     }
 
     // fills the content
-    basic_srbmatrix& set(TR d) {
+    basic_srbmatrix& set(TR d) {  // NOLINT
         this->_set(d);
         return *this;
     }
 
-    basic_srbmatrix& resize(tint nNewDim) {
+    basic_srbmatrix& resize(tint nNewDim) {  // NOLINT
         this->_resize2(nNewDim, nNewDim);
         return *this;
     }
@@ -28625,7 +29083,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_srbmatrix operator - () const {
+    basic_srbmatrix operator - () const {  // NOLINT
         const TR mone(-1.);
         basic_srbmatrix mRes(*this);
         mRes._scalr(mone);
@@ -28635,37 +29093,37 @@ prints
 /**
 @brief Plus identity, prefix
 
-Adds identity matrix to a calling square band matrix and 
+Adds identity matrix to a calling square band matrix and
 returns a reference to the matrix changed.
 \par Example:
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
 srbmatrix m(a,4,1,0);
-std::cout << m << std::endl; 
-std::cout << ++m << std::endl; 
+std::cout << m << std::endl;
+std::cout << ++m << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-1 0 0 0 
-2 3 0 0 
-0 4 5 0 
-0 0 6 7 
+1 0 0 0
+2 3 0 0
+0 4 5 0
+0 0 6 7
 
-2 0 0 0 
-2 4 0 0 
-0 4 6 0 
-0 0 6 8 
+2 0 0 0
+2 4 0 0
+0 4 6 0
+0 0 6 8
 
-2 0 0 0 
-2 4 0 0 
-0 4 6 0 
-0 0 6 8 
+2 0 0 0
+2 4 0 0
+0 4 6 0
+0 0 6 8
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_srbmatrix& operator ++ () {
+    basic_srbmatrix& operator ++ () {  // NOLINT
         this->_plus_plus();
         return *this;
     }
@@ -28673,33 +29131,33 @@ prints
 /**
 @brief Plus identity, postfix
 
-Adds identity matrix to a calling square band matrix and returns 
-a copy of the original matrix. 
+Adds identity matrix to a calling square band matrix and returns
+a copy of the original matrix.
 \par Example:
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
 srbmatrix m(a,4,1,0);
-std::cout << m << std::endl; 
-std::cout << m++ << std::endl; 
+std::cout << m << std::endl;
+std::cout << m++ << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-1 0 0 0 
-2 3 0 0 
-0 4 5 0 
-0 0 6 7 
+1 0 0 0
+2 3 0 0
+0 4 5 0
+0 0 6 7
 
-1 0 0 0 
-2 3 0 0 
-0 4 5 0 
-0 0 6 7 
+1 0 0 0
+2 3 0 0
+0 4 5 0
+0 0 6 7
 
-2 0 0 0 
-2 4 0 0 
-0 4 6 0 
-0 0 6 8 
+2 0 0 0
+2 4 0 0
+0 4 6 0
+0 0 6 8
 \endcode
 @return Copy of the original calling matrix.
 */
@@ -28719,30 +29177,30 @@ Subtracts identity matrix from calling square band matrix and returns a referenc
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
 srbmatrix m(a,4,1,0);
-std::cout << m << std::endl; 
-std::cout << --m << std::endl; 
+std::cout << m << std::endl;
+std::cout << --m << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-1 0 0 0 
-2 3 0 0 
-0 4 5 0 
-0 0 6 7 
+1 0 0 0
+2 3 0 0
+0 4 5 0
+0 0 6 7
 
-0 0 0 0 
-2 2 0 0 
-0 4 4 0 
-0 0 6 6 
+0 0 0 0
+2 2 0 0
+0 4 4 0
+0 0 6 6
 
-0 0 0 0 
-2 2 0 0 
-0 4 4 0 
-0 0 6 6 
+0 0 0 0
+2 2 0 0
+0 4 4 0
+0 0 6 6
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_srbmatrix& operator -- () {
+    basic_srbmatrix& operator -- () {  // NOLINT
         this->_minus_minus();
         return *this;
     }
@@ -28750,33 +29208,33 @@ prints
 /**
 @brief Minus identity, postfix
 
-Subtracts identity matrix from calling square band matrix and 
-returns a copy of the original matrix. 
+Subtracts identity matrix from calling square band matrix and
+returns a copy of the original matrix.
 \par Example:
 \code
 using namespace cvm;
 double a[] = {1., 2., 3., 4., 5., 6., 7., 8.};
 srbmatrix m(a,4,1,0);
-std::cout << m << std::endl; 
-std::cout << m-- << std::endl; 
+std::cout << m << std::endl;
+std::cout << m-- << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-1 0 0 0 
-2 3 0 0 
-0 4 5 0 
-0 0 6 7 
+1 0 0 0
+2 3 0 0
+0 4 5 0
+0 0 6 7
 
-1 0 0 0 
-2 3 0 0 
-0 4 5 0 
-0 0 6 7 
+1 0 0 0
+2 3 0 0
+0 4 5 0
+0 0 6 7
 
-0 0 0 0 
-2 2 0 0 
-0 4 4 0 
-0 0 6 6 
+0 0 0 0
+2 2 0 0
+0 4 4 0
+0 0 6 6
 \endcode
 @return Copy of the original calling matrix.
 */
@@ -28788,35 +29246,35 @@ prints
     }
 
     // TODO dox
-    basic_srbmatrix operator * (TR dMult) const {
+    basic_srbmatrix operator * (TR dMult) const {  // NOLINT
         basic_srbmatrix mRes(*this);
         mRes._scalr(dMult);
         return mRes;
     }
 
-    basic_srbmatrix operator / (TR dDiv) const {
+    basic_srbmatrix operator / (TR dDiv) const {  // NOLINT
         basic_srbmatrix mRes(*this);
         mRes._div(dDiv);
         return mRes;
     }
 
-    basic_srbmatrix& operator *= (TR dMult) {
+    basic_srbmatrix& operator *= (TR dMult) {  // NOLINT
         this->_scalr(dMult);
         return *this;
     }
 
-    basic_srbmatrix& operator /= (TR dDiv) {
+    basic_srbmatrix& operator /= (TR dDiv) {  // NOLINT
         this->_div(dDiv);
         return *this;
     }
 
-    basic_srbmatrix& normalize() {
+    basic_srbmatrix& normalize() {  // NOLINT
         this->_normalize();
         return *this;
     }
 
     // transposed Matrix
-    basic_srbmatrix operator ~ () const {
+    basic_srbmatrix operator ~ () const {  // NOLINT
         basic_srbmatrix mRes(*this);
         return mRes.transpose();
     }
@@ -28859,28 +29317,32 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srbmatrix& transpose(const basic_srbmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->lsize(), m.usize());
         _check_ne(CVM_SIZESMISMATCH, this->usize(), m.lsize());
+#endif
         *this << ~m;
         return *this;
     }
 
     // TODO dox
-    basic_srbmatrix& transpose() {
+    basic_srbmatrix& transpose() {  // NOLINT
         this->_transp();
         return *this;
     }
 
-    RVector operator * (const RVector& v) const {
+    RVector operator * (const RVector& v) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), v.size());
+#endif
         RVector vRes(this->msize());
         this->_multiply(vRes, v, false);
         return vRes;
     }
 
     // special exclusion since matrix product is not commutative
-    BaseRMatrix operator * (const BaseRMatrix& m) const {
+    BaseRMatrix operator * (const BaseRMatrix& m) const {  // NOLINT
         _bake_SM();
         return mSM * m;
     }
@@ -28916,7 +29378,7 @@ prints
 @param[in] m \ref srmatrix to compute product with.
 @return Result object.
 */
-    BaseSRMatrix operator * (const BaseSRMatrix& m) const {
+    BaseSRMatrix operator * (const BaseSRMatrix& m) const {  // NOLINT
         _bake_SM();
         return mSM * m;
     }
@@ -28955,7 +29417,7 @@ prints
 @param[in] m \ref srbmatrix to compute product with.
 @return Result object.
 */
-    basic_srbmatrix operator * (const basic_srbmatrix& m) const {
+    basic_srbmatrix operator * (const basic_srbmatrix& m) const {  // NOLINT
         _bake_SM();
         m._bake_SM();
         return basic_srbmatrix(mSM * m.mSM,
@@ -28966,7 +29428,7 @@ prints
     // TODO dox
     // 6.1: reversed vector operator % returns solution of A*X=B equation
     // overridden to mask out operator / (TR)
-    RVector operator / (const RVector& v) const {
+    RVector operator / (const RVector& v) const {  // NOLINT
         return v % (*this);
     }
 
@@ -29069,24 +29531,24 @@ prints
     }
 
     // TODO dox
-    basic_srbmatrix low_up(tint* nPivots) const {
+    basic_srbmatrix low_up(tint* nPivots) const {  // NOLINT
         basic_srbmatrix mRes(*this);
         mRes._low_up(nPivots);
         return mRes;
     }
 
-    basic_srbmatrix& identity() {
+    basic_srbmatrix& identity() {  // NOLINT
         this->_vanish();
         this->_plus_plus();
         return *this;
     }
 
-    basic_srbmatrix& vanish() {
+    basic_srbmatrix& vanish() {  // NOLINT
         this->_vanish();
         return *this;
     }
 
-    basic_srbmatrix& randomize(TR dFrom, TR dTo) {
+    basic_srbmatrix& randomize(TR dFrom, TR dTo) {  // NOLINT
         this->_b_randomize(true, dFrom, dTo);
         return *this;
     }
@@ -29119,10 +29581,8 @@ prints
     }
 
     // TODO dox
-    // ATTENTION!!! This is not a good idea to use the following function. It's provided for
-    // overriding of basic_rmatrix<TR>::mult only
     // this = m1 * m2
-    basic_srbmatrix& mult(const BaseRMatrix& m1, const BaseRMatrix& m2) {
+    basic_srbmatrix& mult(const BaseRMatrix& m1, const BaseRMatrix& m2) {  // NOLINT
         this->_mult(m1, m2);
         return *this;
     }
@@ -29131,7 +29591,7 @@ prints
     // redefinition of basic_array's function
     TR* _pd() override {
 #ifdef CVM_DEBUG
-        // it's abnormal to call this function, this is pointer to copy, not to an object.
+        // it's incorrect to call this function, this is pointer to copy, not to an object.
         // only const version is allowed
         assert(false);
 #endif
@@ -29148,16 +29608,18 @@ prints
     // singular values in decreasing order
     void _svd(RVector& vRes, BaseSRMatrix* pmU,
               BaseSRMatrix* pmVH) const override {
+#if defined(CVM_DEBUG)
         if (pmU != nullptr && pmVH != nullptr) {
             _check_ne(CVM_SIZESMISMATCH, this->msize(), pmU->msize());
             _check_ne(CVM_SIZESMISMATCH, this->nsize(), pmVH->msize());
         }
-        __svd<TR,basic_srbmatrix,
+#endif
+        cvm_svd<TR,basic_srbmatrix,
             BaseSRMatrix>(vRes, vRes.size(), vRes.incr(), *this, pmU, pmVH);
     }
 
     void _pinv(BaseRMatrix& mX, TR threshold) const override {
-        __pinv<TR,basic_srbmatrix, BaseRMatrix>(mX, *this, threshold);
+        cvm_pinv<TR,basic_srbmatrix, BaseRMatrix>(mX, *this, threshold);
     }
 
     void _eig(CVector& vEig, basic_scmatrix<TR,TC>* mEigVect,
@@ -29174,7 +29636,7 @@ prints
         RVector vX1;
         if (vB.incr() > 1) vB1 << vB;  // to make sure incr = 1
         if (vX.incr() > 1) vX1 << vX;
-        __solve<TR,TR, basic_srbmatrix>(*this, 1, vB.incr() > 1 ? vB1 : vB, vB.size(),
+        cvm_solve<TR,TR, basic_srbmatrix>(*this, 1, vB.incr() > 1 ? vB1 : vB, vB.size(),
                                         vX.incr() > 1 ? vX1 : vX, vX.size(),
                                         dErr, pLU, pPivots, transp_mode);
         if (vX.incr() > 1) vX = vX1;
@@ -29184,20 +29646,20 @@ prints
                 const TR* pLU, const tint* pPivots,
                 int transp_mode) const override {
         mX = mB;
-        __solve<TR,TR, basic_srbmatrix>(*this, mB.nsize(), mB, mB.ld(),
+        cvm_solve<TR,TR, basic_srbmatrix>(*this, mB.nsize(), mB, mB.ld(),
                                         mX, mX.ld(), dErr, pLU, pPivots, transp_mode);
     }
 
     // ?gbmv routines perform a matrix-vector operation defined as
     // vRes = alpha*m*v + beta * vRes or vRes = alpha*v'*m + beta * vRes
-    // not virtual since __gbmv calls all virtual methods inside
+    // not virtual since cvm_gbmv calls all virtual methods inside
     void _gbmv(bool bLeft, TR dAlpha, const RVector& v, TR dBeta, RVector& vRes) const {
         RVector vTmp;
         basic_srbmatrix mTmp;
         const TR* pDv = v;
         if (vRes.get() == pDv) vTmp << v;
         if (vRes.get() == this->get()) mTmp << *this;
-        __gbmv<TR,basic_srbmatrix,
+        cvm_gbmv<TR,basic_srbmatrix,
             RVector>(bLeft,
                      vRes.get() == this->get() ? mTmp : *this, dAlpha,
                      vRes.get() == pDv ? vTmp : v, dBeta, vRes);
@@ -29308,12 +29770,14 @@ protected:
 
     RVector _diag(tint nDiag) override {
         const tint nD = std::abs(nDiag);
+#if defined(CVM_DEBUG)
         if (nDiag < 0) {
             _check_gt(CVM_INDEX_GT, nD, this->lsize());
         }
         else {
             _check_gt(CVM_INDEX_GT, nDiag, this->usize());
         }
+#endif
         const tint nLU = this->lsize() + this->usize();
         return RVector(this->get() + this->usize() + (nDiag < 0 ? nD : nD * nLU), this->msize() - nD, nLU + 1);
     }
@@ -29407,13 +29871,15 @@ protected:
     }
 
     void _scalr(TR d) override {
-        __scal<TR,TR>(this->get(), this->size(), this->incr(), d);  // zero tails are supposed here
+        cvm_scal<TR,TR>(this->get(), this->size(), this->incr(), d);  // zero tails are supposed here
     }
 
     void _mult(const BaseRMatrix& m1, const BaseRMatrix& m2) override {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m2.nsize());
         _check_ne(CVM_SIZESMISMATCH, m1.nsize(), m2.msize());
+#endif
         BaseSRMatrix mR(this->msize());
         mR.mult(m1, m2);
 #ifdef CVM_USE_POOL_MANAGER
@@ -29431,11 +29897,11 @@ protected:
     }
 
     void _randomize(TR dFrom, TR dTo) override {
-        __randomize<TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
+        cvm_randomize<TR>(this->get(), this->size(), this->incr(), dFrom, dTo);
     }
 
     void _low_up(tint* nPivots) override {
-        __low_up<basic_srbmatrix>(*this, nPivots);
+        cvm_low_up<basic_srbmatrix>(*this, nPivots);
     }
 
     tint _ld_for_replace() const override {
@@ -29769,7 +30235,9 @@ prints
     basic_scbmatrix(const BaseCMatrix& m, tint nKL, tint nKU)
       : BaseSCMatrix(m.msize(), 1 + nKL + nKU, false),
         BaseBandMatrix(nKL, nKU), mSM() {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), this->nsize());
+#endif
         this->_check_dimensions();
         _copy_b_matrix<TR,TC, BaseCMatrix, basic_scbmatrix>(const_cast<BaseCMatrix&>(m), *this, true);
     }
@@ -29799,7 +30267,7 @@ prints
     explicit basic_scbmatrix(const CVector& v)
       : BaseSCMatrix(v.size(), 1, false),
         BaseBandMatrix(0, 0) {
-        __copy<TC>(this->msize(), v, v.incr(), this->get(), 1);
+        cvm_copy<TC>(this->msize(), v, v.incr(), this->get(), 1);
     }
 
 /**
@@ -29836,10 +30304,10 @@ prints
         BaseBandMatrix(m.lsize(), m.usize()),
         mSM() {
         if (bRealPart) {
-            __copy2<TR,TC>(this->get(), this->size(), this->incr(), m.get(), nullptr);
+            cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), m.get(), nullptr);
         }
         else {
-            __copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, m.get());
+            cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), nullptr, m.get());
         }
     }
 
@@ -29874,25 +30342,27 @@ prints
       : BaseSCMatrix(mRe.msize(), mRe.ld(), false),
         BaseBandMatrix(mRe.lsize(), mRe.usize()),
         mSM() {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, mRe.msize(), mIm.msize());
         _check_ne(CVM_SIZESMISMATCH, mRe.nsize(), mIm.nsize());
         _check_ne(CVM_SIZESMISMATCH, mRe.lsize(), mIm.lsize());
         _check_ne(CVM_SIZESMISMATCH, mRe.usize(), mIm.usize());
-        __copy2<TR,TC>(this->get(), this->size(), this->incr(), mRe, mIm, mRe.incr(), mIm.incr());
+#endif
+        cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), mRe, mIm, mRe.incr(), mIm.incr());
     }
 
     // TODO dox
     // real part
-    basic_srbmatrix<TR> real() const {
+    basic_srbmatrix<TR> real() const {  // NOLINT
         basic_srbmatrix<TR> mRet(this->msize(), this->lsize(), this->usize());
-        __copy<TR>(this->size(), __get_real_p<TR>(this->get()), this->incr() * 2, mRet, mRet.incr());
+        cvm_copy<TR>(this->size(), __get_real_p<TR>(this->get()), this->incr() * 2, mRet, mRet.incr());
         return mRet;
     }
 
     // imaginary part
-    basic_srbmatrix<TR> imag() const {
+    basic_srbmatrix<TR> imag() const {  // NOLINT
         basic_srbmatrix<TR> mRet(this->msize(), this->lsize(), this->usize());
-        __copy<TR>(this->size(), __get_imag_p<TR>(this->get()), this->incr() * 2, mRet, mRet.incr());
+        cvm_copy<TR>(this->size(), __get_imag_p<TR>(this->get()), this->incr() * 2, mRet, mRet.incr());
         return mRet;
     }
 
@@ -29955,19 +30425,21 @@ destroyed but rather moved to a calling object <tt>a</tt>.
 
     // TODO dox
     // assigns vector
-    basic_scbmatrix& assign(const CVector& v) {
+    basic_scbmatrix& assign(const CVector& v) {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, this->size(), v.size());
+#endif
         this->_assign(v, v.incr());
         return *this;
     }
 
     // assigns an external array (nIncr = 1)
-    basic_scbmatrix& assign(const TC* pd) {
+    basic_scbmatrix& assign(const TC* pd) {  // NOLINT
         this->_assign(pd, 1);
         return *this;
     }
 
-    basic_scbmatrix& set(TC c) {
+    basic_scbmatrix& set(TC c) {  // NOLINT
         this->_set(c);
         return *this;
     }
@@ -29999,10 +30471,12 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scbmatrix& assign_real(const basic_srbmatrix<TR>& mRe) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mRe.msize());
         _check_ne(CVM_SIZESMISMATCH, this->lsize(), mRe.lsize());
         _check_ne(CVM_SIZESMISMATCH, this->usize(), mRe.usize());
-        __copy_real<TR,TC>(this->get(), this->size(), this->incr(), mRe, mRe.incr());
+#endif
+        cvm_copy_real<TR,TC>(this->get(), this->size(), this->incr(), mRe, mRe.incr());
         return *this;
     }
 
@@ -30033,27 +30507,29 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scbmatrix& assign_imag(const basic_srbmatrix<TR>& mIm) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mIm.msize());
         _check_ne(CVM_SIZESMISMATCH, this->lsize(), mIm.lsize());
         _check_ne(CVM_SIZESMISMATCH, this->usize(), mIm.usize());
-        __copy_imag<TR,TC>(this->get(), this->size(), this->incr(), mIm, mIm.incr());
+#endif
+        cvm_copy_imag<TR,TC>(this->get(), this->size(), this->incr(), mIm, mIm.incr());
         return *this;
     }
 
     // TODO dox
     // fills real part
-    basic_scbmatrix& set_real(TR d) {
+    basic_scbmatrix& set_real(TR d) {  // NOLINT
         this->_set_real_number(d);
         return *this;
     }
 
     // fills imaginary part
-    basic_scbmatrix& set_imag(TR d) {
+    basic_scbmatrix& set_imag(TR d) {  // NOLINT
         this->_set_imag_number(d);
         return *this;
     }
 
-    basic_scbmatrix& resize(tint nNewDim) {
+    basic_scbmatrix& resize(tint nNewDim) {  // NOLINT
         this->_resize2(nNewDim, nNewDim);
         return *this;
     }
@@ -30529,9 +31005,9 @@ prints
 /**
 @brief Unary minus operator
 
-Creates an object of type \ref scbmatrix as a calling matrix 
-multiplied by \c -1. It throws \ref cvmexception in case of 
-memory allocation failure. 
+Creates an object of type \ref scbmatrix as a calling matrix
+multiplied by \c -1. It throws \ref cvmexception in case of
+memory allocation failure.
 \par Example:
 \code
 using namespace cvm;
@@ -30542,17 +31018,17 @@ std::cout << m << std::endl << -m;
 \endcode
 prints
 \code
-(1,2) (0,0) (0,0) 
-(3,4) (5,6) (0,0) 
-(0,0) (7,8) (9,10) 
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
 
-(-1,-2) (0,0) (0,0) 
-(-3,-4) (-5,-6) (0,0) 
-(0,0) (-7,-8) (-9,-10) 
+(-1,-2) (0,0) (0,0)
+(-3,-4) (-5,-6) (0,0)
+(0,0) (-7,-8) (-9,-10)
 \endcode
 @return Result object.
 */
-    basic_scbmatrix operator - () const {
+    basic_scbmatrix operator - () const {  // NOLINT
         const TR mone(-1.);
         basic_scbmatrix mRes(*this);
         mRes._scalr(mone);
@@ -30563,7 +31039,7 @@ prints
 @brief Plus identity, prefix
 
 Adds identity matrix to a calling complex square band matrix and
-returns a reference to the matrix changed. 
+returns a reference to the matrix changed.
 \par Example:
 \code
 using namespace cvm;
@@ -30571,26 +31047,26 @@ double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
               9., 10., 11., 12.};
 scbmatrix m((std::complex<double>*)a, 3, 1, 0);
 std::cout << m << std::endl;
-std::cout << ++m << std::endl; 
+std::cout << ++m << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-(1,2) (0,0) (0,0) 
-(3,4) (5,6) (0,0) 
-(0,0) (7,8) (9,10) 
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
 
-(2,2) (0,0) (0,0) 
-(3,4) (6,6) (0,0) 
-(0,0) (7,8) (10,10) 
+(2,2) (0,0) (0,0)
+(3,4) (6,6) (0,0)
+(0,0) (7,8) (10,10)
 
-(2,2) (0,0) (0,0) 
-(3,4) (6,6) (0,0) 
-(0,0) (7,8) (10,10) 
+(2,2) (0,0) (0,0)
+(3,4) (6,6) (0,0)
+(0,0) (7,8) (10,10)
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_scbmatrix& operator ++ () {
+    basic_scbmatrix& operator ++ () {  // NOLINT
         this->_plus_plus();
         return *this;
     }
@@ -30598,8 +31074,8 @@ prints
 /**
 @brief Plus identity, postfix
 
-Adds identity matrix to a calling complex square band matrix and returns 
-a copy of the original matrix. 
+Adds identity matrix to a calling complex square band matrix and returns
+a copy of the original matrix.
 \par Example:
 \code
 using namespace cvm;
@@ -30607,22 +31083,22 @@ double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
               9., 10., 11., 12.};
 scbmatrix m((std::complex<double>*)a, 3, 1, 0);
 std::cout << m << std::endl;
-std::cout << m++ << std::endl; 
+std::cout << m++ << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-(1,2) (0,0) (0,0) 
-(3,4) (5,6) (0,0) 
-(0,0) (7,8) (9,10) 
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
 
-(1,2) (0,0) (0,0) 
-(3,4) (5,6) (0,0) 
-(0,0) (7,8) (9,10) 
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
 
-(2,2) (0,0) (0,0) 
-(3,4) (6,6) (0,0) 
-(0,0) (7,8) (10,10) 
+(2,2) (0,0) (0,0)
+(3,4) (6,6) (0,0)
+(0,0) (7,8) (10,10)
 \endcode
 @return Copy of the original calling matrix.
 */
@@ -30636,7 +31112,7 @@ prints
 /**
 @brief Minus identity, prefix
 
-Subtracts identity matrix from calling complex square band 
+Subtracts identity matrix from calling complex square band
 matrix and returns a reference to the matrix changed.
 \par Example:
 \code
@@ -30645,26 +31121,26 @@ double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
               9., 10., 11., 12.};
 scbmatrix m((std::complex<double>*)a, 3, 1, 0);
 std::cout << m << std::endl;
-std::cout << --m << std::endl; 
+std::cout << --m << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-(1,2) (0,0) (0,0) 
-(3,4) (5,6) (0,0) 
-(0,0) (7,8) (9,10) 
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
 
-(0,2) (0,0) (0,0) 
-(3,4) (4,6) (0,0) 
-(0,0) (7,8) (8,10) 
+(0,2) (0,0) (0,0)
+(3,4) (4,6) (0,0)
+(0,0) (7,8) (8,10)
 
-(0,2) (0,0) (0,0) 
-(3,4) (4,6) (0,0) 
-(0,0) (7,8) (8,10) 
+(0,2) (0,0) (0,0)
+(3,4) (4,6) (0,0)
+(0,0) (7,8) (8,10)
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_scbmatrix& operator -- () {
+    basic_scbmatrix& operator -- () {  // NOLINT
         this->_minus_minus();
         return *this;
     }
@@ -30672,8 +31148,8 @@ prints
 /**
 @brief Minus identity, postfix
 
-Subtracts identity matrix from calling complex square band matrix and 
-returns a copy of the original matrix. 
+Subtracts identity matrix from calling complex square band matrix and
+returns a copy of the original matrix.
 \par Example:
 \code
 using namespace cvm;
@@ -30681,22 +31157,22 @@ double a[] = {1., 2., 3., 4., 5., 6., 7., 8.,
               9., 10., 11., 12.};
 scbmatrix m((std::complex<double>*)a, 3, 1, 0);
 std::cout << m << std::endl;
-std::cout << m-- << std::endl; 
+std::cout << m-- << std::endl;
 std::cout << m << std::endl;
 \endcode
 prints
 \code
-(1,2) (0,0) (0,0) 
-(3,4) (5,6) (0,0) 
-(0,0) (7,8) (9,10) 
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
 
-(1,2) (0,0) (0,0) 
-(3,4) (5,6) (0,0) 
-(0,0) (7,8) (9,10) 
+(1,2) (0,0) (0,0)
+(3,4) (5,6) (0,0)
+(0,0) (7,8) (9,10)
 
-(0,2) (0,0) (0,0) 
-(3,4) (4,6) (0,0) 
-(0,0) (7,8) (8,10) 
+(0,2) (0,0) (0,0)
+(3,4) (4,6) (0,0)
+(0,0) (7,8) (8,10)
 \endcode
 @return Copy of the original calling matrix.
 */
@@ -30708,63 +31184,63 @@ prints
     }
 
     // TODO dox
-    basic_scbmatrix operator * (TR dMult) const {
+    basic_scbmatrix operator * (TR dMult) const {  // NOLINT
         basic_scbmatrix mRes(*this);
         mRes._scalr(dMult);
         return mRes;
     }
 
-    basic_scbmatrix operator / (TR dDiv) const {
+    basic_scbmatrix operator / (TR dDiv) const {  // NOLINT
         basic_scbmatrix mRes(*this);
         mRes._div(dDiv);
         return mRes;
     }
 
-    basic_scbmatrix operator * (TC cMult) const {
+    basic_scbmatrix operator * (TC cMult) const {  // NOLINT
         basic_scbmatrix mRes(*this);
         mRes._scalc(cMult);
         return mRes;
     }
 
-    basic_scbmatrix operator / (TC cDiv) const {
+    basic_scbmatrix operator / (TC cDiv) const {  // NOLINT
         basic_scbmatrix mRes(*this);
         mRes._div(cDiv);
         return mRes;
     }
 
-    basic_scbmatrix& operator *= (TR dMult) {
+    basic_scbmatrix& operator *= (TR dMult) {  // NOLINT
         this->_scalr(dMult);
         return *this;
     }
 
-    basic_scbmatrix& operator /= (TR dDiv) {
+    basic_scbmatrix& operator /= (TR dDiv) {  // NOLINT
         this->_div(dDiv);
         return *this;
     }
 
-    basic_scbmatrix& operator *= (TC cMult) {
+    basic_scbmatrix& operator *= (TC cMult) {  // NOLINT
         this->_scalc(cMult);
         return *this;
     }
 
-    basic_scbmatrix& operator /= (TC cDiv) {
+    basic_scbmatrix& operator /= (TC cDiv) {  // NOLINT
         this->_div(cDiv);
         return *this;
     }
 
-    basic_scbmatrix& normalize() {
+    basic_scbmatrix& normalize() {  // NOLINT
         this->_normalize();
         return *this;
     }
 
     // 6.1: transposed (not conjugated) matrix
-    basic_scbmatrix operator ! () const {
+    basic_scbmatrix operator ! () const {  // NOLINT
         basic_scbmatrix mRes(*this);
         return mRes.transpose();
     }
 
     // Hermitian conjugated matrix
-    basic_scbmatrix operator ~ () const {
+    basic_scbmatrix operator ~ () const {  // NOLINT
         basic_scbmatrix mRes(*this);
         return mRes.conj();
     }
@@ -30814,9 +31290,11 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scbmatrix& transpose(const basic_scbmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->lsize(), m.usize());
         _check_ne(CVM_SIZESMISMATCH, this->usize(), m.lsize());
+#endif
         *this << !m;
         return *this;
     }
@@ -30865,34 +31343,38 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_scbmatrix& conj(const basic_scbmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
         _check_ne(CVM_SIZESMISMATCH, this->lsize(), m.usize());
         _check_ne(CVM_SIZESMISMATCH, this->usize(), m.lsize());
+#endif
         *this << ~m;
         return *this;
     }
 
     // TODO dox
     // 6.1: transposed (not conjugated) matrix
-    basic_scbmatrix& transpose() {
+    basic_scbmatrix& transpose() {  // NOLINT
         this->_transp();
         return *this;
     }
 
-    basic_scbmatrix& conj() {
+    basic_scbmatrix& conj() {  // NOLINT
         this->_conj();
         return *this;
     }
 
-    CVector operator * (const CVector& v) const {
+    CVector operator * (const CVector& v) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), v.size());
+#endif
         CVector vRes(this->msize());
         this->_multiply(vRes, v, false);
         return vRes;
     }
 
     // special exclusion since matrix product is not commutative
-    BaseCMatrix operator * (const BaseCMatrix& m) const {
+    BaseCMatrix operator * (const BaseCMatrix& m) const {  // NOLINT
         _bake_SM();
         return mSM * m;
     }
@@ -30928,7 +31410,7 @@ prints
 @param[in] m \ref scmatrix to compute product with.
 @return Result object.
 */
-    BaseSCMatrix operator * (const BaseSCMatrix& m) const {
+    BaseSCMatrix operator * (const BaseSCMatrix& m) const {  // NOLINT
         _bake_SM();
         return mSM * m;
     }
@@ -30966,7 +31448,7 @@ prints
 @param[in] m \ref scbmatrix to compute product with.
 @return Result object.
 */
-    basic_scbmatrix operator * (const basic_scbmatrix& m) const {
+    basic_scbmatrix operator * (const basic_scbmatrix& m) const {  // NOLINT
         _bake_SM();
         m._bake_SM();
         return basic_scbmatrix(mSM * m.mSM,
@@ -30977,7 +31459,7 @@ prints
     // TODO dox
     // 6.1: reversed vector operator % returns solution of A*X=B equation
     // overridden to mask out operator / (TC)
-    CVector operator / (const CVector& v) const {
+    CVector operator / (const CVector& v) const {  // NOLINT
         return v % (*this);
     }
 
@@ -30985,7 +31467,7 @@ prints
 @brief Low-up (LU) factorization
 
 Computes LU factorization of complex square band matrix \f$A\f$
-as 
+as
 \f[
 A=PLU
 \f]
@@ -31080,29 +31562,29 @@ prints
     }
 
     // TODO dox
-    basic_scbmatrix low_up(tint* nPivots) const {
+    basic_scbmatrix low_up(tint* nPivots) const {  // NOLINT
         basic_scbmatrix mRes(*this);
         mRes._low_up(nPivots);
         return mRes;
     }
 
-    basic_scbmatrix& identity() {
+    basic_scbmatrix& identity() {  // NOLINT
         this->_vanish();
         this->_plus_plus();
         return *this;
     }
 
-    basic_scbmatrix& vanish() {
+    basic_scbmatrix& vanish() {  // NOLINT
         this->_vanish();
         return *this;
     }
 
-    basic_scbmatrix& randomize_real(TR dFrom, TR dTo) {
+    basic_scbmatrix& randomize_real(TR dFrom, TR dTo) {  // NOLINT
         this->_b_randomize(true, dFrom, dTo);
         return *this;
     }
 
-    basic_scbmatrix& randomize_imag(TR dFrom, TR dTo) {
+    basic_scbmatrix& randomize_imag(TR dFrom, TR dTo) {  // NOLINT
         this->_b_randomize(false, dFrom, dTo);
         return *this;
     }
@@ -31135,7 +31617,7 @@ prints
     // TODO dox
     // ATTENTION!!! This is not a good idea to use the following function. It's provided for
     // overriding of basic_rmatrix<TR>::mult only
-    basic_scbmatrix& mult(const BaseCMatrix& m1, const BaseCMatrix& m2) {
+    basic_scbmatrix& mult(const BaseCMatrix& m1, const BaseCMatrix& m2) {  // NOLINT
         this->_mult(m1, m2);
         return *this;
     }
@@ -31160,16 +31642,18 @@ prints
     // singular values in decreasing order
     void _svd(basic_rvector<TR>& vRes, BaseSCMatrix* pmU,
               BaseSCMatrix* pmVH) const override {
+#if defined(CVM_DEBUG)
         if (pmU != nullptr && pmVH != nullptr) {
             _check_ne(CVM_SIZESMISMATCH, this->msize(), pmU->msize());
             _check_ne(CVM_SIZESMISMATCH, this->nsize(), pmVH->msize());
         }
-        __svd<TR,basic_scbmatrix,
+#endif
+        cvm_svd<TR,basic_scbmatrix,
             BaseSCMatrix>(vRes, vRes.size(), vRes.incr(), *this, pmU, pmVH);
     }
 
     void _pinv(BaseCMatrix& mX, TR threshold) const override {
-        __pinv<TR,basic_scbmatrix, BaseCMatrix>(mX, *this, threshold);
+        cvm_pinv<TR,basic_scbmatrix, BaseCMatrix>(mX, *this, threshold);
     }
 
     void _eig(CVector& vEig, basic_scmatrix<TR,TC>* mEigVect,
@@ -31186,7 +31670,7 @@ prints
         CVector vX1;
         if (vB.incr() > 1) vB1 << vB;  // to make sure incr = 1
         if (vX.incr() > 1) vX1 << vX;
-        __solve<TR,TC,
+        cvm_solve<TR,TC,
             basic_scbmatrix>(*this, 1,
                              vB.incr() > 1 ? vB1 : vB, vB.size(),
                              vX.incr() > 1 ? vX1 : vX, vX.size(),
@@ -31198,21 +31682,21 @@ prints
                 TR& dErr, const TC* pLU, const tint* pPivots,
                 int transp_mode) const override {
         mX = mB;
-        __solve<TR,TC,
+        cvm_solve<TR,TC,
             basic_scbmatrix>(*this, mB.nsize(), mB, mB.ld(),
                              mX, mX.ld(), dErr, pLU, pPivots, transp_mode);
     }
 
     // ?gbmv routines perform a matrix-vector operation defined as
     // vRes = alpha*m*v + beta * vRes or vRes = alpha*v'*m + beta * vRes
-    // not virtual since __gbmv calls all virtual methods inside
+    // not virtual since cvm_gbmv calls all virtual methods inside
     void _gbmv(bool bLeft, TC dAlpha, const CVector& v, TC dBeta, CVector& vRes) const {
         CVector vTmp;
         basic_scbmatrix mTmp;
         const TC* pDv = v;
         if (vRes.get() == pDv) vTmp << v;
         if (vRes.get() == this->get()) mTmp << *this;
-        __gbmv<TC,basic_scbmatrix,
+        cvm_gbmv<TC,basic_scbmatrix,
             CVector>(bLeft,
                      vRes.get() == this->get() ? mTmp : *this, dAlpha,
                      vRes.get() == pDv ? vTmp : v, dBeta, vRes);
@@ -31322,24 +31806,28 @@ protected:
 
     CVector _diag(tint nDiag) override {
         const tint nD = std::abs(nDiag);
+#if defined(CVM_DEBUG)
         if (nDiag < 0) {
             _check_gt(CVM_INDEX_GT, nD, this->lsize());
         }
         else {
             _check_gt(CVM_INDEX_GT, nDiag, this->usize());
         }
+#endif
         const tint nLU = this->lsize() + this->usize();
         return CVector(this->get() + this->usize() + (nDiag < 0 ? nD : nD * nLU), this->msize() - nD, nLU + 1);
     }
 
     CVector _diag(tint nDiag) const override {
         const tint nD = std::abs(nDiag);
+#if defined(CVM_DEBUG)
         if (nDiag < 0) {
             _check_gt(CVM_INDEX_GT, nD, this->lsize());
         }
         else {
             _check_gt(CVM_INDEX_GT, nDiag, this->usize());
         }
+#endif
         const tint nLU = this->lsize() + this->usize();
         return CVector(this->get() + this->usize() + (nDiag < 0 ? nD : nD * nLU), this->msize() - nD, nLU + 1);
     }
@@ -31413,18 +31901,20 @@ protected:
 
     void _scalr(TR d) override {
         // zero tails are
-        __scal<TR,TC>(this->get(), this->size(), this->incr(), d);
+        cvm_scal<TR,TC>(this->get(), this->size(), this->incr(), d);
     }
 
     void _scalc(TC d) override {
         // zero tails are
-        __scal<TC,TC>(this->get(), this->size(), this->incr(), d);
+        cvm_scal<TC,TC>(this->get(), this->size(), this->incr(), d);
     }
 
     void _mult(const BaseCMatrix& m1, const BaseCMatrix& m2) override {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m2.nsize());
         _check_ne(CVM_SIZESMISMATCH, m1.nsize(), m2.msize());
+#endif
         BaseSCMatrix mR(this->msize());
         mR.mult(m1, m2);
 #ifdef CVM_USE_POOL_MANAGER
@@ -31442,7 +31932,7 @@ protected:
     }
 
     void _low_up(tint* nPivots) override {
-        __low_up<basic_scbmatrix>(*this, nPivots);
+        cvm_low_up<basic_scbmatrix>(*this, nPivots);
     }
 
     tint _ld_for_replace() const override {
@@ -31693,7 +32183,9 @@ prints
 */
     explicit basic_srsmatrix(const BaseRMatrix& m, TR tol = basic_cvmMachSp<TR>())
       : BaseSRMatrix(m.msize(), m.nsize(), false) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), this->nsize());
+#endif
         this->_massign(m);
         this->_check_symmetric(tol);
     }
@@ -31755,27 +32247,36 @@ prints
       : BaseSRMatrix(m._sub_pointer(nRowCol, nRowCol, nDim, nDim), nDim, m.ld(), nDim * nDim)
     {}
 
+    // NOLINTNEXTLINE
     //! @copydoc basic_rmatrix::operator()(tint,tint)const
     // Masking non-const overload inherited from basic_rmatrix
-    TR operator () (tint nRow, tint nCol) const {
+    TR operator () (tint nRow, tint nCol) const override {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
+#endif
         return this->_ij_val(nRow, nCol);
     }
 
+    // NOLINTNEXTLINE
     //! @copydoc basic_rmatrix::operator()(tint)const
     // Masking non-const overload inherited from basic_rmatrix
     // returns column which is NOT l-value
-    RVector operator () (tint nCol) const {
+    RVector operator () (tint nCol) const override {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nCol, tint(), this->nsize());
+#endif
         return this->_col(nCol);
     }
 
+    // NOLINTNEXTLINE
     //! @copydoc basic_rmatrix::operator[](tint)const
     // Masking non-const overload inherited from basic_rmatrix
     // returns row which is NOT l-value
-    RVector operator [] (tint nRow) const {
+    RVector operator [] (tint nRow) const override {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nRow, tint(), this->msize());
+#endif
         return this->_row(nRow);
     }
 
@@ -31783,7 +32284,7 @@ prints
     // Masking non-const overload inherited from basic_rmatrix
     // returns diagonal which is NOT l-value (since it could break symmetricity)
     // 0 - main, negative - low, positive - up
-    RVector diag(tint nDiag) const {
+    RVector diag(tint nDiag) const override {
         return this->_diag(nDiag);
     }
 
@@ -31813,7 +32314,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srsmatrix& operator = (const basic_srsmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_massign(m);
         return *this;
     }
@@ -31865,7 +32368,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srsmatrix& assign(const RVector& v, TR tol = basic_cvmMachSp<TR>()) {
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, this->size(), v.size());
+#endif
         this->_assign(v, v.incr());
         this->_check_symmetric(tol);
         return *this;
@@ -31900,7 +32405,7 @@ prints
 @param[in] tol Symmetry tolerance.
 @return Reference to changed calling matrix.
 */
-    basic_srsmatrix& assign(const TR* pd, TR tol = basic_cvmMachSp<TR>()) {
+    basic_srsmatrix& assign(const TR* pd, TR tol = basic_cvmMachSp<TR>()) {  // NOLINT
         this->_assign(pd, 1);
         this->_check_symmetric(tol);
         return *this;
@@ -31936,15 +32441,17 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srsmatrix& assign(tint nRowCol, const basic_srsmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nRowCol, tint(), this->msize());
         _check_gt(CVM_SIZESMISMATCH_GT, m.msize() + nRowCol, this->msize());
+#endif
         this->_assign_shifted(this->_sub_pointer_nocheck(nRowCol, nRowCol),
                               m._pd(), m.msize(), m.nsize(), m.ld());
         return *this;
     }
 
     // TODO dox
-    basic_srsmatrix& set(TR d) {
+    basic_srsmatrix& set(TR d) {  // NOLINT
         this->_set(d);
         return *this;
     }
@@ -32019,7 +32526,7 @@ prints
     }
 
     // TODO dox
-    basic_srsmatrix& resize(tint nNewDim) {
+    basic_srsmatrix& resize(tint nNewDim) {  // NOLINT
         this->_resize2(nNewDim, nNewDim);
         return *this;
     }
@@ -32156,7 +32663,9 @@ prints
 @return Sum of matrices.
 */
     basic_srsmatrix operator + (const basic_srsmatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         basic_srsmatrix mSum(*this);
         mSum._mincr(m);
         return mSum;
@@ -32193,7 +32702,9 @@ prints
 @return Difference of matrices.
 */
     basic_srsmatrix operator - (const basic_srsmatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         basic_srsmatrix mDiff(*this);
         mDiff._mdecr(m);
         return mDiff;
@@ -32232,8 +32743,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srsmatrix& sum(const basic_srsmatrix& m1, const basic_srsmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
+#endif
         this->_msum(m1, m2);
         return *this;
     }
@@ -32271,8 +32784,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srsmatrix& diff(const basic_srsmatrix& m1, const basic_srsmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
+#endif
         this->_mdiff(m1, m2);
         return *this;
     }
@@ -32314,7 +32829,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srsmatrix& operator += (const basic_srsmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_mincr(m);
         return *this;
     }
@@ -32356,7 +32873,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srsmatrix& operator -= (const basic_srsmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_mdecr(m);
         return *this;
     }
@@ -32382,7 +32901,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_srsmatrix operator - () const {
+    basic_srsmatrix operator - () const {  // NOLINT
         const TR mone(-1.);
         basic_srsmatrix mRes(*this);
         mRes._scalr(mone);
@@ -32391,7 +32910,7 @@ prints
 
     // TODO dox
     // plus identity, prefix
-    basic_srsmatrix& operator ++ () {
+    basic_srsmatrix& operator ++ () {  // NOLINT
         this->_plus_plus();
         return *this;
     }
@@ -32405,42 +32924,41 @@ prints
     }
 
     // minus identity, prefix
-    basic_srsmatrix& operator -- () {
+    basic_srsmatrix& operator -- () {  // NOLINT
         this->_minus_minus();
         return *this;
     }
 
     // minus identity, postfix
-    // NOLINTNEXTLINE
-    basic_srsmatrix operator -- (int) & {
+    basic_srsmatrix operator -- (int) & {  // NOLINT
         basic_srsmatrix mRes(*this);
         this->_minus_minus();
         return mRes;
     }
 
-    basic_srsmatrix operator * (TR dMult) const {
+    basic_srsmatrix operator * (TR dMult) const {  // NOLINT
         basic_srsmatrix mRes(*this);
         mRes._scalr(dMult);
         return mRes;
     }
 
-    basic_srsmatrix operator / (TR dDiv) const {
+    basic_srsmatrix operator / (TR dDiv) const {  // NOLINT
         basic_srsmatrix mRes(*this);
         mRes._div(dDiv);
         return mRes;
     }
 
-    basic_srsmatrix& operator *= (TR dMult) {
+    basic_srsmatrix& operator *= (TR dMult) {  // NOLINT
         this->_scalr(dMult);
         return *this;
     }
 
-    basic_srsmatrix& operator /= (TR dDiv) {
+    basic_srsmatrix& operator /= (TR dDiv) {  // NOLINT
         this->_div(dDiv);
         return *this;
     }
 
-    basic_srsmatrix& normalize() {
+    basic_srsmatrix& normalize() {  // NOLINT
         this->_normalize();
         return *this;
     }
@@ -32449,12 +32967,12 @@ prints
   @brief Does nothing and returns a copy of a calling symmetric
          matrix.
  */
-    basic_srsmatrix operator ~ () const {
+    basic_srsmatrix operator ~ () const {  // NOLINT
         return *this;
     }
 
 /**
-  @brief Assigns symmetric matrix \c m to a calling one and returns 
+  @brief Assigns symmetric matrix \c m to a calling one and returns
   a reference to the matrix changed.
 */
     basic_srsmatrix& transpose(const basic_srsmatrix& m) {
@@ -32462,25 +32980,29 @@ prints
         return *this;
     }
 
-/** 
+/**
   @brief Does nothing and returns a reference to a calling
   symmetric matrix.
 */
-    basic_srsmatrix& transpose() {
+    basic_srsmatrix& transpose() {  // NOLINT
         return *this;
     }
 
     // TODO dox
-    RVector operator * (const RVector& v) const {
+    RVector operator * (const RVector& v) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), v.size());
+#endif
         RVector vRes(this->msize());
         this->_multiply(vRes, v, false);
         return vRes;
     }
 
     // special exclusion since matrix product is not commutative
-    BaseRMatrix operator * (const BaseRMatrix& m) const {
+    BaseRMatrix operator * (const BaseRMatrix& m) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.msize());
+#endif
         const TR zero = TR(0.);
         const TR one = TR(1.);
         BaseRMatrix mRes(m.msize(), m.nsize());
@@ -32525,8 +33047,10 @@ prints
 @param[in] m \ref srmatrix to compute product with.
 @return Result object.
 */
-    BaseSRMatrix operator * (const BaseSRMatrix& m) const {
+    BaseSRMatrix operator * (const BaseSRMatrix& m) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.msize());
+#endif
         const TR zero = TR(0.);
         const TR one = TR(1.);
         BaseSRMatrix mRes(this->msize());
@@ -32537,7 +33061,7 @@ prints
     // TODO dox
     // 6.1: reversed vector operator % returns solution of A*X=B equation
     // overridden to mask out operator / (TR)
-    RVector operator / (const RVector& v) const {
+    RVector operator / (const RVector& v) const {  // NOLINT
         return v % (*this);
     }
 
@@ -32589,9 +33113,11 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srsmatrix& syrk(TR alpha, const RVector& v, TR beta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v.size());
+#endif
         RVector vc(v);  // has to guarantee incr to be 1
-        __syrk<TR,basic_srsmatrix>(false, alpha, 1, vc, vc.size(), beta, *this);
+        cvm_syrk<TR,basic_srsmatrix>(false, alpha, 1, vc, vc.size(), beta, *this);
         this->_flip();
         return *this;
     }
@@ -32659,8 +33185,10 @@ prints
 */
     basic_srsmatrix& syrk(bool bTransp, TR alpha,
                           const BaseRMatrix& m, TR beta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), bTransp ? m.nsize() : m.msize());
-        __syrk<TR,basic_srsmatrix>(bTransp, alpha, bTransp ? m.msize() : m.nsize(),
+#endif
+        cvm_syrk<TR,basic_srsmatrix>(bTransp, alpha, bTransp ? m.msize() : m.nsize(),
                                    m, m.ld(), beta, *this);
         this->_flip();
         return *this;
@@ -32713,11 +33241,13 @@ prints
 */
     basic_srsmatrix& syr2k(TR alpha, const RVector& v1,
                            const RVector& v2, TR beta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v1.size());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v2.size());
+#endif
         RVector v1c(v1);  // has to guarantee incr to be 1
         RVector v2c(v2);
-        __syr2k<TR,basic_srsmatrix>(false, alpha, 1, v1c, v1c.size(), v2c, v2c.size(), beta, *this);
+        cvm_syr2k<TR,basic_srsmatrix>(false, alpha, 1, v1c, v1c.size(), v2c, v2c.size(), beta, *this);
         this->_flip();
         return *this;
     }
@@ -32790,6 +33320,7 @@ prints
 */
     basic_srsmatrix& syr2k(bool bTransp, TR alpha, const BaseRMatrix& m1,
                            const BaseRMatrix& m2, TR beta) {
+#if defined(CVM_DEBUG)
         if (bTransp) {
             _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.nsize());
             _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.nsize());
@@ -32799,7 +33330,8 @@ prints
             _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
             _check_ne(CVM_SIZESMISMATCH, m1.nsize(), m2.nsize());
         }
-        __syr2k<TR,basic_srsmatrix>(bTransp, alpha, bTransp ? m1.msize() : m1.nsize(),
+#endif
+        cvm_syr2k<TR,basic_srsmatrix>(bTransp, alpha, bTransp ? m1.msize() : m1.nsize(),
                                     m1, m1.ld(), m2, m2.ld(), beta, *this);
         this->_flip();
         return *this;
@@ -32837,7 +33369,7 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_srsmatrix& inv(const basic_srsmatrix& m) {
-        __inv<basic_srsmatrix>(*this, m);
+        cvm_inv<basic_srsmatrix>(*this, m);
         return *this;
     }
 
@@ -32870,9 +33402,9 @@ prints
 \endcode
 @return Result object.
 */
-    basic_srsmatrix inv() const {
+    basic_srsmatrix inv() const {  // NOLINT
         basic_srsmatrix mRes(this->msize());
-        __inv<basic_srsmatrix>(mRes, *this);
+        cvm_inv<basic_srsmatrix>(mRes, *this);
         return mRes;
     }
 
@@ -32939,7 +33471,7 @@ Matlab output:
 */
     basic_srsmatrix& exp(const basic_srsmatrix& m,
                          TR tol = basic_cvmMachSp<TR>()) {
-        __exp_symm<basic_srsmatrix, TR>(*this, m, tol);
+        cvm_exp_symm<basic_srsmatrix, TR>(*this, m, tol);
         return *this;
     }
 
@@ -33000,9 +33532,9 @@ Matlab output:
 @param[in] tol Computation tolerance.
 @return Result object.
 */
-    basic_srsmatrix exp(TR tol = basic_cvmMachSp<TR>()) const {
+    basic_srsmatrix exp(TR tol = basic_cvmMachSp<TR>()) const {  // NOLINT
         basic_srsmatrix msRes(this->msize());
-        __exp_symm<basic_srsmatrix, TR>(msRes, *this, tol);
+        cvm_exp_symm<basic_srsmatrix, TR>(msRes, *this, tol);
         return msRes;
     }
 
@@ -33075,10 +33607,12 @@ Matlab output:
 */
     basic_srsmatrix& polynom(const basic_srsmatrix& m,
                              const RVector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         RVector v1;
         if (v.incr() > 1) v1 << v;  // to make sure incr = 1
-        __polynom<TR,RVector>(this->get(), this->ld(), this->msize(),
+        cvm_polynom<TR,RVector>(this->get(), this->ld(), this->msize(),
                               m._pd(), m._ldm(), v.incr() > 1 ? v1 : v);
         return *this;
     }
@@ -33147,11 +33681,11 @@ Matlab output:
 @param[in] v Vector of coefficients.
 @return Result object.
 */
-    basic_srsmatrix polynom(const RVector& v) const {
+    basic_srsmatrix polynom(const RVector& v) const {  // NOLINT
         basic_srsmatrix msRes(this->msize());
         RVector v1;
         if (v.incr() > 1) v1 << v;  // to make sure incr = 1
-        __polynom<TR,RVector>(msRes, msRes.ld(), this->msize(), this->get(),
+        cvm_polynom<TR,RVector>(msRes, msRes.ld(), this->msize(), this->get(),
                               this->ld(), v.incr() > 1 ? v1 : v);
         return msRes;
     }
@@ -33200,7 +33734,7 @@ prints
 */
     RVector eig(BaseSRMatrix& mEigVect) const {
         RVector vEig(this->msize());
-        __eig<RVector, basic_srsmatrix, BaseSRMatrix>(vEig, *this, &mEigVect, true);
+        cvm_eig<RVector, basic_srsmatrix, BaseSRMatrix>(vEig, *this, &mEigVect, true);
         return vEig;
     }
 
@@ -33234,9 +33768,9 @@ prints
 @see rvector::eig()
 @return Result object.
 */
-    RVector eig() const {
+    RVector eig() const {  // NOLINT
         RVector vEig(this->msize());
-        __eig<RVector, basic_srsmatrix, BaseSRMatrix>(vEig, *this, nullptr, true);
+        cvm_eig<RVector, basic_srsmatrix, BaseSRMatrix>(vEig, *this, nullptr, true);
         return vEig;
     }
 
@@ -33281,7 +33815,7 @@ prints
 */
     BaseSRMatrix cholesky() const {
         BaseSRMatrix mRes(*this);
-        tint nOutInfo = __cholesky<BaseSRMatrix>(mRes);
+        tint nOutInfo = cvm_cholesky<BaseSRMatrix>(mRes);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         _check_positive(CVM_NOTPOSITIVEDEFINITE, nOutInfo);
         mRes._clean_low_triangle();
@@ -33318,23 +33852,23 @@ when argument is symmetric but not positive-definite.
 */
     BaseSRMatrix bunch_kaufman(tint* nPivots) const {
         BaseSRMatrix mRes(*this);
-        __bunch_kaufman<BaseSRMatrix>(mRes, nPivots);
+        cvm_bunch_kaufman<BaseSRMatrix>(mRes, nPivots);
         return mRes;
     }
 
     // TODO dox
-    basic_srsmatrix& identity() {
+    basic_srsmatrix& identity() {  // NOLINT
         this->_vanish();
         this->_plus_plus();
         return *this;
     }
 
-    basic_srsmatrix& vanish() {
+    basic_srsmatrix& vanish() {  // NOLINT
         this->_vanish();
         return *this;
     }
 
-    basic_srsmatrix& randomize(TR dFrom, TR dTo) {
+    basic_srsmatrix& randomize(TR dFrom, TR dTo) {  // NOLINT
         this->_randomize(dFrom, dTo);
         return *this;
     }
@@ -33371,7 +33905,9 @@ Useful for further solve and solve_lu calling.
 @return \c true if equilibration was needed and performed.
 */
     bool equilibrate(RVector& vScalings, RVector& vB) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
+#endif
         bool bRes = this->_equilibrate(vScalings);
         if (bRes) {
             for (tint i = 0; i < this->msize(); ++i) {
@@ -33389,7 +33925,9 @@ Useful for further solve and solve_lu calling.
 @return \c true if equilibration was needed and performed.
 */
     bool equilibrate(RVector& vScalings, BaseRMatrix& mB) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
+#endif
         bool bRes = this->_equilibrate(vScalings);
         if (bRes) {
             for (tint j = 0; j < mB.nsize(); ++j) {
@@ -33406,11 +33944,11 @@ Useful for further solve and solve_lu calling.
     basic_srsmatrix& _factorize(const basic_srsmatrix& m, tint* nPivots,
                                 bool& bPositiveDefinite) {
         (*this) = m;
-        tint nOutInfo = __cholesky<BaseSRMatrix>(*this);
+        tint nOutInfo = cvm_cholesky<BaseSRMatrix>(*this);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         if (nOutInfo > 0) {
             (*this) = m;
-            __bunch_kaufman<BaseSRMatrix>(*this, nPivots);
+            cvm_bunch_kaufman<BaseSRMatrix>(*this, nPivots);
             bPositiveDefinite = false;
         } else {
             bPositiveDefinite = true;
@@ -33425,7 +33963,7 @@ Useful for further solve and solve_lu calling.
             tint i = 1, j = 1, m;
             for (;;) {
                 m = this->msize() - i;
-                __copy<TR>(m, this->get() + j + nM1m, this->ld(), this->get() + j, 1);
+                cvm_copy<TR>(m, this->get() + j + nM1m, this->ld(), this->get() + j, 1);
                 if (i >= nM2m) {
                     break;
                 }
@@ -33471,7 +34009,7 @@ protected:
     }
 
     void _scalr(TR d) override {
-        __scal<TR,TR>(this->get(), this->size(), this->incr(), d);  // zero tails are supposed here
+        cvm_scal<TR,TR>(this->get(), this->size(), this->incr(), d);  // zero tails are supposed here
     }
 
     void _multiply(RVector& vRes, const RVector& v, bool) const override {
@@ -33483,7 +34021,7 @@ protected:
         const TR* pDv = v;
         if (vRes.get() == pDv) vTmp << v;
         if (vRes.get() == pDm) mTmp << *this;
-        __symv<TR,basic_srsmatrix, RVector>(vRes.get() == pDm ? mTmp : *this, one,
+        cvm_symv<TR,basic_srsmatrix, RVector>(vRes.get() == pDm ? mTmp : *this, one,
                                              vRes.get() == pDv ? vTmp : v, zero, vRes);
     }
 
@@ -33505,7 +34043,7 @@ protected:
         basic_srsmatrix m(*this);
         const bool bEquilibrated = m.equilibrate(vScalings, vB1);
         RVector vX1(vB1);
-        __solve<TR,TR,
+        cvm_solve<TR,TR,
             basic_srsmatrix>(m, 1, vB1, vB1.size(), vX1, vX1.size(),
                              dErr, pLU, pPivots, 0);  // no transpose
         if (bEquilibrated) {
@@ -33530,7 +34068,7 @@ protected:
         basic_srsmatrix m(*this);
         const bool bEquilibrated = m.equilibrate(vScalings, mB1);
         mX = mB1;
-        __solve<TR,TR,
+        cvm_solve<TR,TR,
             basic_srsmatrix>(m, mB.nsize(), mB, mB.ld(), mX, mX.ld(),
                              dErr, pLU, pPivots, 0);  // no transpose
         if (bEquilibrated) {
@@ -33578,7 +34116,7 @@ protected:
                 }
             }
             catch (const cvmexception& e) {
-                if (e.cause() != CVM_WRONGBUNCHKAUFMANFACTOR) throw e;
+                if (e.cause() != CVM_WRONGBUNCHKAUFMANFACTOR) throw;
             }
             break;
         }
@@ -33587,14 +34125,16 @@ protected:
 
     // matrix equilibration helper
     bool _equilibrate(RVector& vScalings) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vScalings.size());
+#endif
         bool bRes = false;
         TR dCond(0.);
         TR dMax  = TR();
         const TR sp = basic_cvmMachSp<TR>();
         const TR sp_inv = TR(1.) / sp;
 
-        __poequ<TR,basic_srsmatrix, RVector>(*this, vScalings, dCond, dMax);
+        cvm_poequ<TR,basic_srsmatrix, RVector>(*this, vScalings, dCond, dMax);
 
         if (dCond < TR(0.1) || std::abs(dMax) <= sp || std::abs(dMax) >= sp_inv) {
             bRes = true;
@@ -33610,8 +34150,10 @@ protected:
     // sets both elements to keep matrix symmetric, checks ranges
     // zero based
     void _set_at(tint nRow, tint nCol, TR val) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
+#endif
         this->get()[this->ld() * nCol + nRow] = val;
         if (nRow != nCol) {
             this->get()[this->ld() * nRow + nCol] = val;
@@ -33866,7 +34408,9 @@ prints
 */
     explicit basic_schmatrix(const BaseCMatrix& m, TR tol = basic_cvmMachSp<TR>())
       : BaseSCMatrix(m.msize(), m.nsize(), false) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), this->nsize());
+#endif
         this->_massign(m);
         this->_check_hermitian(tol);
     }
@@ -33899,7 +34443,7 @@ prints
 */
     explicit basic_schmatrix(const RVector& v)
       : BaseSCMatrix(v.size(), v.size(), true) {
-        __copy2<TR,TC>(this->get(), v.size(), this->ld() + 1, v._pd(), nullptr, v.incr());
+        cvm_copy2<TR,TC>(this->get(), v.size(), this->ld() + 1, v._pd(), nullptr, v.incr());
     }
 
 /**
@@ -33925,7 +34469,7 @@ prints
 */
     explicit basic_schmatrix(const basic_srsmatrix<TR>& m)
       : BaseSCMatrix(m.msize(), m.msize(), true) {
-        __copy2<TR,TC>(this->get(), this->size(), this->incr(), m._pd(), nullptr);
+        cvm_copy2<TR,TC>(this->get(), this->size(), this->incr(), m._pd(), nullptr);
     }
 
 /**
@@ -34025,27 +34569,36 @@ prints
       : BaseSCMatrix(m._sub_pointer(nRowCol, nRowCol, nDim, nDim), nDim, m.ld(), nDim * nDim)
     {}
 
+    // NOLINTNEXTLINE
     //! @copydoc basic_cmatrix::operator()(tint,tint)const
     // Masking non-const overload inherited from basic_cmatrix
-    TC operator () (tint nRow, tint nCol) const {
+    TC operator () (tint nRow, tint nCol) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
+#endif
         return this->_ij_val(nRow, nCol);
     }
 
+    // NOLINTNEXTLINE
     //! @copydoc basic_cmatrix::operator()(tint)const
     // returns column which is NOT l-value
     // Masking non-const overload inherited from basic_cmatrix
-    CVector operator () (tint nCol) const {
+    CVector operator () (tint nCol) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nCol, tint(), this->nsize());
+#endif
         return this->_col(nCol);
     }
 
+    // NOLINTNEXTLINE
     //! @copydoc basic_cmatrix::operator[](tint)const
     // returns row which is NOT l-value
     // Masking non-const overload inherited from basic_cmatrix
-    CVector operator [] (tint nRow) const {
+    CVector operator [] (tint nRow) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nRow, tint(), this->msize());
+#endif
         return this->_row(nRow);
     }
 
@@ -34053,23 +34606,23 @@ prints
     // returns diagonal which IS NOT l-value
     // 0 - main, negative - low, positive - up
     // Masking non-const overload inherited from basic_cmatrix
-    CVector diag(tint nDiag) const {
+    CVector diag(tint nDiag) const {  // NOLINT
         return this->_diag(nDiag);
     }
 
     // TODO dox
     // real part (symmetric)
-    basic_srsmatrix<TR> real() const {
+    basic_srsmatrix<TR> real() const {  // NOLINT
         basic_srsmatrix<TR> mRet(this->msize());
-        __copy<TR>(this->size(), __get_real_p<TR>(this->get()),
+        cvm_copy<TR>(this->size(), __get_real_p<TR>(this->get()),
                    this->incr() * 2, mRet, mRet.incr());
         return mRet;
     }
 
     // imaginary part (NOT symmetric)
-    basic_srmatrix<TR> imag() const {
+    basic_srmatrix<TR> imag() const {  // NOLINT
         basic_srmatrix<TR> mRet(this->msize());
-        __copy<TR>(this->size(), __get_imag_p<TR>(this->get()),
+        cvm_copy<TR>(this->size(), __get_imag_p<TR>(this->get()),
                    this->incr() * 2, mRet, mRet.incr());
         return mRet;
     }
@@ -34107,7 +34660,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& operator = (const basic_schmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_massign(m);
         return *this;
     }
@@ -34160,7 +34715,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& assign(const CVector& v, TR tol = basic_cvmMachSp<TR>()) {
+#if defined(CVM_DEBUG)
         _check_gt(CVM_SIZESMISMATCH_GT, this->size(), v.size());
+#endif
         this->_assign(v, v.incr());
         this->_check_hermitian(tol);
         return *this;
@@ -34196,7 +34753,7 @@ prints
 @param[in] tol Hermiticity tolerance.
 @return Reference to changed calling matrix.
 */
-    basic_schmatrix& assign(const TC* pd, TR tol = basic_cvmMachSp<TR>()) {
+    basic_schmatrix& assign(const TC* pd, TR tol = basic_cvmMachSp<TR>()) {  // NOLINT
         this->_assign(pd, 1);
         this->_check_hermitian(tol);
         return *this;
@@ -34232,8 +34789,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& assign(tint nRowCol, const basic_schmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE, nRowCol, tint(), this->msize());
         _check_gt(CVM_SIZESMISMATCH_GT, m.msize() + nRowCol, this->msize());
+#endif
         this->_assign_shifted(this->_sub_pointer_nocheck(nRowCol, nRowCol), m._pd(), m.msize(), m.nsize(), m.ld());
         return *this;
     }
@@ -34309,14 +34868,16 @@ prints
         if (nDiag == 0) throw cvmexception(CVM_BREAKS_HERMITIANITY, "set_main_diag");
         const tint nD = std::abs(nDiag);
         const tint nSize = vDiag.size();
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize() - nD, nSize);
+#endif
         const tint nShift = nDiag * this->ld();
         const tint nIncr = this->ld() + 1;
         TC* pD1 = this->get() + (nDiag > 0 ? nShift : nD);
         TC* pD2 = this->get() + (nDiag > 0 ? nD : nShift);
-        __copy<TC>(nSize, vDiag, vDiag.incr(), pD1, nIncr);
-        __copy<TC>(nSize, vDiag, vDiag.incr(), pD2, nIncr);
-        __conj<TC>(pD2, nSize, nIncr);
+        cvm_copy<TC>(nSize, vDiag, vDiag.incr(), pD1, nIncr);
+        cvm_copy<TC>(nSize, vDiag, vDiag.incr(), pD2, nIncr);
+        cvm_conj<TC>(pD2, nSize, nIncr);
         return *this;
     }
 
@@ -34348,8 +34909,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& set_main_diag(const RVector& vDiag) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vDiag.size());
-        __copy_real<TR,TC>(this->get(), this->msize(), this->ld() + 1, vDiag, vDiag.incr());
+#endif
+        cvm_copy_real<TR,TC>(this->get(), this->msize(), this->ld() + 1, vDiag, vDiag.incr());
         return *this;
     }
 
@@ -34380,20 +34943,22 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& assign_real(const basic_srsmatrix<TR>& mRe) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mRe.msize());
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), mRe.nsize());
-        __copy_real<TR,TC>(this->get(), this->size(), this->incr(), mRe._pd(), mRe.incr());
+#endif
+        cvm_copy_real<TR,TC>(this->get(), this->size(), this->incr(), mRe._pd(), mRe.incr());
         return *this;
     }
 
     // TODO dox
     // fills real part
-    basic_schmatrix& set_real(TR d) {
+    basic_schmatrix& set_real(TR d) {  // NOLINT
         this->_set_real_number(d);
         return *this;
     }
 
-    basic_schmatrix& resize(tint nNewDim) {
+    basic_schmatrix& resize(tint nNewDim) {  // NOLINT
         this->_resize2(nNewDim, nNewDim);
         return *this;
     }
@@ -34529,7 +35094,9 @@ prints
 @return Sum of matrices.
 */
     basic_schmatrix operator + (const basic_schmatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         basic_schmatrix mSum(*this);
         mSum._mincr(m);
         return mSum;
@@ -34564,7 +35131,9 @@ prints
 @return Difference of matrices.
 */
     basic_schmatrix operator - (const basic_schmatrix& m) const {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         basic_schmatrix mDiff(*this);
         mDiff._mdecr(m);
         return mDiff;
@@ -34600,8 +35169,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& sum(const basic_schmatrix& m1, const basic_schmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
+#endif
         this->_msum(m1, m2);
         return *this;
     }
@@ -34636,8 +35207,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& diff(const basic_schmatrix& m1, const basic_schmatrix& m2) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.msize());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
+#endif
         this->_mdiff(m1, m2);
         return *this;
     }
@@ -34678,7 +35251,9 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& operator += (const basic_schmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_mincr(m);
         return *this;
     }
@@ -34719,13 +35294,15 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& operator -= (const basic_schmatrix& m) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         this->_mdecr(m);
         return *this;
     }
 
     // TODO dox
-    basic_schmatrix operator - () const {
+    basic_schmatrix operator - () const {  // NOLINT
         const TR mone(-1.);
         basic_schmatrix mRes(*this);
         mRes._scalr(mone);
@@ -34734,7 +35311,7 @@ prints
 
     // TODO dox
     // plus identity, prefix
-    basic_schmatrix& operator ++ () {
+    basic_schmatrix& operator ++ () {  // NOLINT
         this->_plus_plus();
         return *this;
     }
@@ -34748,7 +35325,7 @@ prints
     }
 
     // minus identity, prefix
-    basic_schmatrix& operator -- () {
+    basic_schmatrix& operator -- () {  // NOLINT
         this->_minus_minus();
         return *this;
     }
@@ -34761,42 +35338,42 @@ prints
         return mRes;
     }
 
-    basic_schmatrix operator * (TR dMult) const {
+    basic_schmatrix operator * (TR dMult) const {  // NOLINT
         basic_schmatrix mRes(*this);
         mRes._scalr(dMult);
         return mRes;
     }
 
-    basic_schmatrix operator / (TR dDiv) const {
+    basic_schmatrix operator / (TR dDiv) const {  // NOLINT
         basic_schmatrix mRes(*this);
         mRes._div(dDiv);
         return mRes;
     }
 
-    BaseSCMatrix operator * (TC cMult) const {
+    BaseSCMatrix operator * (TC cMult) const {  // NOLINT
         BaseSCMatrix mRes(*this);
         mRes._scalc(cMult);
         return mRes;
     }
 
-    BaseSCMatrix operator / (TC cDiv) const {
+    BaseSCMatrix operator / (TC cDiv) const {  // NOLINT
         BaseSCMatrix mRes(*this);
         mRes._div(cDiv);
         return mRes;
     }
 
-    basic_schmatrix& operator *= (TR dMult) {
+    basic_schmatrix& operator *= (TR dMult) {  // NOLINT
         this->_scalr(dMult);
         return *this;
     }
 
-    basic_schmatrix& operator /= (TR dDiv) {
+    basic_schmatrix& operator /= (TR dDiv) {  // NOLINT
         this->_div(dDiv);
         return *this;
     }
 
     // array normalizing
-    basic_schmatrix& normalize() {
+    basic_schmatrix& normalize() {  // NOLINT
         this->_normalize();
         return *this;
     }
@@ -34839,7 +35416,7 @@ prints
 \endcode
 @return Result object.
 */
-    basic_schmatrix operator ! () const {
+    basic_schmatrix operator ! () const {  // NOLINT
         basic_schmatrix mRes(*this);
         return mRes.transpose();
     }
@@ -34847,7 +35424,7 @@ prints
 /**
 @brief Does nothing and returns copy of a calling Hermitian matrix.
 */
-    basic_schmatrix operator ~ () const {
+    basic_schmatrix operator ~ () const {  // NOLINT
         return *this;
     }
 
@@ -34942,7 +35519,7 @@ prints
 \endcode
 @return Reference to changed calling matrix.
 */
-    basic_schmatrix& transpose() {
+    basic_schmatrix& transpose() {  // NOLINT
         this->_transp();
         return *this;
     }
@@ -34950,21 +35527,25 @@ prints
 /**
 @brief Does nothing and returns a reference to a calling symmetric matrix.
 */
-    basic_schmatrix& conj() {
+    basic_schmatrix& conj() {  // NOLINT
         return *this;
     }
 
     // TODO dox
-    CVector operator * (const CVector& v) const {
+    CVector operator * (const CVector& v) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), v.size());
+#endif
         CVector vRes(this->msize());
         this->_multiply(vRes, v, false);
         return vRes;
     }
 
     // special exclusion since matrix product is not commutative
-    BaseCMatrix operator * (const BaseCMatrix& m) const {
+    BaseCMatrix operator * (const BaseCMatrix& m) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.msize());
+#endif
         const TR zero = TR(0.);
         const TR one = TR(1.);
         BaseCMatrix mRes(m.msize(), m.nsize());
@@ -35004,8 +35585,10 @@ prints
 @param[in] m \ref scmatrix to compute product with.
 @return Result object.
 */
-    BaseSCMatrix operator * (const BaseSCMatrix& m) const {
+    BaseSCMatrix operator * (const BaseSCMatrix& m) const {  // NOLINT
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->nsize(), m.msize());
+#endif
         const TR zero = TR(0.);
         const TR one = TR(1.);
         BaseSCMatrix mRes(this->msize());
@@ -35016,7 +35599,7 @@ prints
     // TODO dox
     // 6.1: reversed vector operator % returns solution of A*X=B equation
     // overridden to mask out operator / (TC)
-    CVector operator / (const CVector& v) const {
+    CVector operator / (const CVector& v) const {  // NOLINT
         return v % (*this);
     }
 
@@ -35069,9 +35652,11 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& herk(TR alpha, const CVector& v, TR beta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v.size());
+#endif
         CVector vc(v);  // has to guarantee incr to be 1
-        __herk<TR,TC, basic_schmatrix>(false, alpha, 1, vc, vc.size(), beta, *this);
+        cvm_herk<TR,TC, basic_schmatrix>(false, alpha, 1, vc, vc.size(), beta, *this);
         this->_flip();
         return *this;
     }
@@ -35142,10 +35727,10 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& herk(bool bTransp, TR alpha, const BaseCMatrix& m, TR beta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), bTransp ? m.nsize() : m.msize());
-        __herk<TR,TC,
-            basic_schmatrix>(bTransp, alpha, bTransp ? m.msize() : m.nsize(),
-                             m, m.ld(), beta, *this);
+#endif
+        cvm_herk<TR,TC,basic_schmatrix>(bTransp, alpha, bTransp ? m.msize() : m.nsize(), m, m.ld(), beta, *this);
         this->_flip();
         return *this;
     }
@@ -35198,13 +35783,13 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& her2k(TC alpha, const CVector& v1, const CVector& v2, TR beta) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v1.size());
         _check_ne(CVM_SIZESMISMATCH, this->msize(), v2.size());
+#endif
         CVector v1c(v1);  // has to guarantee incr to be 1
         CVector v2c(v2);
-        __her2k<TR,TC,
-            basic_schmatrix>(false, alpha, 1, v1c, v1c.size(),
-                             v2c, v2c.size(), beta, *this);
+        cvm_her2k<TR,TC,basic_schmatrix>(false, alpha, 1, v1c, v1c.size(), v2c, v2c.size(), beta, *this);
         this->_flip();
         return *this;
     }
@@ -35289,6 +35874,7 @@ prints
 */
     basic_schmatrix& her2k(bool bTransp, TC alpha, const BaseCMatrix& m1,
                            const BaseCMatrix& m2, TR beta) {
+#if defined(CVM_DEBUG)
         if (bTransp) {
             _check_ne(CVM_SIZESMISMATCH, this->msize(), m1.nsize());
             _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.nsize());
@@ -35298,7 +35884,8 @@ prints
             _check_ne(CVM_SIZESMISMATCH, this->msize(), m2.msize());
             _check_ne(CVM_SIZESMISMATCH, m1.nsize(), m2.nsize());
         }
-        __her2k<TR,TC,
+#endif
+        cvm_her2k<TR,TC,
             basic_schmatrix>(bTransp, alpha, bTransp ? m1.msize() : m1.nsize(),
                              m1, m1.ld(), m2, m2.ld(), beta, *this);
         this->_flip();
@@ -35338,7 +35925,7 @@ prints
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& inv(const basic_schmatrix& m) {
-        __inv<basic_schmatrix>(*this, m);
+        cvm_inv<basic_schmatrix>(*this, m);
         return *this;
     }
 
@@ -35372,9 +35959,9 @@ prints
 \endcode
 @return Result object.
 */
-    basic_schmatrix inv() const {
+    basic_schmatrix inv() const {  // NOLINT
         basic_schmatrix mRes(this->msize());
-        __inv<basic_schmatrix>(mRes, *this);
+        cvm_inv<basic_schmatrix>(mRes, *this);
         return mRes;
     }
 
@@ -35464,7 +36051,7 @@ Matlab output:
 */
     basic_schmatrix& exp(const basic_schmatrix& m,
                          TR tol = basic_cvmMachSp<TR>()) {
-        __exp_symm<basic_schmatrix, TR>(*this, m, tol);
+        cvm_exp_symm<basic_schmatrix, TR>(*this, m, tol);
         return *this;
     }
 
@@ -35549,9 +36136,9 @@ Matlab output:
 @param[in] tol Computation tolerance.
 @return Result object.
 */
-    basic_schmatrix exp(TR tol = basic_cvmMachSp<TR>()) const {
+    basic_schmatrix exp(TR tol = basic_cvmMachSp<TR>()) const {  // NOLINT
         basic_schmatrix msRes(this->msize());
-        __exp_symm<basic_schmatrix, TR>(msRes, *this, tol);
+        cvm_exp_symm<basic_schmatrix, TR>(msRes, *this, tol);
         return msRes;
     }
 
@@ -35646,9 +36233,11 @@ Matlab output:
 @return Reference to changed calling matrix.
 */
     basic_schmatrix& polynom(const basic_schmatrix& m, const RVector& v) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), m.msize());
+#endif
         CVector vc(v);
-        __polynom<TC, CVector>(this->get(), this->ld(), this->msize(), m._pd(), m._ldm(), vc);
+        cvm_polynom<TC, CVector>(this->get(), this->ld(), this->msize(), m._pd(), m._ldm(), vc);
         return *this;
     }
 
@@ -35743,7 +36332,7 @@ Matlab output:
     basic_schmatrix polynom(const RVector& v) const {
         basic_schmatrix msRes(this->msize());
         CVector vc(v);
-        __polynom<TC, CVector>(msRes, msRes.ld(), this->msize(), this->get(), this->ld(), vc);
+        cvm_polynom<TC, CVector>(msRes, msRes.ld(), this->msize(), this->get(), this->ld(), vc);
         return msRes;
     }
 
@@ -35803,7 +36392,7 @@ prints
     RVector eig(BaseSCMatrix& mEigVect) const {
         RVector vEig(this->msize());
         // we don't use _eig here since this is the special case - Hermitian matrix
-        __eig<RVector, basic_schmatrix, BaseSCMatrix>(vEig, *this, &mEigVect, true);
+        cvm_eig<RVector, basic_schmatrix, BaseSCMatrix>(vEig, *this, &mEigVect, true);
         return vEig;
     }
 
@@ -35838,10 +36427,10 @@ prints
 @see rvector::eig()
 @return Result object.
 */
-    RVector eig() const {
+    RVector eig() const {  // NOLINT
         RVector vEig(this->msize());
         // we don't use _eig here since this is the special case - Hermitian matrix
-        __eig<RVector, basic_schmatrix, BaseSCMatrix>(vEig, *this, nullptr, true);
+        cvm_eig<RVector, basic_schmatrix, BaseSCMatrix>(vEig, *this, nullptr, true);
         return vEig;
     }
 
@@ -35887,7 +36476,7 @@ prints
 */
     BaseSCMatrix cholesky() const {
         BaseSCMatrix mRes(*this);
-        tint nOutInfo = __cholesky<BaseSCMatrix>(mRes);
+        tint nOutInfo = cvm_cholesky<BaseSCMatrix>(mRes);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         _check_positive(CVM_NOTPOSITIVEDEFINITE, nOutInfo);
         mRes._clean_low_triangle();
@@ -35924,28 +36513,28 @@ when argument is symmetric but not positive-definite.
 */
     BaseSCMatrix bunch_kaufman(tint* nPivots) const {
         BaseSCMatrix mRes(*this);
-        __bunch_kaufman<BaseSCMatrix>(mRes, nPivots);
+        cvm_bunch_kaufman<BaseSCMatrix>(mRes, nPivots);
         return mRes;
     }
 
     // TODO dox
-    basic_schmatrix& identity() {
+    basic_schmatrix& identity() {  // NOLINT
         this->_vanish();
         this->_plus_plus();
         return *this;
     }
 
-    basic_schmatrix& vanish() {
+    basic_schmatrix& vanish() {  // NOLINT
         this->_vanish();
         return *this;
     }
 
-    basic_schmatrix& randomize_real(TR dFrom, TR dTo) {
+    basic_schmatrix& randomize_real(TR dFrom, TR dTo) {  // NOLINT
         this->_randomize_real(dFrom, dTo);
         return *this;
     }
 
-    basic_schmatrix& randomize_imag(TR dFrom, TR dTo) {
+    basic_schmatrix& randomize_imag(TR dFrom, TR dTo) {  // NOLINT
         this->_randomize_imag(dFrom, dTo);
         return *this;
     }
@@ -35982,7 +36571,9 @@ Useful for further solve and solve_lu calling.
 @return \c true if equilibration was needed and performed.
 */
     bool equilibrate(basic_rvector<TR>& vScalings, CVector& vB) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vB.size());
+#endif
         bool bRes = this->_equilibrate(vScalings);
         if (bRes) {
             for (tint i = 0; i < this->msize(); ++i) {
@@ -36000,7 +36591,9 @@ Useful for further solve and solve_lu calling.
 @return \c true if equilibration was needed and performed.
 */
     bool equilibrate(basic_rvector<TR>& vScalings, BaseCMatrix& mB) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), mB.msize());
+#endif
         bool bRes = this->_equilibrate(vScalings);
         if (bRes) {
             for (tint j = 0; j <= mB.nsize(); ++j) {
@@ -36016,11 +36609,11 @@ Useful for further solve and solve_lu calling.
     // special care for symmetric matrices
     basic_schmatrix& _factorize(const basic_schmatrix& m, tint* nPivots, bool& bPositiveDefinite) {
         (*this) = m;
-        tint nOutInfo = __cholesky<BaseSCMatrix>(*this);
+        tint nOutInfo = cvm_cholesky<BaseSCMatrix>(*this);
         _check_negative(CVM_WRONGMKLARG, nOutInfo);
         if (nOutInfo > 0) {
             (*this) = m;
-            __bunch_kaufman<BaseSCMatrix>(*this, nPivots);
+            cvm_bunch_kaufman<BaseSCMatrix>(*this, nPivots);
             bPositiveDefinite = false;
         } else {
             bPositiveDefinite = true;
@@ -36035,8 +36628,8 @@ Useful for further solve and solve_lu calling.
             tint i = 1, j = 1, m;
             for (;;) {
                 m = this->msize() - i;
-                __copy<TC>(m, this->get() + j + nM1m, this->ld(), this->get() + j, 1);
-                __conj<TC>(this->get() + j, m, 1);
+                cvm_copy<TC>(m, this->get() + j + nM1m, this->ld(), this->get() + j, 1);
+                cvm_conj<TC>(this->get() + j, m, 1);
                 if (i >= nM2m) break;
                 ++i;
                 j += nM1;
@@ -36064,7 +36657,7 @@ protected:
     }
 
     // not applicable - see below
-    basic_schmatrix& set(TC z) {
+    basic_schmatrix& set(TC z) {  // NOLINT
         this->_set(z);
         return *this;
     }
@@ -36094,17 +36687,17 @@ protected:
 
     // returns main diagonal of low_up factorization
     CVector _low_up_diag(basic_array<tint,tint>&) const override {
-        // well, this stuff is useless for symmetric matrices. 
+        // well, this stuff is useless for symmetric matrices.
         // this call would mean serious CVM internal error
         throw cvmexception(CVM_NOTIMPLEMENTED, "_low_up_diag");
     }
 
     void _scalr(TR d) override {
-        __scal<TR,TC>(this->get(), this->size(), this->incr(), d);
+        cvm_scal<TR,TC>(this->get(), this->size(), this->incr(), d);
     }
 
     void _scalc(TC d) override {
-        __scal<TC,TC>(this->get(), this->size(), this->incr(), d);
+        cvm_scal<TC,TC>(this->get(), this->size(), this->incr(), d);
     }
 
     void _multiply(CVector& vRes, const CVector& v, bool bLeft) const override {
@@ -36120,15 +36713,17 @@ protected:
             const TC* pDv = v;
             if (vRes.get() == pDv) vTmp << v;
             if (vRes.get() == pDm) mTmp << *this;
-            __shmv<TC, basic_schmatrix, CVector>(vRes.get() == pDm ? mTmp : *this, one,
+            cvm_shmv<TC, basic_schmatrix, CVector>(vRes.get() == pDm ? mTmp : *this, one,
                                                  vRes.get() == pDv ? vTmp : v, zero, vRes);
         }
     }
 
     // sets both elements to keep matrix Hermitian, checks ranges
     void _set_at(tint nRow, tint nCol, TC val) {
+#if defined(CVM_DEBUG)
         _check_lt_ge(CVM_OUTOFRANGE_LTGE1, nRow, tint(), this->msize());
         _check_lt_ge(CVM_OUTOFRANGE_LTGE2, nCol, tint(), this->nsize());
+#endif
         // only reals on main diagonal
         if (nRow == nCol && std::abs(val.imag()) > basic_cvmMachMin<TR>()) {
             throw cvmexception(CVM_BREAKS_HERMITIANITY, "real number");
@@ -36176,7 +36771,7 @@ protected:
         basic_schmatrix m(*this);
         const bool bEquilibrated = m.equilibrate(vScalings, vB1);
         CVector vX1(vB1);  // to make sure incr = 1
-        __solve<TR,TC,
+        cvm_solve<TR,TC,
             basic_schmatrix>(m, 1, vB1, vB1.size(), vX1, vX1.size(),
                              dErr, pLU, pPivots, 0);  // no transpose
 
@@ -36203,7 +36798,7 @@ protected:
         basic_schmatrix m(*this);
         const bool bEquilibrated = m.equilibrate(vScalings, mB1);
         mX = mB1;
-        __solve<TR,TC,
+        cvm_solve<TR,TC,
             basic_schmatrix>(m, mB.nsize(), mB, mB.ld(), mX, mX.ld(),
                              dErr, pLU, pPivots, 0);  // no transpose
         if (bEquilibrated) {
@@ -36251,7 +36846,7 @@ protected:
                 }
             }
             catch (const cvmexception& e) {
-                if (e.cause() != CVM_WRONGBUNCHKAUFMANFACTOR) throw e;
+                if (e.cause() != CVM_WRONGBUNCHKAUFMANFACTOR) throw;
             }
             break;
         }
@@ -36260,14 +36855,16 @@ protected:
 
     // matrix equilibration helper
     bool _equilibrate(basic_rvector<TR>& vScalings) {
+#if defined(CVM_DEBUG)
         _check_ne(CVM_SIZESMISMATCH, this->msize(), vScalings.size());
+#endif
         bool bRes = false;
         TR dCond = TR();
         TR dMax  = TR();
         const TR sp = basic_cvmMachSp<TR>();
         const TR sp_inv = TR(1.) / sp;
 
-        __poequ<TR,basic_schmatrix, basic_rvector<TR>> (*this, vScalings, dCond, dMax);
+        cvm_poequ<TR,basic_schmatrix, basic_rvector<TR>> (*this, vScalings, dCond, dMax);
 
         if (dCond < TR(0.1) || std::abs(dMax) <= sp || std::abs(dMax) >= sp_inv) {
             bRes = true;
@@ -36282,7 +36879,7 @@ protected:
 
     void _make_main_diag_real() {
         const TR zero = TR(0.);
-        __scal<TR,TR>(__get_imag_p<TR>(this->get()), this->msize(), (this->ld() + 1) * 2, zero);
+        cvm_scal<TR,TR>(__get_imag_p<TR>(this->get()), this->msize(), (this->ld() + 1) * 2, zero);
     }
 
     void _check_gerc()          override { throw cvmexception(CVM_METHODNOTAVAILABLE, "gerc", "schmatrix");}
@@ -36650,44 +37247,44 @@ CVM_NAMESPACE_END
 namespace std {  // NOLINT
 
 template<typename T, typename TR>
-inline TR real(const CVM_NAMESPACE::type_proxy<T,TR>& p) {
+inline TR real(const CVM_NAMESPACE::type_proxy<T,TR>& p) {  // NOLINT
     return real(p.val());
 }
 
 template<typename T, typename TR>
-inline TR imag(const CVM_NAMESPACE::type_proxy<T,TR>& p) {
+inline TR imag(const CVM_NAMESPACE::type_proxy<T,TR>& p) {  // NOLINT
     return imag(p.val());
 }
 
 template<typename T, typename TR>
-inline TR abs(const CVM_NAMESPACE::type_proxy<T,TR>& p) {
+inline TR abs(const CVM_NAMESPACE::type_proxy<T,TR>& p) {  // NOLINT
     return abs(p.val());
 }
 
 template<typename T, typename TR>
-inline TR arg(const CVM_NAMESPACE::type_proxy<T,TR>& p) {
+inline TR arg(const CVM_NAMESPACE::type_proxy<T,TR>& p) {  // NOLINT
     return arg(p.val());
 }
 
 template<typename T, typename TR>
-inline TR norm(const CVM_NAMESPACE::type_proxy<T,TR>& p) {
+inline TR norm(const CVM_NAMESPACE::type_proxy<T,TR>& p) {  // NOLINT
     return norm(p.val());
 }
 
 template<typename T, typename TR>
-inline T pow(const CVM_NAMESPACE::type_proxy<T,TR>& x,
+inline T pow(const CVM_NAMESPACE::type_proxy<T,TR>& x,  // NOLINT
              const CVM_NAMESPACE::type_proxy<T,TR>& y) {
     return pow(x.val(), y.val());
 }
 
 template<typename T, typename TR>
-inline T pow(const TR& x,
+inline T pow(const TR& x,  // NOLINT
              const CVM_NAMESPACE::type_proxy<T,TR>& y) {
     return pow(x, y.val());
 }
 
 template<typename T, typename TR>
-inline T pow(const CVM_NAMESPACE::type_proxy<T,TR>& x,
+inline T pow(const CVM_NAMESPACE::type_proxy<T,TR>& x,  // NOLINT
              const TR& y) {
     return pow(x.val(), y);
 }
@@ -36698,24 +37295,24 @@ inline T pow(const CVM_NAMESPACE::type_proxy<T,TR>& x,
         return f(p.val()); \
     }
 
-CVM_STD_COMPLEX_PROXY(conj)
-CVM_STD_COMPLEX_PROXY(proj)
-CVM_STD_COMPLEX_PROXY(exp)
-CVM_STD_COMPLEX_PROXY(log)
-CVM_STD_COMPLEX_PROXY(log10)
-CVM_STD_COMPLEX_PROXY(sqrt)
-CVM_STD_COMPLEX_PROXY(sin)
-CVM_STD_COMPLEX_PROXY(cos)
-CVM_STD_COMPLEX_PROXY(tan)
-CVM_STD_COMPLEX_PROXY(asin)
-CVM_STD_COMPLEX_PROXY(acos)
-CVM_STD_COMPLEX_PROXY(atan)
-CVM_STD_COMPLEX_PROXY(sinh)
-CVM_STD_COMPLEX_PROXY(cosh)
-CVM_STD_COMPLEX_PROXY(tanh)
-CVM_STD_COMPLEX_PROXY(asinh)
-CVM_STD_COMPLEX_PROXY(acosh)
-CVM_STD_COMPLEX_PROXY(atanh)
+CVM_STD_COMPLEX_PROXY(conj)  // NOLINT
+CVM_STD_COMPLEX_PROXY(proj)  // NOLINT
+CVM_STD_COMPLEX_PROXY(exp)  // NOLINT
+CVM_STD_COMPLEX_PROXY(log)  // NOLINT
+CVM_STD_COMPLEX_PROXY(log10)  // NOLINT
+CVM_STD_COMPLEX_PROXY(sqrt)  // NOLINT
+CVM_STD_COMPLEX_PROXY(sin)  // NOLINT
+CVM_STD_COMPLEX_PROXY(cos)  // NOLINT
+CVM_STD_COMPLEX_PROXY(tan)  // NOLINT
+CVM_STD_COMPLEX_PROXY(asin)  // NOLINT
+CVM_STD_COMPLEX_PROXY(acos)  // NOLINT
+CVM_STD_COMPLEX_PROXY(atan)  // NOLINT
+CVM_STD_COMPLEX_PROXY(sinh)  // NOLINT
+CVM_STD_COMPLEX_PROXY(cosh)  // NOLINT
+CVM_STD_COMPLEX_PROXY(tanh)  // NOLINT
+CVM_STD_COMPLEX_PROXY(asinh)  // NOLINT
+CVM_STD_COMPLEX_PROXY(acosh)  // NOLINT
+CVM_STD_COMPLEX_PROXY(atanh)  // NOLINT
 
 }  // namespace std
 
@@ -36727,7 +37324,7 @@ CVM_STD_COMPLEX_PROXY(atanh)
 
 extern "C"
 {
-    void __stdcall XERBLA(const char* szSubName,
+    void CVM_STD_CALL XERBLA(const char* szSubName,
 #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                           const tint nLen,
 #endif

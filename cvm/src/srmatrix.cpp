@@ -13,7 +13,7 @@ CVM_NAMESPACE_BEG
 
 template<>
 CVM_API void
-__exp<basic_srmatrix<float>, float>
+cvm_exp<basic_srmatrix<float>, float>
     (basic_srmatrix<float>& m,
     const basic_srmatrix<float>& mArg,
     float tol)
@@ -45,7 +45,7 @@ __exp<basic_srmatrix<float>, float>
 
 template<>
 CVM_API void 
-__exp<basic_srmatrix<double>, double>
+cvm_exp<basic_srmatrix<double>, double>
     (basic_srmatrix<double>& m,
     const basic_srmatrix<double>& mArg,
     double tol)
@@ -77,7 +77,7 @@ __exp<basic_srmatrix<double>, double>
 
 template<>
 CVM_API void
-__exp_symm<basic_srsmatrix<float>, float>
+cvm_exp_symm<basic_srsmatrix<float>, float>
     (basic_srsmatrix<float>& m, 
     const basic_srsmatrix<float>& mArg, 
     float tol)
@@ -109,7 +109,7 @@ __exp_symm<basic_srsmatrix<float>, float>
 
 template<>
 CVM_API void
-__exp_symm<basic_srsmatrix<double>, double>
+cvm_exp_symm<basic_srsmatrix<double>, double>
     (basic_srsmatrix<double>& m,
     const basic_srsmatrix<double>& mArg,
     double tol)
@@ -141,7 +141,7 @@ __exp_symm<basic_srsmatrix<double>, double>
 
 template<>
 CVM_API void
-__cond_num<float, basic_srmatrix<float>>
+cvm_cond_num<float, basic_srmatrix<float>>
     (const basic_srmatrix<float>& mArg, float& dCond)
 {
     dCond = 0.F;
@@ -166,7 +166,7 @@ __cond_num<float, basic_srmatrix<float>>
 
 template<>
 CVM_API void
-__cond_num<double, basic_srmatrix<double>>
+cvm_cond_num<double, basic_srmatrix<double>>
     (const basic_srmatrix<double>& mArg, double& dCond)
 {
     dCond = 0.;
@@ -191,7 +191,7 @@ __cond_num<double, basic_srmatrix<double>>
 
 template<>
 CVM_API void
-__inv<basic_srmatrix<float>>
+cvm_inv<basic_srmatrix<float>>
     (basic_srmatrix<float>& m,
     const basic_srmatrix<float>& mArg)
 {
@@ -225,7 +225,7 @@ __inv<basic_srmatrix<float>>
 
 template<>
 CVM_API void
-__inv<basic_srmatrix<double>>
+cvm_inv<basic_srmatrix<double>>
     (basic_srmatrix<double>& m,
     const basic_srmatrix<double>& mArg)
 {
@@ -260,7 +260,7 @@ __inv<basic_srmatrix<double>>
 
 template<>
 CVM_API void
-__polynom<float, basic_rvector<float>>
+cvm_polynom<float, basic_rvector<float>>
     (float* mpd, tint ldP, tint mnM, const float* pd, tint ldA, const basic_rvector<float>& v)
 {
     basic_rvector<float> vWork(NPOLY(&mnM, v._psize()));
@@ -269,7 +269,7 @@ __polynom<float, basic_rvector<float>>
 
 template<>
 CVM_API void
-__polynom<double, basic_rvector<double>>
+cvm_polynom<double, basic_rvector<double>>
     (double* mpd, tint ldP, tint mnM, const double* pd, tint ldA, const basic_rvector<double>& v)
 {
     basic_rvector<double> vWork(NPOLY(&mnM, v._psize()));
@@ -280,7 +280,7 @@ __polynom<double, basic_rvector<double>>
 // don't forget to make pX equal to pB before call
 template<>
 CVM_API void
-__solve<float, float, basic_srmatrix<float>>
+cvm_solve<float, float, basic_srmatrix<float>>
     (const basic_srmatrix<float>& m,
     tint nrhs,
     const float* pB, tint ldB, 
@@ -335,7 +335,7 @@ __solve<float, float, basic_srmatrix<float>>
 
 template<>
 CVM_API void
-__solve<double, double, basic_srmatrix<double>>
+cvm_solve<double, double, basic_srmatrix<double>>
     (const basic_srmatrix<double>& m,
     tint nrhs,
     const double* pB, tint ldB,
@@ -390,7 +390,7 @@ __solve<double, double, basic_srmatrix<double>>
 
 template<>
 CVM_API void
-__solve<float, float, basic_srbmatrix<float>>
+cvm_solve<float, float, basic_srbmatrix<float>>
     (const basic_srbmatrix<float>& m,
     tint nrhs,
     const float* pB, tint ldB,
@@ -447,7 +447,7 @@ __solve<float, float, basic_srbmatrix<float>>
 
 template<>
 CVM_API void
-__solve<double, double, basic_srbmatrix<double>>
+cvm_solve<double, double, basic_srbmatrix<double>>
     (const basic_srbmatrix<double>& m,
     tint nrhs,
     const double* pB, tint ldB,
@@ -506,7 +506,7 @@ __solve<double, double, basic_srbmatrix<double>>
 // don't forget to make pX equal to pB before call
 template<>
 CVM_API void
-__solve<float, float, basic_srsmatrix<float>>
+cvm_solve<float, float, basic_srsmatrix<float>>
     (const basic_srsmatrix<float>& m,
     tint nrhs,
     const float* pB, tint ldB,
@@ -590,7 +590,7 @@ __solve<float, float, basic_srsmatrix<float>>
 
 template<>
 CVM_API void
-__solve<double, double, basic_srsmatrix<double>>
+cvm_solve<double, double, basic_srsmatrix<double>>
     (const basic_srsmatrix<double>& m,
     tint nrhs,
     const double* pB, tint ldB,
@@ -674,7 +674,7 @@ __solve<double, double, basic_srsmatrix<double>>
 
 template<>
 CVM_API void
-__inv<basic_srsmatrix<float>>
+cvm_inv<basic_srsmatrix<float>>
     (basic_srsmatrix<float>& m,
     const basic_srsmatrix<float>& mArg)
 {
@@ -723,7 +723,7 @@ __inv<basic_srsmatrix<float>>
 
 template<>
 CVM_API void
-__inv<basic_srsmatrix<double>>
+cvm_inv<basic_srsmatrix<double>>
     (basic_srsmatrix<double>& m,
     const basic_srsmatrix<double>& mArg)
 {

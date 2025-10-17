@@ -12,20 +12,20 @@
 CVM_NAMESPACE_BEG
 
 template<>
-CVM_API float __dot<float> (const float* mpd, tint mn_size, tint mn_incr, const float* pd, tint incr)
+CVM_API float cvm_dot<float> (const float* mpd, tint mn_size, tint mn_incr, const float* pd, tint incr)
 {
     return SDOT(&mn_size, mpd, &mn_incr, pd, &incr);
 }
 
 template<>
-CVM_API double __dot<double> (const double* mpd, tint mn_size, tint mn_incr, const double* pd, tint incr)
+CVM_API double cvm_dot<double> (const double* mpd, tint mn_size, tint mn_incr, const double* pd, tint incr)
 {
     return DDOT(&mn_size, mpd, &mn_incr, pd, &incr);
 }
 
 template<>
 CVM_API void
-__gemv<float, basic_rmatrix<float>, basic_rvector<float>>
+cvm_gemv<float, basic_rmatrix<float>, basic_rvector<float>>
     (bool bLeft,
     const basic_rmatrix<float>& m,
     float dAlpha,
@@ -42,7 +42,7 @@ __gemv<float, basic_rmatrix<float>, basic_rvector<float>>
 
 template<>
 CVM_API void
-__gemv<double, basic_rmatrix<double>, basic_rvector<double>>
+cvm_gemv<double, basic_rmatrix<double>, basic_rvector<double>>
     (bool bLeft,
     const basic_rmatrix<double>& m,
     double dAlpha,
@@ -59,7 +59,7 @@ __gemv<double, basic_rmatrix<double>, basic_rvector<double>>
 
 template<>
 CVM_API void
-__gbmv<float, basic_srbmatrix<float>, basic_rvector<float>>
+cvm_gbmv<float, basic_srbmatrix<float>, basic_rvector<float>>
     (bool bLeft,
     const basic_srbmatrix<float>& m,
     float dAlpha,
@@ -76,7 +76,7 @@ __gbmv<float, basic_srbmatrix<float>, basic_rvector<float>>
 
 template<>
 CVM_API void
-__gbmv<double, basic_srbmatrix<double>, basic_rvector<double>>
+cvm_gbmv<double, basic_srbmatrix<double>, basic_rvector<double>>
     (bool bLeft,
     const basic_srbmatrix<double>& m,
     double dAlpha,
@@ -93,7 +93,7 @@ __gbmv<double, basic_srbmatrix<double>, basic_rvector<double>>
 
 template<>
 CVM_API void
-__symv<float, basic_srsmatrix<float>, basic_rvector<float>>
+cvm_symv<float, basic_srsmatrix<float>, basic_rvector<float>>
     (const basic_srsmatrix<float>& m,
     float dAlpha,
     const basic_rvector<float>& v,
@@ -109,7 +109,7 @@ __symv<float, basic_srsmatrix<float>, basic_rvector<float>>
 
 template<>
 CVM_API void
-__symv<double, basic_srsmatrix<double>, basic_rvector<double>>
+cvm_symv<double, basic_srsmatrix<double>, basic_rvector<double>>
     (const basic_srsmatrix<double>& m,
     double dAlpha,
     const basic_rvector<double>& v,
@@ -125,7 +125,7 @@ __symv<double, basic_srsmatrix<double>, basic_rvector<double>>
 
 template<>
 CVM_API void
-__svd<float, basic_rmatrix<float>, basic_srmatrix<float>>
+cvm_svd<float, basic_rmatrix<float>, basic_srmatrix<float>>
     (float* pd, tint size, tint incr,
     const basic_rmatrix<float>& mArg,
     basic_srmatrix<float>* mU,
@@ -243,12 +243,12 @@ __svd<float, basic_rmatrix<float>, basic_srmatrix<float>>
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "SBDSQR", __FILE__, __LINE__);
 
-    __copy<float> (size, mD, mD.incr(), pd, incr);
+    cvm_copy<float> (size, mD, mD.incr(), pd, incr);
 }
 
 template<>
 CVM_API void
-__svd<double, basic_rmatrix<double>, basic_srmatrix<double>>
+cvm_svd<double, basic_rmatrix<double>, basic_srmatrix<double>>
     (double* pd, tint size, tint incr,
     const basic_rmatrix<double>& mArg,
     basic_srmatrix<double>* mU,
@@ -366,13 +366,13 @@ __svd<double, basic_rmatrix<double>, basic_srmatrix<double>>
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "DBDSQR", __FILE__, __LINE__);
 
-    __copy<double> (size, mD, mD.incr(), pd, incr);
+    cvm_copy<double> (size, mD, mD.incr(), pd, incr);
 }
 
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__svd<float, basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_svd<float, basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (float* pd, tint size, tint incr,
     const basic_cmatrix<float, std::complex<float>> & mArg,
     basic_scmatrix<float, std::complex<float>> * mU,
@@ -488,12 +488,12 @@ __svd<float, basic_cmatrix<float, std::complex<float>> , basic_scmatrix<float, s
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "CBDSQR", __FILE__, __LINE__);
 
-    __copy<float> (size, mD, mD.incr(), pd, incr);
+    cvm_copy<float> (size, mD, mD.incr(), pd, incr);
 }
 
 template<>
 CVM_API void
-__svd<double, basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_svd<double, basic_cmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (double* pd, tint size, tint incr,
     const basic_cmatrix<double, std::complex<double>> & mArg,
     basic_scmatrix<double, std::complex<double>> * mU,
@@ -609,13 +609,13 @@ __svd<double, basic_cmatrix<double, std::complex<double>> , basic_scmatrix<doubl
     _check_negative(CVM_WRONGMKLARG, nOutInfo);
     _check_positive(CVM_CONVERGENCE_ERROR, nOutInfo, "ZBDSQR", __FILE__, __LINE__);
 
-    __copy<double> (size, mD, mD.incr(), pd, incr);
+    cvm_copy<double> (size, mD, mD.incr(), pd, incr);
 }
 //! @endcond
 
 template<>
 CVM_API void
-__svd<float, basic_srbmatrix<float>, basic_srmatrix<float>>
+cvm_svd<float, basic_srbmatrix<float>, basic_srmatrix<float>>
     (float* pd, tint size, tint incr,
     const basic_srbmatrix<float>& mArg,
     basic_srmatrix<float>* mU,
@@ -673,12 +673,12 @@ __svd<float, basic_srbmatrix<float>, basic_srmatrix<float>>
         (*mVH) = mPT;
     }
 
-    __copy<float> (size, mD, mD.incr(), pd, incr);
+    cvm_copy<float> (size, mD, mD.incr(), pd, incr);
 }
 
 template<>
 CVM_API void
-__svd<double, basic_srbmatrix<double>, basic_srmatrix<double>>
+cvm_svd<double, basic_srbmatrix<double>, basic_srmatrix<double>>
     (double* pd, tint size, tint incr,
     const basic_srbmatrix<double>& mArg,
     basic_srmatrix<double>* mU,
@@ -736,13 +736,13 @@ __svd<double, basic_srbmatrix<double>, basic_srmatrix<double>>
         (*mVH) = mPT;
     }
 
-    __copy<double> (size, mD, mD.incr(), pd, incr);
+    cvm_copy<double> (size, mD, mD.incr(), pd, incr);
 }
 
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__svd<float, basic_scbmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_svd<float, basic_scbmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (float* pd, tint size, tint incr,
     const basic_scbmatrix<float, std::complex<float>> & mArg,
     basic_scmatrix<float, std::complex<float>> * mU,
@@ -801,12 +801,12 @@ __svd<float, basic_scbmatrix<float, std::complex<float>> , basic_scmatrix<float,
         (*mVH) = mPT;
     }
 
-    __copy<float> (size, mD, mD.incr(), pd, incr);
+    cvm_copy<float> (size, mD, mD.incr(), pd, incr);
 }
 
 template<>
 CVM_API void
-__svd<double, basic_scbmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_svd<double, basic_scbmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (double* pd, tint size, tint incr,
     const basic_scbmatrix<double, std::complex<double>> & mArg,
     basic_scmatrix<double, std::complex<double>> * mU,
@@ -866,13 +866,13 @@ __svd<double, basic_scbmatrix<double, std::complex<double>> , basic_scmatrix<dou
         (*mVH) = mPT;
     }
 
-    __copy<double> (size, mD, mD.incr(), pd, incr);
+    cvm_copy<double> (size, mD, mD.incr(), pd, incr);
 }
 //! @endcond
 
 template<>
 CVM_API void
-__eig<basic_rvector<float>, basic_srsmatrix<float>, basic_srmatrix<float>>
+cvm_eig<basic_rvector<float>, basic_srsmatrix<float>, basic_srmatrix<float>>
     (basic_rvector<float>& vRes,
     const basic_srsmatrix<float>& mArg,
     basic_srmatrix<float>* mEigVect,
@@ -936,7 +936,7 @@ __eig<basic_rvector<float>, basic_srsmatrix<float>, basic_srmatrix<float>>
 
 template<>
 CVM_API void
-__eig<basic_rvector<double>, basic_srsmatrix<double>, basic_srmatrix<double>>
+cvm_eig<basic_rvector<double>, basic_srsmatrix<double>, basic_srmatrix<double>>
     (basic_rvector<double>& vRes,
     const basic_srsmatrix<double>& mArg,
     basic_srmatrix<double>* mEigVect,
@@ -1001,7 +1001,7 @@ __eig<basic_rvector<double>, basic_srsmatrix<double>, basic_srmatrix<double>>
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (basic_rvector<float>& vRes,
     const basic_schmatrix<float, std::complex<float>> & mArg,
     basic_scmatrix<float, std::complex<float>> * mEigVect,
@@ -1071,7 +1071,7 @@ __eig<basic_rvector<float>, basic_schmatrix<float, std::complex<float>> , basic_
 
 template<>
 CVM_API void
-__eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (basic_rvector<double>& vRes,
     const basic_schmatrix<double, std::complex<double>> & mArg,
     basic_scmatrix<double, std::complex<double>> * mEigVect,
@@ -1143,7 +1143,7 @@ __eig<basic_rvector<double>, basic_schmatrix<double, std::complex<double>> , bas
 // pseudo(generalized) inversion routines
 template<>
 CVM_API void
-__pinv<float, basic_rmatrix<float>, basic_rmatrix<float>>
+cvm_pinv<float, basic_rmatrix<float>, basic_rmatrix<float>>
     (basic_rmatrix<float>& mX,
     const basic_rmatrix<float>& mArg, float threshold)
 {
@@ -1255,7 +1255,7 @@ __pinv<float, basic_rmatrix<float>, basic_rmatrix<float>>
 
 template<>
 CVM_API void
-__pinv<double, basic_rmatrix<double>, basic_rmatrix<double>>
+cvm_pinv<double, basic_rmatrix<double>, basic_rmatrix<double>>
     (basic_rmatrix<double>& mX,
     const basic_rmatrix<double>& mArg, double threshold)
 {
@@ -1368,7 +1368,7 @@ __pinv<double, basic_rmatrix<double>, basic_rmatrix<double>>
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__pinv<float, basic_cmatrix<float, std::complex<float>> , basic_cmatrix<float, std::complex<float>>  >
+cvm_pinv<float, basic_cmatrix<float, std::complex<float>> , basic_cmatrix<float, std::complex<float>>  >
     (basic_cmatrix<float, std::complex<float>> & mX,
     const basic_cmatrix<float, std::complex<float>> & mArg, float threshold)
 {
@@ -1480,7 +1480,7 @@ __pinv<float, basic_cmatrix<float, std::complex<float>> , basic_cmatrix<float, s
 
 template<>
 CVM_API void
-__pinv<double, basic_cmatrix<double, std::complex<double>> , basic_cmatrix<double, std::complex<double>>  >
+cvm_pinv<double, basic_cmatrix<double, std::complex<double>> , basic_cmatrix<double, std::complex<double>>  >
     (basic_cmatrix<double, std::complex<double>> & mX,
     const basic_cmatrix<double, std::complex<double>> & mArg, double threshold)
 {
@@ -1593,7 +1593,7 @@ __pinv<double, basic_cmatrix<double, std::complex<double>> , basic_cmatrix<doubl
 
 template<>
 CVM_API void
-__pinv<float, basic_srbmatrix<float>, basic_rmatrix<float>>
+cvm_pinv<float, basic_srbmatrix<float>, basic_rmatrix<float>>
     (basic_rmatrix<float>& mX, 
     const basic_srbmatrix<float>& mArg, float threshold)
 {
@@ -1648,7 +1648,7 @@ __pinv<float, basic_srbmatrix<float>, basic_rmatrix<float>>
 
 template<>
 CVM_API void
-__pinv<double, basic_srbmatrix<double>, basic_rmatrix<double>>
+cvm_pinv<double, basic_srbmatrix<double>, basic_rmatrix<double>>
     (basic_rmatrix<double>& mX, 
     const basic_srbmatrix<double>& mArg, double threshold)
 {
@@ -1705,7 +1705,7 @@ __pinv<double, basic_srbmatrix<double>, basic_rmatrix<double>>
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__pinv<float, basic_scbmatrix<float, std::complex<float>> , basic_cmatrix<float, std::complex<float>>  >
+cvm_pinv<float, basic_scbmatrix<float, std::complex<float>> , basic_cmatrix<float, std::complex<float>>  >
     (basic_cmatrix<float, std::complex<float>> & mX,
     const basic_scbmatrix<float, std::complex<float>> & mArg, float threshold)
 {
@@ -1761,7 +1761,7 @@ __pinv<float, basic_scbmatrix<float, std::complex<float>> , basic_cmatrix<float,
 
 template<>
 CVM_API void
-__pinv<double, basic_scbmatrix<double, std::complex<double>> , basic_cmatrix<double, std::complex<double>>  >
+cvm_pinv<double, basic_scbmatrix<double, std::complex<double>> , basic_cmatrix<double, std::complex<double>>  >
     (basic_cmatrix<double, std::complex<double>> & mX,
     const basic_scbmatrix<double, std::complex<double>> & mArg, double threshold)
 {

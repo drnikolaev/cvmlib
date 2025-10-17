@@ -15,7 +15,7 @@
 #endif
 
 extern "C" {
-    void __stdcall XERBLA(const char* szSubName,
+    void CVM_STD_CALL XERBLA(const char* szSubName,
     #if defined(CVM_PASS_STRING_LENGTH_TO_FTN_SUBROUTINES)
                         const tint,
     #endif
@@ -100,48 +100,7 @@ void CriticalSection::leave()
 #endif
 }
 //! @endcond
-
 #endif
-
-
-// 5.5.2 - moved out of cvm.h
-cvmexception::cvmexception(int nCause, ...)  // NOLINT
-    : mnCause(nCause)
-{
-    va_list argList;
-    va_start(argList, nCause);
-#if defined(CVM_VSNPRINTF_S_DEFINED)
-    const tint nLength = CVM_VSNPRINTF(mszMsg, sizeof(mszMsg), sizeof(mszMsg) - 1, _get_message(mnCause), argList);
-#else
-    const tint nLength = CVM_VSNPRINTF(mszMsg, sizeof(mszMsg) - 1, cvmexception::_get_message(mnCause), argList);
-#endif
-    va_end(argList);
-    if (nLength >= (int) sizeof(mszMsg))
-    {
-        mszMsg[sizeof(mszMsg) - 1] = '\0';
-    }
-}
-
-cvmexception::cvmexception(const cvmexception& e) noexcept  // NOLINT
-    : std::exception(e), mnCause(e.mnCause)
-{
-#if defined(CVM_STRCPY_S_DEFINED)
-    strcpy_s(mszMsg, sizeof(mszMsg), e.mszMsg);
-#else
-    strcpy(mszMsg, e.mszMsg);
-#endif
-}
-
-cvmexception::cvmexception(cvmexception&& e) noexcept  // NOLINT
-        : mnCause(e.mnCause)
-{
-#if defined(CVM_STRCPY_S_DEFINED)
-  strcpy_s(mszMsg, sizeof(mszMsg), e.mszMsg);
-#else
-  strcpy(mszMsg, e.mszMsg);
-#endif
-}
-
 
 #if defined(CVM_USE_POOL_MANAGER)
 

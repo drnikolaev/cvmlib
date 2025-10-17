@@ -7,7 +7,7 @@ This C++ class library encapsulates concepts of vector and different matrices in
 The library is distributed under the Boost Software License, Version 1.0.
 See http://cvmlib.com for binaries and more details.
 
-### Building source code
+### Building source code on Linux with Intel or AMD CPU
 Intel toolkit is recommended (see [here](https://www.intel.com/content/www/us/en/develop/documentation/installation-guide-for-intel-oneapi-toolkits-linux/top/installation/install-using-package-managers/apt.html)):
 ```
 wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
@@ -15,12 +15,35 @@ echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt
 sudo apt update
 sudo apt install intel-basekit
 source /opt/intel/oneapi/compiler/latest/env/vars.sh
-mkdir build
-cmake -DCMAKE_Fortran_COMPILER=ifx -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release -S . -B build
-cd build
-make -j
+cmake -DCMAKE_Fortran_COMPILER=ifx -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON -B build -S .
+cmake --build build --parallel --config Release
 ../lib/cvm_test
 ```
+
+### Building source code on Windows with Intel or AMD CPU
+Intel oneAPI HPC Toolkit is required (see [here](https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit-download.html)):
+```aiignore
+cmake -DCMAKE_Fortran_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/ifx.exe" -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON -B build -S .
+cmake --build build --parallel --config Release
+.\lib\Release\cvm_test.exe
+```
+
+### Building source code on MAC
+ARM Performance Libraries are required (see [here](https://developer.arm.com/Tools%20and%20Software/Arm%20Performance%20Libraries)):
+```aiignore
+cmake -DCMAKE_Fortran_COMPILER=aarch64-apple-darwin24-gfortran-mp-14 -DCMAKE_CXX_COMPILER=aarch64-apple-darwin24-c++-mp-14  -DARMPL=ON -DBUILD_TESTS=ON -DILP64=ON  -B build/ -S .
+cmake --build build/ --config Release
+./lib/cvm_test
+```
+
+### Building source code on Linux with ARM CPU
+ARM Performance Libraries are required (see [here](https://developer.arm.com/Tools%20and%20Software/Arm%20Performance%20Libraries)):
+```aiignore
+PATH=/opt/arm/gcc-14.2.0_Ubuntu-22.04/bin:$PATH cmake -DCMAKE_Fortran_COMPILER=aarch64-linux-gnu-gfortran -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ -DILP64=ON -DARMPL=ON -DBUILD_TESTS=ON -B build/ -S .
+cmake --build build/ --config Release
+./lib/cvm_test
+```
+
 
 ### Examples
 

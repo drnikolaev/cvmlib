@@ -1,44 +1,47 @@
-FILE(GLOB SOURCE_FILES *.f)
-add_library(ftn STATIC ${SOURCE_FILES})
+cmake_minimum_required(VERSION 3.23.0)
+project(ftn LANGUAGES Fortran)
+file(GLOB F_SOURCES CONFIGURE_DEPENDS "*.f")
+add_library(ftn STATIC ${F_SOURCES})
+find_package(Threads REQUIRED)
 
-set_target_properties(ftn
-        PROPERTIES
-        DEBUG_POSTFIX _debug
-        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../../lib"
-        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../../lib"
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../../lib"
-        )
+set(_out "${CMAKE_CURRENT_SOURCE_DIR}/../../../lib")
+foreach(cfg Debug Release RelWithDebInfo MinSizeRel)
+    string(TOUPPER "${cfg}" CFGU)
+    set_target_properties(ftn PROPERTIES
+        ARCHIVE_OUTPUT_DIRECTORY_${CFGU} "${_out}"
+        LIBRARY_OUTPUT_DIRECTORY_${CFGU} "${_out}"
+        RUNTIME_OUTPUT_DIRECTORY_${CFGU} "${_out}"
+    )
+endforeach()
 
-if(LINUX OR MAC)
-    target_compile_options(ftn PUBLIC -pthread -fPIC
-        $<$<CONFIG:Release>:-O3>
-        $<$<CONFIG:Debug>:-O0 -g>)
-else()
-    target_compile_options(ftn PUBLIC
-            $<$<CONFIG:Release>:/O2>
-            $<$<CONFIG:Debug>:/Od /debug>)
+set_target_properties(ftn PROPERTIES DEBUG_POSTFIX "_debug")
+
+if(NOT WIN32)
+    set_target_properties(ftn PROPERTIES POSITION_INDEPENDENT_CODE ON)
 endif()
 
+target_compile_options(ftn PRIVATE
+        $<$<CONFIG:Release>:$<$<COMPILE_LANGUAGE:Fortran>:/MD -O2>>
+        $<$<CONFIG:Debug>:$<$<COMPILE_LANGUAGE:Fortran>:/MDd -Og>>
+)
 
-if(LINUX)
-    if(ILP64)
-        if(IFORT)
-            target_compile_options(ftn PUBLIC $<$<COMPILE_LANGUAGE:Fortran>:-integer-size 64>)
-        else()
-            target_compile_options(ftn PUBLIC $<$<COMPILE_LANGUAGE:Fortran>:-fdefault-integer-8>)
-        endif()
-    endif()
-else()
-    if(ILP64)
-        if(IFORT)
-            target_compile_options(ftn PUBLIC $<$<COMPILE_LANGUAGE:Fortran>:/integer-size:64>)
-        else()
-            if(MAC)
-                target_compile_options(ftn PUBLIC $<$<COMPILE_LANGUAGE:Fortran>:-fdefault-integer-8>)
-            else()
-                target_compile_options(ftn PUBLIC $<$<COMPILE_LANGUAGE:Fortran>:/default-integer-8>)
-            endif()
-        endif()
-    endif()
+if(UNIX AND NOT APPLE)
+    target_compile_options(ftn PRIVATE -pthread)
+    target_link_options(ftn PRIVATE -pthread)
 endif()
 
+if(ILP64)
+    if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel" OR CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM")
+        if(WIN32)
+            target_compile_options(ftn PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:/integer-size:64>)
+        else()
+            target_compile_options(ftn PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:-integer-size 64>)
+        endif()
+    elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
+        target_compile_options(ftn PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:-fdefault-integer-8>)
+    elseif(MSVC)
+        # Intel Fortran with MSVC toolchain is covered above; MSVC itself is rare for Fortran.
+    endif()
+    # Optionally add a shared interface macro that C/C++ can also see
+    target_compile_definitions(ftn PRIVATE USE_ILP64=1)
+endif()

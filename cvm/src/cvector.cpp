@@ -13,7 +13,7 @@ CVM_NAMESPACE_BEG
 
 template<>
 CVM_API std::complex<float>
-__dotu<std::complex<float>>(const std::complex<float>* mpd, tint mn_size, tint mn_incr,
+cvm_dotu<std::complex<float>>(const std::complex<float>* mpd, tint mn_size, tint mn_incr,
                             const std::complex<float>* pd, tint incr)
 {
 #if defined(CVM_COMPLEX_NUMBER_RETURNED)
@@ -33,7 +33,7 @@ __dotu<std::complex<float>>(const std::complex<float>* mpd, tint mn_size, tint m
 
 template<>
 CVM_API std::complex<double>
-__dotu<std::complex<double>>(const std::complex<double>* mpd, tint mn_size, tint mn_incr,
+cvm_dotu<std::complex<double>>(const std::complex<double>* mpd, tint mn_size, tint mn_incr,
                              const std::complex<double>* pd, tint incr)
 {
 #if defined(CVM_COMPLEX_NUMBER_RETURNED)
@@ -53,7 +53,7 @@ __dotu<std::complex<double>>(const std::complex<double>* mpd, tint mn_size, tint
 
 template<>
 CVM_API std::complex<float>
-__dotc<std::complex<float>>  (const std::complex<float>* mpd, tint mn_size, tint mn_incr,
+cvm_dotc<std::complex<float>>  (const std::complex<float>* mpd, tint mn_size, tint mn_incr,
                               const std::complex<float>* pd, tint incr)
 {
 #if defined(CVM_COMPLEX_NUMBER_RETURNED)
@@ -73,7 +73,7 @@ __dotc<std::complex<float>>  (const std::complex<float>* mpd, tint mn_size, tint
 
 template<>
 CVM_API std::complex<double>
-__dotc<std::complex<double>>  (const std::complex<double>* mpd, tint mn_size, tint mn_incr,
+cvm_dotc<std::complex<double>>  (const std::complex<double>* mpd, tint mn_size, tint mn_incr,
                                const std::complex<double>* pd, tint incr)
 {
 #if defined(CVM_COMPLEX_NUMBER_RETURNED)
@@ -94,7 +94,7 @@ __dotc<std::complex<double>>  (const std::complex<double>* mpd, tint mn_size, ti
 //! @cond SPECIALIZATIONS
 template<>
 CVM_API void
-__gemv<std::complex<float>, basic_cmatrix<float, std::complex<float>> , basic_cvector<float, std::complex<float>>  >
+cvm_gemv<std::complex<float>, basic_cmatrix<float, std::complex<float>> , basic_cvector<float, std::complex<float>>  >
     (bool bLeft,
     const basic_cmatrix<float, std::complex<float>> & m,
     std::complex<float> dAlpha,
@@ -111,7 +111,7 @@ __gemv<std::complex<float>, basic_cmatrix<float, std::complex<float>> , basic_cv
 
 template<>
 CVM_API void
-__gemv<std::complex<double>, basic_cmatrix<double, std::complex<double>> , basic_cvector<double, std::complex<double>>  >
+cvm_gemv<std::complex<double>, basic_cmatrix<double, std::complex<double>> , basic_cvector<double, std::complex<double>>  >
     (bool bLeft,
     const basic_cmatrix<double, std::complex<double>> & m,
     std::complex<double> dAlpha,
@@ -128,7 +128,7 @@ __gemv<std::complex<double>, basic_cmatrix<double, std::complex<double>> , basic
 
 template<>
 CVM_API void
-__gbmv<std::complex<float>, basic_scbmatrix<float, std::complex<float>> , basic_cvector<float, std::complex<float>>  >
+cvm_gbmv<std::complex<float>, basic_scbmatrix<float, std::complex<float>> , basic_cvector<float, std::complex<float>>  >
     (bool bLeft,
     const basic_scbmatrix<float, std::complex<float>> & m,
     std::complex<float> dAlpha,
@@ -145,7 +145,7 @@ __gbmv<std::complex<float>, basic_scbmatrix<float, std::complex<float>> , basic_
 
 template<>
 CVM_API void
-__gbmv<std::complex<double>, basic_scbmatrix<double, std::complex<double>> , basic_cvector<double, std::complex<double>>  >
+cvm_gbmv<std::complex<double>, basic_scbmatrix<double, std::complex<double>> , basic_cvector<double, std::complex<double>>  >
     (bool bLeft,
     const basic_scbmatrix<double, std::complex<double>> & m,
     std::complex<double> dAlpha,
@@ -162,7 +162,7 @@ __gbmv<std::complex<double>, basic_scbmatrix<double, std::complex<double>> , bas
 
 template<>
 CVM_API void
-__shmv<std::complex<float>, basic_schmatrix<float, std::complex<float>> , basic_cvector<float, std::complex<float>>  >
+cvm_shmv<std::complex<float>, basic_schmatrix<float, std::complex<float>> , basic_cvector<float, std::complex<float>>  >
     (const basic_schmatrix<float, std::complex<float>> & m,
      std::complex<float> cAlpha,
      const basic_cvector<float, std::complex<float>> & v,
@@ -179,7 +179,7 @@ __shmv<std::complex<float>, basic_schmatrix<float, std::complex<float>> , basic_
 
 template<>
 CVM_API void
-__shmv<std::complex<double>, basic_schmatrix<double, std::complex<double>> , basic_cvector<double, std::complex<double>>  >
+cvm_shmv<std::complex<double>, basic_schmatrix<double, std::complex<double>> , basic_cvector<double, std::complex<double>>  >
     (const basic_schmatrix<double, std::complex<double>> & m,
      std::complex<double> cAlpha,
      const basic_cvector<double, std::complex<double>> & v,
@@ -196,7 +196,7 @@ __shmv<std::complex<double>, basic_schmatrix<double, std::complex<double>> , bas
 
 template<>
 CVM_API void
-__eig<basic_cvector<float, std::complex<float>> , basic_srmatrix<float>, basic_scmatrix<float, std::complex<float>>  >
+cvm_eig<basic_cvector<float, std::complex<float>> , basic_srmatrix<float>, basic_scmatrix<float, std::complex<float>>  >
     (basic_cvector<float, std::complex<float>> & vRes,
     const basic_srmatrix<float>& mArg,
     basic_scmatrix<float, std::complex<float>> * mEigVect,
@@ -359,7 +359,7 @@ __eig<basic_cvector<float, std::complex<float>> , basic_srmatrix<float>, basic_s
 
 template<>
 CVM_API void
-__eig<basic_cvector<double, std::complex<double>> , basic_srmatrix<double>, basic_scmatrix<double, std::complex<double>>  >
+cvm_eig<basic_cvector<double, std::complex<double>> , basic_srmatrix<double>, basic_scmatrix<double, std::complex<double>>  >
     (basic_cvector<double, std::complex<double>> & vRes,
     const basic_srmatrix<double>& mArg,
     basic_scmatrix<double, std::complex<double>> * mEigVect,
@@ -522,7 +522,7 @@ __eig<basic_cvector<double, std::complex<double>> , basic_srmatrix<double>, basi
 
 template<>
 CVM_API void
-__eig<basic_cvector<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
+cvm_eig<basic_cvector<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>>  >
     (basic_cvector<float, std::complex<float>> & vRes,
     const basic_scmatrix<float, std::complex<float>> & mArg,
     basic_scmatrix<float, std::complex<float>> * mEigVect,
@@ -660,7 +660,7 @@ __eig<basic_cvector<float, std::complex<float>> , basic_scmatrix<float, std::com
 
 template<>
 CVM_API void
-__eig<basic_cvector<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
+cvm_eig<basic_cvector<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>>  >
     (basic_cvector<double, std::complex<double>> & vRes,
     const basic_scmatrix<double, std::complex<double>> & mArg,
     basic_scmatrix<double, std::complex<double>> * mEigVect,
@@ -839,7 +839,7 @@ void _harvest_eig_vect(basic_scmatrix<double, std::complex<double>> & mEigVect,
 // Overrides A and B!
 template<>
 CVM_API void
-__ggev<basic_srmatrix<float>, basic_scmatrix<float, std::complex<float>> ,
+cvm_ggev<basic_srmatrix<float>, basic_scmatrix<float, std::complex<float>> ,
 basic_rvector<float>, basic_cvector<float, std::complex<float>>  >
 (basic_srmatrix<float>& mA,
 basic_srmatrix<float>& mB,
@@ -901,7 +901,7 @@ basic_scmatrix<float, std::complex<float>> * mEigVectRight)
                     
 template<>
 CVM_API void
-__ggev<basic_srmatrix<double>, basic_scmatrix<double, std::complex<double>> ,
+cvm_ggev<basic_srmatrix<double>, basic_scmatrix<double, std::complex<double>> ,
        basic_rvector<double>, basic_cvector<double, std::complex<double>>  >
       (basic_srmatrix<double>& mA,
        basic_srmatrix<double>& mB,
@@ -962,7 +962,7 @@ __ggev<basic_srmatrix<double>, basic_scmatrix<double, std::complex<double>> ,
 
 template<>
 CVM_API void
-__ggev<basic_scmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>> ,
+cvm_ggev<basic_scmatrix<float, std::complex<float>> , basic_scmatrix<float, std::complex<float>> ,
        basic_cvector<float, std::complex<float>> , basic_cvector<float, std::complex<float>>  >
       (basic_scmatrix<float, std::complex<float>> & mA,
        basic_scmatrix<float, std::complex<float>> & mB,
@@ -1021,7 +1021,7 @@ __ggev<basic_scmatrix<float, std::complex<float>> , basic_scmatrix<float, std::c
 
 template<>
 CVM_API void
-__ggev<basic_scmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>> ,
+cvm_ggev<basic_scmatrix<double, std::complex<double>> , basic_scmatrix<double, std::complex<double>> ,
        basic_cvector<double, std::complex<double>> , basic_cvector<double, std::complex<double>>  >
       (basic_scmatrix<double, std::complex<double>> & mA,
        basic_scmatrix<double, std::complex<double>> & mB,
