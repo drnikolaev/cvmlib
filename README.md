@@ -36,6 +36,15 @@ cmake --build build/ --config Release
 ./lib/cvm_test
 ```
 
+### Building source code on Linux with ARM CPU
+ARM Performance Libraries are required (see [here](https://developer.arm.com/Tools%20and%20Software/Arm%20Performance%20Libraries)):
+```aiignore
+PATH=/opt/arm/gcc-14.2.0_Ubuntu-22.04/bin:$PATH cmake -DCMAKE_Fortran_COMPILER=aarch64-linux-gnu-gfortran -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ -DILP64=ON -DARMPL=ON -DBUILD_TESTS=ON -B build/ -S .
+cmake --build build/ --config Release
+./lib/cvm_test
+```
+
+
 ### Examples
 
 #### [Sine integral](https://en.wikipedia.org/wiki/Trigonometric_integral) derivative:
