@@ -33,9 +33,9 @@ if(LINUX OR MAC)
             $<$<CONFIG:Release>:-O2>
             $<$<CONFIG:Debug>:-O0 -g>)
 else()
-    target_compile_options(cvm_test PRIVATE /MT
-            $<$<CONFIG:Release>:/O1>
-            $<$<CONFIG:Debug>:/Od>)
+    target_compile_options(cvm_test PRIVATE
+            $<$<CONFIG:Release>:/MD /EHs /O1 /bigobj>
+            $<$<CONFIG:Debug>:/MDd /EHs /Od /bigobj>)
 endif()
 
 target_link_directories(cvm_test PRIVATE ${OUTPUT_PATH} ${ARMPL_DIR} ${ARMFL_DIR})
@@ -43,6 +43,7 @@ target_link_libraries(cvm_test optimized cvm)
 target_link_libraries(cvm_test debug cvm_debug)
 target_link_libraries(cvm_test gtest)
 
+set(gtest_force_shared_crt ON)
 include(CTest)
 include(FetchContent)
 FetchContent_Declare(

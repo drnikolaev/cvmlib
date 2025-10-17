@@ -26,9 +26,9 @@ if(LINUX OR MAC)
             $<$<CONFIG:Release>:-O2 -lstdc++ >
             $<$<CONFIG:Debug>:-O0 -g -lstdc++ >)
 else()
-    target_compile_options(playground PRIVATE /MT
-            $<$<CONFIG:Release>:/O1>
-            $<$<CONFIG:Debug>:/Od /debug:all>)
+    target_compile_options(playground PRIVATE
+            $<$<CONFIG:Release>:/MD /EHs /O1 /bigobj>
+            $<$<CONFIG:Debug>:/MD /EHs /Od /debug:all /bigobj>)
 endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../cvm/src)

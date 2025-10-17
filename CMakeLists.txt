@@ -1,10 +1,17 @@
 cmake_minimum_required(VERSION 3.23.0)
 project(cvm LANGUAGES Fortran CXX VERSION 9.2.0 DESCRIPTION "CVM Class Library")
 
+#For Windows use full path:
+#>cmake -DCMAKE_Fortran_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/ifx.exe" -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON -B build -S .
+#>cmake --build build --parallel --config Release
+#>.\lib\Release\cvm_test.exe
+#
 #cmake -DCMAKE_Fortran_COMPILER=ifx -DCMAKE_CXX_COMPILER=icx -DCMAKE_C_COMPILER=icx -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON
 #cmake -DCMAKE_Fortran_COMPILER=aarch64-linux-gnu-gfortran -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc -DILP64=ON -DBUILD_TESTS=ON -S . -B build
 #PATH=/opt/arm/gcc-14.2.0_Ubuntu-22.04/bin:$PATH cmake -DCMAKE_Fortran_COMPILER=aarch64-linux-gnu-gfortran -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++  -DILP64=ON -DARMPL=ON -DBUILD_TESTS=ON  -B build/ -S .
 #cmake -DCMAKE_Fortran_COMPILER=aarch64-apple-darwin24-gfortran-mp-14 -DCMAKE_CXX_COMPILER=aarch64-apple-darwin24-c++-mp-14  -DARMPL=ON -DBUILD_TESTS=ON  -B build/ -S .
+
+find_package(IntelSYCL REQUIRED)
 
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
     SET(ARM ON)
@@ -47,5 +54,9 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
 else()
     option(MAC "Target platform is Mac OS" OFF)
 endif()
+
+if(MKL)
+    find_package(MKL REQUIRED)
+endif ()
 
 add_subdirectory(cvm)

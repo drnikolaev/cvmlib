@@ -8,9 +8,9 @@ set(_out "${CMAKE_CURRENT_SOURCE_DIR}/../../../lib")
 foreach(cfg Debug Release RelWithDebInfo MinSizeRel)
     string(TOUPPER "${cfg}" CFGU)
     set_target_properties(ftn PROPERTIES
-            ARCHIVE_OUTPUT_DIRECTORY_${CFGU} "${_out}"
-            LIBRARY_OUTPUT_DIRECTORY_${CFGU} "${_out}"
-            RUNTIME_OUTPUT_DIRECTORY_${CFGU} "${_out}"
+        ARCHIVE_OUTPUT_DIRECTORY_${CFGU} "${_out}"
+        LIBRARY_OUTPUT_DIRECTORY_${CFGU} "${_out}"
+        RUNTIME_OUTPUT_DIRECTORY_${CFGU} "${_out}"
     )
 endforeach()
 
@@ -21,8 +21,8 @@ if(NOT WIN32)
 endif()
 
 target_compile_options(ftn PRIVATE
-        $<$<CONFIG:Release>:$<$<COMPILE_LANGUAGE:Fortran>:-O3>>
-        $<$<CONFIG:Debug>:$<$<COMPILE_LANGUAGE:Fortran>:-O0 -g>>
+        $<$<CONFIG:Release>:$<$<COMPILE_LANGUAGE:Fortran>:/MD -O2>>
+        $<$<CONFIG:Debug>:$<$<COMPILE_LANGUAGE:Fortran>:/MDd -Og>>
 )
 
 if(UNIX AND NOT APPLE)

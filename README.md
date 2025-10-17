@@ -17,9 +17,16 @@ sudo apt install intel-basekit
 source /opt/intel/oneapi/compiler/latest/env/vars.sh
 mkdir build
 cmake -DCMAKE_Fortran_COMPILER=ifx -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release -S . -B build
-cd build
-make -j
+cmake --build build --parallel --config Release
 ../lib/cvm_test
+```
+
+### Building source code on Windows with Intel or AMD CPU
+Intel oneAPI HPC Toolkit is required (see [here](https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit-download.html)):
+```aiignore
+>cmake -DCMAKE_Fortran_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/ifx.exe" -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON -B build -S .
+>cmake --build build --parallel --config Release
+>.\lib\Release\cvm_test.exe
 ```
 
 ### Examples
