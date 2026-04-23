@@ -21,8 +21,8 @@ if(NOT WIN32)
 endif()
 
 target_compile_options(ftn PRIVATE
-        $<$<CONFIG:Release>:$<$<COMPILE_LANGUAGE:Fortran>:/MD -O2>>
-        $<$<CONFIG:Debug>:$<$<COMPILE_LANGUAGE:Fortran>:/MDd -Og>>
+        $<$<CONFIG:Release>:$<$<COMPILE_LANGUAGE:Fortran>:-O2>>
+        $<$<CONFIG:Debug>:$<$<COMPILE_LANGUAGE:Fortran>:-Og>>
 )
 
 if(UNIX AND NOT APPLE)
