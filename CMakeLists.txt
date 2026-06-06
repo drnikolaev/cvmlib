@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.23.0)
-project(cvm LANGUAGES Fortran CXX VERSION 9.2.0 DESCRIPTION "CVM Class Library")
+cmake_minimum_required(VERSION 3.24.0)
+project(cvm LANGUAGES Fortran CXX VERSION 9.2.1 DESCRIPTION "CVM Class Library")
 
 #For Windows use full path:
 #>cmake -DCMAKE_Fortran_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/ifx.exe" -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON -B build -S .
@@ -11,16 +11,18 @@ project(cvm LANGUAGES Fortran CXX VERSION 9.2.0 DESCRIPTION "CVM Class Library")
 #PATH=/opt/arm/gcc-14.2.0_Ubuntu-22.04/bin:$PATH cmake -DCMAKE_Fortran_COMPILER=aarch64-linux-gnu-gfortran -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++  -DILP64=ON -DARMPL=ON -DBUILD_TESTS=ON  -B build/ -S .
 #cmake -DCMAKE_Fortran_COMPILER=aarch64-apple-darwin24-gfortran-mp-14 -DCMAKE_CXX_COMPILER=aarch64-apple-darwin24-c++-mp-14  -DARMPL=ON -DBUILD_TESTS=ON  -B build/ -S .
 
-if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
+string(TOLOWER "${CMAKE_SYSTEM_PROCESSOR}" CMAKE_SYSTEM_PROCESSOR_LOWER)
+if(CMAKE_SYSTEM_PROCESSOR_LOWER MATCHES "aarch64|arm64")
     SET(ARM ON)
+    SET(ARMPL ON)
     message("Building CVM Class Library for ARM64")
     if(ARMPL)
-        find_library(ARMPL_LIB NAMES armpl_ilp64 PATHS /opt/arm/* PATH_SUFFIXES lib)
-        find_library(ARMFL_LIB NAMES armflang PATHS /opt/arm/* PATH_SUFFIXES lib)
+        find_library(ARMPL_LIB NAMES armpl_ilp64 PATHS /opt/arm/* C:/Program\ files/Arm\ Performance\ Libraries/* PATH_SUFFIXES lib)
+        find_library(ARMFL_LIB NAMES armflang flang_rt.runtime.dynamic.lib PATHS /opt/arm/*  C:/Program\ files/Arm\ Performance\ Libraries/* PATH_SUFFIXES lib)
         get_filename_component(ARMPL_DIR "${ARMPL_LIB}" DIRECTORY)
         get_filename_component(ARMFL_DIR "${ARMFL_LIB}" DIRECTORY)
-        message("ARMPL found: ${ARMPL_DIR}" )
-        message("ARMFL found: ${ARMFL_DIR}" )
+        message("ARMPL found: ${ARMPL_LIB}" )
+        message("ARMFL found: ${ARMFL_LIB}" )
     endif ()
 else()
 #    find_package(IntelSYCL)
@@ -46,7 +48,7 @@ endif ()
 option(BUILD_TESTS "Build regression test program" OFF)
 option(MKL "Use Intel MKL library" OFF)
 option(ARMPL "Use ARM Performance Library" OFF)
-option(ILP64 "Set the default integer size to 8 bytes" OFF)
+option(ILP64 "Set the default integer size to 8 bytes" ON)
 option(CVM_USE_POOL_MANAGER "Use internal pool manager, for debugging only!" OFF)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")

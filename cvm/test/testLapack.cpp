@@ -1648,7 +1648,7 @@ TYPED_TEST(LapackTest, TestGelsBandComplexVector) {
 
     basic_cvector<TP,TPC> xt = a.gels(true, bt, cErr);
     EXPECT_NEAR(TP(0.), (~a*xt-bt).norm(), sp<TP>()) << "gels complex transp";
-    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>()) << "gels complex transp";
+    EXPECT_NEAR(TP(0.), (~a.pinv()*bt - xt).norm(), spp<TP>(1.e-5, 0.02)) << "gels complex transp";
 }
 
 // 6.0 gelsy

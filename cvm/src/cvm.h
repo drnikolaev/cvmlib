@@ -1,15 +1,15 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2025
+//          Copyright Sergei Nikolaev 1992-2026
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 /**
  * @mainpage CVM Class Library Documentation
- * @version 9.2.0
- * @author Sergei Nikolaev (c) 1992-2023
- * @date January 4th, 2023
+ * @version 9.2.1
+ * @author Sergei Nikolaev (c) 1992-2026
+ * @date June 6th, 2026
  *
  * This C++ class library encapsulates concepts of vector and different matrices
  * including square, band, symmetric and Hermitian ones in Euclidean space
@@ -192,10 +192,7 @@ private:
     CVM_API ErrMessages();
 
 public:
-    const std::string& get(int nException) {
-        auto i = mmMsg.find(nException);
-        return i == mmMsg.end() ? msUnknown : i->second;
-    }
+    CVM_API const char* get(int nException) const;
 
     static CVM_API ErrMessages& ErrMessagesInstance();
     ~ErrMessages() = default;
@@ -224,14 +221,12 @@ public:
     // C++20 type-safe formatting
     template <class... Args>
     cvmexception(int cause, std::string_view fmt, Args&&... args)
-           : m_cause(cause)
-        , m_msg(_format_sv(fmt, std::forward<Args>(args)...))
+    : m_cause(cause), m_msg(_format_sv(fmt, std::forward<Args>(args)...))
     {}
 
     template <class... Args>
     cvmexception(int cause, Args&&... args)  // NOLINT
-    : m_cause(cause)
-        , m_msg(_format_sv(get_message(cause), std::forward<Args>(args)...))
+    : m_cause(cause), m_msg(_format_sv(get_message(cause), std::forward<Args>(args)...))
     {}
 
     cvmexception(const cvmexception&) noexcept = default;
@@ -248,7 +243,7 @@ public:
 
 protected:
     //! @cond INTERNAL
-    [[nodiscard]] static std::string_view get_message(int nCause) {
+    [[nodiscard]] static const char* get_message(int nCause) {
         return ErrMessages::ErrMessagesInstance().get(nCause);
     }
     //! @endcond

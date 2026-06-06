@@ -156,6 +156,16 @@ TYPED_TEST(MiscTest, TestComplexFunctionsProxy) {
     EXPECT_EQ(atanh(c1), atanh(m(0,0)));
 }
 
+TYPED_TEST(MiscTest, TestComplexMatrix1x1) {
+    basic_scmatrix<TP,TPC> m(1);
+    const TPC c1 = TPC(1.,2.);
+    m(0,0) = c1;
+    basic_scmatrix<TP,TPC> em = m.exp();
+    // EXPECT_EQ(em(0,0), exp(c1));
+    EXPECT_NEAR(exp(c1).real(), em(0,0).real(), spp<TP>(1.e-14, 1.e-6));
+    EXPECT_NEAR(exp(c1).imag(), em(0,0).imag(), spp<TP>(1.e-14, 1.e-6));
+}
+
 TYPED_TEST(MiscTest, TestMatrixIndexing) {
     basic_srsmatrix<TP> m(3);
 //    m(1,2) = TP(0.12); // COMPILATION MUST FAIL HERE

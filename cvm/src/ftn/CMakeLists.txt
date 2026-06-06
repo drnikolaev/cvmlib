@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.23.0)
+cmake_minimum_required(VERSION 3.24.0)
 project(ftn LANGUAGES Fortran)
 file(GLOB F_SOURCES CONFIGURE_DEPENDS "*.f")
 add_library(ftn STATIC ${F_SOURCES})
@@ -20,10 +20,18 @@ if(NOT WIN32)
     set_target_properties(ftn PROPERTIES POSITION_INDEPENDENT_CODE ON)
 endif()
 
-target_compile_options(ftn PRIVATE
-        $<$<CONFIG:Release>:$<$<COMPILE_LANGUAGE:Fortran>:/MD -O2>>
-        $<$<CONFIG:Debug>:$<$<COMPILE_LANGUAGE:Fortran>:/MDd -Og>>
-)
+if(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang")
+    target_compile_options(ftn PRIVATE
+            $<$<CONFIG:Release>:$<$<COMPILE_LANGUAGE:Fortran>:-O2>>
+            $<$<CONFIG:Debug>:$<$<COMPILE_LANGUAGE:Fortran>:-g -O0>>
+    )
+else()
+    target_compile_options(ftn PRIVATE
+            $<$<CONFIG:Release>:$<$<COMPILE_LANGUAGE:Fortran>:-O2>>
+            $<$<CONFIG:Debug>:$<$<COMPILE_LANGUAGE:Fortran>:-Og>>
+    )
+endif()
+
 
 if(UNIX AND NOT APPLE)
     target_compile_options(ftn PRIVATE -pthread)
@@ -38,6 +46,8 @@ if(ILP64)
             target_compile_options(ftn PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:-integer-size 64>)
         endif()
     elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
+        target_compile_options(ftn PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:-fdefault-integer-8>)
+    elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang")
         target_compile_options(ftn PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:-fdefault-integer-8>)
     elseif(MSVC)
         # Intel Fortran with MSVC toolchain is covered above; MSVC itself is rare for Fortran.

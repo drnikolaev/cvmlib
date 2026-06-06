@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2023
+//          Copyright Sergei Nikolaev 1992-2026
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -24,6 +24,11 @@ CVM_API ErrMessages& ErrMessages::ErrMessagesInstance() {
     std::unique_lock<std::mutex> l(cvm_mutex);
     static ErrMessages errMessages;
     return errMessages;
+}
+
+CVM_API const char* ErrMessages::get(int nException) const {
+    const auto i = mmMsg.find(nException);
+    return i == mmMsg.end() ? msUnknown.c_str() : i->second.c_str();
 }
 
 CVM_API ErrMessages::ErrMessages() : msUnknown("Unknown exception"), mmMsg() {

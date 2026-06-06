@@ -1,7 +1,7 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2023
+//          Copyright Sergei Nikolaev 1992-2026
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -16,13 +16,10 @@
 extern "C" {
 #endif
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__GNUC__)
 #    define CVM_FTN_CALL __stdcall
-#else
-#    define CVM_FTN_CALL
 
 // my fortran stuff
-
 #    define DPOLY   dpoly_
 #    define SPOLY   spoly_
 #    define CPOLY   cpoly_
@@ -369,10 +366,14 @@ extern "C" {
 
 #endif      // !_MSC_VER
 
-#ifdef CVM_ON_MAC
+#if defined(CVM_ON_MAC)
 // Apple bug workaround
 #    define CVM_BLAS_FLOAT_RET double
 #else
+#if defined(CVM_FTN_CALL)
+#    undef CVM_FTN_CALL
+#    define CVM_FTN_CALL
+#endif
 #    define CVM_BLAS_FLOAT_RET float
 #endif
 
