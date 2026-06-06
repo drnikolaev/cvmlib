@@ -49,7 +49,8 @@ C     LWORK  - length of working array WORK (int)(input) - usually 64 * M
 
       IF (M .LE. 0) RETURN
       IF (M .EQ. 1) THEN
-         EA(1) = ZEXP (A(1))
+         EA(1) = DCMPLX(DEXP(DREAL(A(1)))*DCOS(DIMAG(A(1))),
+     1                  DEXP(DREAL(A(1)))*DSIN(DIMAG(A(1))))
          RETURN
       END IF
 

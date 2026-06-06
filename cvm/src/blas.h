@@ -18,11 +18,8 @@ extern "C" {
 
 #if defined(_MSC_VER)
 #    define CVM_FTN_CALL __stdcall
-#else
-#    define CVM_FTN_CALL
 
 // my fortran stuff
-
 #    define DPOLY   dpoly_
 #    define SPOLY   spoly_
 #    define CPOLY   cpoly_

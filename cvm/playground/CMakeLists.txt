@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.23.0)
+cmake_minimum_required(VERSION 3.24.0)
 project(playground LANGUAGES CXX VERSION 1 DESCRIPTION "CVM Class Library playground")
 FILE(GLOB SOURCE_FILES *.cpp)
 set(OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib")

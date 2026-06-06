@@ -49,9 +49,17 @@ if(LINUX OR MAC)
         $<$<CONFIG:Debug>:-O0 -g>)
 else()
     target_compile_definitions(cvm PRIVATE SRC_EXPORTS)
-    target_compile_options(cvm PRIVATE
-            $<$<CONFIG:Release>:/EHs /MD /O2>
-            $<$<CONFIG:Debug>:/EHs /MDd /Od>)
+    if(ARMPL)
+        target_compile_definitions(cvm PRIVATE
+                $<$<CONFIG:Debug>:_ITERATOR_DEBUG_LEVEL=0>)
+        target_compile_options(cvm PRIVATE
+                $<$<CONFIG:Release>:/EHs /MD /O2>
+                $<$<CONFIG:Debug>:/EHs /MD /Od>)
+    else()
+        target_compile_options(cvm PRIVATE
+                $<$<CONFIG:Release>:/EHs /MD /O2>
+                $<$<CONFIG:Debug>:/EHs /MDd /Od>)
+    endif()
 endif()
 
 if(MAC AND NOT ARMPL)
@@ -70,12 +78,16 @@ if(ARM)
         if(ILP64)
             if(MAC)
                 target_link_libraries(cvm PRIVATE armpl_ilp64)
+            elseif (WIN32)
+                target_link_libraries(cvm PRIVATE flang_rt.runtime.dynamic armpl_ilp64.dll)
             else()
                 target_link_libraries(cvm PRIVATE armflang armpl_ilp64)
             endif()
         else()
             if(MAC)
                 target_link_libraries(cvm PRIVATE armpl_lp64)
+            elseif (WIN32)
+                target_link_libraries(cvm PRIVATE flang_rt.runtime.dynamic.dll armpl_lp64.dll)
             else()
                 target_link_libraries(cvm PRIVATE armflang armpl_lp64)
             endif()

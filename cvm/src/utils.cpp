@@ -26,6 +26,11 @@ CVM_API ErrMessages& ErrMessages::ErrMessagesInstance() {
     return errMessages;
 }
 
+CVM_API const char* ErrMessages::get(int nException) const {
+    const auto i = mmMsg.find(nException);
+    return i == mmMsg.end() ? msUnknown.c_str() : i->second.c_str();
+}
+
 CVM_API ErrMessages::ErrMessages() : msUnknown("Unknown exception"), mmMsg() {
     mmMsg.insert(pair_Msg(CVM_OK, "All OK"));
     mmMsg.insert(pair_Msg(CVM_OUTOFMEMORY, "Failed to allocate {} bytes of memory"));

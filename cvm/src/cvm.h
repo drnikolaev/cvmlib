@@ -192,10 +192,7 @@ private:
     CVM_API ErrMessages();
 
 public:
-    const std::string& get(int nException) {
-        auto i = mmMsg.find(nException);
-        return i == mmMsg.end() ? msUnknown : i->second;
-    }
+    CVM_API const char* get(int nException) const;
 
     static CVM_API ErrMessages& ErrMessagesInstance();
     ~ErrMessages() = default;
@@ -224,14 +221,12 @@ public:
     // C++20 type-safe formatting
     template <class... Args>
     cvmexception(int cause, std::string_view fmt, Args&&... args)
-           : m_cause(cause)
-        , m_msg(_format_sv(fmt, std::forward<Args>(args)...))
+    : m_cause(cause), m_msg(_format_sv(fmt, std::forward<Args>(args)...))
     {}
 
     template <class... Args>
     cvmexception(int cause, Args&&... args)  // NOLINT
-    : m_cause(cause)
-        , m_msg(_format_sv(get_message(cause), std::forward<Args>(args)...))
+    : m_cause(cause), m_msg(_format_sv(get_message(cause), std::forward<Args>(args)...))
     {}
 
     cvmexception(const cvmexception&) noexcept = default;
@@ -248,7 +243,7 @@ public:
 
 protected:
     //! @cond INTERNAL
-    [[nodiscard]] static std::string_view get_message(int nCause) {
+    [[nodiscard]] static const char* get_message(int nCause) {
         return ErrMessages::ErrMessagesInstance().get(nCause);
     }
     //! @endcond
