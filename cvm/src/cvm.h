@@ -1,15 +1,15 @@
 //                  CVM Class Library
 //                  http://cvmlib.com
 //
-//          Copyright Sergei Nikolaev 1992-2025
+//          Copyright Sergei Nikolaev 1992-2026
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 /**
  * @mainpage CVM Class Library Documentation
- * @version 9.2.0
- * @author Sergei Nikolaev (c) 1992-2023
- * @date January 4th, 2023
+ * @version 9.2.1
+ * @author Sergei Nikolaev (c) 1992-2026
+ * @date June 6th, 2026
  *
  * This C++ class library encapsulates concepts of vector and different matrices
  * including square, band, symmetric and Hermitian ones in Euclidean space

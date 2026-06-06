@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24.0)
-project(cvm LANGUAGES Fortran CXX VERSION 9.2.0 DESCRIPTION "CVM Class Library")
+project(cvm LANGUAGES Fortran CXX VERSION 9.2.1 DESCRIPTION "CVM Class Library")
 
 #For Windows use full path:
 #>cmake -DCMAKE_Fortran_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/ifx.exe" -DMKL=ON -DILP64=ON -DBUILD_TESTS=ON -B build -S .
