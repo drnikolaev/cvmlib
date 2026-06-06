@@ -58,7 +58,7 @@ else()
     else()
         target_compile_options(cvm PRIVATE
                 $<$<CONFIG:Release>:/EHs /MD /O2>
-                $<$<CONFIG:Debug>:/EHs /MDd /Od>)
+                $<$<CONFIG:Debug>:/EHs /MD /Od>)
     endif()
 endif()
 

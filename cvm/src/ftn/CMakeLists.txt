@@ -27,8 +27,8 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "LLVMFlang")
     )
 else()
     target_compile_options(ftn PRIVATE
-            $<$<CONFIG:Release>:$<$<COMPILE_LANGUAGE:Fortran>:/MD -O2>>
-            $<$<CONFIG:Debug>:$<$<COMPILE_LANGUAGE:Fortran>:/MDd -Og>>
+            $<$<CONFIG:Release>:$<$<COMPILE_LANGUAGE:Fortran>:-O2>>
+            $<$<CONFIG:Debug>:$<$<COMPILE_LANGUAGE:Fortran>:-Og>>
     )
 endif()
 
