@@ -14,12 +14,6 @@ foreach(cfg Debug Release RelWithDebInfo MinSizeRel)
     )
 endforeach()
 
-target_compile_options(ftn PRIVATE
-        $<$<COMPILE_LANGUAGE:Fortran>:/integer-size:64>
-        $<$<COMPILE_LANGUAGE:Fortran>:/names:lowercase>
-        $<$<COMPILE_LANGUAGE:Fortran>:/assume:underscore>
-)
-
 set_target_properties(ftn PROPERTIES DEBUG_POSTFIX "_debug")
 
 if(NOT WIN32)
@@ -47,9 +41,15 @@ endif()
 if(ILP64)
     if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel" OR CMAKE_Fortran_COMPILER_ID STREQUAL "IntelLLVM")
         if(WIN32)
-            target_compile_options(ftn PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:/integer-size:64>)
+            target_compile_options(ftn PRIVATE
+                $<$<COMPILE_LANGUAGE:Fortran>:/integer-size:64>
+                $<$<COMPILE_LANGUAGE:Fortran>:/names:lowercase>
+                $<$<COMPILE_LANGUAGE:Fortran>:/assume:underscore>
+            )
         else()
-            target_compile_options(ftn PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:-integer-size 64>)
+            target_compile_options(ftn PRIVATE
+                 $<$<COMPILE_LANGUAGE:Fortran>:-integer-size 64>
+            )
         endif()
     elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
         target_compile_options(ftn PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:-fdefault-integer-8>)
