@@ -595,7 +595,7 @@ TYPED_TEST(FunctionalTest, TestFcosh) {
     basic_function<TP> rfcosh("{x} cosh(x)");
     EXPECT_EQ("cosh(x)", rfcosh.format()) << "basic_function<TP> cosh - format()";
     EXPECT_FLOAT_EQ(static_cast<float>(1.5430806348152437), static_cast<float>(rfcosh(1.))) << "basic_function<TP> cosh - value";
-    EXPECT_EQ("-sinh(x)", rfcosh.drv().format()) << "basic_function<TP> cosh - drv - format()";
+    EXPECT_EQ("sinh(x)", rfcosh.drv().format()) << "basic_function<TP> cosh - drv - format()";
     basic_function<TP> rfcosh2("cosh(-1.)");
     EXPECT_EQ("1.54308", rfcosh2.simp().format()) << "basic_function<TP> sinh - simp - format()";
 

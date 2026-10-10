@@ -14,11 +14,12 @@ foreach(cfg Debug Release RelWithDebInfo MinSizeRel)
     )
 endforeach()
 
-target_compile_options(ftn PRIVATE
-        $<$<COMPILE_LANGUAGE:Fortran>:/integer-size:64>
-        $<$<COMPILE_LANGUAGE:Fortran>:/names:lowercase>
-        $<$<COMPILE_LANGUAGE:Fortran>:/assume:underscore>
-)
+#target_compile_options(ftn PRIVATE
+##        $<$<COMPILE_LANGUAGE:Fortran>:/integer-size:64>
+#        $<$<COMPILE_LANGUAGE:Fortran>:/names:lowercase>
+#        $<$<COMPILE_LANGUAGE:Fortran>:/assume:underscore>
+#)
+#-fdefault-integer-8
 
 set_target_properties(ftn PROPERTIES DEBUG_POSTFIX "_debug")
 
