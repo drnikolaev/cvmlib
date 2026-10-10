@@ -4002,7 +4002,7 @@ public:
     {
         return
         std::make_shared<Fmult<T>>(this->mf0->_deriv(nVarNum),
-                                   std::make_shared<Fuminus<T>>(std::make_shared<Fsinh<T>>(this->mf0)))->_simp();
+                                   std::make_shared<Fsinh<T>>(this->mf0))->_simp();
     }
 
     const char* _name() const override
